@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trentpower.fr/schemas/content/verify.schema.json",
+  "title": "Verify page content (includes verify-locally)",
+  "allOf": [{ "$ref": "https://trentpower.fr/schemas/content/page-base.schema.json" }],
+  "type": "object",
+  "properties": {
+    "meta": { "type": "object", "required": ["verify", "verify_locally"] },
+    "verify": { "type": "object" },
+    "verify_intro": { "type": "object" },
+    "verify_locally": { "type": "object" },
+    "slip": { "type": "object" }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,252 @@
+meta:
+  '403':
+    title: Forbidden · Trent Power
+    description: Access not permitted.
+  '404':
+    title: Page not found · Trent Power
+    description: Page not found.
+  '500':
+    title: Something went wrong · Trent Power
+    description: Something went wrong.
+  maintenance:
+    title: Down for maintenance · Trent Power
+    description: Down for maintenance.
+error:
+  '403':
+    kicker: Error 403
+    title: Forbidden
+    body: 'You don''t have permission to access this page. <a href="/" class="error-home-link" rel="home">Return to the homepage</a>.'
+    print:
+      kicker: '403'
+      title: Access not available
+      lede: This path is not publicly accessible. The public site exposes only intentional files and pages.
+      meta: Edition 2026-05-17 · trentpower.fr
+      doc_title: Trent Power - Access Boundary Sheet
+      card:
+        '01':
+          label: 01 Access boundary
+          title: Access boundary
+          body: Some paths are intentionally unavailable. Private, backup and operational files are blocked.
+        '02':
+          label: 02 Public routes
+          title: Public routes
+          body: Homepage. Privacy & Trust. Integrity. Security. Source.
+        '03':
+          label: 03 Why this matters
+          title: Why this matters
+          body: Reduces accidental exposure. Keeps public files intentional. Supports privacy and trust posture.
+        '04':
+          label: 04 Verification
+          title: Verification
+          body: Inspect /integrity.json. View selected source files. Check /.well-known/security.txt.
+        '05':
+          label: 05 Static posture
+          title: Static posture
+          body: No public database. No visitor accounts. No forms. No tracking.
+        '06':
+          label: 06 Contact
+          title: Contact
+          body: trent@trentpower.fr · responsible disclosure via /security/
+      footer:
+        proof: Private · Static · Signed · No tracking
+        edition: Edition 2026-05-17 · trentpower.fr
+      qr:
+        label: trentpower.fr
+  '404':
+    kicker: Error 404
+    title: Page not found
+    body: 'The page you''re looking for doesn''t exist or has moved. <a href="/" class="error-home-link" rel="home">Return to the homepage</a>.'
+    print:
+      kicker: '404'
+      title: Page not found
+      lede: The address may have changed, or the page may no longer be part of the public site.
+      meta: Edition 2026-05-17 · trentpower.fr
+      doc_title: Trent Power - Page Not Found Sheet
+      card:
+        '01':
+          label: 01 What happened
+          title: What happened
+          body: The requested route does not resolve to a public page. The site remains available through the homepage.
+        '02':
+          label: 02 Where to go
+          title: Where to go
+          body: Homepage. Privacy & Trust. Integrity. Security.
+        '03':
+          label: 03 Verification
+          title: Verification
+          body: Public manifest. Source view. Signed releases.
+        '04':
+          label: 04 If this was expected
+          title: If expected
+          body: Check the URL. Remove outdated path fragments. Try the canonical homepage.
+        '05':
+          label: 05 Public posture
+          title: Public posture
+          body: Static site. No tracking. No forms. No third-party scripts.
+        '06':
+          label: 06 Contact
+          title: Contact
+          body: trent@trentpower.fr · LinkedIn · Trent Power
+      footer:
+        proof: Private · Static · Signed · No tracking
+        edition: Edition 2026-05-17 · trentpower.fr
+      qr:
+        label: trentpower.fr
+  '500':
+    kicker: Error 500
+    title: Something went wrong
+    body: 'The server encountered an error. Try again shortly, or <a href="/" class="error-home-link" rel="home">return to the homepage</a>.'
+    print:
+      kicker: '500'
+      title: Temporary server error
+      lede: Something unexpected happened while serving this page. The public site is static, so this is likely a hosting or routing issue rather than an application failure.
+      meta: Edition 2026-05-17 · trentpower.fr
+      doc_title: Trent Power - Temporary Server Error Sheet
+      card:
+        '01':
+          label: 01 What happened
+          title: What happened
+          body: The server could not complete the request. Try again shortly.
+        '02':
+          label: 02 Stable routes
+          title: Stable routes
+          body: Homepage. Integrity. Security. Source.
+        '03':
+          label: 03 Public verification
+          title: Public verification
+          body: /integrity.json · /integrity.json.sig · /.well-known/pgp-key.asc
+        '04':
+          label: 04 Architecture
+          title: Architecture
+          body: Static HTML, CSS and JavaScript. No runtime public application. No public database.
+        '05':
+          label: 05 What to do
+          title: What to do
+          body: Refresh later. Return to homepage. Contact if persistent.
+        '06':
+          label: 06 Contact
+          title: Contact
+          body: trent@trentpower.fr · LinkedIn · Trent Power
+      footer:
+        proof: Private · Static · Signed · No tracking
+        edition: Edition 2026-05-17 · trentpower.fr
+      qr:
+        label: trentpower.fr
+error_404:
+  page_title: Page not found
+  body: The page you’re looking for doesn’t exist or has moved.
+error_500:
+  page_title: Something went wrong
+  body: The server encountered an error. Try again shortly, or return to the homepage.
+maintenance:
+  page_title: Down for maintenance
+  body: |-
+    The signed manifest, source mirrors and frozen release archives remain available
+    throughout maintenance. Verification continues to work.
+  kicker: Maintenance
+  title: Down for maintenance
+  lede: We're doing some work here. Check back shortly, or return to the homepage.
+  print:
+    kicker: Maintenance status
+    title: Temporary maintenance mode
+    lede: This site is temporarily unavailable while a new signed edition or infrastructure update is being deployed.
+    meta: Edition 2026-05-17 · trentpower.fr/maintenance.html
+    doc_title: Trent Power - Maintenance
+    card:
+      '01':
+        label: 01 Deployment state
+        title: Deployment state
+        body: A signed release or infrastructure update is in progress.
+      '02':
+        label: 02 Integrity preservation
+        title: Integrity preservation
+        body: The previous signed edition remains downloadable in /integrity/releases/.
+      '03':
+        label: 03 Public availability
+        title: Public availability
+        body: Service returns automatically when the new edition is signed and verified.
+      '04':
+        label: 04 Signed releases
+        title: Signed releases
+        body: Archived editions stay reachable independently of this maintenance window.
+      '05':
+        label: 05 Maintenance contact
+        title: Maintenance contact
+        body: trent@trentpower.fr - for inquiries during extended unavailability.
+      '06':
+        label: 06 Expected continuity
+        title: Expected continuity
+        body: Canonical URLs are preserved across editions; bookmarks remain valid.
+    footer:
+      proof: Private · Static · Signed · No tracking
+      edition: Edition 2026-05-17 · trentpower.fr/maintenance.html
+    qr:
+      label: trentpower.fr/maintenance.html
+sw_reset:
+  page_title: Service Worker Reset
+  lede: |-
+    Clears the local offline cache for this device only. The live publication and server
+    are unaffected.
+  secondary: |-
+    If a recent edition is not appearing correctly, this utility refreshes the local
+    publication cache.
+  local_marker: LOCAL DEVICE ONLY
+  status_label: Local cache status
+  status_initial: Reading local state…
+  button: Reset local offline cache
+  button_done: Reset complete
+  edition_label: Cached edition
+  edition_none: No cached edition detected
+  clears_heading: Clears
+  clear_sw: Service Worker registrations
+  clear_caches: Offline cache entries
+  clear_pref: Saved language preference
+  preserves_heading: Does not clear
+  preserve_history: Browser history
+  preserve_downloads: Downloads
+  preserve_others: Other websites
+  preserve_server: Server content
+  link_home: Home
+  link_reload: Reload current edition
+  footnote: Offline state is stored locally through the browser Cache Storage and Service Worker APIs.
+  detected_label: Detected
+  scope_heading: Scope
+  api_label: APIs
+  print:
+    kicker: Offline recovery
+    title: Service worker reset
+    lede: Recovery utility for clearing cached offline state and refreshing the current signed public release.
+    meta: Edition 2026-05-17 · trentpower.fr/sw-reset/
+    doc_title: Trent Power - Service Worker Reset
+    card:
+      '01':
+        label: 01 Cache removal
+        title: Cache removal
+        body: Unregisters the service worker and deletes every named cache for this origin.
+      '02':
+        label: 02 Offline recovery
+        title: Offline recovery
+        body: Used when a stale offline copy is serving an outdated signed edition.
+      '03':
+        label: 03 Signed release refresh
+        title: Signed release refresh
+        body: Next page load fetches fresh HTML, CSS, JS, fonts, and integrity files.
+      '04':
+        label: 04 Browser compatibility
+        title: Browser compatibility
+        body: Works in any browser that supports Service Workers and the Cache API.
+      '05':
+        label: 05 Verification continuity
+        title: Verification continuity
+        body: Integrity manifest and signature remain unchanged - only cached copies are evicted.
+      '06':
+        label: 06 Local state reset
+        title: Local state reset
+        body: Clears the cached language preference. Theme preference is preserved.
+    footer:
+      proof: Private · Static · Signed · No tracking
+      edition: Edition 2026-05-17 · trentpower.fr/sw-reset/
+    qr:
+      label: trentpower.fr/sw-reset/
+  card_state: Offline cache
+  card_state_cleared: Offline cache cleared

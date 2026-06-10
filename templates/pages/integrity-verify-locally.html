@@ -1,0 +1,258 @@
+<!doctype html>
+<!--
+  trentpower.fr
+  static, self-managed, privacy-first
+  no analytics, no cookies, no external assets
+  detached verification notes for /integrity/
+-->
+<html lang="en" dir="ltr">
+<head>
+  <!-- head · 01 · foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- head · 02 · appearance bootstrap -->
+  <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch(_){}})();</script>
+
+  <!-- head · 03 · document identity -->
+  <title>Verify locally · Trent Power</title>
+  <meta name="description" content="Detached verification notes: signed manifest check from a temporary keyring">
+  <meta name="document-edition" content="2026-05-17">
+  <link rel="canonical" href="https://trentpower.fr/integrity/verify-locally/">
+
+  <!-- head · 04 · indexing and discovery -->
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- head · 05 · authorship and identity -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/attribution.txt">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+
+  <!-- head · 06 · provenance, rights and reuse -->
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+
+  <!-- head · 07 · social and sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="Verify locally · Trent Power">
+  <meta property="og:description" content="Detached verification notes: signed manifest check from a temporary keyring">
+  <meta property="og:url" content="https://trentpower.fr/integrity/verify-locally/">
+  <meta property="og:image" content="https://trentpower.fr/images/og/integrity-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Verify locally · Trent Power">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Verify locally · Trent Power">
+  <meta name="twitter:description" content="Detached verification notes: signed manifest check from a temporary keyring">
+  <meta name="twitter:image" content="https://trentpower.fr/images/og/integrity-og.png">
+  <meta name="twitter:image:alt" content="Verify locally · Trent Power">
+  <meta name="twitter:site"    content="@trentpower">
+  <meta name="twitter:creator" content="@trentpower">
+
+  <!-- head · 08 · application surface -->
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+
+  <!-- head · 09 · rendering and assets -->
+  <link rel="stylesheet" href="/styles.css?v=2026-05-17.8329810a">
+  <link rel="stylesheet" href="/print.css?v=2026-05-17.8329810a" media="print">
+
+  <!-- head · 10 · structured data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "@id": "https://trentpower.fr/integrity/verify-locally/#article",
+  "headline": "Verify locally · Trent Power",
+  "url": "https://trentpower.fr/integrity/verify-locally/",
+  "description": "Detached verification notes for the signed integrity manifest",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@id": "https://trentpower.fr/#website"
+  },
+  "author": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "publisher": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "datePublished": "2026-05-13",
+  "dateModified": "2026-05-20T00:00:00+00:00"
+}
+  </script>
+</head>
+<body data-page="integrity-verify-locally" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-05-17" data-source-sha256-short="--------">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark u-author" href="/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="site" id="main" tabindex="-1" itemscope itemtype="https://schema.org/TechArticle">
+  <div class="page">
+    <p class="page-kicker">{{ verify_locally.page_kicker }}</p>
+    <h1 class="page-title hero-stack">{{ html:verify_locally.page_title }}</h1>
+    <div class="page-body">
+      <p class="page-lede">{{ verify_locally.body_intro }}</p>
+
+      <div class="trust-code-block">
+        <div class="trust-code-block-header">
+          <button type="button" class="trust-code-copy verify-command-copy record-inline-action"
+                  data-copy-target="integrity-verify-command"
+                  data-copy-feedback="{{ attr:copy.copied }}">{{ copy.command }}</button>
+        </div>
+        <pre class="trust-code" id="integrity-verify-command"><code><span class="code-var">tmpdir</span>=<span class="code-str">"$(mktemp -d)"</span>
+<span class="code-cmd">export</span> <span class="code-var">GNUPGHOME</span>=<span class="code-str">"$tmpdir"</span>
+
+<span class="code-var">ts</span>=<span class="code-cmd">$(</span>date +%s<span class="code-cmd">)</span>
+<span class="code-cmd">curl</span> -fsS <span class="code-str">"https://trentpower.fr/integrity.json?ts=$ts"</span> -o integrity.json
+<span class="code-cmd">curl</span> -fsS <span class="code-str">"https://trentpower.fr/integrity.json.sig?ts=$ts"</span> -o integrity.json.sig
+<span class="code-cmd">curl</span> -fsS <span class="code-str">"https://trentpower.fr/.well-known/pgp-key.asc?ts=$ts"</span> | <span class="code-cmd">gpg</span> --import
+<span class="code-cmd">gpg</span> --verify integrity.json.sig integrity.json
+
+<span class="code-cmd">rm</span> -rf <span class="code-str">"$tmpdir"</span> integrity.json integrity.json.sig</code></pre>
+      </div>
+
+      <p class="integrity-page-level-note">{{ verify_locally.body_close }}</p>
+    </div>
+  </div>
+
+</main>
+
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">{{ linkdesc.home }}</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>{{ footer.location }}</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/privacy/" rel="privacy-policy" aria-describedby="desc-privacy">{{ footer.privacy }}</a>
+        <span class="visually-hidden" id="desc-privacy">{{ linkdesc.privacy }}</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">{{ footer.verify }}</button>
+        <span class="visually-hidden" id="desc-cite">{{ linkdesc.cite }}</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><button type="button" data-lang="en" aria-pressed="true"  aria-describedby="desc-lang-en" lang="en">English</button> <span class="visually-hidden" id="desc-lang-en">{{ linkdesc.lang_en }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-lang="fr" aria-pressed="false" aria-describedby="desc-lang-fr" lang="fr">Français</button> <span class="visually-hidden" id="desc-lang-fr">{{ linkdesc.lang_fr }}</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break" aria-hidden="true">
+
+    <!-- bottom stratum · colophon · theme -->
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="{{ footer.proof.aria_label }}">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="{{ footer.proof.manifest_link_href }}" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">{{ footer.proof.edition }}</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          {{ html:footer.proof.colophon_note_html }}
+          <span class="visually-hidden" id="desc-integrity">{{ linkdesc.integrity }}</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">{{ footer.theme.light }}</button> <span class="visually-hidden" id="desc-theme-light">{{ linkdesc.theme_light }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">{{ footer.theme.auto }}</button> <span class="visually-hidden" id="desc-theme-auto">{{ linkdesc.theme_auto }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">{{ footer.theme.dark }}</button> <span class="visually-hidden" id="desc-theme-dark">{{ linkdesc.theme_dark }}</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+<!-- scripts · progressive enhancement, no telemetry -->
+<script src="/js/theme.js?v=2026-05-17.8329810a" defer></script>
+<script src="/sw-register.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/reveal.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/overlay.js?v=2026-05-17.8329810a" defer></script>
+<script src="/verify/verification-data.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/copy.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/edition.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/micro-interactions.js" defer></script>
+<script src="/js/verify-modal.js" defer></script>
+<script src="/js/fonts.js?v=2026-05-17.8329810a" defer></script>
+
+
+<!-- print-only utility sheet -->
+<div class="print-utility-sheet print-only" data-print-sheet="integrity-verify-locally" hidden>
+  <header class="print-utility-header">
+    <p class="print-utility-kicker">{{ verify_locally.print.kicker }}</p>
+    <p class="print-utility-title">{{ verify_locally.print.title }}</p>
+    <p class="print-utility-lede">{{ verify_locally.print.lede }}</p>
+    <p class="print-utility-meta">{{ verify_locally.print.meta }}</p>
+  </header>
+
+  <div class="print-utility-grid">
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">01</span> <span>{{ verify_locally.print.card.01.title }}</span></p>
+          <p>{{ verify_locally.print.card.01.body }}</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">02</span> <span>{{ verify_locally.print.card.02.title }}</span></p>
+          <p>{{ verify_locally.print.card.02.body }}</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">03</span> <span>{{ verify_locally.print.card.03.title }}</span></p>
+          <p>{{ verify_locally.print.card.03.body }}</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">04</span> <span>{{ verify_locally.print.card.04.title }}</span></p>
+          <p>{{ verify_locally.print.card.04.body }}</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">05</span> <span>{{ verify_locally.print.card.05.title }}</span></p>
+          <p>{{ verify_locally.print.card.05.body }}</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">06</span> <span>{{ verify_locally.print.card.06.title }}</span></p>
+          <p>{{ verify_locally.print.card.06.body }}</p>
+        </div>
+  </div>
+
+  <footer class="print-utility-footer">
+    <div class="print-utility-footer-text">
+      <p class="print-proof">{{ verify_locally.print.footer.proof }}</p>
+      <p>{{ verify_locally.print.footer.edition }}</p>
+    </div>
+    <div class="print-qr-block" aria-hidden="true">
+      <img class="print-qr-image" src="/images/qr/qr-verify-locally.svg" width="144" height="144" loading="lazy" decoding="async" alt="">
+      <p class="print-qr-url">trentpower.fr/integrity/verify-locally/</p>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>

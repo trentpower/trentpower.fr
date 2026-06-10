@@ -1,0 +1,48 @@
+trentpower.fr TESTRESULTS
+
+Edition:     2026-05-23
+Run:         #15  (median sample 3 2026-05-29)
+Generated:   2026-05-29T20:54:57Z
+Environment: production
+Git commit:  b8950a96
+
+Targets:
+- https://trentpower.fr/
+- https://trentpower.fr/en-au/
+- https://trentpower.fr/fr/
+
+Summary:
+- Availability: PASS, 3/3 target URLs returned 200
+- Privacy: PASS, 0 cookies, 0 third-party resources, 0 unexpected storage keys
+- Security: PASS, Observatory A+, SSL Labs A+
+- Accessibility: PASS, Lighthouse accessibility min 100
+- SEO: PASS, Lighthouse SEO min 100
+- HTML: PASS, 0 errors, 0 warning(s) max/page
+- Trust files: PASS, integrity.json + signature present, all core trust files verified
+- Performance: REVIEW
+  - /: 91
+  - /en-au/: 83
+  - /fr/: 79
+  Reason: edition pages remain below the preferred 90 threshold, mainly Total Blocking Time
+
+Key observations:
+- [medium] /: lighthouse.tbt_ms on / (lighthouse.tbt_ms 150 ms -> 360 ms (delta 211.5))
+- [low] /: TESTRESULTS.txt not yet published in release 2026-05-23 (Generate a signed TESTRESULTS.txt for this edition and add it (with its .sig) to the release folder and manifest.)
+
+Report:
+- Ledger run: #15
+- Run report: run-15.html, run-15.md
+- Metrics collected: 360
+- Open actions: 2
+- Known validator noise: 22
+
+Artefacts (SHA-256):
+- run-15.md: 3f2c950c42855439adb54d4a06497022bd8c317133f2aaee33bc10313e131de7
+- run-15.html: cb50e2b0abb425708105fc137fa304f7ea29644b60992374751802aecd2bb400
+
+Interpretation:
+This test result records the state of the publication at release time. It is not a guarantee of future network, browser or validator behaviour. It is a signed snapshot of the checks performed against the listed targets.
+
+Signed by:
+Trent Power
+PGP key fingerprint: A729591B450D3F59369498BD82991F2504AE0263

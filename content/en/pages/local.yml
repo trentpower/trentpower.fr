@@ -1,0 +1,182 @@
+meta:
+  local:
+    title: Local Device Console · Trent Power
+    description: A reading of this device’s local copy of the publication — stored edition, service worker, offline cache and reader preferences. Everything stays local and is never transmitted.
+local:
+  page_kicker: Local Device Only
+  page_title: Local Device Console
+  page_lede_1: This is the state of your local copy of the publication — the edition this device has stored, its service worker, offline cache and reader preferences. It reads what already lives in this browser — an inspection of this device, not the configuration of any software.
+  page_lede_2: |-
+    Offline cache, service worker state and reader preferences remain local and are never
+    transmitted.
+
+  # ─── status strip · single-line mono summary above the publication state card ───
+  strip:
+    edition_key: Current edition
+    sw_key: Service worker
+    prefs_key: Local storage
+    cache_key: Cache
+    fallback:
+      edition: 'Edition —'
+      sw: '—'
+      prefs: '—'
+      cache: '—'
+
+  # ─── publication state · combines service worker, offline cache and verification ───
+  pub:
+    kicker: This device
+    title: Publication state
+    summary_fallback: Reading local state…
+    tag_default: Installed
+
+    sw:
+      label: Service worker
+      summary_fallback: '—'
+      labels:
+        status: Status
+        scope: Scope
+        installed: Installed
+        activated: Activated
+        version: Version
+        edition: Edition
+        sha256: SHA-256
+        cache_count: Caches
+        storage: Storage
+      actions:
+        check_update: Check for update
+        reload: Reload edition
+        skip_waiting: Skip waiting and reload
+
+    caches:
+      label: Offline cache
+      summary_fallback: '—'
+      labels:
+        entries: Entries
+        size: Size
+        edition: Edition
+        cached_pages: Cached pages
+      inventory_label: View inventory
+      inventory_hint: Per-entry headers
+      inventory_loading: Reading headers…
+
+    verify:
+      label: Verification
+      summary_fallback: '—'
+      labels:
+        current_page: Current page
+        canonical: Canonical
+        fingerprint: Fingerprint
+        manifest: Integrity manifest
+        signature: Detached signature
+        public_key: Public key
+      actions:
+        copy_fingerprint: Copy fingerprint
+
+    fallback:
+      unknown: '—'
+      not_recorded: Not recorded for this installation
+
+  # ─── local preferences · editable rows + read-only context + raw view ───
+  preferences:
+    kicker: Per device, never transmitted
+    title: Local preferences
+
+    rows:
+      language:
+        label: Language
+        stored: Stored locally
+        controls:
+          en: English
+          fr: Français
+          clear: Clear
+      appearance:
+        label: Appearance
+        stored: Stored locally
+        controls:
+          light: Light
+          auto: Auto
+          dark: Dark
+          clear: Clear
+      first_visit:
+        label: First visit
+        read_only: Read only
+      last_update:
+        label: Last update
+        read_only: Read only
+
+    raw:
+      label: View raw storage
+      hint: localStorage · sessionStorage · cache metadata
+      copy: Copy JSON
+      copy_done: Copied · just now
+
+    acknowledged: Saved on this device
+    fallback_value: '—'
+
+  # ─── actions · destructive controls, confirm-required, oxblood only on confirm ───
+  actions:
+    kicker: Local only · never affects history, downloads or other sites
+    title: Actions
+    rows:
+      reset_cache:
+        label: Reset offline cache
+        hint: Remove downloaded publication files from this device.
+      clear_preferences:
+        label: Clear local preferences
+        hint: Restore appearance and language defaults.
+      full_reset:
+        label: Full local reset
+        hint: Remove service worker, cache and preferences, then return to the homepage.
+    confirm: Tap again to confirm
+    export_json: Export diagnostics as JSON
+    copy_json: Copy diagnostics
+    copy_done: Copied · just now
+
+  # ─── closing line · printed above the footer ───
+  disclaimer: |-
+    Local diagnostics are read entirely from this browser. Nothing on this page is
+    transmitted.
+
+  # ─── status copy reused across cards ───
+  status:
+    js_required: This card uses your browser’s runtime APIs. With JavaScript disabled the editorial scaffolding remains; live values populate when JS runs locally.
+    waiting: Waiting…
+    error: 'Could not read · {msg}'
+
+  # ─── print sheet · kept; hidden by the existing print stylesheet ───
+  print:
+    kicker: Local device console
+    title: Local device · offline cache and storage
+    lede: A device-side inspection surface for the offline publication cache, the service worker, and the local reader preferences. Nothing on this page is transmitted to the publisher.
+    meta: Edition 2026-06-10 · trentpower.fr/local/
+    doc_title: Trent Power - Local Device Console
+    card:
+      '01':
+        label: 01 Publication state
+        title: Publication state
+        body: Service-worker status, offline cache and verification — read locally from this browser.
+      '02':
+        label: 02 Local preferences
+        title: Local preferences
+        body: Language, appearance, first-visit markers, service-worker timestamps. Per device.
+      '03':
+        label: 03 Actions
+        title: Actions
+        body: Reset offline cache; clear preferences; full local reset. Never affects other sites.
+      '04':
+        label: 04 Validate
+        title: Validate
+        body: External validators are linked only — never contacted until you open one.
+      '05':
+        label: 05 Privacy
+        title: Privacy
+        body: Nothing on this page is transmitted to the publisher.
+      '06':
+        label: 06 Reference
+        title: Reference
+        body: trentpower.fr/local/
+    footer:
+      proof: Private · Static · Signed · No tracking
+      edition: Edition 2026-06-10 · trentpower.fr/local/
+    qr:
+      label: trentpower.fr/local/

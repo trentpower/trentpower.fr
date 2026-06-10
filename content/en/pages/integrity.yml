@@ -1,0 +1,250 @@
+meta:
+  integrity:
+    title: Integrity · Trent Power
+    description: Signed public releases, integrity manifest, detached signature and public signing key
+  releases:
+    title: Releases · Trent Power
+    description: Frozen, signed snapshots of the public site
+integrity:
+  page_kicker: Integrity
+  page_h1: <span class="hero-line">Signed.</span><span class="hero-line">Verifiable.</span><span class="hero-line">Reproducible.</span>
+  page_title: Integrity
+  body_intro: The live manifest, signing key and release fingerprint for the current edition — the cryptographic authority for the site as it stands now, where <a href="/integrity/releases/">Releases</a> keeps the edition history. For independent verification, <a href="/integrity/verify-locally/" aria-describedby="desc-verify-locally">verify locally</a>.
+  file_integrity: /integrity.json · SHA-256 hashes of all public assets
+  file_sig: /integrity.json.sig · detached PGP signature
+  file_key: /.well-known/pgp-key.asc · public signing key
+  copy_button: Copy
+  copy_button_done: Copied
+  fingerprint_copy: Copy fingerprint
+  fingerprint_copied: Copied
+  print:
+    kicker: Integrity
+    title: Signed public verification
+    lede: Published files are listed in a public manifest and signed with a detached <abbr title="Pretty Good Privacy">PGP</abbr> signature so updates can be verified independently.
+    meta: Edition 2026-05-17 · trentpower.fr/integrity/
+    card:
+      '01':
+        label: 01 Manifest
+        title: Manifest
+        body: <code>/integrity.json</code> - <abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> hashes of every intentional public file.
+      '02':
+        label: 02 Signature
+        title: '{{ shared.verification.signature }}'
+        body: /integrity.json.sig - detached <abbr title="Pretty Good Privacy">PGP</abbr> signature that verifies the manifest.
+      '03':
+        label: 03 Public key
+        title: Public key
+        body: /.well-known/pgp-key.asc - fingerprint A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263.
+      '04':
+        label: 04 Releases
+        title: Frozen releases
+        body: '/integrity/releases/ - public snapshots: February 2026 to June 2026.'
+      '05':
+        label: 05 Source route
+        title: Source route
+        body: /source/ - public text view of selected source files. No secrets, no private artefacts.
+      '06':
+        label: 06 Verification
+        title: Verification
+        body: curl -O trentpower.fr/integrity.json && curl -O trentpower.fr/integrity.json.sig && gpg --verify integrity.json.sig integrity.json
+    footer:
+      proof: '{{ shared.site.proof_line }}'
+      edition: Edition 2026-05-17 · trentpower.fr/integrity/
+    qr:
+      label: trentpower.fr/integrity/
+    doc_title: Trent Power - Integrity Verification Sheet
+  record:
+    kicker: Signed release
+    title: <time datetime="2026-05">May 2026</time>
+    status_short: Signature · Fingerprint · Manifest
+    label:
+      manifest: Manifest
+      signature: '{{ shared.verification.signature }}'
+      public_key: Public key
+      archives: Archives
+      checksums: Archive checksums
+      fingerprint: Fingerprint
+    desc:
+      manifest: <abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> hashes of public files
+      signature: Detached <abbr title="Pretty Good Privacy">PGP</abbr> signature
+      public_key: Public signing key
+      archives: Signed public source release
+      checksums: Signed checksum list for archive downloads
+    action:
+      view_manifest: View manifest
+      view_releases: View releases
+    group:
+      signature: Signature & signing key
+      verification: Manifest & checksums
+      archives: Source archives
+      fingerprint: Release fingerprint
+  verify_release_local:
+    summary: Advanced local verification
+    note: Run the signed manifest check in a temporary keyring.
+releases:
+  page_title: Releases
+  body_intro: Each <dfn id="signed-release">release</dfn> is a frozen, signed snapshot of the public site at the time of publication. Source archives can be downloaded, and checksums and signatures are provided for local verification.
+  editions_heading: Editions
+  archive_heading: Edition archive
+  archive_current_kicker: Current edition
+  archive_earlier_summary: Earlier editions
+  edition_jun10_date: 10 June 2026
+  edition_jun10_desc: <cite>Public opening</cite>
+  edition_jun10_meta: Signed snapshot · Current edition
+  edition_may23_date: 23 May 2026
+  edition_may23_desc: <cite>Composed publication sprint</cite>
+  edition_may23_meta: Signed snapshot · Previous edition
+  group:
+    current: Current release
+    archive: Archive
+  view_release: View release
+  download_checksums_sig: Checksums & signature
+  aria:
+    actions_current: Current release downloads and verification
+    actions_archive: Release record
+  detail:
+    page_title: May 2026
+    intro: |-
+      Signed release archives for the 9 May 2026 edition. A signed checksum list verifies
+      the archive set; checksums verify the downloaded files; detached signatures verify
+      each archive directly. The signed manifest at /integrity.json remains the live-site
+      authority.
+    card:
+      kicker: Release files
+      title: 9 May 2026
+      status: ZIP · TAR.GZ · Checksums · Signatures
+      label:
+        zip: ZIP
+        zip_sig: ZIP signature
+        zip_sha: ZIP checksum
+        targz: TAR.GZ
+        targz_sig: TAR.GZ signature
+        targz_sha: TAR.GZ checksum
+        sums: Checksum list
+        sums_sig: Checksum list signature
+      desc:
+        zip: Portable public source snapshot
+        sig: Detached <abbr title="Pretty Good Privacy">PGP</abbr> signature
+        sha: SHA-256 checksum
+        targz: Technical preservation archive
+        sums: SHA-256 list for release archives
+        sums_sig: Detached <abbr title="Pretty Good Privacy">PGP</abbr> signature over SHA256SUMS
+    note: Archive binaries are not included in /integrity.json to avoid recursive hashing. They are verified separately through the signed checksum list, individual SHA-256 checksums and detached signatures. <a href="/integrity/">Integrity</a> remains the live-site authority.
+  edition_feb: February 2026 · initial signed release
+  edition_feb_date: February 2026
+  edition_feb_desc: <cite>Initial signed release</cite>
+  print:
+    kicker: Releases
+    title: Frozen public editions
+    lede: Public release snapshots preserve selected editions of the site with local assets so their design and integrity can be inspected over time.
+    meta: Edition 2026-05-17 · trentpower.fr/integrity/releases/
+    doc_title: Trent Power - Release Archive Sheet
+    card:
+      '01':
+        label: 01 9 May 2026
+        title: 9 May 2026
+        body: Final May edition. Signed source archives, deterministic ZIP and TAR.GZ, aggregated SHA256SUMS. Clean active filenames. One-page print profile. Trust sheets.
+      '02':
+        label: 02 February 2026
+        title: February 2026
+        body: Initial signed release. Earlier visual system. Preserved as a historical archive.
+      '03':
+        label: 03 Archive principle
+        title: Archive principle
+        body: Frozen assets. Local CSS and fonts. No live mutable style dependency.
+      '04':
+        label: 04 Integrity route
+        title: Integrity route
+        body: /integrity.json · /integrity.json.sig · /.well-known/pgp-key.asc
+      '05':
+        label: 05 Why it matters
+        title: Why it matters
+        body: Verifiability. Authorship. Continuity. Public trust.
+      '06':
+        label: 06 Where to inspect
+        title: Where to inspect
+        body: /integrity/releases/2026-05-17/ · /integrity/releases/2026-05-09/ · /integrity/releases/2026-02/ · /source/
+    footer:
+      proof: '{{ shared.site.proof_line }}'
+      edition: Edition 2026-05-17 · trentpower.fr/integrity/releases/
+    qr:
+      label: trentpower.fr/integrity/releases/
+  edition_feb_meta: Signed snapshot · Initial release
+  edition_may09_date: 9 May 2026
+  edition_may09_desc: <cite>Final May edition</cite>
+  edition_may09_meta: Signed snapshot · Earlier release
+  edition_may17_date: 17 May 2026
+  edition_may17_desc: <cite>Editorial cohesion</cite>
+  edition_may17_meta: Signed snapshot · Previous release
+  edition_may19_date: 19 May 2026
+  edition_may19_desc: <cite>Bilingual editions</cite>
+  edition_may19_meta: Signed snapshot · Previous edition
+  download_zip: Download ZIP
+  download_targz: Download TAR.GZ
+  # Direction C · current as record, earlier as ledger. Only the editorial
+  # strings live here; per-edition data (dates, titles, accession, SHA-
+  # 256 prefixes) is resolved in the template from integrity.json /
+  # release.json — single source of truth for hashes.
+  direction_c:
+    hero:
+      kicker: Releases
+      line_1: Frozen.
+      line_2: Signed.
+      line_3: Inspectable.
+      lede: A signed snapshot is kept for every edition of the publication. This is the edition history; the live signing authority lives at Integrity. Each release is a complete archive of the site at the time it was published, with an aggregated SHA-256 manifest and detached PGP signature so the contents can be inspected — independently, on your own machine, without trust in this server.
+    record:
+      kicker: Current edition
+      live_tag: Live
+      meta_suffix: the live edition.
+      group_archives: Source archives
+      group_records: Verification records
+      group_fingerprint: Release fingerprint · SHA-256
+      cta_view: View this release
+      cta_copy_idle: Copy fingerprint
+      cta_copy_done: Fingerprint copied
+      cta_verify: Verify locally
+      aria_actions: Release actions
+    earlier:
+      label: Earlier editions
+      count: five on file · 2026·02 → 2026·05·23
+      verb_view: View
+      sha_key: SHA-256
+      historical_note: Historical record · no archives
+    foot_note: Older editions are kept verbatim — they are not re-rendered when the live site changes. They preserve the design and integrity record of the publication at a point in time. See <a href="/integrity/">/integrity/</a> for the live manifest and signature.
+release_archive:
+  print:
+    kicker: Signed release archive
+    title: Edition 2026-05-09
+    lede: Public release archive for the May 2026 signed edition, including manifests, checksums, detached signatures, and reproducible source records.
+    meta: Edition 2026-05-09 · trentpower.fr/integrity/releases/2026-05-09/
+    doc_title: Trent Power - Release Archive 2026-05-09
+    card:
+      '01':
+        label: 01 Manifest
+        title: Manifest
+        body: /integrity.json - SHA-256 hashes of every intentional public file at edition time.
+      '02':
+        label: 02 Detached signature
+        title: Detached signature
+        body: /integrity.json.sig - PGP detached signature over the manifest.
+      '03':
+        label: 03 Archive checksums
+        title: Archive checksums
+        body: /integrity/releases/2026-05-09/SHA256SUMS - sums for ZIP and TAR.GZ.
+      '04':
+        label: 04 Source archive
+        title: Source archive
+        body: trentpower-fr-2026-05-09.zip · trentpower-fr-2026-05-09.tar.gz - deterministic.
+      '05':
+        label: 05 Verification status
+        title: Verification status
+        body: gpg --verify integrity.json.sig integrity.json against the public key.
+      '06':
+        label: 06 Release fingerprint
+        title: Release fingerprint
+        body: Signed by A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263.
+    footer:
+      proof: '{{ shared.site.proof_line }}'
+      edition: Edition 2026-05-09 · trentpower.fr/integrity/releases/2026-05-09/
+    qr:
+      label: trentpower.fr/integrity/releases/2026-05-09/

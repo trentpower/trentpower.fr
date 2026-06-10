@@ -1,0 +1,66 @@
+{
+  "schema": "trentpower.edition-builds.v1",
+  "edition": "2026-05-23",
+  "canonical": {
+    "build_date": "2026-05-23",
+    "zip_sha256": "sha256-kUTLJh8DmOXdYUWe2YwF9FPVBISH4YJZwdEeqp6NnA0=",
+    "tar_gz_sha256": "sha256-KJKDC4/AeIskEBLwNEUwUe+jxY54FfxD7KtbxbWstSA="
+  },
+  "rebuilds": [
+    {
+      "build_date": "2026-05-24",
+      "zip_sha256": "sha256-eq4QhDu2Xo1wK+JMTXth0EyR+k6UYAjjiQVxHq5XLtc=",
+      "tar_gz_sha256": "sha256-RSuA4hwm+1Gql58frt7qw5HdGkv9B34X7YD+NyqmDfA="
+    },
+    {
+      "build_date": "2026-05-28",
+      "zip_sha256": "sha256-y76d4MD+3iuEjfA/Fx6OBpmYAAzXoVPWm201ErQBv7o=",
+      "tar_gz_sha256": "sha256-SgjrudlkveaLyy50XTjZSdHQFonCrBWDvIfL+g1ByY4="
+    },
+    {
+      "build_date": "2026-05-29",
+      "zip_sha256": "sha256-/4XOrFaNi67gCZkWUlX69Ir2hz/NJdiYClZCUSJ9qV4=",
+      "tar_gz_sha256": "sha256-vMddPIbJ6S4Gt1asLwVuKZEgXqKeZfXTKtDFwsSxAIY="
+    },
+    {
+      "build_date": "2026-05-30",
+      "zip_sha256": "sha256-fDX3paXmgTiK8M2o/l+NIKAyJu8XfsH7ky31sCd6flI=",
+      "tar_gz_sha256": "sha256-aDBrgVL0Nv+9vD/IwvJpjWTi6qOQoxTiltTcBlt//cg="
+    },
+    {
+      "build_date": "2026-05-31",
+      "zip_sha256": "sha256-P0/fKhsHmWg1ZajCUYvKljBYA9sVej4KxzsGVD59wo4=",
+      "tar_gz_sha256": "sha256-6cl1l1iETMGyOZ1EQ1YTRWhAQomRD+dALyyy1UMVEtw="
+    },
+    {
+      "build_date": "2026-06-01",
+      "zip_sha256": "sha256-pnZJ6PY645k34bxpWmrfC2apV9fS69/N9lYBKgqM5nM=",
+      "tar_gz_sha256": "sha256-W512lOnVk1LLXG29PbX5JaKeRIco8L2kWVihvF0Wn0Y="
+    },
+    {
+      "build_date": "2026-06-02",
+      "zip_sha256": "sha256-GJpZueatTMlS7mvUNnWRyvzbIakLDyMT/20WkEdIz7M=",
+      "tar_gz_sha256": "sha256-YhUdmVoWZKkYjou2/IVnwUbK2awZdUx7JyGKK9WrqJE="
+    },
+    {
+      "build_date": "2026-06-07",
+      "zip_sha256": "sha256-hPfscR63cdF9FJdyb1KRTLCerTbduN/QR3NNt55NSRs=",
+      "tar_gz_sha256": "sha256-Lbz3SlX2Cd3CSzdnmKaFLkvG6WmJQ0I9/OqNi8uqeUg="
+    },
+    {
+      "build_date": "2026-06-08",
+      "zip_sha256": "sha256-Mr9BtuNjwH2YT1IH9wIWitnf0a/HcIKOYM98T7VjVcI=",
+      "tar_gz_sha256": "sha256-Ek9Zhzig7l41CXzF7Uoe7Yi2o8xoCvE78kIC5v9Lx4g="
+    },
+    {
+      "build_date": "2026-06-09",
+      "zip_sha256": "sha256-dZ7kmp01FkTcy8dX9OK7kQL4KOhGszQuluew18ejl4w=",
+      "tar_gz_sha256": "sha256-nxqsXx/yrABTNTv4o0hwZQpgHrvCGEX1lCMaXy3EB5k="
+    },
+    {
+      "build_date": "2026-06-10",
+      "zip_sha256": "sha256-htLqqHbF5rfVQdvsDp1uXIqgogxhRnCDSFbP+ojgexM=",
+      "tar_gz_sha256": "sha256-K7coJeyqzkWG/eCcXmqLr9lxm4veRywd38KpKqfqyns="
+    }
+  ]
+}

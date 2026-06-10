@@ -1,0 +1,26 @@
+{
+  "name": "trentpower-fr-quality",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only code-quality tooling for the trentpower.fr static publication. Nothing here ships to the live site.",
+  "scripts": {
+    "format": "prettier --write \"content/**/*.{yml,yaml}\" \"docs/**/*.md\" \"./*.md\" \"./package.json\" --no-error-on-unmatched-pattern",
+    "format:check": "prettier --check \"content/**/*.{yml,yaml}\" \"docs/**/*.md\" \"./*.md\" \"./package.json\" --no-error-on-unmatched-pattern",
+    "lint": "npm run lint:js && npm run lint:css && npm run lint:py && npm run lint:sh",
+    "lint:js": "eslint .",
+    "lint:css": "stylelint \"tools/*.src.css\"",
+    "lint:py": "ruff check tools",
+    "lint:sh": "shellcheck tools/*.sh",
+    "quality": "bash tools/quality.sh --check",
+    "quality:fix": "bash tools/quality.sh --fix"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.0",
+    "globals": "^17.6.0",
+    "prettier": "^3.0.0",
+    "stylelint": "^16.0.0",
+    "stylelint-config-standard": "^36.0.0"
+  }
+}

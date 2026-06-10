@@ -1,0 +1,67 @@
+translation:
+  source_page: privacy
+  source_hash: sha256-e673cfba81d7210efb45bc93c3fa9c7db1a12178fca3717b7d261cc420044c26
+  status: machine-assisted
+  updated: '2026-05-20'
+meta:
+  privacy:
+    title: Confidentialité & confiance · Trent Power
+    description: Un site simple et respectueux de la vie privée, sans suivi, analytique, cookies, profilage ni requêtes tierces intégrées pendant la navigation
+privacy:
+  page_title: Confidentialité & confiance
+  page_kicker: Confidentialité & confiance
+  page_h1: <span class="hero-line">Rien n’est suivi.</span><span class="hero-line">Rien à supprimer.</span>
+  body_intro: |-
+    Ce site ne suit pas les visiteurs. Aucune analytique, aucun cookie, aucun outil de
+    profilage, aucun service tiers ne fonctionne en arrière-plan.
+  docs_note: |-
+    Une description technique complète de l’architecture, de la confidentialité,
+    du modèle de vérification et du processus de publication est disponible dans la
+    <a href="/documentation/README.pdf">documentation publique</a>.
+  body_detail: |-
+    Aucune donnée personnelle n’est collectée. Le serveur ne traite que ce qui est
+    nécessaire pour assurer la sécurité et le bon fonctionnement du site. Les liens
+    externes sont de simples références et n’effectuent aucune requête externe avant
+    d’être ouverts. <a class="invite-link" href="/local/">Le stockage navigateur est
+    local à votre appareil</a> ; il couvre les préférences (langue, apparence), les
+    marqueurs de première visite qui retirent l’imprimerie de la page d’accueil et la
+    mention de traduction automatique une fois vues, et les horodatages d’installation
+    du service worker indiquant uniquement quand le cache hors-ligne a été rafraîchi.
+    Ce stockage local n’est jamais envoyé ailleurs.
+  body_records: Les registres d’inspection publique et de vérification sont publiés séparément. Vous pouvez consulter le <a href="/security/" aria-describedby="desc-security-threat-model">Modèle de sécurité et de menaces</a> pour la posture complète.
+  print:
+    kicker: Confidentialité & confiance
+    title: La confidentialité, par conception
+    lede: Ce site est volontairement simple et respectueux de la vie privée. Il n’utilise ni suivi, ni analytique, ni cookies, ni profilage, ni requêtes tierces intégrées pendant la navigation.
+    meta: Édition 2026-05-17 · trentpower.fr/privacy/
+    card:
+      '01':
+        label: 01 Aucun suivi
+        title: Aucun suivi
+        body: Aucune analytique. Aucun cookie. Aucun profilage. Aucune requête tierce pendant la navigation.
+      '02':
+        label: 02 Aucune collecte
+        title: Aucune collecte de données
+        body: Aucun formulaire public. Aucun compte visiteur. Aucun suivi comportemental. Aucune infrastructure publicitaire.
+      '03':
+        label: 03 Voie de vérification
+        title: Voie de vérification
+        body: Page Intégrité. Page Sécurité. Manifeste public. Vue source.
+      '04':
+        label: 04 Principe de conception
+        title: La privacy comme posture
+        body: La confidentialité n’est pas une couche de conformité. Elle fait partie de la posture éditoriale et professionnelle du site.
+      '05':
+        label: 05 Ce que vous pouvez vérifier
+        title: Ce que vous pouvez vérifier
+        body: Voir la source. Lire /integrity.json. Vérifier la signature. Inspecter les en-têtes de sécurité.
+      '06':
+        label: 06 Contact
+        title: Contact
+        body: trent@trentpower.fr · route canonique trentpower.fr/privacy/
+    footer:
+      proof: Privé · Statique · Signé · Sans suivi
+      edition: Édition 2026-05-17 · trentpower.fr/privacy/
+    qr:
+      label: trentpower.fr/privacy/
+    doc_title: Trent Power - Profil de confidentialité

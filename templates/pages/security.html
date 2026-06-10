@@ -1,0 +1,432 @@
+<!doctype html>
+<!--
+  trentpower.fr · /security/
+
+  static, semantic, self-managed, privacy-first.
+  architecture · controls · public verification surface · residual risk.
+  no analytics. no cookies. no external assets.
+
+  simplicity over complexity.
+  transparency over obscurity.
+  verifiable integrity over trust assumptions.
+-->
+<html lang="en" dir="ltr">
+<head>
+  <!-- head · 01 · foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- head · 02 · appearance bootstrap -->
+  <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch(_){}})();</script>
+
+  <!-- head · 03 · document identity -->
+  <title>Security &amp; Threat Model · Trent Power</title>
+  <meta name="description"
+        content="Security architecture, operational controls, public verification surfaces and residual risks">
+  <meta name="document-edition" content="2026-05-17">
+  <link rel="canonical" href="https://trentpower.fr/security/">
+
+  <!-- head · 04 · indexing and discovery -->
+  <meta name="robots" content="index, follow">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- head · 05 · authorship and identity -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/person.json">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+  <link rel="alternate" type="text/plain" href="/llms.txt">
+  <link rel="me" href="https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg">
+  <link rel="me" href="https://www.linkedin.com/in/trentpower/">
+  <link rel="me" href="https://orcid.org/0009-0002-2652-7188">
+  <link rel="me" href="https://www.crunchbase.com/person/trent-power-3f52">
+
+  <!-- head · 06 · provenance, rights and reuse -->
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+  <link rel="describedby" href="/.well-known/attribution.txt">
+  <link rel="describedby" href="/integrity.json">
+  <link rel="cite-as" href="https://trentpower.fr/">
+  <link rel="privacy-policy" href="https://trentpower.fr/privacy/">
+  <link rel="help" href="https://trentpower.fr/security/">
+
+  <!-- head · 07 · social and sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="Security &amp; Threat Model · Trent Power">
+  <meta property="og:description" content="Security architecture, operational controls, public verification surfaces and residual risks">
+  <meta property="og:url" content="https://trentpower.fr/security/">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:image" content="https://trentpower.fr/images/og/security-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Security &amp; Threat Model · Trent Power">
+
+  <!-- head · 08 · application surface -->
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+
+  <!-- head · 09 · rendering and assets -->
+  <link rel="stylesheet" href="/styles.css?v=2026-05-17.8329810a" integrity="sha384-qkf5XVFpsimID4fZ9+57RDSZhBQueHlhyBhZ7mcCdAk3O+bUy2RoXtUp66H+/9R9">
+  <link rel="stylesheet" href="/print.css?v=2026-05-17.8329810a" media="print">
+
+  <!-- head · 10 · structured data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://trentpower.fr/security/#page",
+  "url": "https://trentpower.fr/security/",
+  "name": "Security · Trent Power",
+  "description": "Security architecture, operational controls, public verification surfaces and residual risks",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@id": "https://trentpower.fr/#website"
+  },
+  "about": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "author": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "publisher": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://trentpower.fr/images/og/security-og.png",
+    "width": 1200,
+    "height": 630
+  },
+  "datePublished": "2026-02-15T00:00:00+00:00",
+  "dateModified": "2026-05-20T00:00:00+00:00"
+}
+  </script>
+</head>
+<body data-page="security" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-05-17" data-source-sha256-short="--------">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- body · masthead -->
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark u-author" href="/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- body · primary content -->
+<main class="site security-page" id="main" tabindex="-1">
+  <div class="page">
+
+    <!-- primary · 01 · statement -->
+    <p class="page-kicker">{{ security.page_kicker }}</p>
+    <h1 class="page-title hero-stack measure-tight">{{ html:security.page_h1 }}</h1>
+    <div class="page-body">
+      <p class="page-lede">{{ security.body_intro }}</p>
+
+      <!-- primary · 01b · contents -->
+      <nav class="security-contents" aria-label="{{ security.contents_label }}">
+        <ol class="security-contents-list">
+          <li><a href="#security-architecture-heading">{{ security.s1_summary }}</a></li>
+          <li><a href="#security-assets-heading">{{ security.s2_summary }}</a></li>
+          <li><a href="#security-threat-heading">{{ security.s3_summary }}</a></li>
+          <li><a href="#security-controls-heading">{{ security.s4_summary }}</a></li>
+          <li><a href="#security-public-verification-heading">{{ security.public_verification_summary }}</a></li>
+          <li><a href="#security-residual-heading">{{ security.s6_summary }}</a></li>
+          <li><a href="#security-disclosure-heading">{{ security.s7_summary }}</a></li>
+          <li><a href="#security-design-heading">{{ security.s8_summary }}</a></li>
+          <li><a href="#security-testing-heading">{{ security.s9_summary }}</a></li>
+        </ol>
+      </nav>
+
+      <!-- primary · 02 · architecture -->
+      <section class="security-section" aria-labelledby="security-architecture-heading">
+        <h2 class="security-section-heading" id="security-architecture-heading">{{ security.s1_summary }}</h2>
+        <section class="verify-card card" aria-labelledby="security-architecture-heading">
+          <div class="verify-card__header">
+            <p class="eyebrow">{{ security.architecture_card.kicker }}</p>
+          </div>
+          <dl class="record-grid">
+            <div class="record-grid__row meta-row">
+              <dt>{{ security.architecture_card.browser_label }}</dt>
+              <dd>{{ html:security.architecture_card.browser_body }}</dd>
+            </div>
+            <div class="record-grid__row meta-row">
+              <dt>{{ security.architecture_card.host_label }}</dt>
+              <dd>{{ html:security.architecture_card.host_body }}</dd>
+            </div>
+            <div class="record-grid__row meta-row">
+              <dt>{{ security.architecture_card.files_label }}</dt>
+              <dd>{{ html:security.architecture_card.files_body }}</dd>
+            </div>
+            <div class="record-grid__row meta-row">
+              <dt>{{ security.architecture_card.cache_label }}</dt>
+              <dd>{{ security.architecture_card.cache_body }}</dd>
+            </div>
+            <div class="record-grid__row meta-row">
+              <dt>{{ security.architecture_card.trust_label }}</dt>
+              <dd>{{ security.architecture_card.trust_body }}</dd>
+            </div>
+            <div class="record-grid__row meta-row">
+              <dt>{{ security.architecture_card.archive_label }}</dt>
+              <dd>{{ security.architecture_card.archive_body }}</dd>
+            </div>
+          </dl>
+        </section>
+        <p class="security-architecture-note">{{ security.s1_routes_note }}</p>
+      </section>
+
+      <!-- primary · 03 · assets protected -->
+      <section class="security-section" aria-labelledby="security-assets-heading">
+        <h2 class="security-section-heading" id="security-assets-heading">{{ security.s2_summary }}</h2>
+        <p>{{ security.s2_body }}</p>
+        <ul class="i18n-list">{{ list:security.s2_list }}</ul>
+      </section>
+
+      <!-- primary · 04 · threat model -->
+      <section class="security-section" aria-labelledby="security-threat-heading">
+        <h2 class="security-section-heading" id="security-threat-heading">{{ security.s3_summary }}</h2>
+        <section class="security-subsection" aria-labelledby="security-threat-infra">
+          <h3 class="security-subheading" id="security-threat-infra">{{ security.s3_infra_heading }}</h3>
+          <ul class="i18n-list">{{ list:security.s3_infra_list }}</ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-threat-content">
+          <h3 class="security-subheading" id="security-threat-content">{{ security.s3_content_heading }}</h3>
+          <ul class="i18n-list">{{ list:security.s3_content_list }}</ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-threat-admin">
+          <h3 class="security-subheading" id="security-threat-admin">{{ security.s3_admin_heading }}</h3>
+          <ul class="i18n-list">{{ list:security.s3_admin_list }}</ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-threat-noise">
+          <h3 class="security-subheading" id="security-threat-noise">{{ security.s3_noise_heading }}</h3>
+          <p>{{ html:security.s3_noise_body }}</p>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-threat-delivery">
+          <h3 class="security-subheading" id="security-threat-delivery">{{ html:security.s3_delivery_heading }}</h3>
+          <ul class="i18n-list">{{ list:security.s3_delivery_list }}</ul>
+        </section>
+      </section>
+
+      <!-- primary · 05 · controls -->
+      <section class="security-section" aria-labelledby="security-controls-heading">
+        <h2 class="security-section-heading" id="security-controls-heading">{{ security.s4_summary }}</h2>
+        <section class="security-subsection" aria-labelledby="security-controls-registrar">
+          <h3 class="security-subheading" id="security-controls-registrar">{{ html:security.s4_registrar_heading }}</h3>
+          <ul class="i18n-list">{{ list:security.s4_registrar_list }}</ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-controls-hosting">
+          <h3 class="security-subheading" id="security-controls-hosting">{{ security.s4_hosting_heading }}</h3>
+          <ul class="i18n-list">{{ list:security.s4_hosting_list }}</ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-controls-content">
+          <h3 class="security-subheading" id="security-controls-content">{{ security.s4_content_heading }}</h3>
+          <ul class="i18n-list">{{ list:security.s4_content_list }}</ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-controls-monitoring">
+          <h3 class="security-subheading" id="security-controls-monitoring">{{ security.s4_monitoring_heading }}</h3>
+          <ul class="i18n-list">{{ list:security.s4_monitoring_list }}</ul>
+        </section>
+      </section>
+
+      <!-- primary · 06 · public verification surface -->
+      <section class="security-section" aria-labelledby="security-public-verification-heading">
+        <h2 class="security-section-heading" id="security-public-verification-heading">{{ security.public_verification_summary }}</h2>
+        <section class="security-subsection" aria-labelledby="security-public-routes">
+          <h3 class="security-subheading" id="security-public-routes">{{ security.public_verification_routes_heading }}</h3>
+          <p>{{ security.public_verification_intro }}</p>
+          <ul class="i18n-list">{{ list:security.public_verification_list }}</ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-public-scope">
+          <h3 class="security-subheading" id="security-public-scope">{{ security.public_verification_scope_heading }}</h3>
+          <p>{{ html:security.public_verification_footer }}</p>
+        </section>
+      </section>
+
+      <!-- primary · 07 · residual risk -->
+      <section class="security-section" aria-labelledby="security-residual-heading">
+        <h2 class="security-section-heading" id="security-residual-heading">{{ security.s6_summary }}</h2>
+        <p>{{ security.s6_protect_summary }}</p>
+        <section class="security-subsection" aria-labelledby="security-residual-out-of-scope">
+          <h3 class="security-subheading" id="security-residual-out-of-scope">{{ security.s6_out_of_scope_heading }}</h3>
+          <p>{{ security.s6_intro }}</p>
+          <ul class="i18n-list">{{ list:security.s6_list }}</ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-residual-primary">
+          <h3 class="security-subheading" id="security-residual-primary">{{ security.s6_primary_heading }}</h3>
+          <p>{{ html:security.s6_footer }}</p>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-residual-assume">
+          <h3 class="security-subheading" id="security-residual-assume">{{ security.s6_assume_heading }}</h3>
+          <ul class="i18n-list">{{ list:security.s6_assume_list }}</ul>
+        </section>
+      </section>
+
+      <!-- primary · 08 · disclosure -->
+      <section class="security-section" aria-labelledby="security-disclosure-heading">
+        <h2 class="security-section-heading" id="security-disclosure-heading">{{ security.s7_summary }}</h2>
+        <p>{{ html:security.s7_body }}</p>
+        <span class="visually-hidden" id="desc-security-contact">{{ linkdesc.security_contact }}</span>
+      </section>
+
+      <!-- primary · 09 · design principles -->
+      <section class="security-section" aria-labelledby="security-design-heading">
+        <h2 class="security-section-heading" id="security-design-heading">{{ security.s8_summary }}</h2>
+        <ul class="i18n-list">{{ list:security.s8_list }}</ul>
+      </section>
+
+      <!-- primary · 10 · verification and testing -->
+      <section class="security-section" aria-labelledby="security-testing-heading">
+        <h2 class="security-section-heading" id="security-testing-heading">{{ security.s9_summary }}</h2>
+        <section class="security-subsection" aria-labelledby="security-testing-per-edition">
+          <h3 class="security-subheading" id="security-testing-per-edition">{{ security.s9_checks_heading }}</h3>
+          <p>{{ security.s9_body }}</p>
+          <p>{{ html:security.s9_link }}</p>
+        </section>
+      </section>
+
+      <!-- primary · 11 · accessibility -->
+      <section class="security-section" aria-labelledby="security-accessibility-heading">
+        <h2 class="security-section-heading" id="security-accessibility-heading">{{ security.s10_summary }}</h2>
+        <p>{{ html:security.s10_body }}</p>
+      </section>
+
+    </div>
+  </div>
+
+</main>
+
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">{{ linkdesc.home }}</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>{{ footer.location }}</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/privacy/" rel="privacy-policy" aria-describedby="desc-privacy">{{ footer.privacy }}</a>
+        <span class="visually-hidden" id="desc-privacy">{{ linkdesc.privacy }}</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">{{ footer.verify }}</button>
+        <span class="visually-hidden" id="desc-cite">{{ linkdesc.cite }}</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><button type="button" data-lang="en" aria-pressed="true"  aria-describedby="desc-lang-en" lang="en">English</button> <span class="visually-hidden" id="desc-lang-en">{{ linkdesc.lang_en }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-lang="fr" aria-pressed="false" aria-describedby="desc-lang-fr" lang="fr">Français</button> <span class="visually-hidden" id="desc-lang-fr">{{ linkdesc.lang_fr }}</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break" aria-hidden="true">
+
+    <!-- bottom stratum · colophon · theme -->
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="{{ footer.proof.aria_label }}">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="{{ footer.proof.manifest_link_href }}" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">{{ footer.proof.edition }}</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          {{ html:footer.proof.colophon_note_html }}
+          <span class="visually-hidden" id="desc-integrity">{{ linkdesc.integrity }}</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">{{ footer.theme.light }}</button> <span class="visually-hidden" id="desc-theme-light">{{ linkdesc.theme_light }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">{{ footer.theme.auto }}</button> <span class="visually-hidden" id="desc-theme-auto">{{ linkdesc.theme_auto }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">{{ footer.theme.dark }}</button> <span class="visually-hidden" id="desc-theme-dark">{{ linkdesc.theme_dark }}</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+<!-- body · print edition -->
+<div class="print-trust-sheet print-only" data-print-sheet="security" hidden>
+  <header class="print-trust-header">
+    <p class="print-trust-kicker">{{ security.print.kicker }}</p>
+    <p class="print-trust-title">{{ security.print.title }}</p>
+    <p class="print-trust-lede">{{ security.print.lede }}</p>
+    <p class="print-trust-meta">{{ security.print.meta }}</p>
+  </header>
+
+  <figure class="print-trust-diagram" aria-hidden="true">
+    <img src="/images/architecture/architecture.svg" alt="" class="print-trust-diagram-image" width="1200" height="680">
+  </figure>
+
+  <div class="print-trust-grid">
+    <div class="print-trust-card">
+      <p class="print-trust-label"><span class="num">01</span> <span>{{ security.print.card.01.title }}</span></p>
+      <p>{{ security.print.card.01.body }}</p>
+    </div>
+    <div class="print-trust-card">
+      <p class="print-trust-label"><span class="num">02</span> <span>{{ security.print.card.02.title }}</span></p>
+      <p>{{ html:security.print.card.02.body }}</p>
+    </div>
+    <div class="print-trust-card">
+      <p class="print-trust-label"><span class="num">03</span> <span>{{ security.print.card.03.title }}</span></p>
+      <p>{{ security.print.card.03.body }}</p>
+    </div>
+    <div class="print-trust-card">
+      <p class="print-trust-label"><span class="num">04</span> <span>{{ security.print.card.04.title }}</span></p>
+      <p>{{ security.print.card.04.body }}</p>
+    </div>
+    <div class="print-trust-card">
+      <p class="print-trust-label"><span class="num">05</span> <span>{{ security.print.card.05.title }}</span></p>
+      <p>{{ security.print.card.05.body }}</p>
+    </div>
+    <div class="print-trust-card">
+      <p class="print-trust-label"><span class="num">06</span> <span>{{ security.print.card.06.title }}</span></p>
+      <p>{{ security.print.card.06.body }}</p>
+    </div>
+  </div>
+
+  <footer class="print-trust-footer">
+    <div class="print-trust-footer-text">
+      <p class="print-proof">{{ security.print.footer.proof }}</p>
+      <p>{{ security.print.footer.edition }}</p>
+    </div>
+    <div class="print-qr-block" aria-hidden="true">
+      <img class="print-qr-image" src="/images/qr/qr-security.svg" width="144" height="144" loading="lazy" decoding="async" alt="">
+      <p class="print-qr-url">trentpower.fr/security/</p>
+    </div>
+  </footer>
+</div>
+
+<!-- scripts · progressive enhancement, no telemetry -->
+<script src="/js/theme.js?v=2026-05-17.8329810a" defer></script>
+<script src="/sw-register.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/reveal.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/overlay.js?v=2026-05-17.8329810a" defer></script>
+<script src="/verify/verification-data.2026-05-17.952f0ed3.js" integrity="sha384-FIHXF6/1fpcFuXFzXKo2GgX2b5vc8JaoqUVvCEftcCX0qy9IyGtaWJu1apWiX3dT" defer></script>
+<script src="/js/copy.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/edition.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/micro-interactions.js" defer></script>
+<script src="/js/verify-modal.js" defer></script>
+<script src="/js/fonts.js?v=2026-05-17.8329810a" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+# Route map — single source of truth for the bilingual URL architecture.
+#
+# Every bilingual route key maps to a per-language slug (relative to the
+# language root, e.g. /en/ or /fr/). The renderer (tools/build/render_pages.py),
+# the sitemap generator, the .htaccess generator, the service-worker
+# generator and the SEO validators all resolve URLs through
+# tools/lib/routes.py — no surface hand-authors a canonical or hreflang.
+#
+# French slugs are French. They never change once published.
+
+site:
+  base_url: https://trentpower.fr
+  languages: [en, fr]
+  default_language: en
+
+# Bilingual editorial pages. Rendered into public/{lang}/{slug}/index.html.
+# An empty slug is the language-root index (public/en/index.html).
+routes:
+  home:
+    template: home
+    slug:
+      en: ''
+      fr: ''
+  privacy:
+    template: privacy
+    slug:
+      en: privacy
+      fr: confidentialite
+  security:
+    template: security
+    slug:
+      en: security
+      fr: securite
+  security-acknowledgments:
+    template: security-acknowledgments
+    slug:
+      en: security/acknowledgments
+      fr: securite/remerciements
+  integrity:
+    template: integrity
+    slug:
+      en: integrity
+      fr: integrite
+  integrity-releases:
+    template: integrity-releases
+    slug:
+      en: integrity/releases
+      fr: integrite/archives
+  integrity-verify-locally:
+    template: integrity-verify-locally
+    slug:
+      en: integrity/verify-locally
+      fr: integrite/verifier-localement
+  verify:
+    template: verify
+    slug:
+      en: verify
+      fr: verifier
+  source:
+    template: source
+    slug:
+      en: source
+      fr: source
+  source-view:
+    template: source-view
+    slug:
+      en: source/view
+      fr: source/voir
+
+# Bilingual error / maintenance surfaces. Rendered per language tree as flat
+# files: public/{lang}/{file}. Root-level copies (public/{file}) stay English
+# as the gate-path fallback (decision 7).
+error_routes:
+  '403':
+    template: '403'
+    file: 403.html
+  '404':
+    template: '404'
+    file: 404.html
+  '500':
+    template: '500'
+    file: 500.html
+  maintenance:
+    template: maintenance
+    file: maintenance.html
+
+# Single-tree surfaces — never bilingual, never gated.
+root_routes:
+  gate:
+    template: language-gate
+    path: /
+  sw-reset:
+    template: sw-reset
+    path: /sw-reset/
+
+# Legacy single-tree URLs. After cut-over these permanently 301 (one hop) to
+# their Australian English (/en-au/) equivalent. French URLs are never
+# redirect targets or sources. The /en/ → /en-au/ family lives in
+# htaccess_config.LEGACY_LANG_REDIRECT_RULES (emitted alongside this).
+legacy_redirects:
+  /privacy/: /en-au/privacy/
+  /security/: /en-au/security/
+  /security/acknowledgments/: /en-au/security/acknowledgments/
+  /integrity/: /en-au/integrity/
+  /integrity/releases/: /en-au/integrity/releases/
+  /integrity/verify-locally/: /en-au/integrity/verify-locally/
+  /verify/: /en-au/verify/
+  /source/: /en-au/source/
+  /source/view/: /en-au/source/view/

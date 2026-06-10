@@ -1,0 +1,226 @@
+translation:
+  source_page: security
+  source_hash: sha256-bbe84e89d2ea8edf4cf2dc1a30114b546abd47412a036979358be3abe0f3167f
+  status: machine-assisted
+  updated: '2026-05-20'
+meta:
+  security:
+    title: Sécurité & modèle de menace · Trent Power
+    description: Architecture de sécurité, contrôles opérationnels, surfaces publiques de vérification et risques résiduels
+  acknowledgments:
+    title: Remerciements de sécurité · Trent Power
+    description: Divulgations de sécurité responsables vérifiées et résolues pour trentpower.fr.
+security:
+  page_kicker: Sécurité et modèle de menace
+  page_h1: <span class="hero-line">Statique.</span><span class="hero-line">Auto-hébergé.</span><span class="hero-line">Vérifiable.</span>
+  page_title: Sécurité & modèle de menace
+  body_intro: |-
+    Comment ce site est hébergé, ce qu’il protège, ce qu’il ne protège pas - et comment
+    chacun peut le vérifier indépendamment.
+  contents_label: Sommaire
+  s1_summary: 1. Architecture
+  s2_summary: 2. Actifs protégés
+  s2_body: 'Les contrôles décrits ici protègent :'
+  s2_list: |-
+    La propriété du domaine
+    L’intégrité DNS
+    L’intégrité du compte d’hébergement
+    L’intégrité du contenu public
+    La clé de signature utilisée pour l’authenticité des versions
+  s3_summary: 3. Modèle de menace
+  s3_infra_heading: Compromission de l’infrastructure
+  s3_infra_list: |-
+    Prise de contrôle du compte registrar
+    Détournement <abbr title="Domain Name System">DNS</abbr>
+    Compromission des identifiants d’hébergement
+  s3_content_heading: Altération du contenu
+  s3_content_list: |-
+    Modification de fichiers après déploiement
+    Injection de JavaScript malveillant
+    Altération silencieuse des ressources statiques
+  s3_admin_heading: Abus administratif
+  s3_admin_list: |-
+    Credential stuffing
+    Analyse automatisée des vulnérabilités
+  s3_noise_heading: Bruit internet courant
+  s3_noise_body: Sondage automatisé continu pour les chemins <abbr title="Content Management System">CMS</abbr> courants, les fichiers de configuration ou les points d’entrée connus. Ces éléments sont traités comme des conditions de fond persistantes plutôt que comme des événements exceptionnels.
+  s3_delivery_heading: Livraison et fraîcheur
+  s3_delivery_list: |-
+    Une version ancienne mais valablement signée servie à la place d’une plus récente
+    Un cache navigateur / service worker corrompu ou périmé côté client
+  s4_summary: 4. Contrôles
+  s4_registrar_heading: Registrar &amp; <abbr title="Domain Name System">DNS</abbr>
+  s4_registrar_list: |-
+    <abbr title="Multi-Factor Authentication">MFA</abbr> activée
+    Verrouillage du registrar actif
+    <abbr title="Domain Name System Security Extensions">DNSSEC</abbr> activé et validé
+    Enregistrements <abbr title="Certificate Authority Authorization">CAA</abbr> restreignant l’émission de certificats
+  s4_hosting_heading: Hébergement
+  s4_hosting_list: |-
+    Authentification multi-facteurs activée
+    Déploiement <abbr title="Secure File Transfer Protocol">SFTP</abbr> uniquement
+    Aucune exposition <abbr title="Secure Shell">SSH</abbr> shell
+    Aucune exécution en arrière-plan planifiée
+  s4_content_heading: Contenu public
+  s4_content_list: |-
+    Architecture statique réduisant la surface d’attaque côté serveur
+    <abbr title="Content Security Policy">CSP</abbr> stricte démarrant par <code>default-src 'none'</code>
+    Aucun chargement de ressource externe
+    Aucune exécution de script dynamique
+    Stockage navigateur local limité aux préférences du lecteur (langue, apparence), aux marqueurs de première visite qui retirent l’imprimerie de la page d’accueil et la mention de traduction automatique, et aux horodatages d’installation du service worker indiquant uniquement quand le cache hors-ligne a été rafraîchi ; consultable sur la <a href="/local/">console de l’appareil local</a> ; aucun cookie, aucun identifiant d’analyse ou de publicité, aucun suivi de session ni profilage comportemental
+  s4_monitoring_heading: Surveillance
+  s4_monitoring_list: |-
+    Analyse structurée des journaux
+    Détection de patterns et scoring des anomalies
+    Détection de dérive d’intégrité des fichiers par rapport à la base de référence signée
+  s6_summary: 6. Risque résiduel
+  s6_protect_summary: |-
+    Ce modèle protège le site statique public. Il ne protège pas contre la compromission
+    du bureau d’enregistrement, de l’hébergement, des appareils clients ou de la clé
+    privée.
+  s6_out_of_scope_heading: Hors du périmètre
+  s6_primary_heading: Où le risque se concentre
+  s6_intro: 'Ce modèle ne tente pas de traiter :'
+  s6_list: |-
+    Compromission physique de l’infrastructure d’hébergement
+    Compromission de la racine <abbr title="Domain Name System">DNS</abbr> mondiale
+    Compromission d’une autorité de certification (<abbr title="Certificate Authority">CA</abbr>)
+    Adversaires étatiques
+    Exploits navigateur zero-day sur les appareils clients
+  s6_footer: Les risques principaux restent la compromission du domaine, du <abbr title="Domain Name System">DNS</abbr>, de l'hébergement et de la clé de signature privée.
+  s6_assume_heading: Hypothèses opérationnelles
+  s6_assume_list: |-
+    Un auteur unique de confiance contrôle la source et chaque publication
+    La seule clé privée de signature réside sur la machine locale de l'auteur, jamais dans la CI
+    L'intégrité de cette machine est supposée ; sa compromission est hors périmètre
+    Les lecteurs vérifient l'empreinte de la clé hors bande avant de se fier à une signature
+  s7_summary: 7. Divulgation
+  s7_body: La divulgation responsable est la bienvenue. Les coordonnées de sécurité et les instructions de communication chiffrée sont publiées sur <a href="/.well-known/security.txt" aria-describedby="desc-security-contact"><code>/.well-known/security.txt</code></a>.
+  s8_summary: 8. Principes de conception
+  s8_list: |-
+    Simplicité plutôt que complexité
+    Comportement déterministe plutôt que systèmes dynamiques
+    Transparence plutôt qu’obscurité
+    Intégrité vérifiable plutôt qu’hypothèses de confiance
+  s9_summary: 9. Vérification & tests
+  s9_checks_heading: Contrôles par édition
+  s9_body: Chaque édition publiée est contrôlée par rapport à un ensemble fixe de cibles publiques. Les contrôles couvrent la disponibilité, la confidentialité, les en-têtes de sécurité, l’accessibilité, le référencement et le balisage, et le résultat est consigné sous forme d’instantané signé avec l’édition.
+  s9_link: <a href="/tests/" aria-label="Voir les derniers résultats de tests signés">Voir les derniers résultats de tests</a> sur <code>/tests/</code>.
+  s10_summary: 10. Accessibilité
+  s10_body: Le site vise le niveau <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.2 AA. L'instantané de test signé de chaque édition publiée enregistre une vérification d'accessibilité automatisée, et la navigation au clavier, la structure des repères et l'ordre de focus sont vérifiés manuellement. Les exceptions connues sont indiquées ici plutôt que sous-entendues ; aucune n'est actuellement déclarée.
+  print:
+    kicker: Sécurité & modèle de menace
+    title: Statique, auto-géré, axé sur la vérification
+    lede: Le site public est composé de HTML, CSS et JavaScript natif, avec des en-têtes stricts, aucune logique serveur à l’exécution, aucune base de données publique et aucun script tiers.
+    meta: Édition 2026-05-17 · trentpower.fr/security/
+    card:
+      '01':
+        label: 01 Architecture
+        title: Architecture
+        body: HTML, CSS, JavaScript natif. Déploiement auto-géré sur Apache (Gandi, Paris). Aucune base de données publique.
+      '02':
+        label: 02 En-têtes
+        title: En-têtes de sécurité
+        body: <abbr title="Content Security Policy">CSP</abbr> par défaut deny. <abbr title="HTTP Strict Transport Security">HSTS</abbr>. <abbr title="Cross-Origin Opener Policy">COOP</abbr> / <abbr title="Cross-Origin Embedder Policy">COEP</abbr> / <abbr title="Cross-Origin Resource Policy">CORP</abbr>. Referrer-Policy no-referrer. Permissions-Policy verrouillée.
+      '03':
+        label: 03 Actifs protégés
+        title: Actifs protégés
+        body: Identité. Contenu publié. Fichiers de vérification publics. Intégrité du code source.
+      '04':
+        label: 04 Modèle de menaces
+        title: Modèle de menaces
+        body: Injection de contenu. Compromission des identifiants d’hébergement. Usurpation d’identité. Fichiers obsolètes ou altérés.
+      '05':
+        label: 05 Contrôles
+        title: Contrôles
+        body: Aucun script tiers. Aucun formulaire public. Manifeste d’intégrité signé. Exposition de fichiers restreinte. Cache piloté par service worker.
+      '06':
+        label: 06 Risque résiduel
+        title: Risque résiduel
+        body: Le risque hébergeur et registrar demeure. L’exposition d’un site statique est réduite, pas éliminée. Voie de divulgation responsable publiée.
+    footer:
+      proof: Privé · Statique · Signé · Sans suivi
+      edition: Édition 2026-05-17 · trentpower.fr/security/
+    qr:
+      label: trentpower.fr/security/
+    doc_title: Trent Power - Profil sécurité
+  public_verification_summary: 5. Surface de vérification publique
+  public_verification_routes_heading: Routes d’inspection
+  public_verification_scope_heading: Ce qu’elles ne couvrent pas
+  public_verification_intro: |-
+    Le site expose des routes d'inspection publique pour que le contenu publié puisse être
+    contrôlé sans accès à l'infrastructure privée.
+  public_verification_list: |-
+    <a href="/integrity/" aria-label="Ouvrir l’archive d’intégrité des publications signées, de la clé publique et du manifeste"><code>/integrity/</code></a> recense les éditions signées, la clé publique et le manifeste
+    <a href="/verify/" aria-label="Ouvrir l’outil de vérification des URL canoniques, miroirs source et empreintes de page"><code>/verify/</code></a> recense l'<abbr title="Uniform Resource Locator">URL</abbr> canonique d'une page, son miroir source et son empreinte
+    <a href="/source/" aria-label="Ouvrir les miroirs lisibles du code source de certains fichiers publics"><code>/source/</code></a> publie les miroirs lisibles d'une sélection de fichiers publics
+    <a href="/integrity/releases/" aria-label="Ouvrir les instantanés figés et signés des publications"><code>/integrity/releases/</code></a> conserve les instantanés signés et figés
+  public_verification_footer: Ces routes facilitent l'inspection et la provenance. Elles ne suppriment pas la nécessité de protéger le <abbr title="Domain Name System">DNS</abbr>, les identifiants d'hébergement et la clé privée de signature.
+  s1_routes_note: |-
+    Les routes d'inspection publiques exposent le manifeste signé, les enregistrements de
+    page, les miroirs source lisibles et les éditions archivées sans exposer
+    l'infrastructure privée.
+  architecture_card:
+    kicker: Architecture
+    browser_label: Navigateur
+    browser_body: <abbr title="HyperText Transfer Protocol Secure">HTTPS</abbr> · ni cookies ni analyses
+    host_label: Hébergement statique
+    host_body: Apache · Gandi · Paris · déploiement <abbr title="Secure File Transfer Protocol">SFTP</abbr>
+    files_label: Fichiers du site
+    files_body: <abbr title="HyperText Markup Language">HTML</abbr> · <abbr title="Cascading Style Sheets">CSS</abbr> · JavaScript natif · polices auto-hébergées
+    cache_label: Cache hors-ligne
+    cache_body: Service worker · cache local dès la première visite
+    trust_label: Confiance
+    trust_body: Intégrité · Vérification · Source · Éditions
+    archive_label: Archive
+    archive_body: Instantanés signés et figés
+acknowledgments:
+  page_title: Remerciements de sécurité
+  body_intro: |-
+    Cette page recense les divulgations de sécurité responsables qui ont été vérifiées et
+    résolues.
+  none: |-
+    Il n’y a pas de mentions pour le moment. Cela reflète l’absence de divulgations
+    signalables à ce jour, et non l’absence de révision ou de maintenance.
+  report: |-
+    Si vous pensez avoir trouvé un problème de sécurité sur ce site, veuillez le signaler
+    de manière responsable. Les coordonnées et les préférences de divulgation sont
+    indiquées dans security.txt.
+  integrity_link: Déclaration d’intégrité du site
+  last_reviewed_label: Dernière revue
+  print:
+    kicker: Reconnaissances de sécurité
+    title: Registre des divulgations responsables
+    lede: Reconnaissances pour les personnes et les chercheurs ayant contribué de manière responsable à la posture de sécurité de ce site.
+    meta: Édition 2026-05-17 · trentpower.fr/security/acknowledgments/
+    doc_title: Trent Power - Reconnaissances de sécurité
+    card:
+      '01':
+        label: 01 Modèle de divulgation
+        title: Modèle de divulgation
+        body: Coordonné, à délai défini, crédit sur demande.
+      '02':
+        label: 02 Politique de signalement
+        title: Politique de signalement
+        body: trent@trentpower.fr · rapports signés PGP préférés · clé publique sur /.well-known/pgp-key.asc.
+      '03':
+        label: 03 Remédiation coordonnée
+        title: Remédiation coordonnée
+        body: Accusé de réception sous 72 heures. Correctif, vérification, notes publiques si nécessaire.
+      '04':
+        label: 04 Processus de vérification
+        title: Processus de vérification
+        body: Reproduction, empreinte, signature, et consignation dans la prochaine version signée.
+      '05':
+        label: 05 Contact sécurité
+        title: Contact sécurité
+        body: trent@trentpower.fr · empreinte A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263.
+      '06':
+        label: 06 Statut de publication
+        title: Statut de publication
+        body: La page de reconnaissances est le registre canonique ; mises à jour à chaque édition signée.
+    footer:
+      proof: Privé · Statique · Signé · Sans suivi
+      edition: Édition 2026-05-17 · trentpower.fr/security/acknowledgments/
+    qr:
+      label: trentpower.fr/security/acknowledgments/

@@ -1,0 +1,137 @@
+{
+  "schema": "trentpower.repo-exclusions.v1",
+  "purpose": "files deliberately absent from the public git repository; anything listed here is missing from the tree intentionally, remains part of the live site, and can be restored locally by the named tool, verified against the signed integrity manifest",
+  "categories": {
+    "proprietary_asset": "licensed binary the licence prohibits redistributing"
+  },
+  "restore": "tools/build/fetch_licensed_fonts.py",
+  "verify_against": "public/integrity.json (detached signature: public/integrity.json.sig)",
+  "files": [
+    {
+      "path": "docs/pdf/fonts/signifier-light-italic.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/signifier-light-italic.woff2",
+      "live_sha256": "sha256-IuPpDMMkKcrHa0LADLAdiClRLhzOVPB3pUm75kzwsB4="
+    },
+    {
+      "path": "docs/pdf/fonts/signifier-light.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/signifier-light.woff2",
+      "live_sha256": "sha256-o1dw532X4yd7SEy9tyF286Up8Au0IXFJ6hPttWjsftI="
+    },
+    {
+      "path": "docs/pdf/fonts/signifier-regular-italic.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/signifier-regular-italic.woff2",
+      "live_sha256": "sha256-xzxFKjTS0ZVQkQrRs4gBcfwaNEJwZ2HhUgTaeTG/NEA="
+    },
+    {
+      "path": "docs/pdf/fonts/signifier-regular.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/signifier-regular.woff2",
+      "live_sha256": "sha256-wHyuoHT+EC0M1yBn9jdZAn7bm7ACJJIOq7XS4ntbUI0="
+    },
+    {
+      "path": "docs/pdf/fonts/soehne-buch.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/soehne-buch.woff2",
+      "live_sha256": "sha256-k3FEj7FGWoLVyTg4FB9Bqs8ryGzsrOkeaulT6PJBflg="
+    },
+    {
+      "path": "docs/pdf/fonts/soehne-kraftig.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/soehne-kraftig.woff2",
+      "live_sha256": "sha256-FbjnVb5MXZ8H9bYd5hV4JtB7QRAdsv2Vlxs4w60NuZE="
+    },
+    {
+      "path": "docs/pdf/fonts/soehne-mono-buch.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/soehne-mono-buch.woff2",
+      "live_sha256": "sha256-capOiTl+a+3Y5M7QsbPY3OmlQ611kFcli7uSx9fC7QQ="
+    },
+    {
+      "path": "public/fonts/signifier-light-italic.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/signifier-light-italic.woff2",
+      "live_sha256": "sha256-IuPpDMMkKcrHa0LADLAdiClRLhzOVPB3pUm75kzwsB4="
+    },
+    {
+      "path": "public/fonts/signifier-light.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/signifier-light.woff2",
+      "live_sha256": "sha256-o1dw532X4yd7SEy9tyF286Up8Au0IXFJ6hPttWjsftI="
+    },
+    {
+      "path": "public/fonts/signifier-regular-italic.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/signifier-regular-italic.woff2",
+      "live_sha256": "sha256-xzxFKjTS0ZVQkQrRs4gBcfwaNEJwZ2HhUgTaeTG/NEA="
+    },
+    {
+      "path": "public/fonts/signifier-regular.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/signifier-regular.woff2",
+      "live_sha256": "sha256-wHyuoHT+EC0M1yBn9jdZAn7bm7ACJJIOq7XS4ntbUI0="
+    },
+    {
+      "path": "public/fonts/soehne-buch.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/soehne-buch.woff2",
+      "live_sha256": "sha256-k3FEj7FGWoLVyTg4FB9Bqs8ryGzsrOkeaulT6PJBflg="
+    },
+    {
+      "path": "public/fonts/soehne-kraftig.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/soehne-kraftig.woff2",
+      "live_sha256": "sha256-FbjnVb5MXZ8H9bYd5hV4JtB7QRAdsv2Vlxs4w60NuZE="
+    },
+    {
+      "path": "public/fonts/soehne-mono-buch.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/soehne-mono-buch.woff2",
+      "live_sha256": "sha256-capOiTl+a+3Y5M7QsbPY3OmlQ611kFcli7uSx9fC7QQ="
+    },
+    {
+      "path": "public/fonts/soehne-mono-kraftig.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/soehne-mono-kraftig.woff2",
+      "live_sha256": "sha256-LIZzESgp262JxVmSotiTqiKNUUQltq36aj52PndDK1U="
+    },
+    {
+      "path": "public/fonts/subsets/signifier-light-hero.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/subsets/signifier-light-hero.woff2",
+      "live_sha256": "sha256-SpP8KnJBCvp/WSRlPaaxKqvug71Zirte+V2Kl2xhvEw="
+    },
+    {
+      "path": "public/fonts/subsets/soehne-kraftig-nav.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/subsets/soehne-kraftig-nav.woff2",
+      "live_sha256": "sha256-v82I7eTB1pKMB6T36d+F3zoi9KCUnzO+VgtEZI5fYAU="
+    },
+    {
+      "path": "public/fonts/subsets/soehne-mono-buch-labels.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_url": "https://trentpower.fr/fonts/subsets/soehne-mono-buch-labels.woff2",
+      "live_sha256": "sha256-wP6dgf0KiC8v/hs64w5V3Hcl7xNGkkp/lXRoymogK/E="
+    }
+  ]
+}

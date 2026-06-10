@@ -1,0 +1,22 @@
+# Security
+
+## Reporting
+
+Report security issues to the contact published in
+[`/.well-known/security.txt`](https://trentpower.fr/.well-known/security.txt),
+encrypted if you prefer with the published PGP key at
+[`/.well-known/pgp-key.asc`](https://trentpower.fr/.well-known/pgp-key.asc)
+(fingerprint `A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263`).
+
+Please do not open a public issue for anything sensitive.
+
+## Posture
+
+The site's security and privacy posture — CSP, cross-origin isolation, HSTS,
+the public-exposure allow-list, secret handling — is documented in
+[docs/SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md). Incident
+handling is documented in
+[docs/INCIDENT-RESPONSE.md](docs/INCIDENT-RESPONSE.md).
+
+Every release is gated by blocking security checks before deploy; see
+[docs/GATES-CHECKS-AND-QUALITY.md](docs/GATES-CHECKS-AND-QUALITY.md).

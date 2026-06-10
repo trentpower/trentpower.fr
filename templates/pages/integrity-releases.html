@@ -1,0 +1,369 @@
+<!doctype html>
+<!--
+  trentpower.fr
+  static, self-managed, privacy-first
+  no analytics, no cookies, no external assets
+  public integrity manifest: /integrity.json
+-->
+<html lang="en" dir="ltr">
+<head>
+  <!-- head · 01 · foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- head · 02 · appearance bootstrap -->
+  <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch(_){}})();</script>
+
+  <!-- head · 03 · document identity -->
+  <title>Releases · Trent Power</title>
+  <meta name="description"
+        content="Frozen, signed snapshots of the public site">
+  <meta name="document-edition" content="2026-05-17">
+  <link rel="canonical" href="https://trentpower.fr/integrity/releases/">
+
+  <!-- head · 04 · indexing and discovery -->
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- head · 05 · authorship and identity -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/attribution.txt">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+  <link rel="me" href="https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg">
+  <link rel="me" href="https://www.linkedin.com/in/trentpower/">
+  <link rel="me" href="https://orcid.org/0009-0002-2652-7188">
+  <link rel="me" href="https://www.crunchbase.com/person/trent-power-3f52">
+
+  <!-- head · 06 · provenance, rights and reuse -->
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+
+  <!-- head · 07 · social and sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="Releases · Trent Power">
+  <meta property="og:description" content="Frozen, signed snapshots of the public site">
+  <meta property="og:url" content="https://trentpower.fr/integrity/releases/">
+  <meta property="og:image" content="https://trentpower.fr/images/og/releases-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Releases · Trent Power">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Releases · Trent Power">
+  <meta name="twitter:description" content="Frozen, signed snapshots of the public site">
+  <meta name="twitter:image" content="https://trentpower.fr/images/og/releases-og.png">
+  <meta name="twitter:image:alt" content="Releases · Trent Power">
+  <meta name="twitter:site"    content="@trentpower">
+  <meta name="twitter:creator" content="@trentpower">
+
+  <!-- head · 08 · application surface -->
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+
+  <!-- head · 09 · rendering and assets -->
+  <link rel="stylesheet" href="/styles.css?v=2026-05-17.8329810a" integrity="sha384-qkf5XVFpsimID4fZ9+57RDSZhBQueHlhyBhZ7mcCdAk3O+bUy2RoXtUp66H+/9R9">
+  <link rel="stylesheet" href="/print.css?v=2026-05-17.8329810a" media="print">
+</head>
+<body data-page="releases" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-05-17" data-source-sha256-short="--------">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark u-author" href="/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="site" id="main" tabindex="-1">
+  <div class="page">
+
+    <!-- hero · broken-line title + lede -->
+    <header class="hero">
+      <p class="hero-kicker">{{ releases.direction_c.hero.kicker }}</p>
+      <h1 class="hero-title">
+        <span class="line">{{ releases.direction_c.hero.line_1 }}</span>
+        <span class="line">{{ releases.direction_c.hero.line_2 }}</span>
+        <span class="line">{{ releases.direction_c.hero.line_3 }}</span>
+      </h1>
+      <p class="hero-lede">{{ releases.direction_c.hero.lede }}</p>
+    </header>
+
+    <!-- current edition · record card -->
+    <article class="record" aria-labelledby="cur-date">
+      <header class="record-header">
+        <div class="left">
+          <p class="kicker">{{ releases.direction_c.record.kicker }}</p>
+          <h2 class="date" id="cur-date">{{ releases.edition_jun10_date }}</h2>
+          <p class="title">{{ html:releases.edition_jun10_desc }} — {{ releases.direction_c.record.meta_suffix }}</p>
+        </div>
+        <div class="right">
+          <span class="tag">{{ releases.direction_c.record.live_tag }}</span>
+          <span class="acc">№ 06</span>
+        </div>
+      </header>
+
+      <div class="record-groups">
+
+        <!-- group order · cohesion sprint · this is a publication archive,
+             not a download catalogue: verification records lead, source
+             archives follow, the fingerprint + actions close the card. -->
+        <section class="group" aria-labelledby="g-records">
+          <p class="group-label" id="g-records">{{ releases.direction_c.record.group_records }}</p>
+          <dl>
+            <div class="rg"><dt>Manifest</dt><dd><a href="/integrity.json"><code>/integrity.json</code></a></dd></div>
+            <div class="rg"><dt>Signature</dt><dd><a href="/integrity.json.sig"><code>/integrity.json.sig</code></a></dd></div>
+            <div class="rg"><dt>Checksums</dt><dd><a href="/integrity/releases/2026-06-10/SHA256SUMS"><code>/SHA256SUMS</code></a></dd></div>
+          </dl>
+        </section>
+
+        <section class="group" aria-labelledby="g-archives">
+          <p class="group-label" id="g-archives">{{ releases.direction_c.record.group_archives }}</p>
+          <dl>
+            <div class="rg"><dt>ZIP</dt><dd><a href="/integrity/releases/2026-06-10/trentpower-fr-2026-06-10.zip"><code>trentpower-fr-2026-06-10.zip</code></a></dd></div>
+            <div class="rg"><dt>TAR.GZ</dt><dd><a href="/integrity/releases/2026-06-10/trentpower-fr-2026-06-10.tar.gz"><code>trentpower-fr-2026-06-10.tar.gz</code></a></dd></div>
+          </dl>
+        </section>
+
+        <section class="group record-fp">
+          <nav class="actions" aria-label="{{ attr:releases.direction_c.record.aria_actions }}">
+            <a class="primary" href="/integrity/releases/2026-06-10/">{{ releases.direction_c.record.cta_view }} <span class="arr">↗</span></a>
+            <a class="secondary" href="/integrity/verify-locally/">{{ releases.direction_c.record.cta_verify }}</a>
+          </nav>
+        </section>
+
+      </div>
+    </article>
+
+    <!-- earlier editions · hairline ledger -->
+    <section class="earlier-section" aria-labelledby="earlier-label">
+      <p class="earlier-label" id="earlier-label">
+        <span>{{ releases.direction_c.earlier.label }}</span>
+        <span class="count">{{ releases.direction_c.earlier.count }}</span>
+      </p>
+
+      <ol class="earlier-list" reversed>
+
+        <li class="earlier-row">
+          <p class="acc">№ 05</p>
+          <div class="stack">
+            <p class="date">{{ releases.edition_may23_date }}</p>
+            <p class="title">{{ html:releases.edition_may23_desc }}</p>
+            <p class="sha"><span class="k">{{ releases.direction_c.earlier.sha_key }}</span>C589·BAB5·4959·58BB</p>
+          </div>
+          <div class="actions">
+            <a class="verb" href="/integrity/releases/2026-05-23/">{{ releases.direction_c.earlier.verb_view }} <span class="arr">↗</span></a>
+            <div class="downloads">
+              <a href="/integrity/releases/2026-05-23/trentpower-fr-2026-05-23.zip">ZIP</a>
+              <a href="/integrity/releases/2026-05-23/trentpower-fr-2026-05-23.tar.gz">TAR.GZ</a>
+              <a href="/integrity/releases/2026-05-23/SHA256SUMS">SUMS</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="earlier-row">
+          <p class="acc">№ 04</p>
+          <div class="stack">
+            <p class="date">{{ releases.edition_may19_date }}</p>
+            <p class="title">{{ html:releases.edition_may19_desc }}</p>
+            <p class="sha"><span class="k">{{ releases.direction_c.earlier.sha_key }}</span>01E8·6BA9·82F3·14A9</p>
+          </div>
+          <div class="actions">
+            <a class="verb" href="/integrity/releases/2026-05-19/">{{ releases.direction_c.earlier.verb_view }} <span class="arr">↗</span></a>
+            <div class="downloads">
+              <a href="/integrity/releases/2026-05-19/trentpower-fr-2026-05-19.zip">ZIP</a>
+              <a href="/integrity/releases/2026-05-19/trentpower-fr-2026-05-19.tar.gz">TAR.GZ</a>
+              <a href="/integrity/releases/2026-05-19/SHA256SUMS">SUMS</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="earlier-row">
+          <p class="acc">№ 03</p>
+          <div class="stack">
+            <p class="date">{{ releases.edition_may17_date }}</p>
+            <p class="title">{{ html:releases.edition_may17_desc }}</p>
+            <p class="sha"><span class="k">{{ releases.direction_c.earlier.sha_key }}</span>348C·8346·9B82·1E96</p>
+          </div>
+          <div class="actions">
+            <a class="verb" href="/integrity/releases/2026-05-17/">{{ releases.direction_c.earlier.verb_view }} <span class="arr">↗</span></a>
+            <div class="downloads">
+              <a href="/integrity/releases/2026-05-17/trentpower-fr-2026-05-17.zip">ZIP</a>
+              <a href="/integrity/releases/2026-05-17/trentpower-fr-2026-05-17.tar.gz">TAR.GZ</a>
+              <a href="/integrity/releases/2026-05-17/SHA256SUMS">SUMS</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="earlier-row">
+          <p class="acc">№ 02</p>
+          <div class="stack">
+            <p class="date">{{ releases.edition_may09_date }}</p>
+            <p class="title">{{ html:releases.edition_may09_desc }}</p>
+            <p class="sha"><span class="k">{{ releases.direction_c.earlier.sha_key }}</span>610E·FDD2·BF53·1A82</p>
+          </div>
+          <div class="actions">
+            <a class="verb" href="/integrity/releases/2026-05-09/">{{ releases.direction_c.earlier.verb_view }} <span class="arr">↗</span></a>
+            <div class="downloads">
+              <a href="/integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip">ZIP</a>
+              <a href="/integrity/releases/2026-05-09/trentpower-fr-2026-05-09.tar.gz">TAR.GZ</a>
+              <a href="/integrity/releases/2026-05-09/SHA256SUMS">SUMS</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="earlier-row">
+          <p class="acc">№ 01</p>
+          <div class="stack">
+            <p class="date">{{ releases.edition_feb_date }}</p>
+            <p class="title">{{ html:releases.edition_feb_desc }}</p>
+            <p class="sha is-historical">{{ releases.direction_c.earlier.historical_note }}</p>
+          </div>
+          <div class="actions">
+            <a class="verb" href="/integrity/releases/2026-02/">{{ releases.direction_c.earlier.verb_view }} <span class="arr">↗</span></a>
+          </div>
+        </li>
+
+      </ol>
+
+      <p class="foot-note">{{ html:releases.direction_c.foot_note }}</p>
+    </section>
+
+  </div>
+
+</main>
+
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">{{ linkdesc.home }}</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>{{ footer.location }}</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/privacy/" rel="privacy-policy" aria-describedby="desc-privacy">{{ footer.privacy }}</a>
+        <span class="visually-hidden" id="desc-privacy">{{ linkdesc.privacy }}</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">{{ footer.verify }}</button>
+        <span class="visually-hidden" id="desc-cite">{{ linkdesc.cite }}</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><button type="button" data-lang="en" aria-pressed="true"  aria-describedby="desc-lang-en" lang="en">English</button> <span class="visually-hidden" id="desc-lang-en">{{ linkdesc.lang_en }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-lang="fr" aria-pressed="false" aria-describedby="desc-lang-fr" lang="fr">Français</button> <span class="visually-hidden" id="desc-lang-fr">{{ linkdesc.lang_fr }}</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break" aria-hidden="true">
+
+    <!-- bottom stratum · colophon · theme -->
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="{{ footer.proof.aria_label }}">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="{{ footer.proof.manifest_link_href }}" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">{{ footer.proof.edition }}</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          {{ html:footer.proof.colophon_note_html }}
+          <span class="visually-hidden" id="desc-integrity">{{ linkdesc.integrity }}</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">{{ footer.theme.light }}</button> <span class="visually-hidden" id="desc-theme-light">{{ linkdesc.theme_light }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">{{ footer.theme.auto }}</button> <span class="visually-hidden" id="desc-theme-auto">{{ linkdesc.theme_auto }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">{{ footer.theme.dark }}</button> <span class="visually-hidden" id="desc-theme-dark">{{ linkdesc.theme_dark }}</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+
+<!-- scripts · progressive enhancement, no telemetry -->
+<script src="/js/theme.js?v=2026-05-17.8329810a" defer></script>
+<script src="/sw-register.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/reveal.js?v=2026-05-17.8329810a" defer></script>
+
+<script src="/js/overlay.js?v=2026-05-17.8329810a" defer></script>
+
+<script src="/verify/verification-data.2026-05-17.952f0ed3.js" integrity="sha384-FIHXF6/1fpcFuXFzXKo2GgX2b5vc8JaoqUVvCEftcCX0qy9IyGtaWJu1apWiX3dT" defer></script>
+
+<script src="/js/copy.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/edition.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/micro-interactions.js" defer></script>
+<script src="/js/verify-modal.js" defer></script>
+<script src="/js/fonts.js?v=2026-05-17.8329810a" defer></script>
+
+<!-- print · /releases/ utility sheet -->
+<div class="print-utility-sheet print-only" data-print-sheet="releases" hidden>
+  <header class="print-utility-header">
+    <p class="print-utility-kicker">{{ releases.print.kicker }}</p>
+    <p class="print-utility-title">{{ releases.print.title }}</p>
+    <p class="print-utility-lede">{{ releases.print.lede }}</p>
+    <p class="print-utility-meta">{{ releases.print.meta }}</p>
+  </header>
+
+  <div class="print-utility-grid">
+    <div class="print-utility-card">
+      <p class="print-utility-label"><span class="num">01</span> <span>{{ releases.print.card.01.title }}</span></p>
+      <p>{{ releases.print.card.01.body }}</p>
+    </div>
+    <div class="print-utility-card">
+      <p class="print-utility-label"><span class="num">02</span> <span>{{ releases.print.card.02.title }}</span></p>
+      <p>{{ releases.print.card.02.body }}</p>
+    </div>
+    <div class="print-utility-card">
+      <p class="print-utility-label"><span class="num">03</span> <span>{{ releases.print.card.03.title }}</span></p>
+      <p>{{ releases.print.card.03.body }}</p>
+    </div>
+    <div class="print-utility-card">
+      <p class="print-utility-label"><span class="num">04</span> <span>{{ releases.print.card.04.title }}</span></p>
+      <p>{{ releases.print.card.04.body }}</p>
+    </div>
+    <div class="print-utility-card">
+      <p class="print-utility-label"><span class="num">05</span> <span>{{ releases.print.card.05.title }}</span></p>
+      <p>{{ releases.print.card.05.body }}</p>
+    </div>
+    <div class="print-utility-card">
+      <p class="print-utility-label"><span class="num">06</span> <span>{{ releases.print.card.06.title }}</span></p>
+      <p>{{ releases.print.card.06.body }}</p>
+    </div>
+  </div>
+
+  <footer class="print-utility-footer">
+    <div class="print-utility-footer-text">
+      <p class="print-proof">{{ releases.print.footer.proof }}</p>
+      <p>{{ releases.print.footer.edition }}</p>
+    </div>
+    <div class="print-qr-block" aria-hidden="true">
+      <img class="print-qr-image" src="/images/qr/qr-releases.svg" width="144" height="144" loading="lazy" decoding="async" alt="">
+      <p class="print-qr-url">trentpower.fr/integrity/releases/</p>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>

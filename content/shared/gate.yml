@@ -1,0 +1,29 @@
+# Language-gate copy. The gate at / is a single static page that may be shown
+# in either language (picked from navigator.language before a choice is made),
+# so every string carries both an en and an fr value.
+
+gate:
+  title:
+    en: Choose a language.
+    fr: Choisissez une langue.
+  lede:
+    en: The publication is written in English. A machine-translated French rendering is available.
+    fr: Cette publication est rédigée en anglais. Une version française, traduite par machine, est disponible.
+  cta_en:
+    en: English
+    fr: English
+  cta_fr:
+    en: Français
+    fr: Français
+  caption_en:
+    en: Author's edition
+    fr: Édition de l'auteur
+  caption_fr:
+    en: Machine translation
+    fr: Traduction automatique
+  aria_en:
+    en: Continue in English, the author's edition
+    fr: Continuer en anglais, l'édition de l'auteur
+  aria_fr:
+    en: Continue in French, a machine-translated rendering
+    fr: Continuer en français, une version traduite par machine

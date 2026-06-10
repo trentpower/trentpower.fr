@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trentpower.fr/schemas/content/integrity.schema.json",
+  "title": "Integrity page content (includes releases)",
+  "allOf": [{ "$ref": "https://trentpower.fr/schemas/content/page-base.schema.json" }],
+  "type": "object",
+  "properties": {
+    "meta": { "type": "object", "required": ["integrity", "releases"] },
+    "integrity": { "type": "object" },
+    "releases": { "type": "object" },
+    "release_archive": { "type": "object" }
+  },
+  "additionalProperties": true
+}

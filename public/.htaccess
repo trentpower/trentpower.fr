@@ -1,0 +1,517 @@
+# trentpower.fr — apache .htaccess
+#
+# strict by default. the mod_rewrite gate is allow-list only; anything
+# unmatched returns 403. cache + CSP + MIME policy follow the gate.
+#
+# sections, in source order:
+#   a. maintenance mode
+#   b. rewrite engine + public-exposure gate
+#   c. security headers (non-CSP)
+#   d. CSP
+#   e. cache-control + MIME
+#   f. error documents
+#   g. directory / method controls + etag
+#   h. compression
+#   i. private artefact fallback deny
+
+
+# ============================================================
+# a. maintenance mode
+# ============================================================
+# to enable maintenance mode: uncomment the three lines below and
+# comment out the active DirectoryIndex line.
+#
+# DirectoryIndex maintenance.html index.html
+# ErrorDocument 403 /maintenance.html
+# ErrorDocument 404 /maintenance.html
+DirectoryIndex index.html
+
+
+# ============================================================
+# b. rewrite engine + public-exposure gate
+# ============================================================
+# Versioned-asset query strings (?v=YYYY-MM-DD.<sha8>) set the
+# IS_VERSIONED_ASSET env flag for the cache rules in section e.
+# this must run BEFORE any [l] terminator inside the gate; the
+# rule below intentionally does NOT carry [l].
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  RewriteCond %{QUERY_STRING} ^v=[0-9]{4}-[0-9]{2}-[0-9]{2}\.[0-9a-f]{8}$
+  RewriteRule \.(css|js|woff2?)$ - [E=IS_VERSIONED_ASSET:1]
+
+  # BEGIN PUBLIC EXPOSURE
+  # phase 1 — deny dangerous paths
+  RewriteRule (^|/)\.git(/|$) - [F,L]
+  RewriteRule (^|/)\.github(/|$) - [F,L]
+  RewriteRule (^|/)\.vscode(/|$) - [F,L]
+  RewriteRule (^|/)\.idea(/|$) - [F,L]
+  RewriteRule (^|/)\.env(\.|$) - [F,L]
+  RewriteRule (^|/)\.user\.ini$ - [F,L]
+  RewriteRule (^|/)\.htpasswd$ - [F,L]
+  RewriteRule (^|/)\.DS_Store$ - [F,L]
+  RewriteRule (^|/)id_ed25519(\.pub)?$ - [F,L]
+  RewriteRule (^|/)identity_canonical\.json$ - [F,L]
+  RewriteRule (^|/)composer\.(json|lock)$ - [F,L]
+  RewriteRule (^|/)package(-lock)?\.json$ - [F,L]
+  RewriteRule (^|/)(yarn\.lock|pnpm-lock\.yaml)$ - [F,L]
+
+  # phase 2 — deny dangerous extensions
+  RewriteRule \.(php|phar|phtml|asp|aspx|jsp|cgi|pl|py|pyc|pyo|sh|bash|zsh|exe|dll|so)$ - [F,L]
+  RewriteRule \.(env|ini|conf|config|yaml|yml|toml|lock|bak|backup|old|orig|tmp|swp)$ - [F,L]
+  RewriteRule \.(sql|sqlite|sqlite3|db|db3|log|map|psd|ai|fig|sketch|md)$ - [F,L]
+  RewriteRule \.template\.js$ - [F,L]
+  RewriteRule (?i)(invoice|credential|password|secret|totp_key)|-key\.txt$ - [F,L]
+
+  # phase 3 — deny build + source-tree directories
+  RewriteRule ^(node_modules|vendor|private|src|tools|templates|partials|scripts|docs)(/|$) - [F,L]
+  RewriteRule ^(_archives|_licences|_rollback|_audit|console_data|reports|assets-source)(/|$) - [F,L]
+
+  # phase 3b — pre-cut-over single-tree URLs 301 to their /en/ edition
+  RewriteRule ^en/?$ /en-au/ [R=301,L]
+  RewriteRule ^en/(.*)$ /en-au/$1 [R=301,L]
+  RewriteRule ^privacy/?$ /en-au/privacy/ [R=301,L]
+  RewriteRule ^security/?$ /en-au/security/ [R=301,L]
+  RewriteRule ^security/acknowledgments/?$ /en-au/security/acknowledgments/ [R=301,L]
+  RewriteRule ^integrity/?$ /en-au/integrity/ [R=301,L]
+  RewriteRule ^integrity/releases/?$ /en-au/integrity/releases/ [R=301,L]
+  RewriteRule ^integrity/verify\-locally/?$ /en-au/integrity/verify-locally/ [R=301,L]
+  RewriteRule ^verify/?$ /en-au/verify/ [R=301,L]
+  RewriteRule ^sw-reset/?$ /local/ [R=301,L]
+  RewriteRule ^sw-reset/index\.html$ /local/ [R=301,L]
+
+  # phase 3c — legacy versioned-filename redirects · one-cycle transition for
+  # browsers caching HTML that still references the old dated URLs.
+  # remove after the 2026-NN-NN edition once HTML caches turn over.
+  RewriteRule ^fonts-full\.[0-9]{4}-[0-9]{2}-[0-9]{2}\.[a-f0-9]+\.css$ /fonts-full.css [R=301,L]
+  RewriteRule ^verify/verification-data\.[0-9]{4}-[0-9]{2}-[0-9]{2}\.[a-f0-9]+\.js$ /verify/verification-data.js [R=301,L]
+
+  # phase 4 — allow-list
+  # root + error pages
+  RewriteRule ^$ - [L]
+  RewriteRule ^index\.html$ - [L]
+  RewriteRule ^(403|404|500|maintenance)\.html$ - [L]
+
+  # public routes (bilingual /en/ + /fr/ trees, neutral surfaces)
+  RewriteRule ^en\-au/?$ - [L]
+  RewriteRule ^en\-au/index\.html$ - [L]
+  RewriteRule ^fr/?$ - [L]
+  RewriteRule ^fr/index\.html$ - [L]
+  RewriteRule ^en\-au/privacy/?$ - [L]
+  RewriteRule ^en\-au/privacy/index\.html$ - [L]
+  RewriteRule ^fr/confidentialite/?$ - [L]
+  RewriteRule ^fr/confidentialite/index\.html$ - [L]
+  RewriteRule ^en\-au/security/?$ - [L]
+  RewriteRule ^en\-au/security/index\.html$ - [L]
+  RewriteRule ^fr/securite/?$ - [L]
+  RewriteRule ^fr/securite/index\.html$ - [L]
+  RewriteRule ^en\-au/security/acknowledgments/?$ - [L]
+  RewriteRule ^en\-au/security/acknowledgments/index\.html$ - [L]
+  RewriteRule ^fr/securite/remerciements/?$ - [L]
+  RewriteRule ^fr/securite/remerciements/index\.html$ - [L]
+  RewriteRule ^en\-au/integrity/?$ - [L]
+  RewriteRule ^en\-au/integrity/index\.html$ - [L]
+  RewriteRule ^fr/integrite/?$ - [L]
+  RewriteRule ^fr/integrite/index\.html$ - [L]
+  RewriteRule ^en\-au/integrity/releases/?$ - [L]
+  RewriteRule ^en\-au/integrity/releases/index\.html$ - [L]
+  RewriteRule ^fr/integrite/archives/?$ - [L]
+  RewriteRule ^fr/integrite/archives/index\.html$ - [L]
+  RewriteRule ^en\-au/integrity/verify\-locally/?$ - [L]
+  RewriteRule ^en\-au/integrity/verify\-locally/index\.html$ - [L]
+  RewriteRule ^fr/integrite/verifier\-localement/?$ - [L]
+  RewriteRule ^fr/integrite/verifier\-localement/index\.html$ - [L]
+  RewriteRule ^en\-au/verify/?$ - [L]
+  RewriteRule ^en\-au/verify/index\.html$ - [L]
+  RewriteRule ^fr/verifier/?$ - [L]
+  RewriteRule ^fr/verifier/index\.html$ - [L]
+  RewriteRule ^en\-au/source/?$ - [L]
+  RewriteRule ^en\-au/source/index\.html$ - [L]
+  RewriteRule ^fr/source/?$ - [L]
+  RewriteRule ^fr/source/index\.html$ - [L]
+  RewriteRule ^en\-au/source/view/?$ - [L]
+  RewriteRule ^en\-au/source/view/index\.html$ - [L]
+  RewriteRule ^fr/source/voir/?$ - [L]
+  RewriteRule ^fr/source/voir/index\.html$ - [L]
+  RewriteRule ^en\-au/(403|404|500|maintenance)\.html$ - [L]
+  RewriteRule ^fr/(403|404|500|maintenance)\.html$ - [L]
+  RewriteRule ^local/?$ - [L]
+  RewriteRule ^local/index\.html$ - [L]
+  RewriteRule ^source/?$ - [L]
+  RewriteRule ^source/index\.html$ - [L]
+  RewriteRule ^source/view/?$ - [L]
+  RewriteRule ^source/view/index\.html$ - [L]
+
+  # public root text files
+  RewriteRule ^(robots|humans|llms|ai-usage|pgp|assertion|statement|changelog)\.txt$ - [L]
+
+  # public root json + signed manifests
+  RewriteRule ^(integrity|site-metadata|attestations|file-metadata|sw-cache-manifest)\.json$ - [L]
+  RewriteRule ^integrity\.json\.sig$ - [L]
+  RewriteRule ^SHA256SUMS(\.sig)?$ - [L]
+  RewriteRule ^sitemap\.xml(\.sha256)?$ - [L]
+  RewriteRule ^manifest\.webmanifest$ - [L]
+
+  # public root css + service worker js
+  RewriteRule ^(styles|print|fonts-full)\.css$ - [L]
+  RewriteRule ^(sw|sw-register)\.js$ - [L]
+
+  # first-party behaviour js (served from /js/)
+  RewriteRule ^js/(copy|edition|fonts|language-gate|local|micro-interactions|overlay|reveal|theme|verify-modal)\.js$ - [L]
+
+  # root icons
+  RewriteRule ^(favicon\.svg|favicon\.ico|apple-touch-icon\.png|icon-(192|512)\.png)$ - [L]
+
+  # .well-known (strictly enumerated)
+  RewriteRule ^\.well-known/(security\.txt|person\.json|webfinger|pgp-key\.asc|attribution\.(sig|txt)|build\.json|publication\.json)$ - [L]
+
+  # fonts (root + critical-path subsets)
+  RewriteRule ^fonts/(subsets/)?[a-z0-9-]+\.woff2$ - [L]
+
+  # images (architecture, icons, og, portraits, qr, textures)
+  RewriteRule ^images/architecture/[a-z0-9.-]+\.svg$ - [L]
+  RewriteRule ^images/icons/[a-z0-9.-]+\.(png|svg|ico)$ - [L]
+  RewriteRule ^images/og/[a-z0-9.-]+\.png$ - [L]
+  RewriteRule ^images/portraits/[a-z0-9.-]+\.jpg$ - [L]
+  RewriteRule ^images/qr/[a-z0-9.-]+\.svg$ - [L]
+  RewriteRule ^images/textures/[a-z0-9.-]+\.svg$ - [L]
+
+  # source mirror (*.txt + manifest + reader scripts)
+  RewriteRule ^source/index\.html$ - [L]
+  RewriteRule ^source/source-manifest\.json$ - [L]
+  RewriteRule ^source/view/(source-view|source-view-manifest)\.js$ - [L]
+  RewriteRule ^source/([A-Za-z0-9._-]+/){0,4}[A-Za-z0-9._-]+\.txt$ - [L]
+
+  # editorial deliverables (docx + html + pdf; .md is denied)
+  RewriteRule ^editorial/copy-review\.(html|docx|pdf)$ - [L]
+
+  # public documentation surface (landing + signed pdf + plaintext readme)
+  RewriteRule ^documentation/?$ - [L]
+  RewriteRule ^documentation/index\.html$ - [L]
+  RewriteRule ^documentation/README\.pdf$ - [L]
+  RewriteRule ^documentation/README\.txt$ - [L]
+
+  # verify (clean filenames only; `?v=…` carries the edition)
+  RewriteRule ^verify/verify\.js$ - [L]
+  RewriteRule ^verify/verification-data\.js$ - [L]
+
+  # integrity releases (signed archives + checksums)
+  RewriteRule ^integrity/releases/archive\.css$ - [L]
+  RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/?$ - [L]
+  RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/index\.html$ - [L]
+  RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/SHA256SUMS(\.sig)?$ - [L]
+  RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/trentpower-fr-[0-9-]+\.zip(\.(sha256|sig))?$ - [L]
+  RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/trentpower-fr-[0-9-]+\.tar\.gz(\.(sha256|sig))?$ - [L]
+  RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/integrity-redistributable(-[0-9]{4}-[0-9]{2}-[0-9]{2})?\.json(\.sig)?$ - [L]
+  RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/EXCLUDED_FILES(-[0-9]{4}-[0-9]{2}-[0-9]{2})?\.json(\.sig)?$ - [L]
+  RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/EXCLUDED_FILES(-[0-9]{4}-[0-9]{2}-[0-9]{2})?\.txt$ - [L]
+  RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/release(-[0-9]{4}-[0-9]{2}-[0-9]{2})?\.json(\.sig)?$ - [L]
+  RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/builds\.json(\.sig)?$ - [L]
+  RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/TESTRESULTS\.txt(\.sig)?$ - [L]
+  RewriteRule ^integrity/releases/2026-02/integrity\.json(\.sig)?$ - [L]
+  RewriteRule ^integrity/releases/2026-02/assets/[A-Za-z0-9._/-]+\.(css|js|svg|woff2|png|jpe?g|webp|ico)$ - [L]
+
+  # tests (language-neutral results page)
+  RewriteRule ^tests/?$ - [L]
+  RewriteRule ^tests/index\.html$ - [L]
+
+  # phase 5 — fallback: anything unmatched returns 403
+  RewriteRule . - [F,L]
+  # END PUBLIC EXPOSURE
+</IfModule>
+
+
+# ============================================================
+# c. security headers (non-CSP)
+# ============================================================
+# default position: denial. no framing, no ambient permissions,
+# no cross-origin trust. add nothing that loosens these.
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "no-referrer"
+  Header always set X-Permitted-Cross-Domain-Policies "none"
+  Header always set X-DNS-Prefetch-Control "off"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Cross-Origin-Embedder-Policy "require-corp"
+
+  # /images/og/ exception: social scrapers need cross-origin pull.
+  SetEnvIf Request_URI "^/images/og/" IS_OG_IMAGE=1
+  Header always set Cross-Origin-Resource-Policy "same-origin" env=!IS_OG_IMAGE
+  Header always set Cross-Origin-Resource-Policy "cross-origin" env=IS_OG_IMAGE
+
+  # Permissions-Policy: deny every sensitive capability. names limited
+  # to the standard permissions registry to avoid chrome parser warns.
+  Header always set Permissions-Policy "accelerometer=(), autoplay=(), camera=(), display-capture=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), xr-spatial-tracking=()"
+
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+  Header always unset X-Powered-By
+
+  # identity discovery — HTML responses advertise the canonical person record.
+  <FilesMatch "\.html$">
+    Header always append Link "<https://trentpower.fr/.well-known/person.json>; rel=\"alternate\"; type=\"application/ld+json\""
+  </FilesMatch>
+</IfModule>
+
+
+# ============================================================
+# d. Content-Security-Policy
+# ============================================================
+# default-deny policy; the /source/view/ exception widens trusted-types
+# for the source-reader and authorises its inline bootstrap hash.
+<IfModule mod_headers.c>
+  # BEGIN CSP
+  # global CSP — default-deny; inline script authorised by hash only.
+  Header always set Content-Security-Policy "default-src 'none'; upgrade-insecure-requests; script-src 'self' 'sha256-c4FkQHDOYdbxIMhLU8ATf6N5ghZraFmwUYOjEUMXkDY=' 'sha256-TWclPSpMaTbxEIfz4cRPUMbot1Tylbx2f0lYsawkYGA=' 'sha256-4Fu481C+/mktGJCLdyqpMJqsnB02PRsuEq13yW+YFAk=' 'sha256-B71zc5uRStNPKnOmm7V/kIo7tUlvec45PMq0oNlfXQc='; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; font-src 'self'; img-src 'self'; manifest-src 'self'; worker-src 'self'; connect-src 'self'; frame-src 'none'; child-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; require-trusted-types-for 'script'; trusted-types tp-app"
+
+  # source-reader exception — adds source reader inline hash + tp-source-view.
+  # matches the neutral reader app and both bilingual reader pages.
+  # SetEnvIf-based because LocationMatch is server-config-only.
+  SetEnvIf Request_URI "^/(en-au/source/view|fr/source/voir|source/view)/" IS_SOURCE_VIEW=1
+  Header always unset Content-Security-Policy env=IS_SOURCE_VIEW
+  Header always set Content-Security-Policy "default-src 'none'; upgrade-insecure-requests; script-src 'self' 'sha256-c4FkQHDOYdbxIMhLU8ATf6N5ghZraFmwUYOjEUMXkDY=' 'sha256-TWclPSpMaTbxEIfz4cRPUMbot1Tylbx2f0lYsawkYGA=' 'sha256-4Fu481C+/mktGJCLdyqpMJqsnB02PRsuEq13yW+YFAk=' 'sha256-B71zc5uRStNPKnOmm7V/kIo7tUlvec45PMq0oNlfXQc=' 'sha256-ong18574DRSzuyO+zjuDNWecbI/I+ojY9Bvoi6zBtvw='; script-src-attr 'none'; style-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='; style-src-attr 'none'; font-src 'self'; img-src 'self'; manifest-src 'self'; worker-src 'self'; connect-src 'self'; frame-src 'none'; child-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; require-trusted-types-for 'script'; trusted-types tp-app tp-source-view" env=IS_SOURCE_VIEW
+
+  # sw.js exception — workers need a narrower script-src 'self' only.
+  <FilesMatch "^sw\.js$">
+    Header always unset Content-Security-Policy
+    Header always set Content-Security-Policy "default-src 'none'; script-src 'self'; connect-src 'self'; form-action 'none'; base-uri 'none'"
+  </FilesMatch>
+  # END CSP
+</IfModule>
+
+
+# ============================================================
+# e. Cache-control + MIME
+# ============================================================
+# Convention:
+#   - SetEnvIf Request_URI ... for path-state flags (archive, source-mirror)
+#   - <FilesMatch> for basename-keyed MIME / cache (FilesMatch sees basenames only)
+#   - active HTML never caches; versioned assets are immutable for a year
+<IfModule mod_headers.c>
+  # frozen archive assets: immutable for one year. URL-prefix gated because
+  # FilesMatch sees only the basename and would mis-fire across paths.
+  SetEnvIf Request_URI "^/integrity/releases/[0-9]{4}-[0-9]{2}/assets/" IS_ARCHIVE_ASSET=1
+  Header always set Cache-Control "public, max-age=31536000, immutable" env=IS_ARCHIVE_ASSET
+
+  # active HTML must never be cached; freshness is preferred over edge reuse.
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0" env=!IS_ARCHIVE_ASSET
+    Header set Pragma "no-cache" env=!IS_ARCHIVE_ASSET
+    Header set Expires "0" env=!IS_ARCHIVE_ASSET
+  </FilesMatch>
+
+  # active css / js / sw — clean filenames, must revalidate.
+  <FilesMatch "^(styles|app|cite|sw)\.(css|js)$">
+    Header set Cache-Control "no-cache, must-revalidate" env=!IS_ARCHIVE_ASSET
+  </FilesMatch>
+  <FilesMatch "^(print|cite)\.css$">
+    Header set Cache-Control "public, max-age=86400, must-revalidate" env=!IS_ARCHIVE_ASSET
+  </FilesMatch>
+
+  # versioned content-addressed assets — immutable for one year.
+  # IS_VERSIONED_ASSET is set by the mod_rewrite block in section b
+  # (mod_rewrite runs before mod_headers).
+  <FilesMatch "\.(css|js|woff2?)$">
+    Header set Cache-Control "public, max-age=31536000, immutable" env=IS_VERSIONED_ASSET
+  </FilesMatch>
+
+  # executable MIME — nosniff is global; js/css must declare type.
+  <FilesMatch "\.(js|mjs)$">
+    Header set Content-Type "application/javascript; charset=utf-8" env=!IS_ARCHIVE_ASSET
+  </FilesMatch>
+  <FilesMatch "\.css$">
+    Header set Content-Type "text/css; charset=utf-8" env=!IS_ARCHIVE_ASSET
+  </FilesMatch>
+
+  # active fonts revalidate; archive fonts inherit immutable above.
+  <FilesMatch "\.woff2$">
+    Header set Cache-Control "public, max-age=86400, must-revalidate" env=!IS_ARCHIVE_ASSET
+    Header set Content-Type "font/woff2"
+  </FilesMatch>
+
+  # active icons + jpgs — short cache, revalidate.
+  <FilesMatch "^(favicon\.svg|favicon\.ico|apple-touch-icon\.png|icon-(192|512)\.png)$">
+    Header set Cache-Control "public, max-age=86400, must-revalidate" env=!IS_ARCHIVE_ASSET
+  </FilesMatch>
+  <FilesMatch "^(trent-power|trent-power-og)\.jpg$">
+    Header set Cache-Control "public, max-age=86400, must-revalidate" env=!IS_ARCHIVE_ASSET
+  </FilesMatch>
+
+  # identity + metadata files — short cache, declared MIME.
+  <FilesMatch "^sitemap\.xml$">
+    Header set Cache-Control "public, max-age=3600"
+    Header set Content-Type "application/xml; charset=utf-8"
+  </FilesMatch>
+  <FilesMatch "^robots\.txt$">
+    Header set Cache-Control "public, max-age=3600"
+    Header set Content-Type "text/plain; charset=utf-8"
+  </FilesMatch>
+  <FilesMatch "^security\.txt$">
+    Header set Cache-Control "public, max-age=86400"
+    Header set Content-Type "text/plain; charset=utf-8"
+  </FilesMatch>
+  <FilesMatch "^(humans|pgp|ai-usage|assertion|statement|attribution)\.txt$">
+    Header set Cache-Control "public, max-age=3600"
+    Header set Content-Type "text/plain; charset=utf-8"
+  </FilesMatch>
+  <FilesMatch "^pgp-key\.asc$">
+    Header set Cache-Control "public, max-age=3600"
+    Header set Content-Type "application/pgp-keys"
+  </FilesMatch>
+  <FilesMatch "^attribution\.sig$">
+    Header set Cache-Control "public, max-age=3600"
+    Header set Content-Type "application/pgp-signature"
+  </FilesMatch>
+  <FilesMatch "^attestations\.json$">
+    Header set Cache-Control "public, max-age=3600"
+    Header set Content-Type "application/json; charset=utf-8"
+  </FilesMatch>
+  <FilesMatch "^manifest\.webmanifest$">
+    Header set Cache-Control "public, max-age=3600"
+    Header set Content-Type "application/manifest+json; charset=utf-8"
+  </FilesMatch>
+  <FilesMatch "^llms\.txt$">
+    Header set Cache-Control "no-cache, must-revalidate"
+    Header set Content-Type "text/plain; charset=utf-8"
+  </FilesMatch>
+  <FilesMatch "^person\.json$">
+    Header set Cache-Control "no-cache, must-revalidate"
+    Header set Content-Type "application/ld+json; charset=utf-8"
+  </FilesMatch>
+  <FilesMatch "^site-metadata\.json$">
+    Header set Cache-Control "no-cache, must-revalidate"
+    Header set Content-Type "application/json; charset=utf-8"
+  </FilesMatch>
+  <FilesMatch "^integrity\.json$">
+    Header set Cache-Control "public, max-age=300, must-revalidate"
+    Header set Content-Type "application/json; charset=utf-8"
+  </FilesMatch>
+  <FilesMatch "^integrity\.json\.sig$">
+    Header set Cache-Control "public, max-age=300, must-revalidate"
+    Header set Content-Type "application/pgp-signature"
+  </FilesMatch>
+
+  # SVGs — active revalidate; archive immutable via IS_ARCHIVE_ASSET.
+  <FilesMatch "\.svg$">
+    Header set Content-Type "image/svg+xml; charset=utf-8"
+    Header set Cache-Control "public, max-age=86400, must-revalidate" env=!IS_ARCHIVE_ASSET
+  </FilesMatch>
+
+  # source mirror: /source/*.txt and source-manifest.json revalidate.
+  SetEnvIf Request_URI "^/source/" IS_SOURCE_MIRROR=1
+  <FilesMatch "\.txt$">
+    Header set Content-Type "text/plain; charset=utf-8" env=IS_SOURCE_MIRROR
+    Header set Cache-Control "no-cache, must-revalidate" env=IS_SOURCE_MIRROR
+  </FilesMatch>
+  <FilesMatch "^source-manifest\.json$">
+    Header set Content-Type "application/json; charset=utf-8"
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # service worker — never immutable; declare MIME + Service-Worker-Allowed.
+  # CSP for sw.js is set in section d.
+  <FilesMatch "^sw\.js$">
+    Header always set Content-Type "application/javascript; charset=utf-8"
+    Header always set Service-Worker-Allowed "/"
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+
+  # source reader scripts — short cache, revalidate.
+  <FilesMatch "^(source-view|source-view-manifest)\.js$">
+    Header set Content-Type "application/javascript; charset=utf-8"
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # versioned verification data — immutable; unversioned alias revalidates.
+  <FilesMatch "^verification-data\.[0-9]{4}-[0-9]{2}-[0-9]{2}\.[a-f0-9]+\.js$">
+    Header set Content-Type "application/javascript; charset=utf-8"
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "^verification-data\.js$">
+    Header set Content-Type "application/javascript; charset=utf-8"
+    Header set Cache-Control "public, max-age=300, must-revalidate"
+  </FilesMatch>
+
+  # versioned fonts-full — immutable; the unversioned alias revalidates.
+  <FilesMatch "^fonts-full\.[0-9]{4}-[0-9]{2}-[0-9]{2}\.[a-f0-9]+\.css$">
+    Header set Content-Type "text/css; charset=utf-8"
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "^fonts-full\.css$">
+    Header set Content-Type "text/css; charset=utf-8"
+    # only revalidate when the request is UNVERSIONED — the
+    # IS_VERSIONED_ASSET env flag is set by the rewrite at section b
+    # when ?v=YYYY-MM-DD.<sha8> is present, and the catch-all rule
+    # at line ~303 then applies the immutable cache. without
+    # env=!IS_VERSIONED_ASSET this rule would otherwise override
+    # immutable for fonts-full.css?v=... and trip the deploy smoke
+    # test for /fonts-full.css?v={asset_version} Cache-Control.
+    Header set Cache-Control "no-cache, must-revalidate" env=!IS_VERSIONED_ASSET
+  </FilesMatch>
+</IfModule>
+
+
+# ============================================================
+# f. error documents
+# ============================================================
+ErrorDocument 403 /403.html
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+
+# ============================================================
+# g. directory / method controls + etag
+# ============================================================
+# ServerTokens is server-config-only and would 500 the site here; omit.
+Options -Indexes
+ServerSignature Off
+
+# static site: only GET / HEAD are legitimate.
+<LimitExcept GET HEAD>
+  Require all denied
+</LimitExcept>
+
+# etag from mtime+size; no inode leak.
+FileETag MTime Size
+
+
+# ============================================================
+# h. compression
+# ============================================================
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/javascript application/javascript application/json application/ld+json application/jrd+json application/manifest+json image/svg+xml text/xml application/xml text/plain
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json application/ld+json application/jrd+json application/manifest+json image/svg+xml text/xml application/xml text/plain
+</IfModule>
+
+
+# ============================================================
+# i. private artefact fallback deny (defense-in-depth)
+# ============================================================
+# these FilesMatch blocks run after the mod_rewrite gate. their job is
+# to catch accidental uploads that slip past the gate's basename rules.
+# Header-context files / FilesMatch sees basenames only; path-shaped
+# denies live in section b.
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+# operational / source / IDE file extensions. archive extensions
+# (zip/tar/gz/7z) are intentionally NOT denied here — signed snapshots
+# are published under /integrity/releases/<edition>/.
+<FilesMatch "\.(md|py|sh|bak|old|orig|tmp|log|sql|sqlite|db|env|ini|ya?ml|map|psd|ai|fig|sketch)$">
+  Require all denied
+</FilesMatch>
+
+# explicit lockfile + secrets-config denial. caught above by extension
+# rules too; named here so an audit grep for these basenames finds them.
+<FilesMatch "^(\.user\.ini|\.env(\.|$)|\.htpasswd|composer\.(json|lock)|package(-lock)?\.json|yarn\.lock|pnpm-lock\.yaml)$">
+  Require all denied
+</FilesMatch>
+
+# filenames suggesting private / transactional content.
+<FilesMatch "(?i)(invoice|licen[cs]e|order|credential|password|secret)">
+  Require all denied
+</FilesMatch>

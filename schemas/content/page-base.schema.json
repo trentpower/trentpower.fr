@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trentpower.fr/schemas/content/page-base.schema.json",
+  "title": "Page base",
+  "description": "Common envelope every editable content page shares: a `meta` map whose every entry is a strict SEO block. Page-specific schemas $ref this and add their own content surfaces. Surfaces and the French `translation` block are allowed via additionalProperties.",
+  "type": "object",
+  "required": ["meta"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "https://trentpower.fr/schemas/content/seo.schema.json"
+      }
+    },
+    "translation": { "type": "object" }
+  },
+  "additionalProperties": true
+}

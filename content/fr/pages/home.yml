@@ -1,0 +1,158 @@
+translation:
+  source_page: home
+  source_hash: sha256-85ba64f71d9bb0173c5a1d522ee8454f487fbd4d187cff6e8ee329cf70292dad
+  status: machine-assisted
+  updated: '2026-05-22'
+meta:
+  home:
+    title: Stratégie Client & Systèmes de Croissance · Trent Power
+    description: Stratégie client, systèmes de croissance et adoption culturelle à l’échelle mondiale
+    og_title: Stratégie Client & Systèmes de Croissance · Trent Power
+    og_description: Stratégie client, systèmes de croissance et adoption culturelle à l’échelle mondiale
+hero:
+  statement: Stratégie client,<br><mark>systèmes de croissance</mark><br>et adoption culturelle<br>à l’échelle mondiale.
+  body: |-
+    Je pilote la stratégie client au niveau du Groupe, en me concentrant sur les systèmes,
+    la gouvernance et les façons de travailler qui transforment les relations clients en
+    valeur à long terme. Mon travail se situe à l’intersection de la stratégie, de la
+    technologie et des relations humaines, avec un impact qui se déploie à grande échelle
+    et dans la durée.
+approach:
+  label: Approche
+  growth_title: La croissance client exige une discipline
+  growth_body: Une croissance durable repose sur des systèmes élégants.
+  clienteling_title: Le clienteling transforme la transaction en sens
+  clienteling_detail: Le <dfn id="clienteling-definition" itemprop="name">clienteling</dfn><meta itemprop="url" content="https://trentpower.fr/fr/#clienteling-definition"> <span itemprop="description">est la pratique disciplinée qui transforme ce qu’un Conseiller Client sait en quelque chose qu’un Client ressent. Dès que les interactions deviennent mécaniques, ce n’est plus du clienteling.</span>
+  adoption_title: L’adoption compte plus que les outils
+  adoption_body: |-
+    Une stratégie ou une technologie ne crée de la valeur que lorsque les équipes lui font
+    confiance et choisissent de l’utiliser. La confiance se mérite, l’utilité se démontre.
+    Les Conseillers Clients sont des Clients de première ligne et des collaborateurs
+    essentiels.
+  ai_title: L’IA doit amplifier les relations humaines
+  ai_body: |-
+    L’authenticité est un avantage humain, elle ne peut pas être automatisée. La
+    confiance, l’empathie et le jugement se construisent dans l’instant, à travers le ton
+    et la présence. J’utilise l’IA pour réduire les frictions, afin que chacun puisse être
+    plus pertinent, plus cohérent et plus humain, à grande échelle.
+  governance_title: La gouvernance crée de l’élan
+  governance_body: |-
+    Des responsabilités claires, une cadence régulière et des priorités créent
+    l’alignement, accélèrent les décisions et permettent le passage à l’échelle.
+  taste_title: Le goût est un avantage stratégique
+  taste_body: |-
+    Le discernement et la conscience culturelle façonnent les interactions en quelque
+    chose de précieux et mémorable.
+credentials:
+  label: Parcours académique
+  sydney_title: University of Sydney
+  sydney_detail: Master, 2009.
+  exec_title: Formation exécutive sélective
+  exec_detail: |-
+    Apprentissage senior en continu — intelligence artificielle, comportement
+    consommateur, transformation organisationnelle et coaching en leadership.
+trajectory:
+  label: Parcours
+  current_label: Actuel
+  current_title: Directeur Groupe, Développement Client & Relations Clients
+  current_org: <abbr title="Louis Vuitton Moët Hennessy">LVMH</abbr>
+  current_detail: Stratégie client à l’échelle du Groupe, à travers Maisons et marchés
+  current_span: 2023 — aujourd’hui
+  previous_label: Précédent
+  previous_title: Responsable Groupe Clienteling
+  previous_org: <abbr title="Louis Vuitton Moët Hennessy">LVMH</abbr>
+  previous_span: 2017 — 2023
+  maisons_label: Maisons
+  maisons_title: Direction senior en <a href="/#clienteling-definition" aria-label="Lire la définition de Clienteling utilisée sur ce site">Clienteling</a>, <abbr title="Customer Relationship Management">CRM</abbr> & Retail
+  maisons_org: BVLGARI
+  maisons_span: 2004 — 2017
+  background_label: Parcours initial
+  background_title: Entrepreneur web
+  background_detail: Construire des plateformes et des communautés en ligne
+  background_span: 1997 — 2004
+projects:
+  label: Projets
+  paris_desc: |-
+    Un système privé d’intelligence culturelle pour Paris, combinant localisation, effort,
+    jugement éditorial et goût personnel pour décider plus calmement ce qui mérite une
+    sortie.
+  paris_subline: |-
+    Une expérimentation personnelle autour des systèmes de goût, de la pertinence locale
+    et de la recommandation à échelle humaine.
+  paris_preview_header: Cette semaine près de Jourdain, 20e
+  paris_preview_caption: Un échantillon de sélections d'intelligence culturelle, une semaine, un quartier.
+  paris_cta: Voir le projet
+  tier_walk: à pied
+  tier_metro: métro
+  tier_bike: vélo
+contact:
+  label: Contact
+  headline: <span>Écrivez-moi,</span><span>et je <em>vous répondrai.</em></span>
+  email_aria: Écrire à Trent Power
+home:
+  trust_privacy: confidentialité d’abord
+  trust_signed: versions signées
+  trust_static: statique
+  trust_no_tracking: sans suivi
+print:
+  kicker: trentpower.fr
+  name: Trent Power
+  role: Stratégie client, systèmes de croissance et adoption culturelle
+  contact:
+    linkedin: LinkedIn · Trent Power
+  title: Stratégie client, systèmes de croissance et adoption culturelle à l’échelle mondiale
+  body: Je dirige la stratégie client au niveau Groupe, en me concentrant sur les systèmes, la gouvernance et les méthodes de travail qui transforment les relations clients en valeur durable. Mon travail se situe à l’intersection de la stratégie, de la technologie et des relations humaines, avec un impact qui passe à l’échelle et qui dure.
+  focus:
+    '01':
+      label: 01 Focus
+      title: La croissance client exige une discipline
+      body: Une croissance durable repose sur des systèmes solides.
+    '02':
+      label: 02 Adoption
+      title: L’adoption compte plus que les outils
+      body: La technologie crée de la valeur quand les équipes lui font confiance, la choisissent et l’utilisent.
+    '03':
+      label: 03 Relations humaines
+      title: L’IA doit amplifier les relations humaines
+      body: L’authenticité reste un avantage humain ; l’automatisation doit renforcer le contexte, la mémoire et l’attention.
+    '04':
+      label: 04 Gouvernance
+      title: La gouvernance crée de l’élan
+      body: Un cadre de responsabilité clair et des priorités disciplinées créent l’alignement et l’échelle.
+  credentials:
+    label: Parcours académique
+    sydney_title: University of Sydney
+    sydney_detail: Master, 2009.
+    exec_title: Formation exécutive sélective
+    exec_detail: Apprentissage senior en continu — intelligence artificielle, comportement consommateur, transformation organisationnelle et coaching en leadership.
+  trajectory:
+    label: Parcours
+    current:
+      label: Actuel
+      body: Directeur Groupe, Développement Client & Relations Clients · LVMH
+    previous:
+      label: Précédent
+      body: Direction senior en Clienteling, CRM et Développement Client
+    background:
+      label: Parcours initial
+      body: 'Travaux digitaux et entrepreneuriaux fondateurs : plateformes et communautés en ligne'
+  project:
+    label: Point de preuve
+    title: What’s On in Paris
+    body: Un système privé d’intelligence culturelle pour Paris, combinant localisation, effort, jugement éditorial et goût personnel pour décider plus calmement de ce qui mérite que l’on sorte de chez soi.
+    note: Une expérimentation personnelle sur les systèmes de goût, la pertinence locale et la recommandation à échelle humaine.
+  footer:
+    proof: Privé · Statique · Signé · Sans suivi
+    edition: Édition <time datetime="2026-05-17">2026-05-17</time> · https://trentpower.fr/
+    citation: Trent Power. Site personnel. Paris, France.
+    evidence: Document public · HTML · Édition du 17 mai 2026
+  place: Site personnel · Paris, France
+  doc_title: Trent Power - Profil exécutif stratégie client
+  arch:
+    caption: Statique, respectueux de la vie privée, signé et inspectable
+    browser: Navigateur
+    host: Hébergement
+    files: Fichiers
+    cache: Cache
+    trust: Confiance
+    archive: Archive

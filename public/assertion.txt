@@ -1,0 +1,29 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+i, trent power, assert that this domain represents my personal reference site.
+
+Domain:       trentpower.fr
+Identity:     https://trentpower.fr/#trent-power
+ORCID:        https://orcid.org/0009-0002-2652-7188
+
+this statement may be verified using the public key at:
+https://trentpower.fr/.well-known/pgp-key.asc
+
+Fingerprint:  a729 591b 450d 3f59 3694 98bd 8299 1f25 04ae 0263
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEpylZG0UNP1k2lJi9gpkfJQSuAmMFAmoIm4sACgkQgpkfJQSu
+AmO1rxAAjkp8nylf7zsD22Aoch34maIUiDFdP5PhkwsG3OmnFvlwQ/Lggz/iOIvv
+T1UyJz0A4k1Im6PbvPRtzCVMD/1ifZpXaYU15/kxNC2Xi+Rj96Eu9RPDRepqE0uO
+NHzDWboQeP4XbX2+Xs+ufNA45gk/mGqJGxF578Zsd04/v4+n5+4m4tBZGzp+vofK
+3+jb/qPOIsuVydiHhlcfL6KopgWf2XhoFU1NvpH4r1mtDgNnehOMWcxDPp8dOfgt
+trMudXIR2WHKbsTU9bxqLVVOtFns9kEEI6ebUXRwr9uyZ6QuQOuOrdK8FNbwNCXU
+EvOMEtl9bKJDbA90/967QZpMiNJ6xa1C0gxygaLwT2VWi0b1nHTZRF3jrqbwzLEY
+MggjHoO1808ePpaP7YZmVvfgrMXdEcxcrDmRSoHMxbgJaN7+13ZmZUm4qJjFuxcV
+leSMp1b+xN3UfsId3OdWjDOiHYGXAm8hYAAhXY6HdpmXJo95BQG9vr8QexW4Tyj+
+IcY2QSv1IylHpXRphHLpGkXRLLnBCilCv9qNm+1fe1PHThH0KhrwvhsM1xetY0bC
+KwqD9+4np5i0fb4G3V6tGLwixeNn8oBZLguQOe90zCenlGz8fFS1KCln74AkJrJE
+3TIdJhjImiYkCRTXYyFGm/WYj/L2zy01JOgdOj7J9EedDa1args=
+=XoA8
+-----END PGP SIGNATURE-----

@@ -1,0 +1,31 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+i, trent power, maintain trentpower.fr as my personal reference site.
+
+it represents my professional identity, approach, and selected work.
+it does not represent any employer, organisation, or third party.
+
+all declared content is authored by me.
+all attestations are cryptographically signed by me.
+
+this statement may be verified using the public key at:
+https://trentpower.fr/.well-known/pgp-key.asc
+
+Fingerprint:  a729 591b 450d 3f59 3694 98bd 8299 1f25 04ae 0263
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEpylZG0UNP1k2lJi9gpkfJQSuAmMFAmoIm5UACgkQgpkfJQSu
+AmME3w/+MhEGYp78wiiwAyfLoTe6qhubZPUKZLgJ57sKfvxe09V7cJYSvX+Lao+E
+Ldg0mSXbRS9nC/TTvyvISKFXJbPNWOGsqoYkEtjHXlPf1bS7tbmR03sD11O7QiPN
+Qfb9Zz5bx5OmzUrqzdacyWa+4ip8fAYt3I6U+HcFlFUTCJYTN7RcLw6iGmiveJWN
+Mr+TnDBbOunzxIcEk8KWEuAe+nuxINeLHJCPUt5CD1H0y5Lqj1zkZTSgqDB+Ggke
+UNOc6swKr22b2410sNSMFpGxGFEMPNBpOO1TdPdiPC0vdGkPWTqAZt7aZXu1mk2d
+5QY8wHqLh8vfwXZKixTnNhY2PVtQk1flFCXFpiFe0qD5y7gArvNDxQnemSpVVJpd
+PzMIjrTd81pU3wtFUu/zrCERGzk0vc+J7FI9A4qfUQvyBMR3drYfO01mp9TtYkLY
+wwwzoWA/5nYTzbNjEZ33fX8rma26twVlu2Kcgu/1nE6KZEeo/Q1NpuWMqnGwU29T
+dcQK6bQiDh6JO20L1o0yFXsuRhop7i5hPJoTrPzXzlkc5K5FTtzns60toiO2xs16
+IPu61X/2IUooFMfwFk0JvzXSGu6GT1A+0eqBr3ybS2Qd9Na7hfPxtbbF2JXSh0Oh
+Nthgo4idgpMVItHLISfb/Ywfgkm+nxzXRamBNtQdL92oMoaA6qc=
+=Np30
+-----END PGP SIGNATURE-----

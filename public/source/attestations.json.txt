@@ -1,0 +1,15 @@
+{
+  "site": "https://trentpower.fr",
+  "edition": "2026-05-08",
+  "analytics": false,
+  "cookies": false,
+  "third_party_requests": false,
+  "advertising": false,
+  "forms": false,
+  "local_storage": ["language_preference"],
+  "server_logs": "hosting-provider-default",
+  "automated_publishing": false,
+  "manual_review_before_publication": true,
+  "language_model_assistance": "selective drafting or structuring only",
+  "last_reviewed": "2026-05-08"
+}

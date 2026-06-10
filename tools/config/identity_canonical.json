@@ -1,0 +1,122 @@
+{
+  "_comment": "Canonical identity file. All generated outputs derive from this. Edit here, then run: python3 generate_site.py",
+  "domain": "trentpower.fr",
+  "url": "https://trentpower.fr",
+  "edition": "2026-06-10",
+  "repository": {
+    "url": "https://github.com/trentpower/trentpower.fr",
+    "branch": "main"
+  },
+  "person": {
+    "name": "Trent Power",
+    "jobTitle": {
+      "en": "Group Director, Client Development & Client Relations",
+      "fr": "Directeur Groupe, D\u00e9veloppement Client & Relations Clients"
+    },
+    "description": {
+      "en": "Client strategy, growth systems and cultural adoption at global scale",
+      "fr": "Strat\u00e9gie client, syst\u00e8mes de croissance et adoption culturelle \u00e0 l'\u00e9chelle mondiale"
+    },
+    "entity_summary": {
+      "en": "Trent Power is a Paris-based leader in client strategy and client development in the luxury industry.",
+      "fr": "Trent Power est un leader bas\u00e9 \u00e0 Paris en strat\u00e9gie client et d\u00e9veloppement client dans l'industrie du luxe."
+    },
+    "addressLocality": "Paris",
+    "addressCountry": "FR",
+    "nationality": "Australia",
+    "worksFor": {
+      "name": "LVMH",
+      "sameAs": "https://www.wikidata.org/wiki/Q504998"
+    },
+    "alumniOf": {
+      "name": "University of Sydney",
+      "sameAs": "https://www.wikidata.org/wiki/Q486285"
+    },
+    "orcid": "0009-0002-2652-7188",
+    "knowsLanguage": [
+      "en",
+      "fr"
+    ],
+    "knowsAbout": {
+      "en": [
+        "Client strategy",
+        "Client development",
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://trentpower.fr/#clienteling-definition",
+          "name": "Clienteling",
+          "url": "https://trentpower.fr/#clienteling-definition"
+        },
+        "CRM",
+        "Luxury retail",
+        "Cultural adoption",
+        "Organisational change management",
+        "AI in client relationships",
+        "Governance systems"
+      ],
+      "fr": [
+        "Strat\u00e9gie client",
+        "D\u00e9veloppement client",
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://trentpower.fr/#clienteling-definition",
+          "name": "Clienteling",
+          "url": "https://trentpower.fr/#clienteling-definition"
+        },
+        "CRM",
+        "Retail de luxe",
+        "Adoption culturelle",
+        "Gestion du changement organisationnel",
+        "IA dans les relations clients",
+        "Syst\u00e8mes de gouvernance"
+      ]
+    },
+    "subjectOf": [
+      {
+        "name": "VivaTech 2025 speaker profile",
+        "url": "https://vivatech.com/speakers/trent-power"
+      },
+      {
+        "name": "D-Congress 2024 overview",
+        "url": "https://dcongress.com/about-us/"
+      },
+      {
+        "name": "Fostering meaningful client relationships at LVMH",
+        "url": "https://www.insidelvmh.com/article/fostering-meaningful-client-relationships-at-lvmh"
+      }
+    ]
+  },
+  "sameAs": [
+    "https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg",
+    "https://www.linkedin.com/in/trentpower/",
+    "https://github.com/trentpower/trentpower.fr",
+    "https://orcid.org/0009-0002-2652-7188",
+    "https://www.crunchbase.com/person/trent-power-3f52"
+  ],
+  "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Trent_Power_portrait.jpg",
+    "filename": "trent-power.jpg",
+    "creditText": "David Arous",
+    "copyrightNotice": "\u00a9 David Arous",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "acquireLicensePage": "https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg",
+    "creatorName": "David Arous",
+    "creatorUrl": "https://histoiresdimages.pixieset.com/davidarous-histoiresdimages-agencephoto/"
+  },
+  "privacy": {
+    "tracking": false,
+    "analytics": false,
+    "cookies": false,
+    "thirdPartyRequests": false
+  },
+  "license": {
+    "content": "All rights reserved",
+    "portrait": "https://creativecommons.org/licenses/by-sa/4.0/"
+  },
+  "topics": [
+    "clienteling systems",
+    "organisational adoption",
+    "governance and operating models",
+    "AI supporting human relationships"
+  ]
+}

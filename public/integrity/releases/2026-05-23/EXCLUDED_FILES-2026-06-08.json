@@ -1,0 +1,507 @@
+{
+  "schema": "trentpower.archive-exclusions.v1",
+  "edition": "2026-05-23",
+  "generated_at": "2026-05-23T00:00:00Z",
+  "principle": "every file the build deliberately dropped from this archive is listed here, with a category and reason a verifier can check. files present in the live site's signed integrity.json but absent from this archive must appear in this manifest; anything else is unexpected.",
+  "categories": {
+    "proprietary_asset": "licensed binary the licence prohibits redistributing",
+    "build_input": "source file used to generate the public tree, not part of the published site",
+    "internal_artefact": "private operational file (credentials, infra, ssh keys, internal records)",
+    "release_companion": "file shipped alongside the archive at the release directory, not inside it",
+    "transient": "operating-system / editor / vcs scratch (caches, lockfiles, .DS_Store, etc.)"
+  },
+  "exclusions": [
+    {
+      "path": "SHA256SUMS",
+      "category": "release_companion",
+      "reason": "aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body"
+    },
+    {
+      "path": "SHA256SUMS.sig",
+      "category": "release_companion",
+      "reason": "aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body"
+    },
+    {
+      "path": "documentation/README.txt",
+      "category": "build_input",
+      "reason": "repo readme; archive ships its own README.txt with edition-specific contents",
+      "live_sha256": "sha256-H/e6vyjmY8/9AVVr/gdIgANz2Uu+/0g+IdDjzZlZl3k=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "fonts/signifier-light-italic.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-IuPpDMMkKcrHa0LADLAdiClRLhzOVPB3pUm75kzwsB4=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "fonts/signifier-light.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-o1dw532X4yd7SEy9tyF286Up8Au0IXFJ6hPttWjsftI=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "fonts/signifier-regular-italic.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-xzxFKjTS0ZVQkQrRs4gBcfwaNEJwZ2HhUgTaeTG/NEA=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "fonts/signifier-regular.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-wHyuoHT+EC0M1yBn9jdZAn7bm7ACJJIOq7XS4ntbUI0=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "fonts/soehne-buch.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-k3FEj7FGWoLVyTg4FB9Bqs8ryGzsrOkeaulT6PJBflg=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "fonts/soehne-kraftig.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-FbjnVb5MXZ8H9bYd5hV4JtB7QRAdsv2Vlxs4w60NuZE=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "fonts/soehne-mono-buch.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-capOiTl+a+3Y5M7QsbPY3OmlQ611kFcli7uSx9fC7QQ=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "fonts/soehne-mono-kraftig.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-LIZzESgp262JxVmSotiTqiKNUUQltq36aj52PndDK1U=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "fonts/subsets/signifier-light-hero.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-SpP8KnJBCvp/WSRlPaaxKqvug71Zirte+V2Kl2xhvEw=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "fonts/subsets/soehne-kraftig-nav.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-v82I7eTB1pKMB6T36d+F3zoi9KCUnzO+VgtEZI5fYAU=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "fonts/subsets/soehne-mono-buch-labels.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-wP6dgf0KiC8v/hs64w5V3Hcl7xNGkkp/lXRoymogK/E=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "integrity/releases/2026-02/assets/fonts/ibm-plex-mono-300.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-0s4iWV1VpSsMY/g3UVcpvZdwa/obgzgWUJ8T2T2qWbU=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "integrity/releases/2026-02/assets/fonts/ibm-plex-mono-400.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-CJSfco3FLVKOabFmfRXImlaGpO6aKW/5CYOYX5nDgPc=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "integrity/releases/2026-02/assets/fonts/ibm-plex-mono-500.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-AdKFRHQJyKWIaSFiQ5oDi4y9eHEwnuICZ7DS2RxujiI=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "integrity/releases/2026-02/assets/fonts/ibm-plex-mono-600.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-DR8LjQciIk4y6fKCYb3IbHkRW+c0RK5ezrc5dqG834M=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "integrity/releases/2026-02/assets/fonts/newsreader-300.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-c3CwgppNYMaRi3ddL6SGx4UKds9c01UE957zhXmHlSo=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "integrity/releases/2026-02/assets/fonts/newsreader-400.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-5mBngU8cZy0zpFfk9NECyBi0gUIOIjTPaF69vy9EOQQ=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "integrity/releases/2026-02/assets/fonts/newsreader-400i.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-+puQBAOUnZpyMQZ1KlyK0nlwEqDJBXQnsdotty1VIUg=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "integrity/releases/2026-02/assets/fonts/newsreader-500.woff2",
+      "category": "proprietary_asset",
+      "reason": "klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement",
+      "live_sha256": "sha256-VhPi/IN3OSwC6KydVQFGiftTIKXyp75V6AiKMUcorCw=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    },
+    {
+      "path": "integrity/releases/2026-05-09/SHA256SUMS",
+      "category": "release_companion",
+      "reason": "aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body"
+    },
+    {
+      "path": "integrity/releases/2026-05-09/SHA256SUMS.sig",
+      "category": "release_companion",
+      "reason": "aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body"
+    },
+    {
+      "path": "integrity/releases/2026-05-09/trentpower-fr-2026-05-09.tar.gz",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-09/trentpower-fr-2026-05-09.tar.gz.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-09/trentpower-fr-2026-05-09.tar.gz.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/SHA256SUMS",
+      "category": "release_companion",
+      "reason": "aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/SHA256SUMS.sig",
+      "category": "release_companion",
+      "reason": "aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-17.tar.gz",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-17.tar.gz.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-17.tar.gz.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-17.zip",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-17.zip.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-17.zip.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-18.tar.gz",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-18.tar.gz.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-18.tar.gz.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-18.zip",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-18.zip.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-18.zip.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-19.tar.gz",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-19.tar.gz.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-19.tar.gz.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-19.zip",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-19.zip.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-19.zip.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-20.tar.gz",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-20.tar.gz.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-20.tar.gz.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-20.zip",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-20.zip.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-17/trentpower-fr-2026-05-20.zip.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/SHA256SUMS",
+      "category": "release_companion",
+      "reason": "aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/SHA256SUMS.sig",
+      "category": "release_companion",
+      "reason": "aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-19.tar.gz",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-19.tar.gz.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-19.tar.gz.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-19.zip",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-19.zip.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-19.zip.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-20.tar.gz",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-20.tar.gz.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-20.tar.gz.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-20.zip",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-20.zip.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-20.zip.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-21.tar.gz",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-21.tar.gz.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-21.tar.gz.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-21.zip",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-21.zip.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-21.zip.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-22.tar.gz",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-22.tar.gz.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-22.tar.gz.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-22.zip",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-22.zip.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-22.zip.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-23.tar.gz",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-23.tar.gz.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-23.tar.gz.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-23.zip",
+      "category": "release_companion",
+      "reason": "prior or in-flight release archive; never bundled inside another archive"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-23.zip.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "integrity/releases/2026-05-19/trentpower-fr-2026-05-23.zip.sig",
+      "category": "release_companion",
+      "reason": "detached signature for a release archive"
+    },
+    {
+      "path": "sitemap.xml.sha256",
+      "category": "release_companion",
+      "reason": "per-archive sha256 sidecar"
+    },
+    {
+      "path": "source/README.txt",
+      "category": "build_input",
+      "reason": "repo readme; archive ships its own README.txt with edition-specific contents",
+      "live_sha256": "sha256-XcPW1Cs/NMqmmUgf4akGsugCfA+7SRo/zUP4ZVcDI2E=",
+      "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
+    }
+  ]
+}

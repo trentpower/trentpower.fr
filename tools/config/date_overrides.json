@@ -1,0 +1,46 @@
+{
+  "_doc": "date overrides for cases where filesystem mtime is not the right semantic. consulted by generate_file_metadata.py during the placeholder sweep, by generate_site.py for json-ld datePublished, and by validate_dates.py for honesty checks. every entry should carry a reason.",
+
+  "published": {
+    "/":                "2026-02-15",
+    "/privacy/":        "2026-02-15",
+    "/security/":       "2026-02-15",
+    "/security/acknowledgments/": "2026-02-15",
+    "/verify/":         "2026-02-15",
+    "/source/":         "2026-02-15",
+    "/integrity/":      "2026-02-15",
+    "/integrity/releases/": "2026-02-15",
+    "/integrity/verify-locally/": "2026-02-15"
+  },
+
+  "modified": {
+    "_doc": "explicit dateModified overrides. use only when filesystem mtime is misleading (e.g. typo fix that should not bump dateModified). each override must carry a reason.",
+    "_example": {
+      "/legal/imprint/": { "date": "2026-03-01", "reason": "typo fix on 2026-05-09 should not bump dateModified" }
+    }
+  },
+
+  "lastmod": {
+    "_doc": "explicit sitemap lastmod overrides. resolution: explicit 'date' wins; literal 'edition' resolves to identity_canonical.json.edition at build time. assets excluded from file-metadata.json (the manifest excludes its own dependents to avoid cycles) must declare an override here so validate_dates.py can verify them.",
+    "/integrity.json": {
+      "date": "edition",
+      "reason": "integrity manifest excluded from file-metadata.json (would self-reference); lastmod tracks edition"
+    },
+    "/integrity.json.sig": {
+      "date": "edition",
+      "reason": "signature timestamp tracks edition, not the random gpg-armor write moment"
+    },
+    "/site-metadata.json": {
+      "date": "edition",
+      "reason": "asset_version oracle excluded from file-metadata.json (carries the bundle hash that the manifest's bytes would depend on); lastmod tracks edition"
+    }
+  },
+
+  "expires": {
+    "_doc": "expiry dates for time-bound trust records. consulted by validate_dates.py.",
+    "/.well-known/security.txt": {
+      "date": "2027-05-09",
+      "reason": "RFC 9116 Expires; rotated annually with edition"
+    }
+  }
+}

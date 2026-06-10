@@ -1,0 +1,83 @@
+/*! trentpower.fr · authored source */
+/*
+  trentpower.fr
+  full-font upgrade
+
+  Role:
+  after first paint, loads /fonts-full.css — the full editorial
+  @font-face set and a `.fonts-loaded` :root override that flips
+  --serif / --sans / --mono to put the full families first. the
+  subset and full fonts share identical glyph metrics, so the swap
+  is glyph-by-glyph with cls = 0.
+
+  Source:
+  edited here as fonts.template.js; compiled to fonts.js by
+  generate_site.py (minified, no substitution).
+
+  Constraints:
+  - csp style-src 'self' allows the same-origin stylesheet; no
+    trusted-types gate applies (that governs script-URL sinks only)
+  - enhancement only: the subset fonts already render every glyph
+*/
+
+(function () {
+  'use strict';
+
+  // fonts-ready flag · added to <html> as soon as the critical-path
+  // fonts settle (document.fonts.ready resolves) or a 1.2s safety
+  // timeout fires. the hero reveal animation is gated on this class
+  // so the italic <mark> highlight in "growth systems" /
+  // "systèmes de croissance" can never reflow mid-reveal. fires
+  // independently of the fonts-full.css upgrade below — the hero
+  // does not wait on the full editorial set.
+  // the inline page-head bootstrap also schedules a longer (2.5s)
+  // fallback that adds fonts-ready unconditionally, so the hero
+  // reveals even if this script is ever blocked (sri, network).
+  (function readyFlag() {
+    var root = document.documentElement;
+    var done = false;
+    function mark() {
+      if (done) return;
+      done = true;
+      try { root.classList.add('fonts-ready'); } catch (_) {}
+    }
+    try {
+      if (document.fonts && document.fonts.ready && typeof document.fonts.ready.then === 'function') {
+        document.fonts.ready.then(mark, mark);
+        setTimeout(mark, 1200);
+      } else {
+        mark();
+      }
+    } catch (_) {
+      mark();
+    }
+  })();
+
+  if (document.querySelector('link[data-tp-fonts-full]')) return;
+  var link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = '/fonts-full.css';
+  link.setAttribute('data-tp-fonts-full', '');
+  // wait until every pending font load has resolved (loaded or hit
+  // its font-display timeout), then run the class flip inside the
+  // next paint frame so the recalc rides the browser's normal paint
+  // pipeline rather than appearing as a free-standing reflow.
+  function paintFlip() {
+    if (typeof requestAnimationFrame === 'function') {
+      requestAnimationFrame(function () {
+        document.documentElement.classList.add('fonts-loaded');
+      });
+    } else {
+      document.documentElement.classList.add('fonts-loaded');
+    }
+  }
+  link.addEventListener('load', function () {
+    if (document.fonts && document.fonts.ready && typeof document.fonts.ready.then === 'function') {
+      document.fonts.ready.then(paintFlip);
+    } else {
+      setTimeout(paintFlip, 1500);
+    }
+  });
+  document.head.appendChild(link);
+
+})();

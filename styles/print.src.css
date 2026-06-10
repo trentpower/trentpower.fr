@@ -1,0 +1,1233 @@
+/*
+  trentpower.fr
+  print stylesheet
+
+  Role:
+  prints a one-page executive profile from the dedicated
+  .print-profile block. loaded only at print time via media="print".
+
+  Constraints:
+  - hide the live interface
+  - keep the profile to one a4 page
+  - browser headers and footers are controlled by the print dialogue
+*/
+
+/*!
+  Cascade-layer: every @media print block lives inside @layer
+  print-overrides. the 367+ !important declarations in this file
+  exist because @media print has to re-author the world for paper;
+  the layer wrapper documents that intent and lets the architecture
+  validator enforce the contract.
+*/
+
+@layer print-overrides;
+
+@layer print-overrides {
+
+@page {
+  size: A4;
+  /* 14mm top/bottom margins (was 11mm) give the body a strict
+     ~12mm safety buffer below printable area, preventing the
+     rounding-quirk blank second page that some browsers emit
+     when body height matches printable area exactly. */
+  margin: 14mm 12mm 14mm 12mm;
+}
+
+@media print {
+
+  /* ───────────────────────────────────────────────────────────
+     defensive baseline. Re-authors the print intent inside
+     @media print on top of every other rule, anchored against
+     cascade-layer interactions between the screen `@layer
+     overrides` (which sets `display: none !important` on
+     `.print-only` and friends) and this `@layer print-overrides`.
+     the baseline does not un-hide `main`, `.site`, `article`, or
+     `.home-profile`; the homepage's print-profile model owns
+     those decisions below. ios safari has historically composed
+     these layers unevenly; the explicit `display: revert`
+     guarantees the print containers always become visible.
+     ─────────────────────────────────────────────────────────── */
+  html, body {
+    background: #fff !important;
+    color: #1F1E1C !important;
+    width: auto !important;
+    /* one-page constraint, sized for the worst case among a4 and
+       us-letter so ios safari cannot spawn a sliver second page if
+       @page size: a4 is ignored at print time. printable areas at
+       14mm × 14mm vertical margins:
+         a4 (297mm tall)        → 269mm printable
+         us-letter (279mm tall) → 251mm printable
+       body caps at 240mm — strictly less than us-letter printable
+       so no rounding quirk can push residue onto page 2. each print
+       sheet targets ≤230mm, leaving a ~10mm safety buffer inside
+       this cap. overflow:hidden silently clips any escape rather
+       than triggering a page break. */
+    height: 240mm !important;
+    max-height: 240mm !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    /* page-level type, applies to every printed page. a prior
+       `overflow: visible` alongside these declarations was defeating
+       the one-page constraint and triggering a blank second a4 page
+       on every non-home print. removed; overflow stays hidden above. */
+    font-family: 'Söhne', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 8.4pt !important;
+    line-height: 1.3 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* new screen-only wrappers added in the semantic refactor — none
+     should print on any page. `.site-header` was the culprit for the
+     blank-page regression; the rest are defensive. */
+  .site-header,
+  .modal-overlay,
+  .skip-link,
+  script,
+  noscript {
+    display: none !important;
+  }
+  /* make print containers visible regardless of layer interactions.
+     each container is opt-in: pages without that container are
+     unaffected. `display: revert` returns to the user-agent default
+     (`block` for sections); a more specific rule below overrides to
+     `grid` where the print profile needs CSS-grid layout. */
+  .print-only,
+  .print-profile,
+  .print-trust-sheet,
+  .print-utility-sheet,
+  .print-section,
+  .print-trajectory,
+  .print-project,
+  .print-architecture-strip,
+  .page-title,
+  .page-body {
+    display: revert !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* homepage. print only the dedicated profile. data-page="home"
+     is set on both <html> and <body>; the direct-child rule
+     suppresses everything else under <body>, so the screen layout,
+     nav, modal and footer do not print. */
+  body[data-page="home"] > :not(.print-profile) {
+    display: none !important;
+  }
+  body[data-page="home"] > .print-profile {
+    display: grid !important;
+  }
+  body[data-page="home"] .print-profile,
+  body[data-page="home"] .print-profile * {
+    visibility: visible !important;
+  }
+
+  /* defensive belt , neutralises every old homepage live-layout print
+     rule from earlier two-page-memo iterations. if anything is still
+     reachable it gets hidden here. inert once the direct-child rule
+     above has done its job. */
+  body[data-page="home"] .site-header,
+  body[data-page="home"] main,
+  body[data-page="home"] .site,
+  body[data-page="home"] .nav,
+  body[data-page="home"] .skip-link,
+  body[data-page="home"] .site-footer,
+  body[data-page="home"] .modal-overlay,
+  body[data-page="home"] .cite-drawer,
+  body[data-page="home"] .trust-mark,
+  body[data-page="home"] .project-preview,
+  body[data-page="home"] .cite-btn,
+  body[data-page="home"] button,
+  body[data-page="home"] .hero,
+  body[data-page="home"] .hero-name,
+  body[data-page="home"] .hero-statement,
+  body[data-page="home"] .hero-body,
+  body[data-page="home"] .section-approach,
+  body[data-page="home"] .section-trajectory,
+  body[data-page="home"] .section-projects,
+  body[data-page="home"] .section-contact,
+  body[data-page="home"] .principles,
+  body[data-page="home"] .principle,
+  body[data-page="home"] .trajectory-list,
+  body[data-page="home"] .trajectory-item,
+  body[data-page="home"] .project-card,
+  body[data-page="home"] .contact,
+  body[data-page="home"] .print-header,
+  body[data-page="home"] > .print-header {
+    display: none !important;
+  }
+
+  /* ───────────────────────────────────────────────────────────
+     subpages , privacy / integrity / security / errors.
+     no print-profile; print the page-title + page-body scaffold.
+     hide screen chrome only.
+     ─────────────────────────────────────────────────────────── */
+  body:not([data-page="home"]) .site-header,
+  body:not([data-page="home"]) .nav,
+  body:not([data-page="home"]) .skip-link,
+  body:not([data-page="home"]) .site-footer,
+  body:not([data-page="home"]) .modal-overlay,
+  body:not([data-page="home"]) .cite-drawer,
+  body:not([data-page="home"]) .cite-btn,
+  body:not([data-page="home"]) .code-copy,
+  body:not([data-page="home"]) .copy-fingerprint,
+  body:not([data-page="home"]) button {
+    display: none !important;
+  }
+
+  /* no joined words in extracted pdf text. reset tracking, kerning and
+     ligature features globally; mono labels reapply tracking below. */
+  * {
+    text-rendering: auto !important;
+    font-kerning: normal !important;
+    font-variant-ligatures: none !important;
+    font-feature-settings: normal !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0.025em !important;
+    box-sizing: border-box !important;
+  }
+
+  /* block any uppercase-on-screen rule from leaking into print copy. */
+  .print-profile h1,
+  .print-profile h2,
+  .print-profile h3,
+  .print-summary,
+  .print-prin,
+  .print-trajectory dd,
+  .print-project p {
+    text-transform: none !important;
+  }
+
+  /* ───────────────────────────────────────────────────────────
+     PRINT-PROFILE container , page-physical sizing.
+     constrains the profile to one a4 page (252mm tall, leaving a
+     23mm safety margin for browser print-engine rounding on ios /
+     safari / chrome / firefox). overflow: hidden clips any spill;
+     break rules below also forbid a second page.
+     ─────────────────────────────────────────────────────────── */
+  body[data-page="home"] {
+    width: 186mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #1F1E1C !important;
+    overflow: visible !important;
+  }
+
+  /* sheet frame , 252mm, not 275mm. the 23mm safety margin protects
+     against print-engine rounding (chrome / safari / firefox / ios),
+     scaling, browser-injected headers/footers, and edge-of-paper push.
+     footer is pinned absolutely with 18mm reservation, so its
+     dimensions cannot push residue to a second page. */
+  .print-profile {
+    position: relative !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: 230mm !important;
+    max-height: 230mm !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 0 18mm 0 !important;
+    display: grid !important;
+    /* Rhythm: every in-flow row is auto-sized so the lower block sits
+       directly under the approach block (was `1fr` on the lower row,
+       which stretched it down and produced a large empty centre).
+       the footer is position:absolute and stays pinned to the 18mm
+       bottom reservation regardless. */
+    grid-template-rows: auto auto auto;
+    row-gap: 3.2mm;
+    align-content: start;
+    overflow: hidden !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* archival lightning seal , top-right of the printed sheet, oxblood,
+     low visual weight. inline svg inside .print-profile uses
+     fill="currentcolor" so this `color` rule is the only oxblood cue.
+     hidden on screen by styles.css's `.print-seal { display: none }`
+     rule; restored here. */
+  .print-seal {
+    display: block !important;
+    position: absolute !important;
+    top: 14mm !important;
+    right: 14mm !important;
+    height: 8mm !important;
+    width: auto !important;
+    color: #6E1A14 !important;
+    opacity: 0.55 !important;
+    pointer-events: none;
+  }
+
+  /* ── 1. identity block , title-page opening, no banner ───── */
+  .print-top {
+    margin: 0 0 7mm !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+
+  .print-eyebrow {
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 6.6pt !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+    color: #706B66 !important;
+    margin: 0 0 5mm !important;
+  }
+
+  .print-headline {
+    font-family: 'Signifier', Georgia, serif !important;
+    font-size: 24pt !important;
+    line-height: 0.98 !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.02em !important;
+    color: #1F1E1C !important;
+    margin: 0 0 1.2mm !important;
+    max-width: 165mm !important;
+  }
+
+  /* contact line directly under the headline , quiet söhne body
+     weight; not a block of metadata, just a single readable address. */
+  .print-contact-line {
+    font-family: 'Söhne', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 7pt !important;
+    line-height: 1.28 !important;
+    letter-spacing: 0.02em !important;
+    color: #1F1E1C !important;
+    margin: 0 0 3mm !important;
+  }
+
+  .print-summary {
+    font-family: 'Signifier', Georgia, serif !important;
+    font-size: 8.4pt !important;
+    line-height: 1.32 !important;
+    font-weight: 300 !important;
+    color: #2A2826 !important;
+    margin: 0 !important;
+    max-width: 150mm !important;
+  }
+
+  /* hairline + tighter spacing above each structured lower section. */
+  .print-section {
+    border-top: 0.4pt solid #E6E1D8;
+    padding-top: 3.5mm;
+    margin-top: 4mm;
+  }
+
+  /* ── 2. approach , five numbered principles, two-column grid ── */
+  .print-approach {
+    break-inside: avoid;
+  }
+
+  .print-label {
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 6.4pt !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    color: #706B66 !important;
+    margin: 0 0 3mm !important;
+  }
+
+  .print-principles {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10mm;
+    row-gap: 2mm;
+  }
+
+  .print-principles li {
+    display: grid !important;
+    grid-template-columns: 7mm 1fr;
+    column-gap: 2mm;
+    align-items: baseline;
+    break-inside: avoid;
+  }
+
+  .print-num {
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 6.4pt !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.04em !important;
+    color: #6E1A14 !important;
+  }
+
+  .print-prin {
+    font-family: 'Signifier', Georgia, serif !important;
+    font-size: 8.4pt !important;
+    line-height: 1.16 !important;
+    font-weight: 400 !important;
+    color: #1F1E1C !important;
+  }
+
+  /* ── 3. trajectory + project paired grid ─────────────────── */
+  .print-lower {
+    display: grid !important;
+    grid-template-columns: 1.2fr 1fr;
+    column-gap: 6mm;
+    align-items: start;
+    margin-bottom: 0 !important;
+  }
+
+  .print-trajectory {
+    break-inside: avoid;
+  }
+
+  .print-trajectory dl {
+    display: grid;
+    grid-template-columns: 24mm 1fr;
+    column-gap: 4mm;
+    row-gap: 2.5mm;
+    margin: 0;
+  }
+
+  .print-trajectory dt {
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 6.4pt !important;
+    line-height: 1.25 !important;
+    color: #706B66 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.04em !important;
+  }
+
+  .print-trajectory dd {
+    font-family: 'Söhne', system-ui, sans-serif !important;
+    font-size: 6.7pt !important;
+    line-height: 1.22 !important;
+    color: #1F1E1C !important;
+    margin: 0 !important;
+  }
+
+  /* editorial column rule on the project block, not a full-frame box. */
+  .print-project {
+    border-left: 0.4pt solid #D8D4CC;
+    padding-left: 6mm;
+    break-inside: avoid;
+  }
+
+  .print-project p.print-project-title {
+    font-family: 'Signifier', Georgia, serif !important;
+    font-size: 10pt !important;
+    line-height: 1.1 !important;
+    font-weight: 400 !important;
+    color: #1F1E1C !important;
+    margin: 1.5mm 0 1.5mm !important;
+  }
+
+  .print-project p {
+    font-family: 'Söhne', system-ui, sans-serif !important;
+    font-size: 6.7pt !important;
+    line-height: 1.22 !important;
+    color: #2A2826 !important;
+    margin: 0 !important;
+  }
+
+  /* ── 4. micro architecture strip (homepage profile only).
+        6-cell trust chain in mono evidence type. Hairline-ruled. one
+        oxblood cue on the leading cell. ~10mm tall total. inert as
+        a quiet signature; never appears on screen, never on trust
+        or utility sheets. */
+  body[data-page="home"] .print-architecture-strip {
+    display: block !important;
+    border-top: 0.5pt solid #E6E1D8;
+    padding: 1.8mm 0 0 !important;
+    margin: 1mm 0 0 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  body[data-page="home"] .print-architecture-caption {
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 5.5pt !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0.025em !important;
+    color: #706B66 !important;
+    text-transform: uppercase !important;
+    margin: 0 0 1.4mm !important;
+    text-align: left !important;
+  }
+
+  body[data-page="home"] .print-architecture-chain {
+    display: grid !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    column-gap: 1.6mm;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body[data-page="home"] .print-architecture-chain li {
+    position: relative;
+    min-width: 0;
+    border: 0.4pt solid #D8D4CC;
+    padding: 1.1mm 1mm;
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 5.2pt !important;
+    line-height: 1.05 !important;
+    letter-spacing: 0 !important;
+    color: #1F1E1C !important;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+  }
+
+  /* single oxblood cue , leading "browser" cell carries an oxblood
+     left border. reads as the entry point of the chain. */
+  body[data-page="home"] .print-architecture-chain li:first-child {
+    border-left: 0.6pt solid #6E1A14;
+  }
+
+  /* hairline connector between cells, centred vertically in the gutter. */
+  body[data-page="home"] .print-architecture-chain li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -1.0mm;
+    width: 0.4mm;
+    height: 0.4pt;
+    background: #D8D4CC;
+  }
+
+  /* ── 5. footer , text lines stacked left + 13mm qr pinned right.
+        the text block uses tight mono evidence type; the proof line
+        prints in oxblood as the single accent. the qr is explicitly
+        constrained at 13mm × 13mm so the svg cannot use its
+        intrinsic dimensions. */
+  /* footer sits at the bottom of the parent grid track via
+     `align-self: end`. was `position: absolute` previously, but ios
+     safari was paginating the absolute child onto a separate page
+     despite the parent's overflow: hidden — a known print-engine
+     quirk. In-flow grid placement keeps it on the same page. */
+  .print-profile-footer {
+    align-self: end !important;
+    display: grid !important;
+    grid-template-columns: 1fr auto;
+    column-gap: 6mm;
+    align-items: end;
+    border-top: 0.5pt solid #D8D4CC !important;
+    padding-top: 2mm !important;
+    margin: 0 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-profile-footer-text {
+    display: grid;
+    row-gap: 0.6mm;
+    min-width: 0;
+    padding-right: 4mm;
+  }
+
+  .print-profile-footer-text p {
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 5.9pt !important;
+    line-height: 1.18 !important;
+    letter-spacing: 0.025em !important;
+    color: #706B66 !important;
+    margin: 0 !important;
+  }
+
+  .print-profile-footer-text .print-proof {
+    color: #6E1A14 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  /* compact evidence chip , just below the proof line, just above the
+     edition + citation. sits in the same monospace footer column.
+     public record · html · 23 kb · validated 2026-05-02. the size +
+     date are stamped at build time by generate_site.py. */
+  .print-profile-footer-text .print-evidence {
+    color: #5C5955 !important;
+    letter-spacing: 0.025em !important;
+  }
+
+  /* qr block , 13mm column with 11.5mm image inside (was 15mm/13mm).
+     smaller still scans well; the extra ~1.5mm of breathing room lets
+     the url label sit inside the absolute footer without pushing
+     residue to a second page on ios / safari print engines. */
+  .print-qr-block {
+    width: 13mm !important;
+    min-width: 13mm !important;
+    max-width: 13mm !important;
+    justify-self: end !important;
+    align-self: end !important;
+    text-align: center !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .print-qr-image {
+    display: block !important;
+    width: 11.5mm !important;
+    height: 11.5mm !important;
+    min-width: 11.5mm !important;
+    min-height: 11.5mm !important;
+    max-width: 11.5mm !important;
+    max-height: 11.5mm !important;
+    object-fit: contain !important;
+    margin: 0 auto 0.8mm !important;
+    padding: 0 !important;
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  .print-qr-url {
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 4.6pt !important;
+    line-height: 1 !important;
+    letter-spacing: 0 !important;
+    color: #706B66 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  /* ───────────────────────────────────────────────────────────
+     utility pages , 403 / 404 / 500 / source / releases.
+     each page carries its own <section class="print-utility-sheet"
+     data-print-sheet="..."> as a direct body child. the hard-reset
+     hide rule below kills every other body child so the live screen
+     layout cannot leak into print. data-page values ("forbidden",
+     "not-found", "server-error", "source", "releases") match the
+     real values on each page.
+     ─────────────────────────────────────────────────────────── */
+  body[data-page="forbidden"] > :not(.print-utility-sheet),
+  body[data-page="not-found"] > :not(.print-utility-sheet),
+  body[data-page="server-error"] > :not(.print-utility-sheet),
+  body[data-page="source"] > :not(.print-utility-sheet),
+  body[data-page="releases"] > :not(.print-utility-sheet),
+  body[data-page="release-archive"] > :not(.print-utility-sheet),
+  body[data-page="integrity-verify-locally"] > :not(.print-utility-sheet),
+  body[data-page="sw-reset"] > :not(.print-utility-sheet),
+  body[data-page="maintenance"] > :not(.print-utility-sheet),
+  body[data-page="verify"] > :not(.print-utility-sheet) {
+    display: none !important;
+  }
+
+  body[data-page="forbidden"] > .print-utility-sheet[data-print-sheet="403"],
+  body[data-page="not-found"] > .print-utility-sheet[data-print-sheet="404"],
+  body[data-page="server-error"] > .print-utility-sheet[data-print-sheet="500"],
+  body[data-page="source"] > .print-utility-sheet[data-print-sheet="source"],
+  body[data-page="releases"] > .print-utility-sheet[data-print-sheet="releases"],
+  body[data-page="release-archive"] > .print-utility-sheet[data-print-sheet="release-archive"],
+  body[data-page="integrity-verify-locally"] > .print-utility-sheet[data-print-sheet="integrity-verify-locally"],
+  body[data-page="sw-reset"] > .print-utility-sheet[data-print-sheet="sw-reset"],
+  body[data-page="maintenance"] > .print-utility-sheet[data-print-sheet="maintenance"],
+  body[data-page="verify"] > .print-utility-sheet[data-print-sheet="verify"] {
+    display: grid !important;
+  }
+
+  /* symmetric defensive hide , wrong utility sheet on the wrong page. */
+  body[data-page="forbidden"] > .print-utility-sheet:not([data-print-sheet="403"]),
+  body[data-page="not-found"] > .print-utility-sheet:not([data-print-sheet="404"]),
+  body[data-page="server-error"] > .print-utility-sheet:not([data-print-sheet="500"]),
+  body[data-page="source"] > .print-utility-sheet:not([data-print-sheet="source"]),
+  body[data-page="releases"] > .print-utility-sheet:not([data-print-sheet="releases"]),
+  body[data-page="release-archive"] > .print-utility-sheet:not([data-print-sheet="release-archive"]),
+  body[data-page="integrity-verify-locally"] > .print-utility-sheet:not([data-print-sheet="integrity-verify-locally"]),
+  body[data-page="sw-reset"] > .print-utility-sheet:not([data-print-sheet="sw-reset"]),
+  body[data-page="maintenance"] > .print-utility-sheet:not([data-print-sheet="maintenance"]),
+  body[data-page="verify"] > .print-utility-sheet:not([data-print-sheet="verify"]) {
+    display: none !important;
+  }
+
+  body[data-page="forbidden"]    .print-utility-sheet,
+  body[data-page="not-found"]    .print-utility-sheet,
+  body[data-page="server-error"] .print-utility-sheet,
+  body[data-page="source"]       .print-utility-sheet,
+  body[data-page="releases"]     .print-utility-sheet,
+  body[data-page="release-archive"] .print-utility-sheet,
+  body[data-page="integrity-verify-locally"] .print-utility-sheet,
+  body[data-page="sw-reset"]     .print-utility-sheet,
+  body[data-page="maintenance"]  .print-utility-sheet,
+  body[data-page="verify"]       .print-utility-sheet,
+  body[data-page="forbidden"]    .print-utility-sheet *,
+  body[data-page="not-found"]    .print-utility-sheet *,
+  body[data-page="server-error"] .print-utility-sheet *,
+  body[data-page="source"]       .print-utility-sheet *,
+  body[data-page="releases"]     .print-utility-sheet *,
+  body[data-page="release-archive"] .print-utility-sheet *,
+  body[data-page="integrity-verify-locally"] .print-utility-sheet *,
+  body[data-page="sw-reset"]     .print-utility-sheet *,
+  body[data-page="maintenance"]  .print-utility-sheet *,
+  body[data-page="verify"]       .print-utility-sheet * {
+    visibility: visible !important;
+  }
+
+  /* Page-physical sizing for utility pages , same a4 frame as trust. */
+  body[data-page="forbidden"],
+  body[data-page="not-found"],
+  body[data-page="server-error"],
+  body[data-page="source"],
+  body[data-page="releases"],
+  body[data-page="release-archive"],
+  body[data-page="integrity-verify-locally"],
+  body[data-page="sw-reset"],
+  body[data-page="maintenance"],
+  body[data-page="verify"] {
+    width: 186mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #1F1E1C !important;
+    overflow: hidden !important;
+  }
+
+  /* utility sheet shares the trust-sheet visual system. class hooks
+     are duplicated below so the cascade applies cleanly to either. */
+  .print-utility-sheet {
+    position: relative !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: 230mm !important;
+    max-height: 230mm !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 0 18mm 0 !important;
+    display: grid !important;
+    grid-template-rows: auto 1fr;
+    row-gap: 3.2mm;
+    overflow: hidden !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* utility sheet header, label, and code inherit trust-sheet typography. */
+  .print-utility-header { border-bottom: 0.5pt solid #D8D4CC; padding: 0 0 3.8mm !important; margin: 0 !important; }
+  .print-utility-kicker { font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important; font-size: 6.4pt !important; line-height: 1.2 !important; font-weight: 500 !important; letter-spacing: 0.06em !important; text-transform: uppercase !important; color: #706B66 !important; margin: 0 0 2mm !important; }
+  .print-utility-title { font-family: 'Signifier', Georgia, serif !important; font-size: 25pt !important; line-height: 0.98 !important; font-weight: 300 !important; letter-spacing: -0.02em !important; color: #1F1E1C !important; margin: 0 0 2mm !important; max-width: 165mm !important; text-transform: none !important; }
+  .print-utility-lede  { font-family: 'Söhne', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; font-size: 8pt !important; line-height: 1.28 !important; color: #3A3835 !important; margin: 0 0 1.5mm !important; max-width: 150mm !important; text-transform: none !important; }
+  .print-utility-meta  { font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important; font-size: 5.8pt !important; line-height: 1.25 !important; letter-spacing: 0.025em !important; color: #706B66 !important; margin: 0 !important; }
+
+  .print-utility-grid { display: grid !important; grid-template-columns: repeat(3, 1fr); column-gap: 5mm; row-gap: 3mm; }
+  .print-utility-card { border-top: 0.5pt solid #D8D4CC; padding-top: 2.2mm; break-inside: avoid; }
+
+  .print-utility-label {
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 5.6pt !important;
+    line-height: 1.18 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    color: #1F1E1C !important;
+    margin: 0 0 1.2mm !important;
+    display: flex;
+    gap: 1.5mm;
+    align-items: baseline;
+  }
+  .print-utility-label .num { color: #6E1A14 !important; font-weight: 500; }
+
+  .print-utility-card p:not(.print-utility-label) {
+    font-family: 'Söhne', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 6.7pt !important;
+    line-height: 1.24 !important;
+    color: #2A2826 !important;
+    margin: 0 0 0.9mm !important;
+    text-transform: none !important;
+  }
+
+  /* utility footer , absolutely pinned inside the 18mm bottom reservation. */
+  .print-utility-footer {
+    align-self: end !important;
+    display: grid !important;
+    grid-template-columns: 1fr auto;
+    column-gap: 6mm;
+    align-items: end;
+    border-top: 0.5pt solid #D8D4CC;
+    padding-top: 2mm !important;
+    margin: 0 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+  .print-utility-footer-text { display: grid; row-gap: 0.6mm; min-width: 0; padding-right: 4mm; }
+  .print-utility-footer-text p {
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 5.9pt !important;
+    line-height: 1.18 !important;
+    letter-spacing: 0.025em !important;
+    color: #706B66 !important;
+    margin: 0 !important;
+  }
+  .print-utility-footer-text .print-proof {
+    color: #6E1A14 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  /* ───────────────────────────────────────────────────────────
+     trust pages , privacy / integrity / security.
+     each page carries its own dedicated <section class="print-trust-sheet"
+     data-print-sheet="..."> as a direct body child. in print, the screen
+     layout is fully suppressed and only the matching trust sheet renders.
+     ─────────────────────────────────────────────────────────── */
+  body[data-page="privacy"] > :not(.print-trust-sheet),
+  body[data-page="integrity"] > :not(.print-trust-sheet),
+  body[data-page="security"] > :not(.print-trust-sheet),
+  body[data-page="acknowledgments"] > :not(.print-trust-sheet) {
+    display: none !important;
+  }
+
+  body[data-page="privacy"] > .print-trust-sheet[data-print-sheet="privacy"],
+  body[data-page="integrity"] > .print-trust-sheet[data-print-sheet="integrity"],
+  body[data-page="security"] > .print-trust-sheet[data-print-sheet="security"],
+  body[data-page="acknowledgments"] > .print-trust-sheet[data-print-sheet="acknowledgments"] {
+    display: grid !important;
+  }
+
+  /* symmetric defensive rule , if a future regression places the wrong
+     trust sheet on a page (e.g. the security sheet on /privacy/), hide it.
+     only the trust sheet whose data-print-sheet matches the page's
+     data-page can render. */
+  body[data-page="privacy"] > .print-trust-sheet:not([data-print-sheet="privacy"]),
+  body[data-page="integrity"] > .print-trust-sheet:not([data-print-sheet="integrity"]),
+  body[data-page="security"] > .print-trust-sheet:not([data-print-sheet="security"]),
+  body[data-page="acknowledgments"] > .print-trust-sheet:not([data-print-sheet="acknowledgments"]) {
+    display: none !important;
+  }
+
+  body[data-page="privacy"]   .print-trust-sheet,
+  body[data-page="integrity"] .print-trust-sheet,
+  body[data-page="security"]  .print-trust-sheet,
+  body[data-page="acknowledgments"] .print-trust-sheet,
+  body[data-page="privacy"]   .print-trust-sheet *,
+  body[data-page="integrity"] .print-trust-sheet *,
+  body[data-page="security"]  .print-trust-sheet *,
+  body[data-page="acknowledgments"] .print-trust-sheet * {
+    visibility: visible !important;
+  }
+
+  /* Page-physical sizing , same a4 frame the print-profile uses.
+     constrains the trust sheet to one page and forbids overflow. */
+  body[data-page="privacy"],
+  body[data-page="integrity"],
+  body[data-page="security"],
+  body[data-page="acknowledgments"] {
+    width: 186mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #1F1E1C !important;
+    overflow: hidden !important;
+  }
+
+  .print-trust-sheet {
+    position: relative !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: 230mm !important;
+    max-height: 230mm !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 0 18mm 0 !important;
+    display: grid !important;
+    grid-template-rows: auto 1fr;
+    row-gap: 3.2mm;
+    overflow: hidden !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* ── trust header , kicker + signifier title + lede + meta ── */
+  .print-trust-header {
+    border-bottom: 0.5pt solid #D8D4CC;
+    padding: 0 0 3.8mm !important;
+    margin: 0 !important;
+  }
+
+  .print-trust-kicker,
+  .print-trust-meta,
+  .print-trust-label,
+  .print-trust-footer-text,
+  .print-trust-code {
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    color: #706B66 !important;
+  }
+
+  .print-trust-kicker {
+    font-size: 6.6pt !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    margin: 0 0 2.5mm !important;
+  }
+
+  .print-trust-title {
+    font-family: 'Signifier', Georgia, serif !important;
+    font-size: 25pt !important;
+    line-height: 0.98 !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.02em !important;
+    color: #1F1E1C !important;
+    margin: 0 0 2mm !important;
+    max-width: 165mm !important;
+    text-transform: none !important;
+  }
+
+  .print-trust-lede {
+    font-family: 'Söhne', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 8pt !important;
+    line-height: 1.28 !important;
+    color: #3A3835 !important;
+    margin: 0 0 1.5mm !important;
+    max-width: 150mm !important;
+    text-transform: none !important;
+  }
+
+  .print-trust-meta {
+    font-size: 5.8pt !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0.025em !important;
+    margin: 0 !important;
+  }
+
+  /* architecture diagram , security print sheet only.
+     sized to ~35mm tall (image's natural 1.76:1 aspect → ~62mm wide),
+     centred between header and the 6-card grid. cannot push the cards
+     onto a second page because the diagram is height-capped and the
+     sheet itself is bound to 252mm with overflow: hidden. */
+  body[data-page="security"] .print-trust-sheet {
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .print-trust-diagram {
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-trust-diagram-image {
+    display: block;
+    margin: 0 auto;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 35mm;
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  /* ── trust grid , six numbered evidence cards (3 cols × 2 rows) ── */
+  .print-trust-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 5mm;
+    row-gap: 3mm;
+  }
+
+  .print-trust-card {
+    border-top: 0.5pt solid #D8D4CC;
+    padding-top: 2.2mm;
+    break-inside: avoid;
+  }
+
+  .print-trust-label {
+    font-size: 5.6pt !important;
+    line-height: 1.18 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    color: #1F1E1C !important;
+    margin: 0 0 1.2mm !important;
+    display: flex;
+    gap: 1.5mm;
+    align-items: baseline;
+  }
+
+  .print-trust-label .num {
+    color: #6E1A14 !important;
+    font-weight: 500;
+  }
+
+  .print-trust-card p:not(.print-trust-label) {
+    font-family: 'Söhne', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 6.7pt !important;
+    line-height: 1.24 !important;
+    color: #2A2826 !important;
+    margin: 0 0 0.9mm !important;
+    text-transform: none !important;
+  }
+
+  /* mono variant for evidence-style content (file paths, fingerprints,
+     verification commands). wraps gracefully on long urls / hashes. */
+  .print-trust-card p.print-trust-code,
+  .print-trust-card .print-trust-code {
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 6.2pt !important;
+    line-height: 1.32 !important;
+    color: #1F1E1C !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* trust footer , absolutely pinned inside the 18mm bottom reservation. */
+  .print-trust-footer {
+    align-self: end !important;
+    display: grid !important;
+    grid-template-columns: 1fr auto;
+    column-gap: 6mm;
+    align-items: end;
+    border-top: 0.5pt solid #D8D4CC;
+    padding-top: 2mm !important;
+    margin: 0 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-trust-footer-text {
+    display: grid;
+    row-gap: 0.6mm;
+    min-width: 0;
+    padding-right: 4mm;
+  }
+
+  .print-trust-footer-text p {
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 5.9pt !important;
+    line-height: 1.18 !important;
+    letter-spacing: 0.025em !important;
+    color: #706B66 !important;
+    margin: 0 !important;
+  }
+
+  .print-trust-footer-text .print-proof {
+    color: #6E1A14 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  /* Trust-sheet qr uses the same 13mm constraint as the homepage qr;
+     `.print-qr-block`, `.print-qr-image`, `.print-qr-url` rules are
+     defined under the homepage profile and reused as-is here. */
+
+  /* ───────────────────────────────────────────────────────────
+     subpage scaffold , fallback for /security/acknowledgments/,
+     /integrity/releases/, and any future page without a dedicated
+     trust sheet. the page-title becomes a signifier light headline;
+     page-body paragraphs print in söhne.
+     ─────────────────────────────────────────────────────────── */
+  .page-title {
+    font-family: 'Signifier', Georgia, serif !important;
+    font-size: 18pt !important;
+    line-height: 1.08 !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.01em !important;
+    color: #1F1E1C !important;
+    margin-bottom: 5mm !important;
+  }
+
+  .page-body { max-width: 160mm; }
+
+  .page-body p {
+    font-family: 'Söhne', system-ui, sans-serif !important;
+    font-size: 9pt !important;
+    line-height: 1.4 !important;
+    color: #3A3835 !important;
+  }
+
+  /* Off-site links: show url inline. */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-family: 'Söhne Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 6.4pt !important;
+    color: #706B66 !important;
+    word-break: break-all;
+  }
+  a[href^="#"]::after,
+  a[href^="/"]::after,
+  a[href^="mailto:"]::after { content: none; }
+
+  /* pagination cues , keep-together only. no force-new-page rules. */
+  h1, h2, h3, .print-label, .print-project-title,
+  .print-headline, .print-utility-title, .print-trust-title {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  p, dd { orphans: 3; widows: 3; }
+}
+
+/* ───────────────────────────────────────────────────────────
+   /sw-reset/ — local recovery utility, when printed.
+   the reset button is already hidden by the generic
+   `body:not([data-page="home"]) button` rule above.
+   hide navigation-only links; keep the structured status,
+   columns, and technical footnote so the printed page reads
+   as documentation of the local cache state.
+   ─────────────────────────────────────────────────────────── */
+@media print {
+  body[data-page="sw-reset"] .sw-reset-links {
+    display: none !important;
+  }
+  body[data-page="sw-reset"] .sw-reset-status-panel,
+  body[data-page="sw-reset"] .sw-reset-columns {
+    page-break-inside: avoid;
+    border-color: #ccc !important;
+  }
+  body[data-page="sw-reset"] .sw-reset-col-list li {
+    border-color: #ccc !important;
+  }
+  body[data-page="sw-reset"] .sw-reset-marker,
+  body[data-page="sw-reset"] .sw-reset-status-heading,
+  body[data-page="sw-reset"] .sw-reset-col-heading {
+    color: #555 !important;
+  }
+  body[data-page="sw-reset"] .sw-reset-footnote {
+    color: #666 !important;
+    border-top: 1px solid #ccc !important;
+    padding-top: 6pt !important;
+    margin-top: 12pt !important;
+  }
+}
+
+/* ── /source/view/ — printed as archival technical appendix ──
+   when the reader prints (paper, pdf, save-as-print), the page reads
+   as a printed annexe: integrity ledger up top, file content below
+   with line numbers, repeated header carrying the filename and edition
+   on every page so the printout reads as a single citable document.
+   nothing is interactive in print: action buttons, the wrap toggle,
+   the view-mode buttons, the mobile sticky strip, and the sticky
+   minimap are all suppressed. annotations remain visible regardless
+   of the on-screen mode because a printed archive is by definition
+   an interpretive surface. */
+@media print {
+  body[data-page="source-reader"] {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  body[data-page="source-reader"] .site-header,
+  body[data-page="source-reader"] .site-footer,
+  body[data-page="source-reader"] .reader-actions,
+  body[data-page="source-reader"] .reader-mobile-canonical,
+  body[data-page="source-reader"] .skip-link,
+  body[data-page="source-reader"] .reader-loading,
+  body[data-page="source-reader"] .section-divider-chevron,
+  body[data-page="source-reader"] .source-marker-chevron,
+  body[data-page="source-reader"] .source-marker-toggle,
+  body[data-page="source-reader"] .source-section-summary {
+    display: none !important;
+  }
+  /* all source-section bodies are expanded on paper. even if the user
+     printed while a section was collapsed on screen, the hidden
+     attribute is overridden in print so the source is complete. */
+  body[data-page="source-reader"] .source-section-body[hidden],
+  body[data-page="source-reader"] .source-section-body {
+    display: block !important;
+  }
+  body[data-page="source-reader"] .reader-intro,
+  body[data-page="source-reader"] .reader-integrity,
+  body[data-page="source-reader"] .reader-provenance,
+  body[data-page="source-reader"] .inspection-path,
+  body[data-page="source-reader"] .source-reader-footer {
+    color: #333 !important;
+    page-break-inside: avoid;
+  }
+  body[data-page="source-reader"] .reader-integrity {
+    border-top: 1pt solid #888 !important;
+    border-bottom: 1pt solid #888 !important;
+    padding-block: 6pt !important;
+    margin-block: 8pt !important;
+  }
+  /* every annotation surface appears in print, regardless of the
+     on-screen mode — a printed archive is interpretive by nature. */
+  body[data-page="source-reader"] .section-divider,
+  body[data-page="source-reader"] .section-divider-gloss {
+    display: block !important;
+    color: #555 !important;
+    page-break-after: avoid;
+  }
+  body[data-page="source-reader"] .section-divider {
+    border-top: 0.5pt solid #aaa !important;
+    margin-block: 14pt 6pt !important;
+    padding-block-start: 4pt !important;
+  }
+  body[data-page="source-reader"] .section-divider-gloss {
+    color: #666 !important;
+    font-style: italic;
+    font-size: 9pt !important;
+    margin-inline-start: 8pt !important;
+  }
+  body[data-page="source-reader"] .code-shell {
+    border: 0.5pt solid #ccc !important;
+    background: #fafaf7 !important;
+  }
+  body[data-page="source-reader"] .code-reader {
+    font-size: 8.5pt !important;
+    line-height: 1.4 !important;
+    color: #111 !important;
+  }
+  body[data-page="source-reader"] .code-reader,
+  body[data-page="source-reader"] .code-reader * {
+    font-family: ui-monospace, "SF Mono", "Söhne Mono", "Roboto Mono", monospace !important;
+  }
+  body[data-page="source-reader"] .code-line {
+    page-break-inside: avoid;
+  }
+  body[data-page="source-reader"] a.line-number {
+    color: #999 !important;
+    text-decoration: none !important;
+  }
+  body[data-page="source-reader"] .ln-sym {
+    display: none !important;
+  }
+  /* token colours collapse to a single inkable register: code in black,
+     comments in mid-grey italic, strings in a dark sepia. nothing else
+     gets a colour. this is paper, not screen.
+     covers the v2 semantic variants (--structural, --metadata, --trust,
+     --a11y) so the on-screen jewel tones and oxblood do not bleed into
+     paper output. */
+  body[data-page="source-reader"] .tok-tag,
+  body[data-page="source-reader"] .tok-tag--structural,
+  body[data-page="source-reader"] .tok-tag--metadata,
+  body[data-page="source-reader"] .tok-attr,
+  body[data-page="source-reader"] .tok-attr--a11y,
+  body[data-page="source-reader"] .tok-attr--trust,
+  body[data-page="source-reader"] .tok-string,
+  body[data-page="source-reader"] .tok-string--trust,
+  body[data-page="source-reader"] .tok-string--a11y,
+  body[data-page="source-reader"] .tok-keyword,
+  body[data-page="source-reader"] .tok-number,
+  body[data-page="source-reader"] .tok-punctuation {
+    color: #111 !important;
+    font-weight: inherit !important;
+  }
+  body[data-page="source-reader"] .tok-string,
+  body[data-page="source-reader"] .tok-string--trust,
+  body[data-page="source-reader"] .tok-string--a11y {
+    color: #4a3a20 !important;
+  }
+  body[data-page="source-reader"] .tok-comment {
+    color: #777 !important;
+    font-style: italic;
+  }
+  /* repeated page header — printed at the top of every paper page. the
+     content is generated by css from the runtime data-print-* attributes
+     set by source-view.js (filename + edition) so the printout is
+     self-citing. browsers do not yet support running headers via
+     @top-center / @top-right reliably, so we rely on a printed marker
+     element near the top of the body and on page-break-inside: avoid
+     to keep the integrity ledger on page one. */
+  body[data-page="source-reader"] .reader-intro {
+    border-bottom: 0.5pt solid #aaa !important;
+    padding-bottom: 8pt !important;
+    margin-bottom: 12pt !important;
+  }
+  /* page numbers via paged media. */
+  @page {
+    margin: 18mm 16mm 22mm 16mm;
+  }
+}
+
+}  /* end @layer print-overrides */

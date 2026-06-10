@@ -1,0 +1,26 @@
+{
+  "schema": "trentpower.edition-builds.v1",
+  "edition": "2026-05-17",
+  "canonical": {
+    "build_date": "2026-05-17",
+    "zip_sha256": "sha256-EPgpUx5RMGdAwUQlDD9ORgVQ7JtfoG96dGEqOa8PthI=",
+    "tar_gz_sha256": "sha256-vwzmyb86j4t2xyGuzgDdqsTvncI9nCsSICheCHbSqAs="
+  },
+  "rebuilds": [
+    {
+      "build_date": "2026-05-18",
+      "zip_sha256": "sha256-TI6ugZNCEHgOa45tiCDgmu/OeJVrS+2Z1AGF3H9g9jU=",
+      "tar_gz_sha256": "sha256-zOo5YVGgQg1aHLZsHRnYd0RMpm03+g42rcsPQEsk7p8="
+    },
+    {
+      "build_date": "2026-05-19",
+      "zip_sha256": "sha256-e/yNd4ejOpuQTHAmLKOzWwbJsmfw2z9A5qAolX2dzPI=",
+      "tar_gz_sha256": "sha256-EHF+zhfE7ZWHB8e+Htd9xv4TgBYOjTcQLkxUpQ3DlDE="
+    },
+    {
+      "build_date": "2026-05-20",
+      "zip_sha256": "sha256-z7510vlTfUkLcJDMe0QmISQj75XrmpZmJwoMqK5fXwk=",
+      "tar_gz_sha256": "sha256-KRLZ4DDrza83iB4oC5PsFE17NIoGD45mFzHZO4KP/Go="
+    }
+  ]
+}

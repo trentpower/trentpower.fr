@@ -1,0 +1,94 @@
+/*
+  trentpower.fr
+  scroll reveal
+
+  Role:
+  fades the homepage's principle / trajectory / project sections in
+  as they scroll into view. decoration only — the sections are fully
+  legible without it, and reduced-motion users get them at rest.
+
+  Source:
+  edited here as reveal.template.js; compiled to reveal.js by
+  generate_site.py (minified, no substitution).
+
+  Constraints:
+  - no fetch, no inline handlers, no third-party scripts
+  - waits for the browser to be idle; never on the lcp critical path
+  - enhancement only: with this absent every section paints at rest
+    (css gates the hidden state on html.js, which only js sets)
+*/
+
+(function () {
+  'use strict';
+
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // scroll reveal · IntersectionObserver. stagger is scoped per
+  // selector group so the index always matches the dom order of that
+  // list rather than wrapping across groups.
+  function _reveal() {
+    var revealGroups = ['.principle', '.trajectory-item', '.project-card'];
+    var allRevealEls = document.querySelectorAll(revealGroups.join(', '));
+    if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      revealGroups.forEach(function (sel) {
+        document.querySelectorAll(sel).forEach(function (el, i) {
+          // phase 96 · data-* attribute instead of inline style
+          // (csp style-src-attr 'none'). styles.src.css carries a
+          // 16-row [data-reveal-index="N"] stagger table that maps
+          // 0 → 0ms, 1 → 80ms … 15 → 1200ms. cap at 15 so the
+          // attribute always matches a rule.
+          el.setAttribute('data-reveal-index', Math.min(i, 15));
+          observer.observe(el);
+        });
+      });
+    } else {
+      allRevealEls.forEach(function (el) {
+        el.classList.add('visible');
+      });
+    }
+  }
+
+  // fonts-ready gate · the reveal animation reads heading metrics
+  // before observing, so it must not run during the full-font swap.
+  // waits for html.fonts-ready (set by fonts.template.js) or for
+  // document.fonts.ready to resolve, whichever lands first, with a
+  // 1500ms safety timeout matching fonts.template.js so a stalled
+  // fonts api never strands the reveal.
+  function whenFontsReady(fn) {
+    var root = document.documentElement;
+    if (root.classList.contains('fonts-ready')) { fn(); return; }
+    var done = false;
+    var fire = function () { if (done) return; done = true; fn(); };
+    if (document.fonts && document.fonts.ready && typeof document.fonts.ready.then === 'function') {
+      document.fonts.ready.then(fire, fire);
+    }
+    setTimeout(fire, 1500);
+  }
+
+  function _schedule() {
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(_reveal, { timeout: 2000 });
+    } else {
+      setTimeout(_reveal, 200);
+    }
+  }
+
+  // reduced-motion users force everything .visible at rest inside
+  // _reveal; that path must fire immediately and not wait on fonts —
+  // there is no animation to protect from a metric swap.
+  if (prefersReducedMotion) {
+    _schedule();
+  } else {
+    whenFontsReady(_schedule);
+  }
+
+})();

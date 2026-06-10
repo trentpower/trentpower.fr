@@ -1,0 +1,34 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+# Security policy for trentpower.fr
+# https://securitytxt.org / RFC 9116
+
+Contact: mailto:trent@trentpower.fr
+Policy: https://trentpower.fr/privacy/
+Acknowledgments: https://trentpower.fr/security/acknowledgments/
+Encryption: https://trentpower.fr/.well-known/pgp-key.asc
+Preferred-Languages: en, fr
+Canonical: https://trentpower.fr/.well-known/security.txt
+Expires: 2027-02-10T00:00:00.000Z
+
+# Integrity: https://trentpower.fr/integrity.json
+# Good-faith security reports are welcomed and reviewed manually.
+# Expect acknowledgement within a reasonable timeframe.
+# Reports outside the scope of this site will be responded to respectfully.
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEpylZG0UNP1k2lJi9gpkfJQSuAmMFAmmRyB8ACgkQgpkfJQSu
+AmOYrRAAi+qDCAmHn3NL5o4q+BRJ6slWKZ6fHh/YQGApFIpl1rcr4FZkc3LSorEZ
+E2gib8RVbjgr0vk0jPETZ/OjtqtSsPLxQB7Oc9xypyH4llRy3qOLU8dmSdWD2hhX
+lFaMbLyFp/j84hauVHniBr37jrOHDI5AzJ8eOrDBj5WEicK8L8pXeCgycSlL/LxV
+7RALqYgMozoXz2eSqYpnc+yjhu1tqFIFczIqamHe0cWiU6e+J1RU//988mhJGY7S
+pJn38UY47P04rffDf3EEm2mfsZ77PTXNevDiEnxIlpCW9rfHQBXciG1zJsLtDnCY
+Pi0280DT/AB5mk+m96nVymIKCDuo7cOkAv3q+L9XBcXqQvrLPFhd87Yl/K3mN6JM
+hb7fG+q/VPW2fSfIeK7pWa+uW4kM9keFXQdP/CQsOHK4vZWnbWAeyOVRro3BqOVk
+miw4tzwp8Yx9QAuWtedrOsxxsHiQgd7dq970LmXLs+3ZFJM/F/cwBj2G/Tr1fLk1
++drWhElZdfhzx/usQKFrBIihhDpernHg29ifx3E3jmOi8o8AzSc9cmGxOoaEGS7z
+WLwskf7Eiy6AboSnLIzqXaLAunCnPSAkv07KLXIqoanaUmsENXYI6PQ4NJoDM43g
+cmCHbsmg5YutyNXLBWhhYQCEbWOz8PosSURD2HV9SadU/14Pwak=
+=DT2X
+-----END PGP SIGNATURE-----

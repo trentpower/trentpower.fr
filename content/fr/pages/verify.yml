@@ -1,0 +1,194 @@
+translation:
+  source_page: verify
+  source_hash: sha256-e2f1689f121ac1cbdcc10fb7bbe2af39de5338ec4933dd04b1c03c14fd88ad00
+  status: machine-assisted
+  updated: '2026-05-20'
+meta:
+  verify:
+    title: Vérifier cette page · Trent Power
+    description: Document public présentant l’URL canonique, le miroir source, l’empreinte et l’archive d’édition signée
+  verify_locally:
+    title: Vérifier localement · Trent Power
+    description: 'Notes de vérification détachées : contrôle du manifeste signé depuis un trousseau temporaire'
+verify:
+  kicker: Vérification
+  page_kicker: Page de vérification
+  title: Vérifier cette page
+  lede: Une voie publique pour contrôler la source, l’empreinte, la signature et l’identité canonique.
+  noscript_fallback: JavaScript est nécessaire pour sélectionner et afficher une fiche de page ici. Les miroirs source, le manifeste signé et les archives d’édition restent accessibles via <a href="/source/">Source</a> et <a href="/integrity/">Intégrité</a>.
+  meta: Édition 2026-05-17 · trentpower.fr/verify/
+  doc_title: Trent Power - Fiche de vérification
+  action:
+    copy_canonical: Copier l’URL
+    copy_hash: Copier l’empreinte
+    copy_command: Copier la commande de vérification
+    open_source: Ouvrir le miroir source
+    open_manifest: Ouvrir l’entrée du manifeste
+    open_signature: Ouvrir la signature
+    open_key: Ouvrir la clé publique
+    copied: Copié
+    copy_manifest_command: Copier la commande manifeste
+    copy_source_command: Copier la commande source
+    copy_fingerprint: Copier l'empreinte
+    view_source_mirror: Voir le miroir source
+    view_source_code: Voir le code source
+    open_source_mirror: Ouvrir le miroir
+  command:
+    manifest_title: Vérifier le manifeste signé
+    source_title: Vérifier le miroir source
+    note: |-
+      Le manifeste signé valide l’ensemble des fichiers publiés. La seconde commande calcule
+      l’empreinte du miroir source pour la comparer au SHA-256 attendu ci-dessus.
+  unknown:
+    title: Route absente de la carte de vérification
+    body: |-
+      Cette route ne figure pas dans la carte de vérification publique. Vous pouvez tout de
+      même consulter le manifeste public, la vue source et les versions signées.
+    action:
+      source: Source
+      manifest: Manifeste d'intégrité
+      releases: Archive des éditions
+  status:
+    found: Présent dans le manifeste signé
+    missing: Absent du manifeste public actuel
+  title_default: <span class="hero-line">Vérifier cette page</span><span class="hero-line">avec la source,</span><span class="hero-line">l’empreinte</span><span class="hero-line">et la signature</span>
+  title_prefix: Vérifier
+  lede_v2: |-
+    Cette fiche de publication indique où cette page est publiée, sa source,
+    son empreinte et son archive signée.
+  framing: |-
+    Chaque page de ce site est signée, sourcée et archivée. Voici le
+    registre de la page d'où vous venez — il atteste cette page précise,
+    tandis qu'Intégrité détient l'autorité de signature en direct et que
+    les Éditions conservent l'historique des versions.
+  local:
+    heading: Vérifier localement
+    manifest_label: Vérifier le manifeste signé
+    manifest_desc: Vérifie que /integrity.json a été signé avec la clé publique publiée.
+    mirror_label: Vérifier le miroir de cette page
+    mirror_desc: Calcule l'empreinte du miroir source pour la comparer à la valeur attendue ci-dessus.
+    intro: "Effectuez deux contrôles locaux : vérifier le manifeste signé, puis comparer le miroir source de cette page à l'empreinte attendue."
+    subheading_manifest: Vérifier le manifeste signé
+    subheading_mirror: Vérifier le miroir source
+    closing: |-
+      Le manifeste signé authentifie l'ensemble des fichiers publiés. La seconde commande
+      calcule l'empreinte du miroir de cette page pour la comparer à l'empreinte ci-dessus.
+  thispage:
+    heading: Cette page
+    row:
+      title: Titre de la page
+      canonical: URL canonique
+      route: Route
+      source: Miroir source
+      file_type: Type de fichier
+      file_size: Taille
+      manifest_status: Statut dans le manifeste
+      validated: Dernière vérification
+      sha256: Empreinte de la page
+      release: Archive de version
+      file: Fichier
+      citation: Citation
+      route_prefix: Route
+    status:
+      found_manifest: Présent dans le manifeste signé
+      source_available: Source disponible
+      release_archived: Version archivée
+      short:
+        signed: Signé
+        source: Miroir
+        archived: Archives
+    kicker: Document de page
+    group:
+      citation: Citation
+      location: Emplacement canonique
+      evidence: Miroir source
+      fingerprint: Empreinte de page
+      archive: Archive de version
+    history:
+      heading: Cette page apparaît dans
+      first_archived_prefix: Première archive
+      current_in_prefix: Édition actuelle
+      current_label: actuelle
+      edition_prefix: Édition
+      view_release: Voir l’archive
+      status:
+        first: Première archive dans cette édition
+        unchanged: Inchangée depuis l’édition précédente
+        changed: Modifiée depuis l’édition précédente
+    validated_prefix: Vérifié
+  selected:
+    manifest: Manifeste d'intégrité
+    signature: Signature détachée
+    public_key: Clé publique
+  general:
+    source: Visualiseur source
+    releases: Archives des éditions
+  chooser:
+    heading: Documents liés
+    label:
+      home: Accueil
+      privacy: Confidentialité
+      security: Sécurité
+      integrity: Intégrité
+      verify: Vérifier
+      source: Source
+      releases: Éditions
+slip:
+  stamp_legend_top: 'T.POWER PUBLICATION'
+  stamp_legend_bot: 'SIGNÉ · ARCHIVÉ'
+  stamp_mark: 'VÉRIFIÉ'
+verify_intro:
+  panel_label: Édition actuelle
+  edition: Édition
+  signing_key: Clé de signature
+  manifest: Manifeste signé
+  signature: Signature détachée
+  public_key: Clé publique
+  archive: Archive d'édition
+verify_locally:
+  page_kicker: Vérification locale
+  page_title: <span class="hero-line">À votre</span><span class="hero-line">terminal !</span>
+  body_intro: |-
+    Notes de vérification détachées pour le manifeste d'intégrité signé. Exécutez le
+    contrôle dans un trousseau temporaire afin que la clé publique de signature n'entre
+    pas dans votre trousseau principal.
+  body_close: |-
+    La commande importe la clé publique dans un trousseau jetable, vérifie le manifeste
+    signé et supprime les fichiers de travail. Aucun état ne subsiste sur la machine
+    ensuite.
+  print:
+    kicker: Vérification d’intégrité
+    title: Vérifier localement
+    lede: Notes de vérification détachée pour contrôler indépendamment le manifeste d’intégrité signé avec la clé publique publiée.
+    meta: Édition 2026-05-17 · trentpower.fr/integrity/verify-locally/
+    doc_title: Trent Power - Vérifier localement
+    card:
+      '01':
+        label: 01 Trousseau temporaire
+        title: Trousseau temporaire
+        body: Utilisez un GNUPGHOME temporaire pour ne pas toucher à votre trousseau principal.
+      '02':
+        label: 02 Importer la clé publique
+        title: Importer la clé publique
+        body: curl /.well-known/pgp-key.asc · gpg --import pgp-key.asc.
+      '03':
+        label: 03 Vérifier la signature
+        title: Vérifier la signature
+        body: gpg --verify integrity.json.sig integrity.json - attendre Good signature.
+      '04':
+        label: 04 Contrôler le manifeste
+        title: Contrôler le manifeste
+        body: /integrity.json liste chaque fichier public avec son empreinte SHA-256.
+      '05':
+        label: 05 Comparer les sommes
+        title: Comparer les sommes
+        body: Re-hachez un fichier et comparez avec l’entrée du manifeste.
+      '06':
+        label: 06 Notes de reproductibilité
+        title: Notes de reproductibilité
+        body: Chaque édition signée est figée dans /integrity/releases/. Aucun actif mutable.
+    footer:
+      proof: Privé · Statique · Signé · Sans suivi
+      edition: Édition 2026-05-17 · trentpower.fr/integrity/verify-locally/
+    qr:
+      label: trentpower.fr/integrity/verify-locally/

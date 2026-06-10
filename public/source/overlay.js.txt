@@ -1,0 +1,185 @@
+/*! trentpower.fr · authored source */
+/*
+  trentpower.fr
+  overlay lifecycle
+
+  Role:
+  the accessible, focus-trapped overlay shared by the homepage
+  access modal, the verify action menu (built by verify-modal.js)
+  and the language gate. exposed via window.TP_OVERLAY so each
+  overlay can register its own (overlay, trigger) pair without
+  duplicating the lifecycle. handles both shapes:
+    • legacy .modal-overlay container (.active class)
+    • shell-system .modal-shell-scrim container (.is-active class)
+  the body.modal-open class is set on open so the publication-blur
+  rule in styles.src.css (body.modal-open .site / #main → blur)
+  applies regardless of which shape is active.
+
+  Source:
+  edited here as overlay.template.js; compiled to overlay.js by
+  generate_site.py (minified, no substitution).
+
+  Constraints:
+  - no fetch, no inline handlers, no third-party scripts
+  - loaded after first paint; not on the lcp critical path
+  - enhancement only: the verify menu degrades to a /verify/ link
+    and the project modal to in-page content when this is absent
+*/
+
+(function () {
+  'use strict';
+
+  var siteContent = document.getElementById('main');
+  var supportsInert = 'inert' in document.documentElement;
+
+  function setInert(el, state) {
+    if (!el) return;
+    if (state) {
+      if (supportsInert) el.setAttribute('inert', '');
+      el.setAttribute('aria-hidden', 'true');
+    } else {
+      if (supportsInert) el.removeAttribute('inert');
+      el.removeAttribute('aria-hidden');
+    }
+  }
+
+  function focusableIn(el) {
+    return el.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])');
+  }
+
+  var activeOverlay = null;
+  var activeTrigger = null;
+  // history integration · whether this opener pushed a state. only set
+  // when opts.hash is supplied. cleared whenever an overlay closes.
+  var pushedHistoryState = false;
+
+  function openOverlay(overlay, trigger, opts) {
+    if (!overlay) return;
+    activeOverlay = overlay;
+    activeTrigger = trigger || null;
+    overlay.setAttribute('aria-hidden', 'false');
+    // the overlay starts inert in markup (focusable children inside
+    // an aria-hidden region would otherwise still be in the tab
+    // order — lighthouse flags it). remove inert here so the open
+    // modal becomes interactive again.
+    if (supportsInert) overlay.removeAttribute('inert');
+    // both class names are added so the CSS for either shape matches:
+    // legacy `.modal-overlay.active`, new `.modal-shell-scrim.is-active`.
+    overlay.classList.add('active');
+    overlay.classList.add('is-active');
+    // publication-blur target — styles.src.css uses `body.modal-open`
+    // to apply the blur to .site / #main behind the scrim. the
+    // matching `body.modal-open { overflow: hidden }` declaration
+    // (added in phase 96) carries the scroll-lock so we don't need
+    // an inline-style write here.
+    document.body.classList.add('modal-open');
+    setInert(siteContent, true);
+    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+    var focusable = focusableIn(overlay);
+    if (focusable.length > 0) focusable[0].focus();
+    // optional history integration. caller passes opts.hash (e.g. '#cite')
+    // and the overlay becomes back-button-closable + deep-linkable. the
+    // opts.fromPopstate flag lets the popstate listener re-open without
+    // pushing an extra entry.
+    pushedHistoryState = false;
+    if (opts && opts.hash && !opts.fromPopstate &&
+        typeof history !== 'undefined' && typeof history.pushState === 'function') {
+      try {
+        history.pushState({ tp_overlay: opts.hash.replace(/^#/, '') }, '', opts.hash);
+        pushedHistoryState = true;
+      } catch (_) { /* sandboxed iframe etc. — silently no-op */ }
+    }
+  }
+
+  function closeOverlay(opts) {
+    if (!activeOverlay) return;
+    var overlay = activeOverlay;
+    var trigger = activeTrigger;
+    overlay.classList.remove('active');
+    overlay.classList.remove('is-active');
+    overlay.setAttribute('aria-hidden', 'true');
+    // restore inert so the closed modal's focusable children
+    // (× button + mailto link in the access modal, etc.) are
+    // removed from the tab order.
+    if (supportsInert) overlay.setAttribute('inert', '');
+    // matching close to the open path; the scroll-lock comes off
+    // when `body.modal-open` is removed (css `overflow: hidden`).
+    document.body.classList.remove('modal-open');
+    setInert(siteContent, false);
+    if (trigger) {
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.focus();
+    }
+    activeOverlay = null;
+    activeTrigger = null;
+    // if we pushed a history entry on open and this close is user-
+    // initiated (× / esc / click-outside, not a popstate-driven close),
+    // pop our entry so the url reverts cleanly. wrapped in try because
+    // history.back() can fail when the page is the only entry.
+    if (pushedHistoryState && !(opts && opts.fromPopstate) &&
+        typeof history !== 'undefined' && typeof history.back === 'function') {
+      try { history.back(); } catch (_) { /* no prior entry — stay put */ }
+    }
+    pushedHistoryState = false;
+  }
+
+  // popstate · browser back/forward. if an overlay is open and the new
+  // location no longer carries our state, close from popstate so we
+  // don't double-pop the history. Open-on-forward isn't supported in
+  // this version — initial-hash auto-open is handled by the overlay's
+  // own init code (verify-modal.template.js).
+  window.addEventListener('popstate', function () {
+    if (activeOverlay) {
+      var st = history.state;
+      var stillOpen = st && st.tp_overlay;
+      if (!stillOpen) closeOverlay({ fromPopstate: true });
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (!activeOverlay) return;
+    if (e.key === 'Escape') { closeOverlay(); return; }
+    if (e.key === 'Tab') {
+      var focusable = focusableIn(activeOverlay);
+      if (focusable.length === 0) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+  });
+
+  // expose for verify-modal.js (and any future overlay).
+  window.TP_OVERLAY = { open: openOverlay, close: closeOverlay };
+
+  // project "view project" modal , wires its trigger / close button into
+  // the shared lifecycle. pages without #modal silently skip.
+  var modal = document.getElementById('modal');
+  var btn = document.getElementById('access-btn');
+  var closeBtn = document.getElementById('modal-close');
+
+  if (modal && btn && closeBtn) {
+    btn.addEventListener('click', function () { openOverlay(modal, btn); });
+    closeBtn.addEventListener('click', closeOverlay);
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeOverlay();
+    });
+  }
+
+  // [data-inert-default] · nu html checker doesn't recognise the
+  // `inert` attribute yet, so background layers (the gate background,
+  // closed modal scrims) ship without it and we graft it on at boot.
+  // openOverlay/closeOverlay still toggle inert dynamically via
+  // setInert(); this just sets the initial state so the page is
+  // accessible-correct from first paint.
+  if (supportsInert) {
+    var inertNodes = document.querySelectorAll('[data-inert-default]');
+    for (var i = 0; i < inertNodes.length; i++) {
+      inertNodes[i].inert = true;
+    }
+  }
+
+})();

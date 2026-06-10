@@ -1,0 +1,122 @@
+
+# Ignore generated/private docs
+docs/private/
+
+# Remove generated v10 release artefacts
+26 Feb/v10-release/
+
+# Private operational data and secrets
+console_data/
+private/
+id_ed25519
+id_rsa
+*.sqlite
+*.db
+*.bak
+*.totp_key
+*-key.txt
+*.log
+.DS_Store
+.env
+.env.*
+.gate_credentials
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Operator-local notes / rollback snapshots
+_rollback_*/
+_archives/
+_licences/
+SERVER.md
+docs/AUDIT-*.md
+docs/audits/
+*.nginx
+
+# Build-machinery scratch space (tools/paths.py:TMP_DIR) + reserved
+# names for any future staged-build / release working directories.
+# Root-anchored: unanchored forms also swallowed tools/build/ and
+# tools/release/, hiding new tracked files there.
+/.build/
+/build/
+/release/
+
+# Local canonical OG image originals (not deployed; preserved for
+# reference when regenerating derivatives or re-importing). The
+# normalised copies under public/images/og/ are the authoritative
+# deployed versions.
+assets-source/
+
+# Server-side PHP config that must never re-enter public/.
+# (a copy is preserved at tools/server/user.ini.example)
+public/.user.ini
+
+# Forbidden public artefacts — defence-in-depth alongside the build gate
+public/**/.DS_Store
+public/**/Thumbs.db
+public/**/*.swp
+public/**/*.sqlite
+public/**/*.db
+public/**/*.bak
+public/**/*.tmp
+public/**/*.log
+public/**/.env
+public/**/.env.*
+public/**/id_ed25519
+public/**/*.totp_key
+public/**/*-key.txt
+public/**/.htpasswd
+public/**/composer.json
+public/**/composer.lock
+public/**/package.json
+public/**/package-lock.json
+public/**/yarn.lock
+public/**/pnpm-lock.yaml
+
+# slip reference (extracted from ~/Downloads/Trent Power Design System ZIP, not shipped)
+redesigns/
+
+# dev quality tooling (not shipped)
+node_modules/
+
+# Check report contract — local-only machine-readable run reports
+# (reports/checks/last-gate.json etc.). Runtime artefacts: they carry a
+# real wall-clock timestamp, are never deployed and never enter a release
+# archive. The directory itself is kept via reports/checks/.gitkeep.
+reports/checks/*.json
+
+# Terminal build cockpit logs — local-only runtime artefacts. Ignore the
+# logs but keep the .gitkeep placeholder.
+reports/build/*.log
+!reports/build/.gitkeep
+
+# Editor / scratch backups (alongside *.bak above)
+*.orig
+*.tmp
+
+# Local-only review/working reports under reports/ (build traces, drafts,
+# audit PDFs, the public-readiness inventory + cleanup report, the two
+# authorship-trail audit txts).
+reports/*.md
+reports/*.txt
+reports/*.pdf
+
+# Python type-check / test caches
+.mypy_cache/
+.pytest_cache/
+
+# Klim Type Foundry licensed binaries — served live under a commercial
+# licence that prohibits redistribution; never re-enter git. A fresh
+# checkout restores them with tools/build/fetch_licensed_fonts.py,
+# verified against the signed integrity.json. Declared in
+# metadata/repo-exclusions.json.
+public/fonts/*.woff2
+public/fonts/subsets/*.woff2
+docs/pdf/fonts/*.woff2
+
+
+# README PDF review renders — per-page PNGs, contact sheet and layout
+# report emitted by tools/quality/pdf/validate-layout.py --review.
+# Generated from README.pdf on every export; never shipped.
+docs/pdf/review/

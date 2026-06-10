@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>trentpower.fr · Documentation</title>
+<link rel="stylesheet" href="guide.css">
+<link rel="stylesheet" href="print-paged.css">
+</head>
+<body>
+
+<!-- ════════════════════════ COVER ════════════════════════ -->
+<section class="cover">
+  <div class="cover__top">
+    <div class="cover__mark">TRENT&nbsp;POWER<br><span class="muted">PUBLICATION&nbsp;SYSTEM</span></div>
+  </div>
+
+  <div class="cover__center">
+    <p class="label" style="margin-bottom:20px;"><span class="num">00</span>The complete documentation</p>
+    <h1 class="cover__title">trentpower.fr</h1>
+    <p class="cover__sub">A signed, static, source‑verifiable publication, explained end to end.</p>
+    <p class="cover__desc">One reading of the whole system: what it is, how words become pages, how it is built, gated, signed and checked, how it is operated, and how it is kept private and ready for public scrutiny. Written so a curious non‑technical reader and the engineer who maintains it can both follow it.</p>
+  </div>
+
+  <div class="cover__foot">
+    <div class="cover__meta">
+      Edition · <b>2026‑06‑10</b><br>
+      Format · <b>A4 portrait · 210 × 297 mm</b><br>
+      Composed in <b>Paris</b>
+    </div>
+    <div class="cover__proof">Private · Static · Signed</div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CONTENTS ════════════════════════ -->
+<section class="toc-page">
+  <p class="label"><span class="num">·</span>Contents</p>
+  <h2 class="t-h2 mt2">What is inside</h2>
+  <p class="lede mt2">Each part opens in plain English and deepens as it goes. A reader in a hurry can stop after any opening summary; the detail and code are there when they are wanted.</p>
+
+  <div class="toc mt3">
+    <a class="toc__item" href="#sec-a"><span class="toc__num">A</span><span class="toc__ttl">How to read this<small>The rhythm, the audience</small></span><span class="toc__pg" href="#sec-a"></span></a>
+    <a class="toc__item" href="#sec-b"><span class="toc__num">B</span><span class="toc__ttl">What trentpower.fr is<small>Static, editorial, finite, attested</small></span><span class="toc__pg" href="#sec-b"></span></a>
+    <a class="toc__item" href="#sec-c"><span class="toc__num">C</span><span class="toc__ttl">From words to pages<small>The content model</small></span><span class="toc__pg" href="#sec-c"></span></a>
+    <a class="toc__item" href="#sec-d"><span class="toc__num">D</span><span class="toc__ttl">The build pipeline<small>One command, ten stages</small></span><span class="toc__pg" href="#sec-d"></span></a>
+    <a class="toc__item" href="#sec-e"><span class="toc__num">E</span><span class="toc__ttl">Gates, checks &amp; quality<small>What may ship, and what merely warns</small></span><span class="toc__pg" href="#sec-e"></span></a>
+    <a class="toc__item" href="#sec-f"><span class="toc__num">F</span><span class="toc__ttl">Trust &amp; verification<small>Proof anyone can re‑run</small></span><span class="toc__pg" href="#sec-f"></span></a>
+    <a class="toc__item" href="#sec-g"><span class="toc__num">G</span><span class="toc__ttl">Security &amp; privacy<small>What the browser is told to enforce</small></span><span class="toc__pg" href="#sec-g"></span></a>
+    <a class="toc__item" href="#sec-h"><span class="toc__num">H</span><span class="toc__ttl">Operations &amp; recovery<small>The deploy routine, and what to do when it breaks</small></span><span class="toc__pg" href="#sec-h"></span></a>
+    <a class="toc__item" href="#sec-i"><span class="toc__num">I</span><span class="toc__ttl">The score ledger<small>The tool beside the site</small></span><span class="toc__pg" href="#sec-i"></span></a>
+    <a class="toc__item" href="#sec-j"><span class="toc__num">J</span><span class="toc__ttl">Public‑readiness &amp; authorship<small>Going public, stated plainly</small></span><span class="toc__pg" href="#sec-j"></span></a>
+    <a class="toc__item" href="#sec-k"><span class="toc__num">K</span><span class="toc__ttl">Appendix<small>Repository map &amp; principle ordering</small></span><span class="toc__pg" href="#sec-k"></span></a>
+    <a class="toc__item" href="#colophon"><span class="toc__num">·</span><span class="toc__ttl">Colophon<small>Type, licensing, how this was made</small></span><span class="toc__pg" href="#colophon"></span></a>
+  </div>
+</section>
+
+<!-- ════════════════════════ A · HOW TO READ ════════════════════════ -->
+<section class="section" id="sec-a" data-runhead="A · How to read this">
+  <div class="opener">
+    <p class="label"><span class="num">A</span>Orientation</p>
+    <h1 class="t-h1">How to read this</h1>
+    <p class="lede">A companion to the website, by the same author. Every part is built to be entered from the top and left whenever you have read enough.</p>
+  </div>
+
+  <div class="section__body">
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">A.1</span><span class="spec__label">The rhythm</span></div>
+      <div>
+        <h3 class="t-h3">Plain words first, detail underneath</h3>
+        <p class="body mt1">Every section follows one shape: a <strong>plain‑English summary</strong>, then a <strong>small picture</strong> of how the thing works, then the <strong>practical detail</strong>, and finally a single line on <strong>why it matters</strong>. A business reader can stop after the summary and lose nothing essential. A developer reads on for the names, paths and commands.</p>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">A.2</span><span class="spec__label">Reading the marks</span></div>
+      <div>
+        <h3 class="t-h3">Three small legends</h3>
+        <p class="body mt1">Diagrams read in grayscale; value and weight carry meaning, never colour alone. A single oxblood accent marks the one node that matters most. Code is shown only where it is genuinely illustrative, with light token colour.</p>
+        <div class="toklegend mt2">
+          <span><i style="background:var(--code-string);"></i>string</span>
+          <span><i style="background:var(--code-number);"></i>number / boolean</span>
+          <span><i style="background:var(--code-var);"></i>variable</span>
+          <span><i style="background:var(--code-comment);"></i>comment</span>
+        </div>
+        <div class="treelegend mt2">
+          <span><i style="border-color:var(--ink);"></i>authored source</span>
+          <span><i style="border-color:var(--fg3);"></i>generated output</span>
+          <span><i style="border-color:var(--code-var);"></i>build tool</span>
+          <span><i style="border-color:var(--accent-text);"></i>trust surface</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">A.3</span><span class="spec__label">Who it is for</span></div>
+      <div>
+        <p class="body">Two readers at once. To a non‑technical reader it answers “what is this site, and why is it built so unusually?” To an engineer it is a map of the codebase from the first authored word through to the last signed byte on the live host. Where the two diverge, the summary serves the first and the detail serves the second.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ B · WHAT IT IS ════════════════════════ -->
+<section class="section" id="sec-b" data-runhead="B · What trentpower.fr is">
+  <div class="opener">
+    <p class="label"><span class="num">B</span>The idea</p>
+    <h1 class="t-h1">What trentpower.fr&nbsp;is</h1>
+    <p class="lede">A small, finished personal website published in English and French: a folder of plain files anyone can check for tampering, that collects nothing and depends on nothing.</p>
+  </div>
+
+  <div class="section__body">
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">B.1</span><span class="spec__label">In plain terms</span></div>
+      <div>
+        <p class="body">Most websites run software on a server every time you visit. This one does not. It is a directory of pre‑made files (pages, images, fonts) served exactly as written. Each file is fingerprinted and the list of fingerprints is signed, so a stranger can confirm that what their browser received is what was published in the signed record. It is static, editorial, finite, and cryptographically signed.</p>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">B.2</span><span class="spec__label">The shape</span><span class="hint">authored input in, signed static bytes out; no request‑time code</span></div>
+      <div>
+        <div class="diagram">
+          <div class="layer">
+            <div class="layer__num">5</div><div class="layer__title">Live host</div>
+            <div class="layer__nodes"><div class="node"><div class="node__l">Apache · Varnish</div><div class="node__s">same‑origin static bytes</div></div></div>
+          </div>
+          <div class="layer">
+            <div class="layer__num">4</div><div class="layer__title">Signed manifest</div>
+            <div class="layer__nodes"><div class="node node--accent"><div class="node__l">integrity.json + .sig</div><div class="node__s">SHA‑256 + detached PGP</div></div></div>
+          </div>
+          <div class="layer">
+            <div class="layer__num">3</div><div class="layer__title">Public artefact</div>
+            <div class="layer__nodes">
+              <div class="node"><div class="node__l">/en‑au/</div><div class="node__s">English edition</div></div>
+              <div class="node"><div class="node__l">/fr/</div><div class="node__s">French edition</div></div>
+              <div class="node"><div class="node__l">/</div><div class="node__s">language gate</div></div>
+            </div>
+          </div>
+          <div class="layer">
+            <div class="layer__num">2</div><div class="layer__title">Deterministic build</div>
+            <div class="layer__nodes"><div class="node node--surface"><div class="node__l">generators</div><div class="node__s">render the trees, byte‑stable</div></div></div>
+          </div>
+          <div class="layer">
+            <div class="layer__num">1</div><div class="layer__title">Authored source</div>
+            <div class="layer__nodes"><div class="node node--surface"><div class="node__l">YAML copy · identity · templates</div><div class="node__s">the only things edited by hand</div></div></div>
+          </div>
+        </div>
+        <p class="cap mt2">The whole system on one axis: authored source at the base, signed public bytes at the top. Nothing runs at request time.</p>
+      </div>
+    </div>
+
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">B.3</span><span class="spec__label">The detail</span></div>
+      <div>
+        <p class="body">Two complete editions ship: <code class="path">/en‑au/</code> (English) and <code class="path">/fr/</code> (French, with localised slugs <code class="inline">confidentialite</code>, <code class="inline">securite</code>, <code class="inline">integrite</code>, <code class="inline">verifier</code>). The root <code class="path">/</code> is a lightweight language gate carrying no editorial content of its own.</p>
+        <p class="body">There is no runtime CMS, no database, no analytics, no cookies, no advertising identifiers, and no third‑party runtime assets: fonts are self‑hosted woff2 and every asset is same‑origin. The browser storage that is used stays on the device: a short, fixed set of same‑origin keys holding visitor preferences and first‑visit markers, plus the service‑worker offline cache. The storage itself is never sent anywhere, and all of it is listed and clearable on <code class="path">/local/</code>. JavaScript is enhancement only (language switch, scroll reveal, project modal, citation overlay, service‑worker registration); the page means the same with scripts disabled.</p>
+        <p class="body">The build is deterministic on the author’s machine: two consecutive local runs produce byte‑identical output, modulo the rotating PGP signature salt. Independent off‑machine reproduction is the stated next step, not yet a claim. No language model, AI service, or external API sits anywhere in the release path. And <code class="path">public/</code> is intentionally tracked in git: the deployed bytes <em>are</em> what the signed manifest attests to.</p>
+        <div class="statband mt3">
+          <div class="stat"><div class="stat__n accent">0</div><div class="stat__l">Cookies</div><div class="stat__s">none set, ever</div></div>
+          <div class="stat"><div class="stat__n accent">0</div><div class="stat__l">Trackers</div><div class="stat__s">no analytics, no pixels</div></div>
+          <div class="stat"><div class="stat__n accent">0</div><div class="stat__l">Third‑party requests</div><div class="stat__s">all assets same‑origin</div></div>
+        </div>
+        <p class="cap mt2">Measured at the network layer on page load. Source · the site’s own CSP and privacy posture, as of edition 2026‑06‑10.</p>
+        <div class="callout callout--why mt3">
+          <p class="callout__tag">Why this matters</p>
+          <p>A directory of static files has almost nothing to attack and almost nothing to maintain: no server code runs, no database can be queried, and every file a visitor receives is listed in the signed integrity.json manifest.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ C · CONTENT MODEL ════════════════════════ -->
+<section class="section" id="sec-c" data-runhead="C · From words to pages">
+  <div class="opener">
+    <p class="label"><span class="num">C</span>The content model</p>
+    <h1 class="t-h1">From words to&nbsp;pages</h1>
+    <p class="lede">All the site’s words live in structured text, kept apart from the HTML. Writers edit prose in one place; the build sweeps it into every page, footer and citation.</p>
+  </div>
+
+  <div class="section__body">
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">C.1</span><span class="spec__label">In plain terms</span></div>
+      <div>
+        <p class="body">English is the authored record. French is curated by hand, because translation is editorial work. A phrase that appears in many places has exactly one source; change it once and it changes everywhere, in both languages, with no manual synchronisation.</p>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">C.2</span><span class="spec__label">The path of a word</span></div>
+      <div>
+        <div class="flow" style="max-width:96mm;">
+          <div class="flow__step"><span class="s-l">content/*.yml · authored copy</span><span class="s-n">source</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__step"><span class="s-l">{{ shared.x.y }} references resolved</span><span class="s-n">resolve</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__step"><span class="s-l">build/copy/ · compile EN → strings</span><span class="s-n">compile</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__step"><span class="s-l">build/render_pages.py · YAML + templates</span><span class="s-n">render</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__step flow__step--accent"><span class="s-l">public/en‑au/ + public/fr/</span><span class="s-n">pages</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">C.3</span><span class="spec__label">The detail</span></div>
+      <div>
+        <p class="body">Copy lives as YAML under <code class="path">content/</code>: <code class="path">en/shared.yml</code> plus <code class="path">en/pages/*.yml</code> (home, privacy, integrity, source, verify, security, system, local) and the <code class="path">fr/</code> equivalents. The route registry <code class="path">content/routes.json</code> is generated from <code class="path">content/shared/routes.yml</code>: <span class="tnum">20</span> routes, one per logical page in each language, each carrying its path, locale, template, schema and trust flags.</p>
+        <p class="body">The reference engine is deliberately dumb: one dotted path resolves to one shared string, with no conditionals and no loops. An unresolved <code class="inline">{{ }}</code> or a reference to a missing key is a <strong>build error</strong>; a long string repeated more than three times outside <code class="path">shared.yml</code> is a <strong>warning</strong>.</p>
+        <div class="code mt2">
+          <div class="code__cap"><span>content/shared.yml · single substitution</span><span>yaml</span></div>
+<pre><span class="tok-com"># authored once, swept into every surface that quotes it</span>
+<span class="tok-key">proof_line</span>: <span class="tok-str">"Every byte is hashed, signed, and checkable."</span>
+
+<span class="tok-com"># referenced from any page, in either language:</span>
+<span class="tok-key">tagline</span>: <span class="tok-str">"{{ shared.site.proof_line }}"</span></pre>
+        </div>
+        <p class="body mt2">Public JavaScript is generated from <code class="path">templates/*.template.js</code>; never edit the generated <code class="inline">*.js</code>. The same single‑source discipline governs identity: edition date, name and <code class="inline">sameAs</code> links all flow from <code class="path">tools/config/identity_canonical.json</code>.</p>
+        <div class="callout callout--why mt3">
+          <p class="callout__tag">Why this matters</p>
+          <p>One source per phrase means the two editions never drift, and a writer never hunts through HTML to fix a sentence.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ D · BUILD PIPELINE ════════════════════════ -->
+<section class="section" id="sec-d" data-runhead="D · The build pipeline">
+  <div class="opener">
+    <p class="label"><span class="num">D</span>The build pipeline</p>
+    <h1 class="t-h1">One command,<br>ten stages</h1>
+    <p class="lede">A single command turns authored source into the finished, signed website. The order is fixed because some stages rewrite the HTML, and the fingerprints must be taken last, over the final bytes.</p>
+  </div>
+
+  <div class="section__body">
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">D.1</span><span class="spec__label">In plain terms</span></div>
+      <div>
+        <p class="body">You run one command. It renders both editions, sweeps in the edition date and asset versions, mirrors the source, takes the cryptographic hashes, signs them, packages a frozen archive of the edition, and finally runs the safety gate that decides whether the result may ship.</p>
+      </div>
+    </div>
+
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">D.2</span><span class="spec__label">The ten stages</span><span class="hint">order is load‑bearing; hashing is always last</span></div>
+      <div>
+        <div class="diagram">
+          <div class="layer"><div class="layer__num">0</div><div class="layer__title">Prepare</div><div class="layer__nodes"><div class="node"><div class="node__l">build_copy · render_pages · hygiene</div><div class="node__s">compile EN, render trees, forbidden‑artefact gate</div></div></div></div>
+          <div class="layer"><div class="layer__num">1·2</div><div class="layer__title">Emit</div><div class="layer__nodes"><div class="node"><div class="node__l">generate_site · generate_sw</div><div class="node__s">sweep edition / version / CSP; precache fingerprint</div></div></div></div>
+          <div class="layer"><div class="layer__num">3·4</div><div class="layer__title">Map</div><div class="layer__nodes"><div class="node"><div class="node__l">integrity (prelim) · verification_map</div><div class="node__s">hash tree, per‑route verify records</div></div></div></div>
+          <div class="layer"><div class="layer__num">5·6</div><div class="layer__title">Fix &amp; mirror</div><div class="layer__nodes"><div class="node"><div class="node__l">generate_sri · source_view</div><div class="node__s">SHA‑384 onto link/script; byte‑equal /source/</div></div></div></div>
+          <div class="layer"><div class="layer__num">7·8</div><div class="layer__title">Seal</div><div class="layer__nodes"><div class="node node--accent"><div class="node__l">integrity (final) · gpg sign</div><div class="node__s">re‑hash stable tree → integrity.json.sig</div></div></div></div>
+          <div class="layer"><div class="layer__num">9·10</div><div class="layer__title">Package<br>&amp; gate</div><div class="layer__nodes"><div class="node"><div class="node__l">release_archives · gate.py</div><div class="node__s">signed ZIP/TAR.GZ; blocking deploy gate</div></div></div></div>
+        </div>
+        <p class="cap mt2">Stages <code class="inline">generate_site</code> and <code class="inline">generate_sri</code> mutate the HTML; the final hash must run after them, or the browser blocks a stale‑SRI script and Verify breaks.</p>
+      </div>
+    </div>
+
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">D.3</span><span class="spec__label">The detail</span></div>
+      <div>
+        <p class="body">The entry point is <code class="inline">bash tools/build/build.sh</code>. Two everyday invocations are the operator’s whole mental model:</p>
+        <div class="code code--cmd mt2">
+          <div class="code__cap"><span>tools/build/build.sh</span><span>shell</span></div>
+<pre><span class="cmd-prompt">$ </span>bash tools/build/build.sh            <span class="tok-com"># full: generate, sign, archive, gate</span>
+<span class="cmd-prompt">$ </span>bash tools/build/build.sh --check    <span class="tok-com"># generators + gate only; no signing</span></pre>
+        </div>
+        <p class="body mt2">Build and deploy are deliberately asymmetric: the <strong>local build signs</strong>; CI does not and never holds the PGP key. The runner only re‑verifies the committed signature and uploads bytes. Deploy is a <strong>non‑deleting</strong> two‑pass SFTP mirror, so an accidental <code class="inline">git rm</code> cannot wipe live files. The CI deploy fires on manual dispatch only, with an explicit <code class="inline">confirm=DEPLOY</code>, so a fork’s pull request can never trigger it. A post‑deploy smoke test probes the expected‑200 routes, the expected‑403/404 denials, and re‑verifies the live signature.</p>
+
+        <p class="label mt3"><span class="num">·</span>What the public folder is made of</p>
+        <p class="body mt1">Of <span class="tnum">598</span> published files, most are not “pages” at all. They are the verification scaffolding that makes the site checkable.</p>
+        <div class="bars mt2">
+          <div class="bar"><span class="bar__l">source mirrors .txt</span><span class="bar__track"><span class="bar__fill" style="--v:160;--m:160;"></span></span><span class="bar__v">160</span></div>
+          <div class="bar"><span class="bar__l">signatures .sig</span><span class="bar__track"><span class="bar__fill" style="--v:128;--m:160;"></span></span><span class="bar__v">128</span></div>
+          <div class="bar"><span class="bar__l">data .json</span><span class="bar__track"><span class="bar__fill" style="--v:81;--m:160;"></span></span><span class="bar__v">81</span></div>
+          <div class="bar"><span class="bar__l">checksums .sha256</span><span class="bar__track"><span class="bar__fill" style="--v:47;--m:160;"></span></span><span class="bar__v">47</span></div>
+          <div class="bar"><span class="bar__l">archives .zip / .gz</span><span class="bar__track"><span class="bar__fill" style="--v:46;--m:160;"></span></span><span class="bar__v">46</span></div>
+          <div class="bar"><span class="bar__l">pages .html</span><span class="bar__track"><span class="bar__fill accent" style="--v:45;--m:160;"></span></span><span class="bar__v">45</span></div>
+        </div>
+        <p class="cap mt2">Tracked files under <code class="path">public/</code>. <span class="tnum">333</span> of them belong to frozen release archives. Source · <code class="inline">git ls-files public/</code>, edition 2026‑06‑10.</p>
+        <div class="callout callout--why mt3">
+          <p class="callout__tag">Why this matters</p>
+          <p>The fixed stage order is what lets two runs of the same source produce the same hashes. Hash before the HTML is rewritten and the manifest describes bytes the browser never receives.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ E · GATES ════════════════════════ -->
+<section class="section" id="sec-e" data-runhead="E · Gates, checks &amp; quality">
+  <div class="opener">
+    <p class="label"><span class="num">E</span>Gates, checks &amp; quality</p>
+    <h1 class="t-h1">What may ship</h1>
+    <p class="lede">Before anything is published, the build runs a battery of automated checks. The serious ones block the deploy outright. A second tier of polish checks reports problems but never blocks an urgent fix.</p>
+  </div>
+
+  <div class="section__body">
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">E.1</span><span class="spec__label">In plain terms</span></div>
+      <div>
+        <p class="body">Is it signed? Does every file match its hash? Did any secret or local path leak? Those questions <em>block</em> a deploy if answered wrongly. Softer questions (search‑engine hints, comment style, editorial copy) only <em>warn</em>, so a polish nit can never hold a security fix hostage.</p>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">E.2</span><span class="spec__label">Two tiers, one registry</span></div>
+      <div>
+        <div class="chain">
+          <div class="chain__node"><span class="c-l">checks.py</span><span class="c-s">one registry, tagged</span></div>
+          <span class="chain__arrow">→</span>
+          <div class="chain__node chain__node--accent"><span class="c-l">gate.py</span><span class="c-s">blocking · fail = no deploy</span></div>
+          <span class="chain__arrow">→</span>
+          <div class="chain__node"><span class="c-l">lint.py</span><span class="c-s">advisory · exits 0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">E.3</span><span class="spec__label">The detail</span></div>
+      <div>
+        <p class="body">A single registry drives both runners. Every check carries a tier, a category, and a one‑line rationale, in gate order.</p>
+        <div class="statband mt2">
+          <div class="stat"><div class="stat__n">49</div><div class="stat__l">Checks total</div><div class="stat__s">one registry, two runners</div></div>
+          <div class="stat"><div class="stat__n accent">37</div><div class="stat__l">Blocking</div><div class="stat__s">fail = deploy stops</div></div>
+          <div class="stat"><div class="stat__n">12</div><div class="stat__l">Advisory</div><div class="stat__s">warns, never blocks</div></div>
+        </div>
+        <div class="bars mt3">
+          <div class="bar"><span class="bar__l">Security (SEC)</span><span class="bar__track"><span class="bar__fill accent" style="--v:19;--m:19;"></span></span><span class="bar__v">19</span></div>
+          <div class="bar"><span class="bar__l">Correctness (COR)</span><span class="bar__track"><span class="bar__fill" style="--v:18;--m:19;"></span></span><span class="bar__v">18</span></div>
+          <div class="bar"><span class="bar__l">Quality (QUAL)</span><span class="bar__track"><span class="bar__fill" style="--v:12;--m:19;"></span></span><span class="bar__v">12</span></div>
+        </div>
+        <p class="cap mt2">By category. Source · <code class="path">tools/lib/checks.py</code> registry, edition 2026‑06‑10.</p>
+
+        <table class="spectable mt3">
+          <thead><tr><th>Check</th><th>Cat</th><th>Tier</th><th>Proves</th></tr></thead>
+          <tbody>
+            <tr><td>gpg</td><td>SEC</td><td class="v">block</td><td>signature verifies against the published key in a clean keyring</td></tr>
+            <tr><td>source_mirrors</td><td>SEC</td><td class="v">block</td><td>every /source/ mirror byte‑matches its live file</td></tr>
+            <tr><td>frozen_archives_immutable</td><td>SEC</td><td class="v">block</td><td>sealed releases byte‑identical to baseline</td></tr>
+            <tr><td>local_path_leakage</td><td>SEC</td><td class="v">block</td><td>no /home/, Desktop/ or htdocs path in any shipped byte</td></tr>
+            <tr><td>bilingual_html / lang_gate</td><td>COR</td><td class="v">block</td><td>both editions and the gate render correctly</td></tr>
+            <tr><td>lighthouse_invariants</td><td>QUAL</td><td>advise</td><td>accessibility / SEO budgets hold</td></tr>
+          </tbody>
+        </table>
+        <p class="cap mt2">A representative slice. Inline cross&#8209;cutting checks are functions in <code class="inline">tools/quality/inline_checks.py</code>; the registry in <code class="inline">tools/lib/checks.py</code> feeds both tiers.</p>
+        <div class="callout callout--why mt3">
+          <p class="callout__tag">Why this matters</p>
+          <p>Splitting the checks by severity means a missing signature or a leaked path stops the deploy, while a comment‑style nit cannot. The two failure modes never trade places under pressure.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ F · TRUST ════════════════════════ -->
+<section class="section" id="sec-f" data-runhead="F · Trust &amp; verification">
+  <div class="opener">
+    <p class="label"><span class="num">F</span>Trust &amp; verification</p>
+    <h1 class="t-h1">Proof anyone<br>can re‑run</h1>
+    <p class="lede">Every public byte is fingerprinted; the list of fingerprints is signed with a key only the author holds. Anyone can confirm the site they received is exactly what was signed, without trusting the host or the network.</p>
+  </div>
+
+  <div class="section__body">
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">F.1</span><span class="spec__label">In plain terms</span></div>
+      <div>
+        <p class="body">Re‑download the live site and check it against the signed manifest using standard tools. Either it matches and gpg prints “Good signature”, or it does not and you should not trust the bytes. Past editions are frozen, so the historical record cannot be quietly rewritten.</p>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">F.2</span><span class="spec__label">The chain</span><span class="hint">runs in a throwaway keyring, leaves no residue</span></div>
+      <div>
+        <div class="chain">
+          <div class="chain__node"><span class="c-l">import key</span><span class="c-s">temp keyring</span></div>
+          <span class="chain__arrow">→</span>
+          <div class="chain__node"><span class="c-l">fetch manifest</span><span class="c-s">integrity.json</span></div>
+          <span class="chain__arrow">→</span>
+          <div class="chain__node"><span class="c-l">fetch sig</span><span class="c-s">.json.sig</span></div>
+          <span class="chain__arrow">→</span>
+          <div class="chain__node chain__node--accent"><span class="c-l">gpg --verify</span><span class="c-s">Good signature</span></div>
+          <span class="chain__arrow">→</span>
+          <div class="chain__node"><span class="c-l">discard</span><span class="c-s">zero residue</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">F.3</span><span class="spec__label">The detail</span></div>
+      <div>
+        <p class="body"><code class="path">integrity.json</code> maps every publishable path to a <code class="inline">sha256‑…</code> digest; <code class="path">integrity.json.sig</code> is a detached PGP signature over it. The public key sits at <code class="path">/.well-known/pgp-key.asc</code>, fingerprint <code class="inline">A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263</code>. The whole check, made executable:</p>
+        <div class="code code--cmd mt2">
+          <div class="code__cap"><span>verify the live site in a clean keyring</span><span>bash</span></div>
+<pre><span class="tok-var">tmpdir</span>=<span class="tok-str">"$(mktemp -d)"</span>; <span class="tok-key">export</span> <span class="tok-var">GNUPGHOME</span>=<span class="tok-str">"$tmpdir"</span>
+<span class="tok-var">ts</span>=$(<span class="tok-key">date</span> +%s)
+<span class="tok-key">curl</span> -fsS <span class="tok-str">"https://trentpower.fr/.well-known/pgp-key.asc?ts=$ts"</span> | gpg --import
+<span class="tok-key">curl</span> -fsS <span class="tok-str">"https://trentpower.fr/integrity.json?ts=$ts"</span>     -o integrity.json
+<span class="tok-key">curl</span> -fsS <span class="tok-str">"https://trentpower.fr/integrity.json.sig?ts=$ts"</span> -o integrity.json.sig
+gpg --verify integrity.json.sig integrity.json
+<span class="tok-key">unset</span> <span class="tok-var">GNUPGHOME</span>; <span class="tok-key">rm</span> -rf <span class="tok-str">"$tmpdir"</span> integrity.json integrity.json.sig</pre>
+        </div>
+        <p class="body mt2">Beyond the manifest: <code class="path">/source/</code> holds byte‑equal text mirrors of every served file, so the bytes you read are the bytes that were signed. Frozen archives at <code class="path">/integrity/releases/&lt;date&gt;/</code> carry signed <code class="inline">SHA256SUMS</code>, a <code class="inline">release.json</code> trust anchor, a dependency‑free <code class="inline">verify.sh</code>, a <code class="inline">builds.json</code> index that records the canonical build and any same‑edition rebuilds, and an <code class="inline">EXCLUDED_FILES.json</code> that names every file deliberately left out of the archive (and why) so a verifier can tell intentional omission from tampering. Sealed editions are immutable; any later drift is recorded as a parallel rebuild, never a mutation.</p>
+        <div class="compare mt3">
+          <div class="callout callout--why">
+            <p class="callout__tag">What it proves</p>
+            <p>The bytes you received match a manifest signed by the held key. A stranger can re‑run the check and get the same answer.</p>
+          </div>
+          <div class="callout callout--caution">
+            <p class="callout__tag">What it does not prove</p>
+            <p><strong>Key identity:</strong> that the key is whose you think. Verify the fingerprint out of band.</p>
+            <p><strong>Content truth:</strong> integrity only, never that a statement on the page is correct.</p>
+            <p><strong>Freshness:</strong> an old‑but‑validly‑signed release still verifies; the <code class="inline">?ts=</code> cache‑bust fetches the current one.</p>
+            <p><strong>Host &amp; key safety:</strong> no defence against host or signing‑key compromise.</p>
+            <p><strong>Your device:</strong> not a compromised client, extension, or stale browser cache.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ G · SECURITY ════════════════════════ -->
+<section class="section" id="sec-g" data-runhead="G · Security &amp; privacy">
+  <div class="opener">
+    <p class="label"><span class="num">G</span>Security &amp; privacy</p>
+    <h1 class="t-h1">What the browser<br>is told to&nbsp;enforce</h1>
+    <p class="lede">The site collects nothing and loads nothing from anyone else, and the Content Security Policy tells the browser to enforce exactly that. Only an explicit allow‑list of files is ever served; everything else is denied by default.</p>
+  </div>
+
+  <div class="section__body">
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">G.1</span><span class="spec__label">In plain terms</span></div>
+      <div>
+        <p class="body">“We don’t track you” is easy to say. Here the Content Security Policy tells the browser to block third‑party connections and outbound requests, and the server serves only a named list of files; what little the site stores stays on your device, same‑origin and visitor‑controlled. On browsers that honour the policy, the claim is checkable rather than taken on faith.</p>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">G.2</span><span class="spec__label">Defence in depth</span></div>
+      <div>
+        <div class="diagram">
+          <div class="layer"><div class="layer__num">4</div><div class="layer__title">Machine-<br>checkable</div><div class="layer__nodes"><div class="node"><div class="node__l">attestations.json · security.txt</div><div class="node__s">posture stated for machines</div></div></div></div>
+          <div class="layer"><div class="layer__num">3</div><div class="layer__title">Allow‑list gate</div><div class="layer__nodes"><div class="node node--accent"><div class="node__l">.htaccess → [F,L]</div><div class="node__s">deny everything not allowed</div></div></div></div>
+          <div class="layer"><div class="layer__num">2</div><div class="layer__title">Browser policy</div><div class="layer__nodes"><div class="node"><div class="node__l">CSP · COOP/COEP · HSTS</div><div class="node__s">default‑src 'none'</div></div></div></div>
+          <div class="layer"><div class="layer__num">1</div><div class="layer__title">Privacy posture</div><div class="layer__nodes"><div class="node node--surface"><div class="node__l">no analytics / cookies / tracking</div><div class="node__s">nothing to leak</div></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">G.3</span><span class="spec__label">The detail</span></div>
+      <div>
+        <p class="body">The Content‑Security‑Policy is locked to <code class="inline">default-src 'none'</code> with <code class="inline">connect-src 'self'</code> on normal pages, so a page can talk only to its own origin and a fetch to any third party is not even possible. Scripts are <code class="inline">'self'</code> plus a small fixed set of <code class="inline">sha256</code> hashes; there is no <code class="inline">unsafe-inline</code>, no <code class="inline">eval()</code>, and no inline event handlers. Where the browser supports it, Trusted Types are required for any script sink (older browsers ignore the directive and fall back to the other <code class="inline">script-src</code> controls).</p>
+        <div class="code mt2">
+          <div class="code__cap"><span>Content-Security-Policy · .htaccess</span><span>http</span></div>
+<pre><span class="tok-key">Content-Security-Policy</span>: default-src <span class="tok-str">'none'</span>; upgrade-insecure-requests;
+  script-src <span class="tok-str">'self'</span> <span class="tok-mut">&lt;4 sha256 hashes&gt;</span>; script-src-attr <span class="tok-str">'none'</span>;
+  style-src <span class="tok-str">'self'</span>; font-src <span class="tok-str">'self'</span>; img-src <span class="tok-str">'self'</span>;
+  connect-src <span class="tok-str">'self'</span>; worker-src <span class="tok-str">'self'</span>; manifest-src <span class="tok-str">'self'</span>;
+  frame-ancestors <span class="tok-str">'none'</span>; object-src <span class="tok-str">'none'</span>; base-uri <span class="tok-str">'self'</span>;
+  form-action <span class="tok-str">'none'</span>; require-trusted-types-for <span class="tok-str">'script'</span>; trusted-types tp-app</pre>
+        </div>
+        <p class="body mt2">Cross‑origin isolation is retained (COOP <code class="inline">same-origin</code>, COEP <code class="inline">require-corp</code>), with HSTS at one year. Exposure is allow‑listed rather than deny‑listed: <code class="path">tools/config/public-exposure.json</code> (kept under <code class="path">tools/</code>, never deployed) is generated and then validated, and <code class="path">public/.htaccess</code> runs a rewrite gate that ends in <code class="inline">RewriteRule . - [F,L]</code>, so anything not explicitly allowed is forbidden. The validator proves every reachable file is allowed, no file matches a deny rule, and every internal link resolves.</p>
+        <p class="body mt2">What the site stores stays on the device. A short, fixed set of same‑origin keys holds visitor choices (appearance via <code class="inline">tp-theme</code>, last edition and reading position, first‑visit markers), and the service worker keeps an offline cache named <code class="inline">tp-{edition}.{hashes}</code>, so a page read once works without the network. There are no cookies and no advertising identifiers; the storage itself is never sent anywhere, and <code class="path">/local/</code> lists every key the visitor can inspect and clear.</p>
+        <p class="body mt2"><strong>Accessibility</strong> is part of the same posture: the site targets WCAG 2.2 AA. Each edition’s signed <code class="path">/tests/</code> snapshot records an automated accessibility check, and keyboard navigation, landmarks and focus order are verified by hand; known exceptions are stated on <code class="path">/security/</code> rather than implied.</p>
+        <div class="callout callout--why mt3">
+          <p class="callout__tag">Why this matters</p>
+          <p>Most privacy claims rest on a host's word. Here a visitor can read the response headers and the <code class="inline">.htaccess</code> gate and confirm the rules for themselves: <code class="inline">connect-src 'self'</code> means the page cannot reach a tracker even if one were added by mistake.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ H · OPERATING ════════════════════════ -->
+<section class="section" id="sec-h" data-runhead="H · Operations &amp; recovery">
+  <div class="opener">
+    <p class="label"><span class="num">H</span>Operations &amp; recovery</p>
+    <h1 class="t-h1">The deploy routine,<br>and recovery</h1>
+    <p class="lede">Running the site is a small, repeatable routine. Recovery from a stale cache, a bad signature, or a suspected compromise has a written procedure for each case.</p>
+  </div>
+
+  <div class="section__body">
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">H.1</span><span class="spec__label">In plain terms</span></div>
+      <div>
+        <p class="body">Set one canonical date, rebuild so it propagates everywhere, gate, sign, deploy, then test the live site. Because the system is small, most problems are “restore the known‑good copy and re‑sign”, not improvisation under pressure.</p>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">H.2</span><span class="spec__label">Every deploy</span></div>
+      <div>
+        <div class="chain">
+          <div class="chain__node"><span class="c-l">edit source</span><span class="c-s">YAML / identity</span></div>
+          <span class="chain__arrow">→</span>
+          <div class="chain__node"><span class="c-l">build.sh</span><span class="c-s">propagate</span></div>
+          <span class="chain__arrow">→</span>
+          <div class="chain__node"><span class="c-l">gate.py</span><span class="c-s">must be green</span></div>
+          <span class="chain__arrow">→</span>
+          <div class="chain__node chain__node--accent"><span class="c-l">sign</span><span class="c-s">detached PGP</span></div>
+          <span class="chain__arrow">→</span>
+          <div class="chain__node"><span class="c-l">deploy</span><span class="c-s">no --delete</span></div>
+          <span class="chain__arrow">→</span>
+          <div class="chain__node"><span class="c-l">smoke test</span><span class="c-s">verify live</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">H.3</span><span class="spec__label">The detail</span></div>
+      <div>
+        <p class="body">Filenames stay stable (<code class="inline">styles.css</code>, <code class="inline">sw-register.js</code>); the version rides in a query string instead, <code class="inline">styles.css?v=2026-06-10.4e425527</code>, where the value is the build's <code class="inline">asset_version</code> (the edition date plus a content hash). A changed build rotates that hash, so the browser fetches fresh bytes rather than a stale cached copy. The service‑worker cache name encodes the same edition and content hashes, <code class="inline">tp-{edition}.{bundle_hash}-{precache_hash}-{release_tag}</code>, so any changed file rotates a hash and the old cache is purged on activate.</p>
+        <div class="callout callout--caution mt2">
+          <p class="callout__tag">The critical operator rule</p>
+          <p>Never sign while <code class="inline">GNUPGHOME</code> points at the temporary verification keyring. If a signature fails for no clear reason: <code class="inline">unset GNUPGHOME</code> and restart the gpg agent, then sign again.</p>
+        </div>
+        <p class="body mt2"><strong>Incident response begins by freezing</strong>: reproduce from a private window, another device, and a mobile network <em>before</em> touching anything, since most “incidents” are a cache blip or a browser extension, not a compromise. If integrity genuinely fails, lock the host account, restore from the known‑good local copy, regenerate, re‑sign, and purge the cache. A temporary stale page or a Lighthouse wobble is explicitly <em>not</em> an incident.</p>
+        <figure class="readme-terminal-figure mt3">
+          <img src="assets/terminal.png" alt="The publication build ceremony in the operator's terminal: TRENTPOWER wordmark, publication intent menu, and the current edition panel showing 2026-06-10">
+          <figcaption>The build ceremony at its first checkpoint: no edition is created or rebuilt without a deliberate choice</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ I · TOOLMAKERS ════════════════════════ -->
+<section class="section" id="sec-i" data-runhead="I · The score ledger">
+  <div class="opener">
+    <p class="label"><span class="num">I</span>The score ledger</p>
+    <h1 class="t-h1">A tool that never<br>touches the&nbsp;site</h1>
+    <p class="lede">One local‑only tool sits beside the site but never touches what ships: it audits the live site after deploy, as evidence rather than as a gate.</p>
+  </div>
+
+  <div class="section__body">
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">I.1</span><span class="spec__label">In plain terms</span></div>
+      <div>
+        <p class="body">The <em>score ledger</em> watches the live site over time and records how it is doing, but nothing in the build ever asks its opinion. It shares one machine‑readable report envelope with the gate and the lint, so every run of every tool reads the same way.</p>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">I.2</span><span class="spec__label">Walled off</span><span class="hint">local‑only; never touches public/</span></div>
+      <div>
+        <div class="diagram">
+          <div class="layer"><div class="layer__num">·</div><div class="layer__title">Shared contract</div><div class="layer__nodes"><div class="node"><div class="node__l">check_report.py</div><div class="node__s">one envelope: gate / lint / audit</div></div></div></div>
+          <div class="layer"><div class="layer__num">1</div><div class="layer__title">Score ledger</div><div class="layer__nodes"><div class="node node--surface"><div class="node__l">tools/score-ledger/</div><div class="node__s">audits live URLs → SQLite, post‑deploy</div></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">I.3</span><span class="spec__label">The detail</span></div>
+      <div>
+        <p class="body">The score ledger is observational: it tests the <strong>live</strong> site over HTTPS, so you deploy and let it propagate first, then run it from the workstation to a local SQLite and reports. It stores atomic facts (run, target, tool result, metric, observation, evidence) and emits no single overall score. Lighthouse performance on a small machine is noise; the ledger trusts the rolling median of the last five runs, not any single number.</p>
+        <div class="code mt2">
+          <div class="code__cap"><span>shared report head · check_report.py</span><span>json</span></div>
+<pre>{ <span class="tok-key">"schema_version"</span>: <span class="tok-num">1</span>, <span class="tok-key">"command"</span>: <span class="tok-str">"gate"</span>, <span class="tok-key">"status"</span>: <span class="tok-str">"passed"</span>,
+  <span class="tok-key">"summary"</span>: { <span class="tok-key">"passed"</span>: <span class="tok-num">35</span>, <span class="tok-key">"failed"</span>: <span class="tok-num">0</span>, <span class="tok-key">"warnings"</span>: <span class="tok-num">0</span> } }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ J · PUBLIC-READINESS ════════════════════════ -->
+<section class="section" id="sec-j" data-runhead="J · Public‑readiness &amp; authorship">
+  <div class="opener">
+    <p class="label"><span class="num">J</span>Public‑readiness &amp; authorship</p>
+    <h1 class="t-h1">Going public,<br>stated plainly</h1>
+    <p class="lede">Preparing to open the repository means a deliberate sweep so no key, secret or local path is ever committed, and a plain statement of how the site is authored.</p>
+  </div>
+
+  <div class="section__body">
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">J.1</span><span class="spec__label">In plain terms</span></div>
+      <div>
+        <p class="body">Before the source can be public, every private thing must be shown absent: keys, passwords, server paths. Separately, the site says plainly how it is made: written and reviewed by a human, with selective AI help for drafting only, and never auto‑published. This is recorded once in public files, not stamped on every commit.</p>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">J.2</span><span class="spec__label">The sweep</span></div>
+      <div>
+        <div class="flow" style="max-width:92mm;">
+          <div class="flow__step"><span class="s-l">grep secrets + local paths</span><span class="s-n">scan</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__step"><span class="s-l">scan git history + licences</span><span class="s-n">history</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__step"><span class="s-l">git status clean · no .bak/.orig</span><span class="s-n">tree</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__step"><span class="s-l">gate.py --all passes</span><span class="s-n">gate</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__step"><span class="s-l">release archives re‑verify</span><span class="s-n">verify.sh</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__step flow__step--accent"><span class="s-l">tick checklist → flip public</span><span class="s-n">ship</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">J.3</span><span class="spec__label">The detail</span></div>
+      <div>
+        <p class="body">Everything private is <code class="inline">.gitignore</code>‑covered: SSH keys, exported private <code class="inline">.asc</code> keys, TOTP secrets, service‑account JSON, the <code class="path">private/</code> tree, local credentials and databases. The published key at <code class="path">/.well-known/pgp-key.asc</code> is intentionally public; a private exported key must never enter history. The deploy gate already enforces the public‑bytes subset, and the readiness pass covers the wider repository the gate does not scan.</p>
+        <p class="body">Authorship is stated once, canonically, and made machine‑readable:</p>
+        <div class="code mt2">
+          <div class="code__cap"><span>attestations.json · machine‑readable authorship</span><span>json</span></div>
+<pre><span class="tok-key">"automated_publishing"</span>: <span class="tok-num">false</span>,
+<span class="tok-key">"manual_review_before_publication"</span>: <span class="tok-num">true</span>,
+<span class="tok-key">"language_model_assistance"</span>: <span class="tok-str">"selective drafting or structuring only"</span></pre>
+        </div>
+        <p class="body mt2">A build‑time check (<code class="inline">tools/quality/validate_git_metadata.py</code>) scans the tracked tree for forbidden commit trailers (<code class="inline">Co‑authored‑by</code>, <code class="inline">Generated‑by</code>) and fails the build on any regression, so the commit log stays an editorial record, not a tool‑attribution diary.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ K · APPENDIX ════════════════════════ -->
+<section class="section" id="sec-k" data-runhead="K · Appendix">
+  <div class="opener">
+    <p class="label"><span class="num">K</span>Appendix</p>
+    <h1 class="t-h1">The map, and<br>the principles</h1>
+    <p class="lede">The whole repository at a glance, authored source through to signed public bytes, and the order in which its principles win when they conflict.</p>
+  </div>
+
+  <div class="section__body">
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">K.1</span><span class="spec__label">Repository map</span><span class="hint">colour marks each file’s role</span></div>
+      <div>
+<pre class="tree"><span class="dir">trentpower.fr/</span>
+<span class="br">├─</span> <span class="t-auth">content/</span>            <span class="cmt">authored copy (YAML) + route registry</span>
+<span class="br">│   ├─</span> <span class="t-auth">shared/routes.yml</span>  <span class="t-auth">en/  fr/</span>
+<span class="br">├─</span> <span class="t-auth">templates/</span>          <span class="cmt">*.template.js → generated JS</span>
+<span class="br">├─</span> <span class="t-auth">styles/</span>             <span class="cmt">authored design source CSS (*.src.css)</span>
+<span class="br">├─</span> <span class="t-tool">tools/</span>              <span class="cmt">the pipeline, one dir per responsibility</span>
+<span class="br">│   ├─</span> <span class="t-tool">build/</span>           <span class="cmt">creates the site (build.sh, generators, copy/)</span>
+<span class="br">│   ├─</span> <span class="t-tool">quality/</span>         <span class="cmt">stops a bad release (gate.py, lint.py, validate_*)</span>
+<span class="br">│   ├─</span> <span class="t-verify">verify/</span>          <span class="cmt">proves the release is genuine (read‑only)</span>
+<span class="br">│   ├─</span> <span class="t-tool">release/</span>         <span class="cmt">makes it public (archives, seal, deploy.sh)</span>
+<span class="br">│   ├─</span> <span class="t-tool">config/</span>          <span class="cmt">declared facts (identity, public‑exposure)</span>
+<span class="br">│   ├─</span> <span class="t-tool">lib/</span>             <span class="cmt">shared across pillars (paths.py, checks.py)</span>
+<span class="br">│   ├─</span> <span class="t-local">score-ledger/</span>    <span class="cmt">local live‑site audit</span>
+<span class="br">│   └─</span> <span class="t-local">_retired/</span>        <span class="cmt">superseded one‑offs</span>
+<span class="br">├─</span> <span class="t-gen">public/</span>             <span class="cmt">SIGNED, DEPLOYED bytes; the web root</span>
+<span class="br">│   ├─</span> <span class="t-gen">en-au/  fr/  index.html</span>  <span class="cmt">editions + language gate</span>
+<span class="br">│   ├─</span> <span class="t-verify">integrity.json (+ .sig)</span>
+<span class="br">│   ├─</span> <span class="t-verify">.well-known/pgp-key.asc</span>
+<span class="br">│   ├─</span> <span class="t-verify">source/</span>          <span class="cmt">byte‑equal mirrors</span>
+<span class="br">│   └─</span> <span class="t-verify">integrity/releases/&lt;date&gt;/</span>  <span class="cmt">frozen archives</span>
+<span class="br">├─</span> <span class="t-gen">docs/</span>               <span class="cmt">this documentation set</span>
+<span class="br">└─</span> <span class="t-auth">README.md</span>  <span class="t-gen">README.pdf</span></pre>
+        <div class="treelegend mt2">
+          <span><i style="border-color:var(--ink);"></i>authored source</span>
+          <span><i style="border-color:var(--fg3);"></i>generated output</span>
+          <span><i style="border-color:var(--code-var);"></i>build tool</span>
+          <span><i style="border-color:var(--accent-text);"></i>trust surface</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">K.2</span><span class="spec__label">Principle ordering</span></div>
+      <div>
+        <p class="body">Every choice in this repository answers to a fixed ordering of principles. When two of them pull in different directions, the one earlier in the list wins:</p>
+        <div class="code mt2">
+          <div class="code__cap"><span>principle ordering</span><span>text</span></div>
+<pre>1 Privacy → 2 Security → 3 Verifiability → 4 Accessibility →
+5 Minimal surface → 6 Determinism → 7 Human‑readable → 8 Finite</pre>
+        </div>
+        <p class="body mt2">A companion note, <code class="path">docs/htaccess-future-bilingual.md</code>, holds the rewrite rules for a future routing change, kept out of the live <code class="path">.htaccess</code> on purpose, because the production file should describe what is live, not what may ship later.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ COLOPHON ════════════════════════ -->
+<section class="colophon" id="colophon">
+  <div class="opener" style="min-height:auto;">
+    <p class="label"><span class="num">·</span>Colophon</p>
+    <h1 class="t-h1">Colophon</h1>
+  </div>
+  <div class="section__body mt3">
+    <div class="grid2">
+      <div>
+        <p class="label"><span class="num">·</span>Type</p>
+        <p class="body mt1">Set in Klim Type Foundry’s <strong>Signifier</strong> (serif, the reading and display voice, Light 300 throughout), <strong>Söhne</strong> (sans, captions and support only), and <strong>Söhne Mono</strong> (paths, hashes, labels, numerals): the same families the live site serves. If the families cannot be embedded, substitute Source Serif · Inter · JetBrains Mono, which keeps roughly seventy per cent of the voice.</p>
+        <p class="label mt3"><span class="num">·</span>Colour</p>
+        <p class="body mt1">Warm paper, iron ink, a single oxblood accent. No semantic colour layer; state is carried by type, rules and language. Code tokens are the only place jewel‑tone pigment appears, and every diagram reads in grayscale.</p>
+      </div>
+      <div>
+        <p class="label"><span class="num">·</span>How this was made</p>
+        <p class="body mt1">Composed in a single authored HTML document (<code class="path">docs/pdf/readme.html</code>) using the project’s print style system, paginated to A4 with <strong>paged.js</strong>, and exported through headless Chromium. The HTML is the source of truth; this PDF is its export. When the system changes, the HTML is updated and the PDF re‑exported, never hand‑patched. After every export the rendered pages are checked for clipped text, overlapping blocks, missing assets and chart proportions before the document ships.</p>
+        <div class="callout mt3">
+          <p class="callout__tag">Provenance</p>
+          <p>Edition 2026‑06‑10 · A4 portrait · composed in Paris. Charts and figures are generated from repository data (<code class="inline">tools/lib/checks.py</code>, <code class="inline">git ls-files public/</code>) and validated against it at export time, not asserted. The operator‑console capture is a tracked documentation asset, taken from the live build ceremony and set in the publication's own mono face.</p>
+        </div>
+        <p class="cap mt3 accent">trentpower.fr · Private · Static · Signed</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

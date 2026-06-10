@@ -1,0 +1,216 @@
+meta:
+  security:
+    title: Security & Threat Model · Trent Power
+    description: Security architecture, operational controls, public verification surfaces and residual risks
+  acknowledgments:
+    title: Security acknowledgements · Trent Power
+    description: Responsible security disclosures verified and resolved for trentpower.fr.
+security:
+  page_title: Security & Threat Model
+  page_kicker: Security & Threat Model
+  page_h1: <span class="hero-line">Static.</span><span class="hero-line">Self-managed.</span><span class="hero-line">Verification-led.</span>
+  body_intro: |-
+    How this site is hosted, what it protects, what it doesn't - and how anyone can verify
+    it independently.
+  contents_label: Contents
+  s1_summary: 1. Architecture
+  s2_summary: 2. Assets protected
+  s2_body: 'The controls described here protect:'
+  s2_list: |-
+    Domain ownership
+    DNS integrity
+    Hosting account integrity
+    Public content integrity
+    The signing key used for release authenticity
+  s3_summary: 3. Threat model
+  s3_infra_heading: Infrastructure compromise
+  s3_infra_list: |-
+    Registrar account takeover
+    <abbr title="Domain Name System">DNS</abbr> hijack
+    Hosting credential compromise
+  s3_content_heading: Content tampering
+  s3_content_list: |-
+    Post-deployment file modification
+    Malicious JavaScript injection
+    Silent alteration of static assets
+  s3_admin_heading: Administrative abuse
+  s3_admin_list: |-
+    Credential stuffing
+    Automated vulnerability scanning
+  s3_noise_heading: Commodity internet noise
+  s3_noise_body: Continuous automated probing for common <abbr title="Content Management System">CMS</abbr> paths, configuration files, or known endpoints. These are treated as persistent background conditions rather than exceptional events.
+  s3_delivery_heading: Delivery &amp; freshness
+  s3_delivery_list: |-
+    A stale but validly-signed release served in place of a newer one
+    A poisoned or stale browser / service-worker cache on the client
+  s4_summary: 4. Controls
+  s4_registrar_heading: Registrar &amp; <abbr title="Domain Name System">DNS</abbr>
+  s4_registrar_list: |-
+    <abbr title="Multi-Factor Authentication">MFA</abbr> enabled
+    Registrar lock active
+    <abbr title="Domain Name System Security Extensions">DNSSEC</abbr> enabled and validated
+    <abbr title="Certificate Authority Authorization">CAA</abbr> records restrict certificate issuance
+  s4_hosting_heading: Hosting
+  s4_hosting_list: |-
+    Multi-factor authentication enabled
+    <abbr title="Secure File Transfer Protocol">SFTP</abbr>-only deployment
+    No <abbr title="Secure Shell">SSH</abbr> shell exposure
+    No scheduled background execution
+  s4_content_heading: Public content
+  s4_content_list: |-
+    Static architecture reduces server-side attack surface
+    Strict <abbr title="Content Security Policy">CSP</abbr> starting from <code>default-src 'none'</code>
+    No external resource loading
+    No dynamic script execution
+    Local browser storage limited to reader preferences (language, appearance), first-visit markers that retire the homepage imprint and the French machine-translation notice, and service-worker install timestamps used solely to display when the offline cache was last refreshed; readable on the <a href="/local/">Local Device Console</a>; no cookies, no analytics or advertising identifiers, no session tracking or behavioural profiling
+  s4_monitoring_heading: Monitoring
+  s4_monitoring_list: |-
+    Structured log analysis
+    Pattern detection and anomaly scoring
+    File integrity drift detection against the signed release baseline
+  s6_summary: 6. Residual risk
+  s6_protect_summary: |-
+    This model protects the public static site. It does not protect against registrar
+    compromise, hosting compromise, client-device compromise or private key compromise.
+  s6_out_of_scope_heading: Out of scope
+  s6_primary_heading: Where the risk concentrates
+  s6_intro: 'This model does not attempt to address:'
+  s6_list: |-
+    Physical compromise of hosting infrastructure
+    Global <abbr title="Domain Name System">DNS</abbr> root compromise
+    Certificate authority (<abbr title="Certificate Authority">CA</abbr>) compromise
+    State-level adversaries
+    Zero-day browser exploits on client devices
+  s6_footer: The main risks remain domain, <abbr title="Domain Name System">DNS</abbr>, hosting and private key compromise.
+  s6_assume_heading: Operator assumptions
+  s6_assume_list: |-
+    A single trusted author controls the source and each release
+    The only private signing key lives on the author's local machine, never in CI
+    That machine's integrity is assumed; a compromise there is out of scope
+    Readers confirm the key fingerprint out of band before trusting a signature
+  s7_summary: 7. Disclosure
+  s7_body: Responsible disclosure is welcome. Security contact details and encrypted communication instructions are published at <a href="/.well-known/security.txt" aria-describedby="desc-security-contact"><code>/.well-known/security.txt</code></a>.
+  s8_summary: 8. Design principles
+  s8_list: |-
+    Simplicity over complexity
+    Deterministic behaviour over dynamic systems
+    Transparency over obscurity
+    Verifiable integrity over trust assumptions
+  s9_summary: 9. Verification & Testing
+  s9_checks_heading: Per-edition checks
+  s9_body: Every published edition is checked against a fixed set of public targets. The checks cover availability, privacy, security headers, accessibility, SEO and markup, and the result is recorded as a signed snapshot alongside the edition.
+  s9_link: <a href="/tests/" aria-label="View the latest signed test results">View the latest test results</a> at <code>/tests/</code>.
+  s10_summary: 10. Accessibility
+  s10_body: The site targets <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.2 AA. Each published edition's signed test snapshot records an automated accessibility check, and keyboard navigation, landmark structure and focus order are verified by hand. Known exceptions are listed here rather than implied; none are currently asserted.
+  print:
+    kicker: Security & Threat Model
+    title: Static, self-managed, verification-led
+    lede: The public site is static HTML, CSS and vanilla JavaScript, with strict headers, no runtime server logic, no public database and no third-party scripts.
+    meta: Edition 2026-05-17 · trentpower.fr/security/
+    card:
+      '01':
+        label: 01 Architecture
+        title: Architecture
+        body: Static HTML, CSS, vanilla JavaScript. Self-managed deployment on Apache (Gandi, Paris). No public database.
+      '02':
+        label: 02 Headers
+        title: Security headers
+        body: <abbr title="Content Security Policy">CSP</abbr> default-deny. <abbr title="HTTP Strict Transport Security">HSTS</abbr>. <abbr title="Cross-Origin Opener Policy">COOP</abbr> / <abbr title="Cross-Origin Embedder Policy">COEP</abbr> / <abbr title="Cross-Origin Resource Policy">CORP</abbr>. Referrer-Policy no-referrer. Locked-down Permissions-Policy.
+      '03':
+        label: 03 Assets protected
+        title: Assets protected
+        body: Identity. Published content. Public verification files. Source integrity.
+      '04':
+        label: 04 Threat model
+        title: Threat model
+        body: Content injection. Hosting credential compromise. Spoofed identity. Stale or tampered files.
+      '05':
+        label: 05 Controls
+        title: Controls
+        body: No third-party scripts. No public forms. Signed integrity manifest. Restricted file exposure. Service-worker-controlled cache.
+      '06':
+        label: 06 Residual risk
+        title: Residual risk
+        body: Hosting and registrar risk remain. Static-site exposure is reduced, not eliminated. Responsible disclosure route is published.
+    footer:
+      proof: '{{ shared.site.proof_line }}'
+      edition: Edition 2026-05-17 · trentpower.fr/security/
+    qr:
+      label: trentpower.fr/security/
+    doc_title: Trent Power - Security Threat Model Sheet
+  public_verification_summary: 5. Public verification surface
+  public_verification_routes_heading: Inspection routes
+  public_verification_scope_heading: What it does not cover
+  public_verification_intro: |-
+    The site exposes public inspection routes so published content can be checked without
+    private infrastructure access.
+  public_verification_list: |-
+    <a href="/integrity/" aria-label="Open the integrity archive for signed releases, public key and manifest"><code>/integrity/</code></a> records signed releases, public key and manifest
+    <a href="/verify/" aria-label="Open the page verification tool for canonical URLs, source mirrors and fingerprints"><code>/verify/</code></a> records one page’s canonical <abbr title="Uniform Resource Locator">URL</abbr>, source mirror and fingerprint
+    <a href="/source/" aria-label="Open readable source mirrors of selected public files"><code>/source/</code></a> publishes readable mirrors of selected public files
+    <a href="/integrity/releases/" aria-label="Open frozen signed release snapshots"><code>/integrity/releases/</code></a> preserves frozen signed snapshots
+  public_verification_footer: These routes support inspection and provenance. They do not remove the need to protect <abbr title="Domain Name System">DNS</abbr>, hosting credentials and the private signing key.
+  s1_routes_note: |-
+    Public inspection routes expose the signed manifest, page records, readable source
+    mirrors and archived releases without exposing private infrastructure.
+  architecture_card:
+    kicker: Architecture
+    browser_label: Browser
+    browser_body: <abbr title="HyperText Transfer Protocol Secure">HTTPS</abbr> · no cookies · no analytics
+    host_label: Static host
+    host_body: Apache · Gandi · Paris · <abbr title="Secure File Transfer Protocol">SFTP</abbr> deployment
+    files_label: Site files
+    files_body: <abbr title="HyperText Markup Language">HTML</abbr> · <abbr title="Cascading Style Sheets">CSS</abbr> · vanilla JS · self-hosted fonts
+    cache_label: Offline cache
+    cache_body: Service worker · local cache after first visit
+    trust_label: Trust
+    trust_body: Integrity · Verify · Source · Releases
+    archive_label: Archive
+    archive_body: Frozen signed releases
+acknowledgments:
+  page_title: Security acknowledgements
+  body_intro: This page records responsible security disclosures that have been verified and resolved.
+  none: |-
+    There are no acknowledgements at present. This reflects the absence of reportable
+    disclosures to date, not the absence of review or maintenance.
+  report: |-
+    If you believe you have found a security issue with this site, please report it
+    responsibly. Contact details and disclosure preferences are listed in security.txt.
+  integrity_link: Site integrity statement
+  last_reviewed_label: Last reviewed
+  print:
+    kicker: Security acknowledgments
+    title: Responsible disclosure record
+    lede: Acknowledgements for individuals and researchers who contributed responsibly to the security posture of this site.
+    meta: Edition 2026-05-17 · trentpower.fr/security/acknowledgments/
+    doc_title: Trent Power - Security Acknowledgments
+    card:
+      '01':
+        label: 01 Disclosure model
+        title: Disclosure model
+        body: Coordinated, time-bounded, with credit on request.
+      '02':
+        label: 02 Reporting policy
+        title: Reporting policy
+        body: trent@trentpower.fr · PGP-signed reports preferred · public key at /.well-known/pgp-key.asc.
+      '03':
+        label: 03 Coordinated remediation
+        title: Coordinated remediation
+        body: Acknowledge within 72 hours. Patch, verify, publish notes if material.
+      '04':
+        label: 04 Verification process
+        title: Verification process
+        body: Reproduce, hash, sign, and record in the next signed release.
+      '05':
+        label: 05 Security contact
+        title: Security contact
+        body: trent@trentpower.fr · fingerprint A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263.
+      '06':
+        label: 06 Publication status
+        title: Publication status
+        body: Acknowledgement page is the canonical record; updates accompany each signed edition.
+    footer:
+      proof: '{{ shared.site.proof_line }}'
+      edition: Edition 2026-05-17 · trentpower.fr/security/acknowledgments/
+    qr:
+      label: trentpower.fr/security/acknowledgments/

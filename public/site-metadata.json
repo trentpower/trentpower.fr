@@ -1,0 +1,69 @@
+{
+  "type": "PersonalSiteMetadata",
+  "schema_version": "1.0",
+  "name": "Trent Power",
+  "description": "Client strategy, growth systems and cultural adoption at global scale",
+  "url": "https://trentpower.fr",
+  "canonical_url": "https://trentpower.fr/",
+  "language": [
+    "en-AU",
+    "fr"
+  ],
+  "edition": {
+    "id": "2026-06-10",
+    "label": "June 2026",
+    "date": "2026-06-10"
+  },
+  "author": {
+    "name": "Trent Power",
+    "identity": "https://trentpower.fr/#trent-power",
+    "orcid": "https://orcid.org/0009-0002-2652-7188",
+    "linkedin": "https://www.linkedin.com/in/trentpower/",
+    "github": "https://github.com/trentpower/trentpower.fr",
+    "same_as": [
+      "https://orcid.org/0009-0002-2652-7188",
+      "https://www.linkedin.com/in/trentpower/",
+      "https://github.com/trentpower/trentpower.fr"
+    ]
+  },
+  "publisher": {
+    "name": "Trent Power",
+    "url": "https://trentpower.fr"
+  },
+  "information_classes": {
+    "declared": "Statements authored directly on this site",
+    "attested": "Cryptographic verification of document authenticity"
+  },
+  "trust_order": [
+    "attested",
+    "declared"
+  ],
+  "integrity": {
+    "manifest": "https://trentpower.fr/integrity.json",
+    "signature": "https://trentpower.fr/integrity.json.sig",
+    "public_key": "https://trentpower.fr/.well-known/pgp-key.asc",
+    "checksums": "https://trentpower.fr/SHA256SUMS"
+  },
+  "privacy": {
+    "tracking": false,
+    "analytics": false,
+    "cookies": false,
+    "third_party_requests": false,
+    "attestations": "https://trentpower.fr/attestations.json"
+  },
+  "citation": {
+    "text": "Trent Power. Personal Site. Paris, France. Edition 2026-06-10. trentpower.fr",
+    "format": "plain-text"
+  },
+  "license": {
+    "content": "All rights reserved",
+    "portrait": "https://creativecommons.org/licenses/by-sa/4.0/"
+  },
+  "machine_readable": {
+    "person": "https://trentpower.fr/.well-known/person.json",
+    "webfinger": "https://trentpower.fr/.well-known/webfinger",
+    "security": "https://trentpower.fr/.well-known/security.txt",
+    "attestations": "https://trentpower.fr/attestations.json"
+  },
+  "asset_version": "2026-06-10.2898894c"
+}

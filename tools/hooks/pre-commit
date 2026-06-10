@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# trentpower.fr pre-commit hook — lints the STAGED source files only.
+#
+# Portable (plain shell + the same tools as tools/quality.sh); no Husky / lint-staged.
+# Install with: bash tools/install-hooks.sh
+#
+# Warns by default (rollout). Set QUALITY_ENFORCE=1 to block commits on issues.
+
+set -uo pipefail
+
+ENFORCE="${QUALITY_ENFORCE:-0}"
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT" || exit 1
+
+have() { command -v "$1" >/dev/null 2>&1; }
+node_bin() { [ -x "node_modules/.bin/$1" ]; }
+
+# staged, still-present files (added/copied/modified).
+mapfile -t STAGED < <(git diff --cached --name-only --diff-filter=ACM)
+[ "${#STAGED[@]}" -eq 0 ] && exit 0
+
+issues=0
+note() { printf 'pre-commit: %s\n' "$1"; }
+bad() {
+  printf 'pre-commit: x %s\n' "$1"
+  issues=$((issues + 1))
+}
+
+pick() { # pick <regex> from STAGED
+  local re="$1" f
+  for f in "${STAGED[@]}"; do
+    [[ "$f" =~ $re ]] && printf '%s\n' "$f"
+  done
+}
+
+# python (source only; never the generated public/ tree).
+mapfile -t PY < <(pick '^tools/.*\.py$')
+if [ "${#PY[@]}" -gt 0 ] && have ruff; then
+  ruff check "${PY[@]}" || bad "ruff check"
+fi
+
+# shell.
+mapfile -t SH < <(pick '\.sh$|^tools/hooks/pre-commit$')
+if [ "${#SH[@]}" -gt 0 ] && have shellcheck; then
+  shellcheck "${SH[@]}" || bad "shellcheck"
+fi
+
+# authored js.
+mapfile -t JS < <(pick '^templates/.*\.template\.js$|^public/verify/verify\.js$')
+if [ "${#JS[@]}" -gt 0 ] && node_bin eslint; then
+  node_modules/.bin/eslint "${JS[@]}" || bad "eslint"
+fi
+
+# authored css.
+mapfile -t CSS < <(pick '^tools/.*\.src\.css$')
+if [ "${#CSS[@]}" -gt 0 ] && node_bin stylelint; then
+  node_modules/.bin/stylelint "${CSS[@]}" || bad "stylelint"
+fi
+
+# hand-authored data (prettier check).
+mapfile -t DATA < <(pick '^content/.*\.ya?ml$|^docs/.*\.md$|^[^/]*\.md$')
+if [ "${#DATA[@]}" -gt 0 ] && node_bin prettier; then
+  node_modules/.bin/prettier --check "${DATA[@]}" || bad "prettier (run: npm run quality:fix)"
+fi
+
+[ "$issues" -eq 0 ] && exit 0
+
+note "$issues check(s) reported issues on staged files"
+if [ "$ENFORCE" = "1" ]; then
+  note "QUALITY_ENFORCE=1 — commit blocked. fix, or commit with --no-verify to override."
+  exit 1
+fi
+note "advisory (QUALITY_ENFORCE=0) — commit allowed. run 'npm run quality:fix' to clean up."
+exit 0

@@ -1,0 +1,218 @@
+<!doctype html>
+<!--
+  trentpower.fr · /source/view/
+  dynamic source code reader. one static shell; ?file= param selects
+  a file from the source mirror. source-view.js fetches /source/*.txt
+  and renders with line numbers and restrained syntax colouring.
+  no runtime server logic. no external dependencies.
+-->
+<html lang="fr" dir="ltr">
+<head>
+  <!-- head · 01 · foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- head · 02 · appearance bootstrap -->
+  <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch(_){}})();</script>
+
+  <!-- head · 03 · document identity -->
+  <title>Miroirs source · Trent Power</title>
+  <meta name="description" content="Miroirs publics lisibles d’une sélection de fichiers du site">
+  <link rel="canonical" href="https://trentpower.fr/fr/source/voir/">
+  <link rel="alternate" hreflang="en-AU" href="https://trentpower.fr/en-au/source/view/">
+  <link rel="alternate" hreflang="fr" href="https://trentpower.fr/fr/source/voir/">
+  <link rel="alternate" hreflang="x-default" href="https://trentpower.fr/">
+
+  <!-- head · 04 · indexing and discovery -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- head · 05 · authorship and identity -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/attribution.txt">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+
+  <!-- head · 06 · provenance, rights and reuse -->
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+
+  <!-- head · 07 · social and sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="Miroirs source · Trent Power">
+  <meta property="og:description" content="Miroirs publics lisibles d’une sélection de fichiers du site">
+  <meta property="og:url" content="https://trentpower.fr/fr/source/voir/">
+  <meta property="og:image" content="https://trentpower.fr/images/og/source-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Miroirs source · Trent Power">
+
+  <!-- head · 08 · application surface -->
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+
+  <!-- head · 09 · rendering and assets -->
+  <link rel="stylesheet" href="/styles.css?v=2026-06-10.2898894c" integrity="sha384-G2EI/5PcxnoeoGAeVPHgpg7kTvWKsox1BqU3BamYJoaX8KqB6bj7j8nIrUibMqLC">
+  <link rel="stylesheet" href="/print.css?v=2026-06-10.2898894c" media="print">
+
+  <!-- head · 10 · structured data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "url": "https://trentpower.fr/fr/source/voir/",
+  "name": "Source reader · Trent Power",
+  "description": "Dynamic source code reader for the trentpower.fr public source mirror.",
+  "inLanguage": "fr",
+  "isPartOf": {
+    "@id": "https://trentpower.fr/#website"
+  },
+  "about": {
+    "@id": "https://trentpower.fr/#trent-power"
+  }
+}
+  </script>
+
+  <!-- provenance · page record · generated from the public source repository -->
+  <script type="application/json" id="tp-page-record">
+{
+  "canonical": "https://trentpower.fr/fr/source/voir/",
+  "sourceRepository": "https://github.com/trentpower/trentpower.fr",
+  "sourcePath": "content/fr/pages/source.yml",
+  "templatePath": "templates/pages/source-view.html",
+  "sourceUrl": "https://github.com/trentpower/trentpower.fr/blob/main/content/fr/pages/source.yml",
+  "edition": "2026-06-10",
+  "generated": true
+}
+  </script>
+</head>
+<body data-page="source-reader" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-10" data-source-sha256-short="--------">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark" href="/fr/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="site source-reader-page" id="main" tabindex="-1">
+  <div class="page">
+    <section class="source-reader">
+      <div id="source-view-root">
+        <noscript>
+          <p class="page-lede">JavaScript est nécessaire pour afficher le lecteur source. Le miroir source brut reste disponible dans les <a href="/fr/source/">miroirs source</a>.</p>
+        </noscript>
+      </div>
+      <div id="source-toolbar" class="source-toolbar" role="region" aria-label="Selection actions">
+        <span class="source-toolbar__count" aria-live="polite">1 ligne</span>
+        <span class="source-toolbar__sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="source-toolbar__btn" data-action="copy">Copier</button>
+        <span class="source-toolbar__sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="source-toolbar__btn" data-action="copy-link">Copier le lien</button>
+        <span class="source-toolbar__sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="source-toolbar__btn" data-action="clear" aria-keyshortcuts="Escape">Effacer</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div id="source-announcer" class="source-announcer" aria-live="polite" role="status"></div>
+
+<!-- cssom · #source-toolbar position rules, written at runtime -->
+<style id="sv-dyn"></style>
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/fr/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">Retour à l’accueil</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>Paris, France</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/fr/confidentialite/" rel="privacy-policy" aria-describedby="desc-privacy">Confidentialité</a>
+        <span class="visually-hidden" id="desc-privacy">Découvrir comment ce site évite les analytiques, cookies, profilage, traceurs et
+        services tiers</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">Vérifier</button>
+        <span class="visually-hidden" id="desc-cite">Ouvrir les détails de citation et de vérification de cette page</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><a href="/en-au/source/view/"  aria-describedby="desc-lang-en" lang="en">English</a> <span class="visually-hidden" id="desc-lang-en">Read this site in English</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><a href="/fr/source/voir/" aria-describedby="desc-lang-fr" lang="fr" aria-current="page">Français</a> <span class="visually-hidden" id="desc-lang-fr">Lire ce site en français</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break" aria-hidden="true">
+
+    <!-- bottom stratum · colophon · theme -->
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="Vérification de la publication">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="/fr/verifier/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Édition</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          <em class="site-footer__translation-inline" data-translation-disclosure>Ceci est un rendu machine. <a href="/en-au/">L'édition de l'auteur est en anglais</a>.</em><span class="site-footer__colophon-note" data-edition-age hidden>Publiée aujourd'hui</span>
+          <span class="visually-hidden" id="desc-integrity">Ouvrir le dossier de vérification de cette édition — citation, miroir source, empreinte et archive signée</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">Clair</button> <span class="visually-hidden" id="desc-theme-light">Passer à l’apparence claire</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">Auto</button> <span class="visually-hidden" id="desc-theme-auto">Suivre les réglages d’apparence du système</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">Sombre</button> <span class="visually-hidden" id="desc-theme-dark">Passer à l’apparence sombre</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+
+  <!-- source reader data + renderer (loaded before site scripts so manifest is available) -->
+  <script src="/source/view/source-view-manifest.js?v=2026-06-10" integrity="sha384-jGf6jZXm1awk4iiMo0ndBFmETz7EBvQoBDyuqBV4dL82h5VGAXHFKrYjKcOknEuJ" defer></script>
+  <script src="/source/view/source-view.js?v=2026-05-17.8329810a" integrity="sha384-pgPUFvvJ4Lsj/gybUWMiRySEHFds+dCkdDE8eQVmU9Igz8h/Sjwe472Y2gsxQZZj" defer></script>
+  <!-- scripts · progressive enhancement, no telemetry -->
+  <script src="/js/theme.js?v=2026-06-10.2898894c" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+  <script src="/sw-register.js?v=2026-06-10.2898894c" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+  <script src="/js/reveal.js?v=2026-06-10.2898894c" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+  <script src="/js/overlay.js?v=2026-06-10.2898894c" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+  <script src="/js/copy.js?v=2026-06-10.2898894c" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+  <script src="/js/edition.js?v=2026-06-10.2898894c" integrity="sha384-kIhbudFAbfEtCHFdw/AF3cOioeMYPukKzX1c6/gj16bEkO8fm9N7re1FDimxaMaC" defer></script>
+<script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
+  <script src="/js/verify-modal.js?v=2026-06-10.2898894c" integrity="sha384-Kb8LrSoY27mMZZl+F/0TsiJ4Yc+Z48xVDXCK3mTaMfNYr+kfj/C+P5ss0lMD/NTl" defer></script>
+  <script src="/js/fonts.js?v=2026-06-10.2898894c" integrity="sha384-7r4m2UeG/OZz4cqCSLkeSxpzrVz0h/8qmcYmC2cluDlIxPnVmom5NQVrLOTAXj+f" defer></script>
+
+<!-- body · construction rail -->
+<div class="construction-rail" data-construction-rail aria-hidden="true">
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+  <span class="construction-rail__label">
+    <span class="construction-rail__dot" aria-hidden="true"></span>
+    En Construction
+  </span>
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+</div>
+</body>
+</html>

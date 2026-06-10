@@ -1,0 +1,22 @@
+# ai usage policy: /ai-usage.txt
+# llm summary: /llms.txt
+
+# governance pages:
+# /security/acknowledgments/
+# /humans.txt
+# /integrity/
+# /changelog.txt
+# /.well-known/security.txt
+# /attestations.json
+
+# inspectable site model:
+# source mirrors:    /source/
+# signed manifest:   /integrity.json
+# detached signature:/integrity.json.sig
+# public signing key:/.well-known/pgp-key.asc
+# release archives:  /integrity/releases/
+
+User-agent: *
+Allow: /
+
+Sitemap: https://trentpower.fr/sitemap.xml

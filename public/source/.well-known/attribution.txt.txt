@@ -1,0 +1,7 @@
+Author: trent power
+Domain: https://trentpower.fr
+Statement: all original written content on this domain is authored by trent power unless otherwise noted
+Key: https://trentpower.fr/.well-known/pgp-key.asc
+Fingerprint: a729 591b 450d 3f59 3694 98bd 8299 1f25 04ae 0263
+Signature: https://trentpower.fr/.well-known/attribution.sig
+Note: this key is also used to sign site integrity manifests

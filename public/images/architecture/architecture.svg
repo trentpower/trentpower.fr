@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" role="img" aria-labelledby="arch-title arch-desc">
+  <title id="arch-title">trentpower.fr architecture</title>
+  <desc id="arch-desc">Static, self-managed, privacy-first architecture. Six layers: browser request, static host with strict headers, site files, offline service-worker cache, signed integrity and identity files, and frozen public release archives.</desc>
+  <style>
+    .panel    { fill: #FFFEFA; stroke: #D8D4CC; stroke-width: 1; }
+    .surface  { fill: #EDEAE4; stroke: #D8D4CC; stroke-width: 1; }
+    .rule     { stroke: #E6E1D8; stroke-width: 1; fill: none; }
+    .struct   { stroke: #D8D4CC; stroke-width: 1; fill: none; }
+    .accent-mark { fill: #6E1A14; }
+    .label    { font-family: 'Söhne', system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 500; fill: #1F1E1C; }
+    .sublabel { font-family: 'Söhne Mono', ui-monospace, Menlo, monospace; font-size: 10.5px; fill: #5C5955; letter-spacing: 0.04em; }
+    .layer-title { font-family: 'Söhne Mono', ui-monospace, Menlo, monospace; font-size: 10px; fill: #706B66; letter-spacing: 0.14em; text-transform: uppercase; }
+    .num      { font-family: 'Söhne Mono', ui-monospace, Menlo, monospace; font-size: 10px; fill: #6E1A14; font-weight: 500; letter-spacing: 0.14em; }
+  </style>
+
+  <!-- 01 BROWSER -->
+  <text x="32"  y="92"  class="num">01</text>
+  <text x="60"  y="92"  class="layer-title">Browser</text>
+  <rect x="280" y="72"  width="240" height="44" class="panel"/>
+  <text x="296" y="93"  class="label">User · HTTPS</text>
+  <text x="296" y="108" class="sublabel">No Cookies · No Analytics</text>
+  <rect x="540" y="72"  width="180" height="44" class="surface"/>
+  <text x="556" y="93"  class="label">TLS · HSTS</text>
+  <text x="556" y="108" class="sublabel">HSTS, SNI</text>
+
+  <!-- 02 STATIC HOST -->
+  <text x="32"  y="172" class="num">02</text>
+  <text x="60"  y="172" class="layer-title">Static Host</text>
+  <rect x="280" y="152" width="240" height="44" class="panel"/>
+  <text x="296" y="173" class="label">Apache · Gandi, Paris</text>
+  <text x="296" y="188" class="sublabel">Strict Headers · CSP · HSTS</text>
+  <rect x="540" y="152" width="180" height="44" class="surface"/>
+  <text x="556" y="173" class="label">COOP · COEP · CORP</text>
+  <text x="556" y="188" class="sublabel">Permissions Policy Locked</text>
+  <rect x="740" y="152" width="200" height="44" class="surface"/>
+  <text x="756" y="173" class="label">SRI on CSS · JS</text>
+  <text x="756" y="188" class="sublabel">Subresource Integrity</text>
+  <line x1="32"  y1="208" x2="1168" y2="208" class="rule"/>
+
+  <!-- 03 SITE FILES -->
+  <text x="32"  y="252" class="num">03</text>
+  <text x="60"  y="252" class="layer-title">Site Files</text>
+  <rect x="280" y="232" width="160" height="44" class="panel"/>
+  <text x="296" y="253" class="label">HTML</text>
+  <text x="296" y="268" class="sublabel">10 Served Pages</text>
+  <rect x="460" y="232" width="160" height="44" class="panel"/>
+  <text x="476" y="253" class="label">CSS</text>
+  <text x="476" y="268" class="sublabel">Signifier · Söhne</text>
+  <rect x="640" y="232" width="160" height="44" class="panel"/>
+  <text x="656" y="253" class="label">Vanilla JS</text>
+  <text x="656" y="268" class="sublabel">No Framework</text>
+  <rect x="820" y="232" width="200" height="44" class="panel"/>
+  <text x="836" y="253" class="label">Self-Managed Fonts</text>
+  <text x="836" y="268" class="sublabel">8 woff2, Latin Subset</text>
+  <line x1="32"  y1="288" x2="1168" y2="288" class="rule"/>
+
+  <!-- 04 OFFLINE -->
+  <text x="32"  y="332" class="num">04</text>
+  <text x="60"  y="332" class="layer-title">Offline</text>
+  <rect x="280" y="312" width="280" height="44" class="panel"/>
+  <text x="296" y="333" class="label">Service Worker</text>
+  <text x="296" y="348" class="sublabel">Local Cache · Network First</text>
+  <rect x="580" y="312" width="240" height="44" class="surface"/>
+  <text x="596" y="333" class="label">Cache</text>
+  <text x="596" y="348" class="sublabel">Core Pages · Fonts · CSS · JS</text>
+  <rect x="840" y="312" width="220" height="44" class="surface"/>
+  <text x="856" y="333" class="label">Offline</text>
+  <text x="856" y="348" class="sublabel">After First Load</text>
+  <line x1="32"  y1="368" x2="1168" y2="368" class="rule"/>
+
+  <!-- 05 TRUST — single oxblood dot beside integrity.json is the only accent -->
+  <text x="32"  y="412" class="num">05</text>
+  <text x="60"  y="412" class="layer-title">Trust</text>
+  <rect x="280" y="424" width="200" height="44" class="panel"/>
+  <text x="300" y="445" class="label">integrity.json</text>
+  <text x="300" y="460" class="sublabel">SHA-256 Manifest</text>
+  <circle cx="288" cy="441" r="3" class="accent-mark"/>
+  <rect x="500" y="424" width="200" height="44" class="panel"/>
+  <text x="516" y="445" class="label">integrity.json.sig</text>
+  <text x="516" y="460" class="sublabel">Detached PGP Signature</text>
+  <rect x="720" y="424" width="200" height="44" class="panel"/>
+  <text x="736" y="445" class="label">.well-known/pgp-key.asc</text>
+  <text x="736" y="460" class="sublabel">PGP Public Key</text>
+  <rect x="940" y="424" width="180" height="44" class="panel"/>
+  <text x="956" y="445" class="label">.well-known/</text>
+  <text x="956" y="460" class="sublabel">person.json · security.txt</text>
+  <line x1="32"  y1="480" x2="1168" y2="480" class="rule"/>
+
+  <!-- 06 ARCHIVE -->
+  <text x="32"  y="524" class="num">06</text>
+  <text x="60"  y="524" class="layer-title">Archive</text>
+  <rect x="280" y="504" width="280" height="44" class="surface"/>
+  <text x="296" y="525" class="label">February 2026</text>
+  <text x="296" y="540" class="sublabel">/integrity/releases/2026-02/</text>
+  <rect x="580" y="504" width="280" height="44" class="surface"/>
+  <text x="596" y="525" class="label">May 2026</text>
+  <text x="596" y="540" class="sublabel">/integrity/releases/2026-05-08/</text>
+  <rect x="880" y="504" width="240" height="44" class="surface"/>
+  <text x="896" y="525" class="label">Frozen, Signed</text>
+  <text x="896" y="540" class="sublabel">Archive-Local Assets</text>
+
+  <line x1="32"  y1="588" x2="1168" y2="588" class="rule"/>
+  <text x="32"  y="616" class="layer-title">Flow</text>
+  <text x="32"  y="640" class="sublabel">Browser → TLS → Apache → Site Files → Service Worker → Offline</text>
+  <text x="32"  y="660" class="sublabel">Trust Files Signed and Verifiable · Archives Frozen and Immutable</text>
+</svg>

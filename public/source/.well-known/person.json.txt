@@ -1,0 +1,106 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": "https://trentpower.fr/#trent-power",
+  "name": "Trent Power",
+  "givenName": "Trent",
+  "familyName": "Power",
+  "url": "https://trentpower.fr",
+  "sameAs": [
+    "https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg",
+    "https://www.linkedin.com/in/trentpower/",
+    "https://github.com/trentpower/trentpower.fr",
+    "https://orcid.org/0009-0002-2652-7188",
+    "https://www.crunchbase.com/person/trent-power-3f52"
+  ],
+  "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "ORCID",
+    "value": "0009-0002-2652-7188",
+    "url": "https://orcid.org/0009-0002-2652-7188"
+  },
+  "jobTitle": "Group Director, Client Development & Client Relations",
+  "disambiguatingDescription": "Client strategy, growth systems and cultural adoption at global scale",
+  "description": "Trent Power is a Paris-based leader in client strategy and client development in the luxury industry.",
+  "nationality": {
+    "@type": "Country",
+    "name": "Australia"
+  },
+  "worksFor": {
+    "@type": "Organization",
+    "name": "LVMH",
+    "sameAs": "https://www.wikidata.org/wiki/Q504998"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Paris",
+    "addressCountry": "FR"
+  },
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "University of Sydney",
+    "sameAs": "https://www.wikidata.org/wiki/Q486285"
+  },
+  "knowsAbout": [
+    "Client strategy",
+    "Client development",
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://trentpower.fr/#clienteling-definition",
+      "name": "Clienteling",
+      "url": "https://trentpower.fr/#clienteling-definition"
+    },
+    "CRM",
+    "Luxury retail",
+    "Cultural adoption",
+    "Organisational change management",
+    "AI in client relationships",
+    "Governance systems"
+  ],
+  "knowsLanguage": [
+    {
+      "@type": "Language",
+      "name": "English",
+      "alternateName": "en"
+    },
+    {
+      "@type": "Language",
+      "name": "French",
+      "alternateName": "fr"
+    }
+  ],
+  "mainEntityOfPage": {
+    "@id": "https://trentpower.fr/#profile-page"
+  },
+  "subjectOf": [
+    {
+      "@type": "WebPage",
+      "name": "VivaTech 2025 speaker profile",
+      "url": "https://vivatech.com/speakers/trent-power"
+    },
+    {
+      "@type": "WebPage",
+      "name": "D-Congress 2024 overview",
+      "url": "https://dcongress.com/about-us/"
+    },
+    {
+      "@type": "WebPage",
+      "name": "Fostering meaningful client relationships at LVMH",
+      "url": "https://www.insidelvmh.com/article/fostering-meaningful-client-relationships-at-lvmh"
+    }
+  ],
+  "image": {
+    "@type": "ImageObject",
+    "@id": "https://trentpower.fr/#trent-power-image",
+    "url": "https://trentpower.fr/images/portraits/trent-power.jpg",
+    "creditText": "David Arous",
+    "copyrightNotice": "© David Arous",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "acquireLicensePage": "https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg",
+    "creator": {
+      "@type": "Person",
+      "name": "David Arous",
+      "url": "https://histoiresdimages.pixieset.com/davidarous-histoiresdimages-agencephoto/"
+    }
+  }
+}

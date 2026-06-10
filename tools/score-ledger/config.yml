@@ -1,0 +1,302 @@
+# trentpower.fr Score Ledger - configuration
+# Self-contained. Drives which checks run, network politeness, storage and the
+# metric registry that pins a stable comparison_mode to every metric.
+
+site_name: trentpower.fr
+
+targets:
+  - https://trentpower.fr/
+  - https://trentpower.fr/en-au/
+  - https://trentpower.fr/fr/
+
+# All validators enabled. Lighthouse runs the local CLI (slower, ~1-2 min/URL);
+# html_w3c and css_w3c call external W3C services politely and record unavailable
+# (never fatal) if those services are unreachable.
+checks:
+  availability: true
+  headers: true
+  metadata: true
+  structured_data: true
+  trust_files: true
+  privacy: true
+  links: true
+  lighthouse: true
+  html_w3c: true
+  css_w3c: true
+  content_integrity: true  # source mirror vs integrity manifest
+  release_archive: true    # signed release completeness (site root only)
+  # Phase 3 - site-specific trust tests
+  csp_quality: true
+  seo_semantics: true      # robots.txt + sitemap semantics (site root only)
+  hreflang: true
+  service_worker: true     # SW static correctness (site root only)
+  content_anchors: true    # site-specific editorial invariants
+  browser_pass: true       # master gate for the Playwright browser pass (3b)
+  runtime_privacy: true     # browser: runtime third-party/cookies/storage
+  offline: true             # browser: offline / service-worker behaviour
+  manual: true             # site-level placeholders for disabled integrations
+
+# External services. Observatory + SSL Labs need no key and return real scores.
+# PageSpeed + WebPageTest need a free API key (see integration_settings); without
+# one they record unavailable with guidance. A disabled integration is recorded
+# as a manual check with a source_url. None of these can fail the run.
+integrations:
+  mozilla_observatory: true
+  ssl_labs: true
+  pagespeed: true
+  webpagetest: true
+
+# Keys/tuning for the external integrations. Keys may also come from environment
+# variables (PAGESPEED_API_KEY, WPT_API_KEY), which take effect if left blank.
+integration_settings:
+  pagespeed_api_key: ""        # free: https://developers.google.com/speed/docs/insights/v5/get-started
+  pagespeed_strategy: mobile   # mobile | desktop
+  webpagetest_api_key: ""      # free: https://product.webpagetest.org/api
+  webpagetest_base_url: "https://www.webpagetest.org"   # point at a self-hosted instance
+  # webpagetest_require_key: false   # set false for a keyless self-hosted instance
+  ssl_labs_max_wait_seconds: 180
+  ssl_labs_poll_seconds: 15
+  webpagetest_max_wait_seconds: 240
+  webpagetest_poll_seconds: 15
+
+network:
+  user_agent: "trentpower.fr Score Ledger (+https://trentpower.fr; manual audit)"
+  timeout_seconds: 30
+  delay_seconds: 2              # delay between external-service calls
+  lighthouse_timeout_seconds: 120
+
+# CSS validator (W3C Jigsaw). The css3 profile is the latest standard profile and
+# is strict: it reports modern CSS it does not recognise as errors. Switch to
+# css3svg or another Jigsaw profile if you want different strictness. The ledger
+# always records Jigsaw's raw counts faithfully.
+css:
+  profile: css3
+
+# Phase 3 settings.
+phase3:
+  browser:
+    viewport: {width: 1280, height: 800}
+    locale: en-AU
+    nav_timeout_seconds: 30
+  service_worker:
+    required_never_cache: [/integrity.json, /site-metadata.json, /llms.txt, /local/]
+    required_never_cache_prefix: ["/.well-known/"]
+  runtime_privacy:
+    # approved browser-storage keys (mirrors public/js/local.js LOCAL_KEYS).
+    # Per-edition keys use prefixes (the runtime writes tp-imprint-seen:en-au,
+    # tp-last-read:/en-au/, etc.), so prefixes are the faithful allowlist.
+    storage_keys: [tp-theme, tp-last-edition, tp-fr-disclosure-seen,
+                   tp-sw-meta, tp-skip-hero-anim, tp-show-gate]
+    storage_key_prefixes: ["tp-welcomed:", "tp-typed-", "tp-last-read:", "tp-imprint-seen:"]
+
+storage:
+  sqlite_path: data/score-ledger.sqlite
+  truncate_raw_after_chars: 50000
+
+reports:
+  output_dir: reports
+  formats:
+    - md
+    - html
+
+# Report-time comparison context for headline metrics. Stored metric rows always
+# keep the previous-run comparison; these extra lenses suppress noise (a 20ms
+# response wobble is not a regression; a 16-point Lighthouse drop is).
+comparison:
+  baseline_modes: [previous, best, rolling_median]
+  rolling_window: 5
+  # release_baseline_label: "2026-05-23"   # optional: compare against a named run
+
+# Minimum absolute numeric delta for a change to count as "meaningful" in Top
+# changes; smaller numeric moves are collapsed into "Minor changes". Metrics not
+# listed here always count when they have a direction.
+significance_thresholds:
+  lighthouse.performance.score: 3
+  lighthouse.accessibility.score: 3
+  lighthouse.seo.score: 3
+  lighthouse.best_practices.score: 3
+  lighthouse.tbt_ms: 100
+  lighthouse.lcp_ms: 150
+  lighthouse.speed_index_ms: 150
+  lighthouse.cls: 0.02
+  availability.response_ms: 100
+  lighthouse.total_page_weight_bytes: 10240
+
+# GPG signing for TESTRESULTS.txt. Fingerprint is optional - if blank it is
+# derived from public/.well-known/pgp-key.asc. The private key is never named or
+# stored here; signing uses --local-user <fingerprint> against the local keyring.
+signing:
+  fingerprint: ""            # optional override; else derived from the published key
+  gpg_key: ""                # optional path; default public/.well-known/pgp-key.asc
+
+# Triage: noise interpretation + manual action overrides. Code ships conservative
+# defaults (see triage.DEFAULT_NOISE_RULES / DEFAULT_ACTION_RULES); entries here
+# extend or override them by id. Raw observations are never changed - this only
+# affects the derived Action Register.
+noise_rules: []              # e.g. {tool: css_w3c, title_contains: "...", interpreted_severity: info, actionability: low, confidence: high, reason: "..."}
+action_rules: []             # extend/override defaults by id
+action_overrides: {}         # {<action_key>: ignored|acknowledged|fixed} - put real entries in config.local.yml
+
+# Trust files probed by the trust_files validator. security.txt is canonical at
+# .well-known/security.txt (the live path); /security.txt is not invented.
+trust_paths:
+  integrity_json:      /integrity.json
+  integrity_json_sig:  /integrity.json.sig
+  pgp_key:             /.well-known/pgp-key.asc
+  person_json:         /.well-known/person.json
+  webfinger:           /.well-known/webfinger
+  security_txt:        /.well-known/security.txt
+  humans_txt:          /humans.txt
+  llms_txt:            /llms.txt
+  robots_txt:          /robots.txt
+  sitemap_xml:         /sitemap.xml
+
+# Which trust files should parse as JSON (drives the .valid_json metric).
+trust_json_files:
+  - integrity_json
+  - person_json
+  - webfinger
+
+taxonomy:
+  strict_metric_names: true     # every metric must resolve a comparison_mode
+
+# Stable comparison_mode per metric. Explicit entries win; otherwise a suffix
+# rule applies. A metric matching neither is rejected at insert (the tool_result
+# is recorded unavailable rather than guessing a mode).
+metric_registry:
+  availability.status_code:            {unit: http_status, comparison_mode: exact_match}
+  availability.final_url:              {unit: text,        comparison_mode: exact_match}
+  availability.content_type:           {unit: text,        comparison_mode: exact_match}
+  availability.response_ms:            {unit: ms,          comparison_mode: lower_better}
+  availability.redirect_count:         {unit: count,       comparison_mode: lower_better}
+  availability.content_length_bytes:   {unit: bytes,       comparison_mode: neutral}
+
+  metadata.title.text:                 {unit: text,        comparison_mode: exact_match}
+  metadata.description.text:           {unit: text,        comparison_mode: exact_match}
+  metadata.canonical.href:             {unit: text,        comparison_mode: exact_match}
+  metadata.hreflang.count:             {unit: count,       comparison_mode: neutral}
+  metadata.jsonld.count:               {unit: count,       comparison_mode: neutral}
+
+  structured_data.jsonld.valid:        {unit: boolean,     comparison_mode: boolean_pass}
+  structured_data.jsonld.error_count:  {unit: count,       comparison_mode: lower_better}
+  structured_data.schema_type.count:   {unit: count,       comparison_mode: neutral}
+
+  privacy.cookies.count:               {unit: count,       comparison_mode: lower_better}
+  privacy.set_cookie_headers.count:    {unit: count,       comparison_mode: lower_better}
+  privacy.third_party_resources.count: {unit: count,       comparison_mode: lower_better}
+  privacy.external_scripts.count:      {unit: count,       comparison_mode: lower_better}
+  privacy.external_stylesheets.count:  {unit: count,       comparison_mode: lower_better}
+  privacy.external_images.count:       {unit: count,       comparison_mode: lower_better}
+  privacy.analytics_detected:          {unit: boolean,     comparison_mode: neutral}
+  privacy.tracking_detected:           {unit: boolean,     comparison_mode: neutral}
+
+  links.internal.count:                {unit: count,       comparison_mode: neutral}
+  links.external.count:                {unit: count,       comparison_mode: neutral}
+  links.internal_broken.count:         {unit: count,       comparison_mode: lower_better}
+  links.redirects.count:               {unit: count,       comparison_mode: lower_better}
+  links.mixed_content.count:           {unit: count,       comparison_mode: lower_better}
+
+  # Phase 2 taxonomy (validators disabled for now)
+  lighthouse.performance.score:        {unit: score_0_100, comparison_mode: higher_better}
+  lighthouse.accessibility.score:      {unit: score_0_100, comparison_mode: higher_better}
+  lighthouse.best_practices.score:     {unit: score_0_100, comparison_mode: higher_better}
+  lighthouse.seo.score:                {unit: score_0_100, comparison_mode: higher_better}
+  lighthouse.lcp_ms:                   {unit: ms,          comparison_mode: lower_better}
+  lighthouse.cls:                      {unit: ratio,       comparison_mode: lower_better}
+  lighthouse.tbt_ms:                   {unit: ms,          comparison_mode: lower_better}
+  lighthouse.speed_index_ms:           {unit: ms,          comparison_mode: lower_better}
+  lighthouse.total_page_weight_bytes:  {unit: bytes,       comparison_mode: lower_better}
+  lighthouse.request_count:            {unit: count,       comparison_mode: lower_better}
+  html.errors.count:                   {unit: count,       comparison_mode: lower_better}
+  html.warnings.count:                 {unit: count,       comparison_mode: lower_better}
+  html.info.count:                     {unit: count,       comparison_mode: neutral}
+  css.errors.count:                    {unit: count,       comparison_mode: lower_better}
+  css.warnings.count:                  {unit: count,       comparison_mode: lower_better}
+
+  # External integrations
+  security.observatory.grade:            {unit: grade,       comparison_mode: grade_order}
+  security.observatory.score:            {unit: score_0_100, comparison_mode: higher_better}
+  security.observatory.tests_failed:     {unit: count,       comparison_mode: lower_better}
+  security.observatory.tests_passed:     {unit: count,       comparison_mode: higher_better}
+  tls.ssl_labs.grade:                    {unit: grade,       comparison_mode: grade_order}
+  tls.ssl_labs.endpoints.count:          {unit: count,       comparison_mode: neutral}
+  performance.pagespeed.performance.score:   {unit: score_0_100, comparison_mode: higher_better}
+  performance.pagespeed.accessibility.score: {unit: score_0_100, comparison_mode: higher_better}
+  performance.pagespeed.best_practices.score: {unit: score_0_100, comparison_mode: higher_better}
+  performance.pagespeed.seo.score:           {unit: score_0_100, comparison_mode: higher_better}
+  performance.webpagetest.first_view.load_ms:         {unit: ms,    comparison_mode: lower_better}
+  performance.webpagetest.first_view.ttfb_ms:         {unit: ms,    comparison_mode: lower_better}
+  performance.webpagetest.first_view.speed_index_ms:  {unit: ms,    comparison_mode: lower_better}
+  performance.webpagetest.first_view.start_render_ms: {unit: ms,    comparison_mode: lower_better}
+  performance.webpagetest.first_view.fully_loaded_ms: {unit: ms,    comparison_mode: lower_better}
+  performance.webpagetest.first_view.bytes_in:        {unit: bytes, comparison_mode: lower_better}
+  performance.webpagetest.first_view.requests:        {unit: count, comparison_mode: lower_better}
+  performance.webpagetest.repeat_view.load_ms:         {unit: ms,    comparison_mode: lower_better}
+  performance.webpagetest.repeat_view.ttfb_ms:         {unit: ms,    comparison_mode: lower_better}
+  performance.webpagetest.repeat_view.speed_index_ms:  {unit: ms,    comparison_mode: lower_better}
+  performance.webpagetest.repeat_view.start_render_ms: {unit: ms,    comparison_mode: lower_better}
+  performance.webpagetest.repeat_view.fully_loaded_ms: {unit: ms,    comparison_mode: lower_better}
+  performance.webpagetest.repeat_view.bytes_in:        {unit: bytes, comparison_mode: lower_better}
+  performance.webpagetest.repeat_view.requests:        {unit: count, comparison_mode: lower_better}
+
+  # Content consistency + release archive (V2.1)
+  content_consistency.canonical_in_manifest:    {unit: boolean, comparison_mode: boolean_pass}
+  content_consistency.source_mirror_in_manifest: {unit: boolean, comparison_mode: boolean_pass}
+  content_consistency.source_mirror_hash_match:  {unit: boolean, comparison_mode: boolean_pass}
+  content_consistency.verify_links_source:       {unit: boolean, comparison_mode: boolean_pass}
+  release.edition:               {unit: text,    comparison_mode: exact_match}
+  release.manifests_complete:    {unit: boolean, comparison_mode: boolean_pass}
+  release.signature_valid:       {unit: boolean, comparison_mode: boolean_pass}
+  release.testresults_present:   {unit: boolean, comparison_mode: boolean_pass}
+  release.testresults_sig_present: {unit: boolean, comparison_mode: boolean_pass}
+
+  # Phase 3 (booleans not ending .pass/_present/.text, plus counts)
+  csp_quality.no_unsafe_inline:        {unit: boolean, comparison_mode: boolean_pass}
+  csp_quality.no_unsafe_eval:          {unit: boolean, comparison_mode: boolean_pass}
+  csp_quality.no_wildcard:             {unit: boolean, comparison_mode: boolean_pass}
+  csp_quality.object_src_none:         {unit: boolean, comparison_mode: boolean_pass}
+  csp_quality.base_uri_self:           {unit: boolean, comparison_mode: boolean_pass}
+  csp_quality.frame_ancestors_none:    {unit: boolean, comparison_mode: boolean_pass}
+  csp_quality.trusted_types_required:  {unit: boolean, comparison_mode: boolean_pass}
+  csp_quality.weaknesses.count:        {unit: count,   comparison_mode: lower_better}
+  seo_semantics.robots_parseable:           {unit: boolean, comparison_mode: boolean_pass}
+  seo_semantics.robots_references_sitemap:  {unit: boolean, comparison_mode: boolean_pass}
+  seo_semantics.sitemap_reachable:          {unit: boolean, comparison_mode: boolean_pass}
+  seo_semantics.source_mirror_excluded:     {unit: boolean, comparison_mode: boolean_pass}
+  seo_semantics.targets_in_sitemap.count:   {unit: count,   comparison_mode: higher_better}
+  hreflang.self_canonical:             {unit: boolean, comparison_mode: boolean_pass}
+  hreflang.reciprocal:                 {unit: boolean, comparison_mode: boolean_pass}
+  hreflang.canonical_not_root_leak:    {unit: boolean, comparison_mode: boolean_pass}
+  hreflang.alternates.count:           {unit: count,   comparison_mode: neutral}
+  service_worker.sw_reachable:         {unit: boolean, comparison_mode: boolean_pass}
+  service_worker.cache_encodes_edition: {unit: boolean, comparison_mode: boolean_pass}
+  service_worker.never_cache_complete: {unit: boolean, comparison_mode: boolean_pass}
+  service_worker.scope_root:           {unit: boolean, comparison_mode: boolean_pass}
+  service_worker.never_cache_missing.count: {unit: count, comparison_mode: lower_better}
+  service_worker.cache_version:        {unit: text,    comparison_mode: exact_match}
+  content_anchors.edition_consistent:  {unit: boolean, comparison_mode: boolean_pass}
+  content_anchors.local_noindex:       {unit: boolean, comparison_mode: boolean_pass}
+  accessibility.color_contrast.violations: {unit: count, comparison_mode: lower_better}
+  accessibility.aria.violations:       {unit: count,   comparison_mode: lower_better}
+  runtime_privacy.third_party_requests.count:   {unit: count, comparison_mode: lower_better}
+  runtime_privacy.cookies_runtime.count:        {unit: count, comparison_mode: lower_better}
+  runtime_privacy.unapproved_storage_keys.count: {unit: count, comparison_mode: lower_better}
+  runtime_privacy.external_fonts.count:         {unit: count, comparison_mode: lower_better}
+  runtime_privacy.beacons.count:                {unit: count, comparison_mode: lower_better}
+  offline.page_renders_offline:        {unit: boolean, comparison_mode: boolean_pass}
+  offline.never_cache_blocked_offline: {unit: boolean, comparison_mode: boolean_pass}
+  offline.sw_activated:                {unit: boolean, comparison_mode: boolean_pass}
+
+# Suffix fallbacks for mechanical per-file metrics (trust.*.status_code etc.).
+metric_registry_suffix_rules:
+  ".present":       {unit: boolean,     comparison_mode: boolean_pass}
+  ".status_code":   {unit: http_status, comparison_mode: exact_match}
+  ".content_type":  {unit: text,        comparison_mode: exact_match}
+  ".size_bytes":    {unit: bytes,       comparison_mode: neutral}
+  ".sha256":        {unit: hash,        comparison_mode: exact_match}
+  ".valid_json":    {unit: boolean,     comparison_mode: boolean_pass}
+  ".grade":         {unit: grade,       comparison_mode: grade_order}
+  ".pass":          {unit: boolean,     comparison_mode: boolean_pass}
+  "_present":       {unit: boolean,     comparison_mode: boolean_pass}
+  ".violations":    {unit: count,       comparison_mode: lower_better}
+  ".text":          {unit: text,        comparison_mode: exact_match}

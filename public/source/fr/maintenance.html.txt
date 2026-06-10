@@ -1,0 +1,280 @@
+<!doctype html>
+<!--
+  trentpower.fr · /maintenance.html
+
+  static, semantic, self-managed, privacy-first.
+  served during planned downtime.
+  no analytics. no cookies. no external assets.
+
+  the signed manifest, source mirrors and
+  frozen release archives remain available
+  throughout maintenance.
+-->
+<html lang="fr" dir="ltr">
+<head>
+  <!-- head · 01 · foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- head · 02 · appearance bootstrap -->
+  <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch(_){}})();</script>
+
+  <!-- head · 03 · document identity -->
+  <title>En maintenance · Trent Power</title>
+  <meta name="description"
+        content="En maintenance.">
+  <meta name="document-edition" content="2026-06-10">
+
+  <!-- head · 04 · indexing and discovery -->
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- head · 05 · authorship and identity -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/person.json">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+  <link rel="alternate" type="text/plain" href="/llms.txt">
+  <link rel="me" href="https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg">
+  <link rel="me" href="https://www.linkedin.com/in/trentpower/">
+  <link rel="me" href="https://orcid.org/0009-0002-2652-7188">
+  <link rel="me" href="https://www.crunchbase.com/person/trent-power-3f52">
+
+  <!-- head · 06 · provenance, rights and reuse -->
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+  <link rel="describedby" href="/.well-known/attribution.txt">
+  <link rel="describedby" href="/integrity.json">
+  <link rel="cite-as" href="https://trentpower.fr/fr/maintenance.html">
+  <link rel="privacy-policy" href="https://trentpower.fr/fr/confidentialite/">
+  <link rel="help" href="https://trentpower.fr/fr/securite/">
+
+  <!-- head · 07 · social and sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="En maintenance · Trent Power">
+  <meta property="og:description" content="En maintenance.">
+  <meta property="og:url" content="https://trentpower.fr/maintenance.html">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="en_AU">
+  <meta property="og:image" content="https://trentpower.fr/images/og/maintenance-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="En maintenance · Trent Power">
+
+  <!-- head · 08 · application surface -->
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+
+  <!-- head · 09 · rendering and assets -->
+  <link rel="stylesheet" href="/styles.css?v=2026-06-10.2898894c" integrity="sha384-G2EI/5PcxnoeoGAeVPHgpg7kTvWKsox1BqU3BamYJoaX8KqB6bj7j8nIrUibMqLC">
+  <link rel="stylesheet" href="/print.css?v=2026-06-10.2898894c" media="print">
+
+  <!-- head · 10 · structured data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://trentpower.fr/maintenance.html#page",
+  "url": "https://trentpower.fr/maintenance.html",
+  "name": "Maintenance · Trent Power",
+  "description": "Down for maintenance.",
+  "inLanguage": "fr",
+  "isPartOf": {
+    "@id": "https://trentpower.fr/#website"
+  },
+  "about": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "author": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "publisher": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "dateModified": "2026-06-10T00:00:00+00:00"
+}
+  </script>
+
+  <!-- provenance · page record · generated from the public source repository -->
+  <script type="application/json" id="tp-page-record">
+{
+  "canonical": "https://trentpower.fr/fr/maintenance.html",
+  "sourceRepository": "https://github.com/trentpower/trentpower.fr",
+  "sourcePath": "content/fr/pages/system.yml",
+  "templatePath": "templates/pages/maintenance.html",
+  "sourceUrl": "https://github.com/trentpower/trentpower.fr/blob/main/content/fr/pages/system.yml",
+  "edition": "2026-06-10",
+  "generated": true
+}
+  </script>
+</head>
+<body data-page="maintenance" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-10" data-source-sha256-short="--------">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- body · masthead -->
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark" href="/fr/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- body · primary content -->
+<main class="site" id="main" tabindex="-1">
+  <div class="page">
+
+    <!-- primary · 01 · notice -->
+    <p class="page-kicker">Maintenance</p>
+    <h1 class="page-title">En maintenance</h1>
+    <div class="page-body">
+      <p class="page-lede">Des travaux sont en cours. Revenez dans quelques instants ou retournez à la page d'accueil.</p>
+      <p>Le manifeste signé, les miroirs source et les archives de versions restent accessibles
+      pendant la maintenance. La vérification reste opérationnelle.</p>
+    </div>
+  </div>
+
+</main>
+
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/fr/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">Retour à l’accueil</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>Paris, France</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/fr/confidentialite/" rel="privacy-policy" aria-describedby="desc-privacy">Confidentialité</a>
+        <span class="visually-hidden" id="desc-privacy">Découvrir comment ce site évite les analytiques, cookies, profilage, traceurs et
+        services tiers</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">Vérifier</button>
+        <span class="visually-hidden" id="desc-cite">Ouvrir les détails de citation et de vérification de cette page</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><button type="button" data-lang="en" aria-pressed="true"  aria-describedby="desc-lang-en" lang="en">English</button> <span class="visually-hidden" id="desc-lang-en">Read this site in English</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-lang="fr" aria-pressed="false" aria-describedby="desc-lang-fr" lang="fr">Français</button> <span class="visually-hidden" id="desc-lang-fr">Lire ce site en français</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break" aria-hidden="true">
+
+    <!-- bottom stratum · colophon · theme -->
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="Vérification de la publication">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="/fr/verifier/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Édition</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          <em class="site-footer__translation-inline" data-translation-disclosure>Ceci est un rendu machine. <a href="/en-au/">L'édition de l'auteur est en anglais</a>.</em><span class="site-footer__colophon-note" data-edition-age hidden>Publiée aujourd'hui</span>
+          <span class="visually-hidden" id="desc-integrity">Ouvrir le dossier de vérification de cette édition — citation, miroir source, empreinte et archive signée</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">Clair</button> <span class="visually-hidden" id="desc-theme-light">Passer à l’apparence claire</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">Auto</button> <span class="visually-hidden" id="desc-theme-auto">Suivre les réglages d’apparence du système</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">Sombre</button> <span class="visually-hidden" id="desc-theme-dark">Passer à l’apparence sombre</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+<!-- scripts · progressive enhancement, no telemetry -->
+<script src="/verify/verification-data.js?v=2026-06-10.2898894c" defer></script>
+<script src="/js/theme.js?v=2026-06-10.2898894c" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/sw-register.js?v=2026-06-10.2898894c" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+<script src="/js/reveal.js?v=2026-06-10.2898894c" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+<script src="/js/overlay.js?v=2026-06-10.2898894c" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+<script src="/js/copy.js?v=2026-06-10.2898894c" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/edition.js?v=2026-06-10.2898894c" integrity="sha384-kIhbudFAbfEtCHFdw/AF3cOioeMYPukKzX1c6/gj16bEkO8fm9N7re1FDimxaMaC" defer></script>
+<script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
+<script src="/js/verify-modal.js?v=2026-06-10.2898894c" integrity="sha384-Kb8LrSoY27mMZZl+F/0TsiJ4Yc+Z48xVDXCK3mTaMfNYr+kfj/C+P5ss0lMD/NTl" defer></script>
+<script src="/js/fonts.js?v=2026-06-10.2898894c" integrity="sha384-7r4m2UeG/OZz4cqCSLkeSxpzrVz0h/8qmcYmC2cluDlIxPnVmom5NQVrLOTAXj+f" defer></script>
+
+
+<!-- print-only utility sheet -->
+<div class="print-utility-sheet print-only" data-print-sheet="maintenance" hidden>
+  <header class="print-utility-header">
+    <p class="print-utility-kicker">État de maintenance</p>
+    <p class="print-utility-title">Mode maintenance temporaire</p>
+    <p class="print-utility-lede">Ce site est temporairement indisponible pendant le déploiement d’une nouvelle édition signée ou d’une mise à jour d’infrastructure.</p>
+    <p class="print-utility-meta">Édition 2026-06-10 · trentpower.fr/maintenance.html</p>
+  </header>
+
+  <div class="print-utility-grid">
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">01</span> <span>État de déploiement</span></p>
+          <p>Une version signée ou une mise à jour d’infrastructure est en cours.</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">02</span> <span>Préservation d’intégrité</span></p>
+          <p>L’édition signée précédente reste téléchargeable dans /integrity/releases/.</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">03</span> <span>Disponibilité publique</span></p>
+          <p>Le service revient automatiquement dès que la nouvelle édition est signée et vérifiée.</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">04</span> <span>Versions signées</span></p>
+          <p>Les éditions archivées restent accessibles indépendamment de cette fenêtre de maintenance.</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">05</span> <span>Contact de maintenance</span></p>
+          <p>trent@trentpower.fr - pour toute demande en cas d’indisponibilité prolongée.</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">06</span> <span>Continuité attendue</span></p>
+          <p>Les URL canoniques sont préservées d’une édition à l’autre ; vos signets restent valides.</p>
+        </div>
+  </div>
+
+  <footer class="print-utility-footer">
+    <div class="print-utility-footer-text">
+      <p class="print-proof">Privé · Statique · Signé · Sans suivi</p>
+      <p>Édition 2026-06-10 · trentpower.fr/maintenance.html</p>
+    </div>
+    <div class="print-qr-block" aria-hidden="true">
+      <img class="print-qr-image" src="/images/qr/qr-maintenance.svg" width="144" height="144" loading="lazy" decoding="async" alt="">
+      <p class="print-qr-url">trentpower.fr/maintenance.html</p>
+    </div>
+  </footer>
+</div>
+
+
+<!-- body · construction rail -->
+<div class="construction-rail" data-construction-rail aria-hidden="true">
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+  <span class="construction-rail__label">
+    <span class="construction-rail__dot" aria-hidden="true"></span>
+    En Construction
+  </span>
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+</div>
+</body>
+</html>

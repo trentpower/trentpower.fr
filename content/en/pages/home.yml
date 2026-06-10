@@ -1,0 +1,147 @@
+meta:
+  home:
+    title: Client Strategy & Growth Systems · Trent Power
+    description: Client strategy, growth systems and cultural adoption at global scale
+    og_title: Client Strategy & Growth Systems · Trent Power
+    og_description: Client strategy, growth systems and cultural adoption at global scale
+hero:
+  statement: Client strategy,<br><mark>growth systems</mark><br>and cultural adoption<br>at global scale.
+  body: |-
+    I lead client strategy at Group level, focusing on the systems, governance, and ways
+    of working that turn client relationships into long-term value. My work sits at the
+    intersection of strategy, technology, and human relationships, with a focus on impact
+    that scales and endures.
+approach:
+  label: Approach
+  growth_title: Client growth takes discipline
+  growth_body: Lasting growth follows when elegant systems are in place.
+  clienteling_title: Clienteling converts transaction into meaning
+  clienteling_detail: '<dfn id="clienteling-definition" itemprop="name">Clienteling</dfn><meta itemprop="url" content="https://trentpower.fr/en-au/#clienteling-definition"> <span itemprop="description">is the disciplined practice of transforming what a Client Advisor knows into something a Client feels. The moment interactions become mechanical, it stops being Clienteling.</span>'
+  adoption_title: Adoption matters more than tools
+  adoption_body: |-
+    A strategy or technology only creates value when teams trust it and choose to use it.
+    Trust must be earned, and utility must be proven. Client Advisors are first-line
+    Clients and vital collaborators.
+  ai_title: AI should amplify human relationships
+  ai_body: |-
+    Authenticity is a human advantage, and it cannot be automated. Trust, empathy, and
+    judgement are built in the moment through tone and presence. I use AI to remove
+    friction so people can show up more relevant, more consistent and more human, at
+    scale.
+  governance_title: Governance creates momentum
+  governance_body: |-
+    Clear ownership, cadence, and priorities create alignment, accelerate decisions, and
+    enable scale.
+  taste_title: Taste is a strategic advantage
+  taste_body: Discernment, and cultural awareness shape interactions into something valuable and memorable.
+credentials:
+  label: Credentials
+  sydney_title: University of Sydney
+  sydney_detail: Master’s degree, 2009.
+  exec_title: Selective executive education
+  exec_detail: |-
+    Ongoing senior-level learning across artificial intelligence, consumer behaviour,
+    organisational transformation, and leadership coaching.
+trajectory:
+  label: Trajectory
+  current_label: Current
+  current_title: Group Director, Client Development & Client Relations
+  current_org: <abbr title="Louis Vuitton Moët Hennessy">LVMH</abbr>
+  current_detail: Group-wide client strategy across Maisons and markets
+  current_span: 2023 — now
+  previous_label: Previous
+  previous_title: Group Head of Clienteling
+  previous_org: <abbr title="Louis Vuitton Moët Hennessy">LVMH</abbr>
+  previous_span: 2017 — 2023
+  maisons_label: Maisons
+  maisons_title: Senior leadership across <a href="/#clienteling-definition" aria-label="Read the definition of Clienteling used on this site">Clienteling</a>, <abbr title="Customer Relationship Management">CRM</abbr> & Retail
+  maisons_org: BVLGARI
+  maisons_span: 2004 — 2017
+  background_label: Background
+  background_title: Web Entrepreneur
+  background_detail: Building online platforms and communities
+  background_span: 1997 — 2004
+projects:
+  label: Projects
+  paris_desc: |-
+    A private cultural intelligence system for Paris, combining location, effort,
+    editorial judgement and personal taste into a calmer way to decide what is worth
+    leaving home for.
+  paris_subline: A personal experiment in taste systems, local relevance and human-scale recommendation.
+  paris_preview_header: This week near Jourdain, 20th
+  paris_preview_caption: A sample cultural intelligence selection for one week, one neighbourhood.
+  paris_cta: View project
+  tier_walk: walk
+  tier_metro: metro
+  tier_bike: bike
+contact:
+  label: Contact
+  headline: <span>Write,</span><span>and I&rsquo;ll <em>write back.</em></span>
+  email_aria: Email Trent Power
+home:
+  trust_privacy: privacy-first
+  trust_signed: signed releases
+  trust_static: static
+  trust_no_tracking: no tracking
+print:
+  kicker: trentpower.fr
+  name: Trent Power
+  role: Client strategy, growth systems and cultural adoption
+  contact:
+    linkedin: LinkedIn · Trent Power
+  title: Client strategy, growth systems and cultural adoption at global scale
+  body: I lead client strategy at Group level, focusing on the systems, governance and ways of working that turn client relationships into long-term value. My work sits at the intersection of strategy, technology and human relationships, with a focus on impact that scales and endures.
+  focus:
+    '01':
+      label: 01 Focus
+      title: Client growth takes discipline
+      body: Lasting growth follows when strong systems are in place.
+    '02':
+      label: 02 Adoption
+      title: Adoption matters more than tools
+      body: Technology creates value when teams trust it, choose it and use it.
+    '03':
+      label: 03 Human relationships
+      title: AI should amplify human relationships
+      body: Authenticity remains a human advantage; automation must strengthen context, memory and care.
+    '04':
+      label: 04 Governance
+      title: Governance creates momentum
+      body: Clear ownership and disciplined priorities create alignment and scale.
+  credentials:
+    label: Credentials
+    sydney_title: University of Sydney
+    sydney_detail: Master’s degree, 2009.
+    exec_title: Selective executive education
+    exec_detail: Ongoing senior-level learning across artificial intelligence, consumer behaviour, organisational transformation, and leadership coaching.
+  trajectory:
+    label: Trajectory
+    current:
+      label: Current
+      body: Group Director, Client Development & Client Relations · LVMH
+    previous:
+      label: Previous
+      body: Senior leadership across Clienteling, CRM and Client Development
+    background:
+      label: Background
+      body: Early digital and entrepreneurial work building online platforms and communities
+  project:
+    label: Proof point
+    title: What’s On in Paris
+    body: A private cultural intelligence system for Paris, combining location, effort, editorial judgement and personal taste into a calmer way to decide what is worth leaving home for.
+    note: A personal experiment in taste systems, local relevance and human-scale recommendation.
+  footer:
+    proof: '{{ shared.site.proof_line }}'
+    edition: Edition <time datetime="2026-05-17">2026-05-17</time> · https://trentpower.fr/
+    citation: Trent Power. Personal Site. Paris, France.
+    evidence: Public record · HTML · Edition 17 May 2026
+  place: Personal Site · Paris, France
+  doc_title: Trent Power - Client Strategy Executive Profile
+  arch:
+    caption: Static, privacy-first, signed and inspectable
+    browser: Browser
+    host: Static Host
+    files: Site Files
+    cache: Offline Cache
+    trust: Trust
+    archive: Archive

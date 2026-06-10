@@ -1,0 +1,395 @@
+<!doctype html>
+<!--
+  trentpower.fr
+  static, self-managed, privacy-first
+  no analytics, no cookies, no external assets
+  public integrity manifest: /integrity.json
+-->
+<html lang="en-AU" dir="ltr">
+<head>
+  <!-- head · 01 · foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- head · 02 · appearance bootstrap -->
+  <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch(_){}})();</script>
+
+  <!-- head · 03 · document identity -->
+  <title>Releases · Trent Power</title>
+  <meta name="description"
+        content="Frozen, signed snapshots of the public site">
+  <meta name="document-edition" content="2026-06-10">
+  <link rel="canonical" href="https://trentpower.fr/en-au/integrity/releases/">
+  <link rel="alternate" hreflang="en-AU" href="https://trentpower.fr/en-au/integrity/releases/">
+  <link rel="alternate" hreflang="fr" href="https://trentpower.fr/fr/integrite/archives/">
+  <link rel="alternate" hreflang="x-default" href="https://trentpower.fr/">
+
+  <!-- head · 04 · indexing and discovery -->
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- head · 05 · authorship and identity -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/attribution.txt">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+  <link rel="me" href="https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg">
+  <link rel="me" href="https://www.linkedin.com/in/trentpower/">
+  <link rel="me" href="https://orcid.org/0009-0002-2652-7188">
+  <link rel="me" href="https://www.crunchbase.com/person/trent-power-3f52">
+
+  <!-- head · 06 · provenance, rights and reuse -->
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+
+  <!-- head · 07 · social and sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="Releases · Trent Power">
+  <meta property="og:description" content="Frozen, signed snapshots of the public site">
+  <meta property="og:url" content="https://trentpower.fr/en-au/integrity/releases/">
+  <meta property="og:image" content="https://trentpower.fr/images/og/releases-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Releases · Trent Power">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Releases · Trent Power">
+  <meta name="twitter:description" content="Frozen, signed snapshots of the public site">
+  <meta name="twitter:image" content="https://trentpower.fr/images/og/releases-og.png">
+  <meta name="twitter:image:alt" content="Releases · Trent Power">
+  <meta name="twitter:site"    content="@trentpower">
+  <meta name="twitter:creator" content="@trentpower">
+
+  <!-- head · 08 · application surface -->
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+
+  <!-- head · 09 · rendering and assets -->
+  <link rel="stylesheet" href="/styles.css?v=2026-06-10.2898894c" integrity="sha384-G2EI/5PcxnoeoGAeVPHgpg7kTvWKsox1BqU3BamYJoaX8KqB6bj7j8nIrUibMqLC">
+  <link rel="stylesheet" href="/print.css?v=2026-06-10.2898894c" media="print">
+
+  <!-- provenance · page record · generated from the public source repository -->
+  <script type="application/json" id="tp-page-record">
+{
+  "canonical": "https://trentpower.fr/en-au/integrity/releases/",
+  "sourceRepository": "https://github.com/trentpower/trentpower.fr",
+  "sourcePath": "content/en/pages/integrity.yml",
+  "templatePath": "templates/pages/integrity-releases.html",
+  "sourceUrl": "https://github.com/trentpower/trentpower.fr/blob/main/content/en/pages/integrity.yml",
+  "edition": "2026-06-10",
+  "generated": true
+}
+  </script>
+</head>
+<body data-page="releases" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-10" data-source-sha256-short="--------">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark u-author" href="/en-au/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="site" id="main" tabindex="-1">
+  <div class="page">
+
+    <!-- hero · broken-line title + lede -->
+    <header class="hero">
+      <p class="hero-kicker">Releases</p>
+      <h1 class="hero-title">
+        <span class="line">Frozen.</span>
+        <span class="line">Signed.</span>
+        <span class="line">Inspectable.</span>
+      </h1>
+      <p class="hero-lede">A signed snapshot is kept for every edition of the publication. This is the edition history; the live signing authority lives at Integrity. Each release is a complete archive of the site at the time it was published, with an aggregated SHA-256 manifest and detached PGP signature so the contents can be inspected — independently, on your own machine, without trust in this server.</p>
+    </header>
+
+    <!-- current edition · record card -->
+    <article class="record" aria-labelledby="cur-date">
+      <header class="record-header">
+        <div class="left">
+          <p class="kicker">Current edition</p>
+          <h2 class="date" id="cur-date">10 June 2026</h2>
+          <p class="title"><cite>Public opening</cite> — the live edition.</p>
+        </div>
+        <div class="right">
+          <span class="tag">Live</span>
+          <span class="acc">№ 06</span>
+        </div>
+      </header>
+
+      <div class="record-groups">
+
+        <!-- group order · cohesion sprint · this is a publication archive,
+             not a download catalogue: verification records lead, source
+             archives follow, the fingerprint + actions close the card. -->
+        <section class="group" aria-labelledby="g-records">
+          <p class="group-label" id="g-records">Verification records</p>
+          <dl>
+            <div class="rg"><dt>Manifest</dt><dd><a href="/integrity.json"><code>/integrity.json</code></a></dd></div>
+            <div class="rg"><dt>Signature</dt><dd><a href="/integrity.json.sig"><code>/integrity.json.sig</code></a></dd></div>
+            <div class="rg"><dt>Checksums</dt><dd><a href="/integrity/releases/2026-06-10/SHA256SUMS"><code>/SHA256SUMS</code></a></dd></div>
+          </dl>
+        </section>
+
+        <section class="group" aria-labelledby="g-archives">
+          <p class="group-label" id="g-archives">Source archives</p>
+          <dl>
+            <div class="rg"><dt>ZIP</dt><dd><a href="/integrity/releases/2026-06-10/trentpower-fr-2026-06-10.zip"><code>trentpower-fr-2026-06-10.zip</code></a></dd></div>
+            <div class="rg"><dt>TAR.GZ</dt><dd><a href="/integrity/releases/2026-06-10/trentpower-fr-2026-06-10.tar.gz"><code>trentpower-fr-2026-06-10.tar.gz</code></a></dd></div>
+          </dl>
+        </section>
+
+        <section class="group record-fp">
+          <nav class="actions" aria-label="Release actions">
+            <a class="primary" href="/integrity/releases/2026-06-10/">View this release <span class="arr">↗</span></a>
+            <a class="secondary" href="/en-au/integrity/verify-locally/">Verify locally</a>
+          </nav>
+        </section>
+
+      </div>
+    </article>
+
+    <!-- earlier editions · hairline ledger -->
+    <section class="earlier-section" aria-labelledby="earlier-label">
+      <p class="earlier-label" id="earlier-label">
+        <span>Earlier editions</span>
+        <span class="count">five on file · 2026·02 → 2026·05·23</span>
+      </p>
+
+      <ol class="earlier-list" reversed>
+
+        <li class="earlier-row">
+          <p class="acc">№ 05</p>
+          <div class="stack">
+            <p class="date">23 May 2026</p>
+            <p class="title"><cite>Composed publication sprint</cite></p>
+            <p class="sha"><span class="k">SHA-256</span>C589·BAB5·4959·58BB</p>
+          </div>
+          <div class="actions">
+            <a class="verb" href="/integrity/releases/2026-05-23/">View <span class="arr">↗</span></a>
+            <div class="downloads">
+              <a href="/integrity/releases/2026-05-23/trentpower-fr-2026-05-23.zip">ZIP</a>
+              <a href="/integrity/releases/2026-05-23/trentpower-fr-2026-05-23.tar.gz">TAR.GZ</a>
+              <a href="/integrity/releases/2026-05-23/SHA256SUMS">SUMS</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="earlier-row">
+          <p class="acc">№ 04</p>
+          <div class="stack">
+            <p class="date">19 May 2026</p>
+            <p class="title"><cite>Bilingual editions</cite></p>
+            <p class="sha"><span class="k">SHA-256</span>01E8·6BA9·82F3·14A9</p>
+          </div>
+          <div class="actions">
+            <a class="verb" href="/integrity/releases/2026-05-19/">View <span class="arr">↗</span></a>
+            <div class="downloads">
+              <a href="/integrity/releases/2026-05-19/trentpower-fr-2026-05-19.zip">ZIP</a>
+              <a href="/integrity/releases/2026-05-19/trentpower-fr-2026-05-19.tar.gz">TAR.GZ</a>
+              <a href="/integrity/releases/2026-05-19/SHA256SUMS">SUMS</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="earlier-row">
+          <p class="acc">№ 03</p>
+          <div class="stack">
+            <p class="date">17 May 2026</p>
+            <p class="title"><cite>Editorial cohesion</cite></p>
+            <p class="sha"><span class="k">SHA-256</span>348C·8346·9B82·1E96</p>
+          </div>
+          <div class="actions">
+            <a class="verb" href="/integrity/releases/2026-05-17/">View <span class="arr">↗</span></a>
+            <div class="downloads">
+              <a href="/integrity/releases/2026-05-17/trentpower-fr-2026-05-17.zip">ZIP</a>
+              <a href="/integrity/releases/2026-05-17/trentpower-fr-2026-05-17.tar.gz">TAR.GZ</a>
+              <a href="/integrity/releases/2026-05-17/SHA256SUMS">SUMS</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="earlier-row">
+          <p class="acc">№ 02</p>
+          <div class="stack">
+            <p class="date">9 May 2026</p>
+            <p class="title"><cite>Final May edition</cite></p>
+            <p class="sha"><span class="k">SHA-256</span>610E·FDD2·BF53·1A82</p>
+          </div>
+          <div class="actions">
+            <a class="verb" href="/integrity/releases/2026-05-09/">View <span class="arr">↗</span></a>
+            <div class="downloads">
+              <a href="/integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip">ZIP</a>
+              <a href="/integrity/releases/2026-05-09/trentpower-fr-2026-05-09.tar.gz">TAR.GZ</a>
+              <a href="/integrity/releases/2026-05-09/SHA256SUMS">SUMS</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="earlier-row">
+          <p class="acc">№ 01</p>
+          <div class="stack">
+            <p class="date">February 2026</p>
+            <p class="title"><cite>Initial signed release</cite></p>
+            <p class="sha is-historical">Historical record · no archives</p>
+          </div>
+          <div class="actions">
+            <a class="verb" href="/integrity/releases/2026-02/">View <span class="arr">↗</span></a>
+          </div>
+        </li>
+
+      </ol>
+
+      <p class="foot-note">Older editions are kept verbatim — they are not re-rendered when the live site changes. They preserve the design and integrity record of the publication at a point in time. See <a href="/en-au/integrity/">/integrity/</a> for the live manifest and signature.</p>
+    </section>
+
+  </div>
+
+</main>
+
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/en-au/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">Return to the homepage</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>Paris, France</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/en-au/privacy/" rel="privacy-policy" aria-describedby="desc-privacy">Privacy</a>
+        <span class="visually-hidden" id="desc-privacy">Read how this site avoids analytics, cookies, profiling, tracking, and third-party assets</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">Verify</button>
+        <span class="visually-hidden" id="desc-cite">Open citation and verification details for this page</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><a href="/en-au/integrity/releases/"  aria-describedby="desc-lang-en" lang="en" aria-current="page">English</a> <span class="visually-hidden" id="desc-lang-en">Read this site in English</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><a href="/fr/integrite/archives/" aria-describedby="desc-lang-fr" lang="fr">Français</a> <span class="visually-hidden" id="desc-lang-fr">Lire ce site en français</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break" aria-hidden="true">
+
+    <!-- bottom stratum · colophon · theme -->
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="Publication verification">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="/en-au/verify/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Edition</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          <span class="site-footer__colophon-note" data-edition-age>Published today</span>
+          <span class="visually-hidden" id="desc-integrity">Open the verification record for this edition — citation, source mirror, fingerprint, signed release</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">Light</button> <span class="visually-hidden" id="desc-theme-light">Switch to the light appearance</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">Auto</button> <span class="visually-hidden" id="desc-theme-auto">Match the system appearance setting</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">Dark</button> <span class="visually-hidden" id="desc-theme-dark">Switch to the dark appearance</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+
+<!-- scripts · progressive enhancement, no telemetry -->
+<script src="/js/theme.js?v=2026-06-10.2898894c" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/sw-register.js?v=2026-06-10.2898894c" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+<script src="/js/reveal.js?v=2026-06-10.2898894c" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+
+<script src="/js/overlay.js?v=2026-06-10.2898894c" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+
+<script src="/verify/verification-data.js?v=2026-06-10.2898894c" defer></script>
+
+<script src="/js/copy.js?v=2026-06-10.2898894c" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/edition.js?v=2026-06-10.2898894c" integrity="sha384-kIhbudFAbfEtCHFdw/AF3cOioeMYPukKzX1c6/gj16bEkO8fm9N7re1FDimxaMaC" defer></script>
+<script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
+<script src="/js/verify-modal.js?v=2026-06-10.2898894c" integrity="sha384-Kb8LrSoY27mMZZl+F/0TsiJ4Yc+Z48xVDXCK3mTaMfNYr+kfj/C+P5ss0lMD/NTl" defer></script>
+<script src="/js/fonts.js?v=2026-06-10.2898894c" integrity="sha384-7r4m2UeG/OZz4cqCSLkeSxpzrVz0h/8qmcYmC2cluDlIxPnVmom5NQVrLOTAXj+f" defer></script>
+
+<!-- print · /releases/ utility sheet -->
+<div class="print-utility-sheet print-only" data-print-sheet="releases" hidden>
+  <header class="print-utility-header">
+    <p class="print-utility-kicker">Releases</p>
+    <p class="print-utility-title">Frozen public editions</p>
+    <p class="print-utility-lede">Public release snapshots preserve selected editions of the site with local assets so their design and integrity can be inspected over time.</p>
+    <p class="print-utility-meta">Edition 2026-06-10 · trentpower.fr/integrity/releases/</p>
+  </header>
+
+  <div class="print-utility-grid">
+    <div class="print-utility-card">
+      <p class="print-utility-label"><span class="num">01</span> <span>9 May 2026</span></p>
+      <p>Final May edition. Signed source archives, deterministic ZIP and TAR.GZ, aggregated SHA256SUMS. Clean active filenames. One-page print profile. Trust sheets.</p>
+    </div>
+    <div class="print-utility-card">
+      <p class="print-utility-label"><span class="num">02</span> <span>February 2026</span></p>
+      <p>Initial signed release. Earlier visual system. Preserved as a historical archive.</p>
+    </div>
+    <div class="print-utility-card">
+      <p class="print-utility-label"><span class="num">03</span> <span>Archive principle</span></p>
+      <p>Frozen assets. Local CSS and fonts. No live mutable style dependency.</p>
+    </div>
+    <div class="print-utility-card">
+      <p class="print-utility-label"><span class="num">04</span> <span>Integrity route</span></p>
+      <p>/integrity.json · /integrity.json.sig · /.well-known/pgp-key.asc</p>
+    </div>
+    <div class="print-utility-card">
+      <p class="print-utility-label"><span class="num">05</span> <span>Why it matters</span></p>
+      <p>Verifiability. Authorship. Continuity. Public trust.</p>
+    </div>
+    <div class="print-utility-card">
+      <p class="print-utility-label"><span class="num">06</span> <span>Where to inspect</span></p>
+      <p>/integrity/releases/2026-05-17/ · /integrity/releases/2026-05-09/ · /integrity/releases/2026-02/ · /source/</p>
+    </div>
+  </div>
+
+  <footer class="print-utility-footer">
+    <div class="print-utility-footer-text">
+      <p class="print-proof">Private · Static · Signed · No tracking</p>
+      <p>Edition 2026-06-10 · trentpower.fr/integrity/releases/</p>
+    </div>
+    <div class="print-qr-block" aria-hidden="true">
+      <img class="print-qr-image" src="/images/qr/qr-releases.svg" width="144" height="144" loading="lazy" decoding="async" alt="">
+      <p class="print-qr-url">trentpower.fr/integrity/releases/</p>
+    </div>
+  </footer>
+</div>
+
+
+<!-- body · construction rail -->
+<div class="construction-rail" data-construction-rail aria-hidden="true">
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+  <span class="construction-rail__label">
+    <span class="construction-rail__dot" aria-hidden="true"></span>
+    Under Construction
+  </span>
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+</div>
+</body>
+</html>

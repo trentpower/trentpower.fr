@@ -1,0 +1,420 @@
+<!doctype html>
+<!--
+  trentpower.fr · /tests/
+  Signed test + verification snapshot · edition 2026-06-10
+  Renders the signed TESTRESULTS.txt for this edition. No analytics, no cookies, no external assets.
+-->
+<html lang="en-AU" dir="ltr">
+<head>
+  <!-- foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- appearance bootstrap (theme; hash authorised in global CSP) -->
+  <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch(_){}})();</script>
+
+  <!-- document identity -->
+  <title>Test Results · 10 June 2026 · Trent Power</title>
+  <meta name="description" content="Signed test and verification snapshot for trentpower.fr, 10 June 2026 edition.">
+  <meta name="document-edition" content="2026-06-10">
+  <meta name="robots" content="noindex, follow">
+  <meta name="referrer" content="no-referrer">
+  <link rel="canonical" href="https://trentpower.fr/tests/">
+
+  <!-- authorship + provenance -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/person.json">
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+  <link rel="describedby" href="/integrity.json">
+
+  <!-- application surface -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+
+  <!-- rendering + assets -->
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/soehne-buch.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/signifier-regular.woff2" crossorigin>
+  <link rel="stylesheet" href="/styles.css?v=2026-06-10.2898894c" integrity="sha384-G2EI/5PcxnoeoGAeVPHgpg7kTvWKsox1BqU3BamYJoaX8KqB6bj7j8nIrUibMqLC">
+  <link rel="stylesheet" href="/print.css?v=2026-06-10.2898894c" media="print">
+
+  <!-- provenance · page record · generated from the public source repository -->
+  <script type="application/json" id="tp-page-record">
+{
+  "canonical": "https://trentpower.fr/tests/",
+  "sourceRepository": "https://github.com/trentpower/trentpower.fr",
+  "sourcePath": "tools/build/generate_tests_page.py",
+  "sourceUrl": "https://github.com/trentpower/trentpower.fr/blob/main/tools/build/generate_tests_page.py",
+  "edition": "2026-06-10",
+  "generated": true
+}
+  </script>
+</head>
+<body data-page="tests" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-10">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- masthead -->
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark u-author" href="/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="site tests-page" id="main" tabindex="-1">
+  <div class="page">
+
+    <!-- primary · statement -->
+    <p class="page-kicker">Publication Test Record</p>
+    <h1 class="page-title hero-stack">Test Results</h1>
+    <div class="page-body">
+      <p class="page-lede">This edition is <em>healthy</em>: 7 checks pass, 1 remains under review, and no checks fail.</p>
+      <p>Performance remains the only review area.</p>
+      <p class="tests-tally" aria-label="Pass, review and fail counts"><span class="tests-tally__item tests-tally__item--pass">7 Pass</span><span class="tests-tally__sep" aria-hidden="true">·</span><span class="tests-tally__item tests-tally__item--review">1 Review</span><span class="tests-tally__sep" aria-hidden="true">·</span><span class="tests-tally__item tests-tally__item--fail">0 Fail</span></p>
+
+      <!-- layer 2 · interpretation — what the result means, then what to watch.
+           the reader grasps the outcome before any score, metric or artefact;
+           this is a signed publication record, not a CI dashboard. -->
+      <section class="security-section" aria-labelledby="tests-interp-h">
+        <h2 class="security-section-heading" id="tests-interp-h">Interpretation</h2>
+        <p>This test result records the state of the publication at release time. It is not a guarantee of future network, browser or validator behaviour. It is a signed snapshot of the checks performed against the listed targets.</p>
+      </section>
+
+      <section class="security-section" aria-labelledby="tests-attn-h">
+        <h2 class="security-section-heading" id="tests-attn-h">What Needs Attention</h2>
+        <ul class="tests-notes">
+          <li class="tests-note">
+            <span class="tests-sev tests-sev--high">High</span>
+            <span class="tests-note__text">/fr/: lighthouse.performance.score on /fr/ (lighthouse.performance.score 79 -&gt; 66 (delta -13))</span>
+          </li>
+          <li class="tests-note">
+            <span class="tests-sev tests-sev--medium">Medium</span>
+            <span class="tests-note__text">/: lighthouse.tbt_ms on / (lighthouse.tbt_ms 360 ms -&gt; 590 ms (delta 231.5))</span>
+          </li>
+          <li class="tests-note">
+            <span class="tests-sev tests-sev--medium">Medium</span>
+            <span class="tests-note__text">/fr/: lighthouse.tbt_ms on /fr/ (lighthouse.tbt_ms 880 ms -&gt; 2,050 ms (delta 1174.5))</span>
+          </li>
+        </ul>
+      </section>
+      <!-- layer 3 · evidence — per-area status, metrics, attestation, provenance -->
+      <section class="security-section" aria-labelledby="tests-status-h">
+        <h2 class="security-section-heading" id="tests-status-h">Status by Area</h2>
+        <p>The verdict above, area by area: each card states how one part of the edition fared and why.</p>
+        <div class="tests-scorecards">
+          <div class="tests-card">
+            <div class="tests-card__top">
+              <span class="tests-card__name">Availability</span>
+              <span class="tests-chip tests-chip--pass">PASS</span>
+            </div>
+            <p class="tests-card__detail">3/3 target URLs returned 200</p>
+          </div>
+          <div class="tests-card">
+            <div class="tests-card__top">
+              <span class="tests-card__name">Privacy</span>
+              <span class="tests-chip tests-chip--pass">PASS</span>
+            </div>
+            <p class="tests-card__detail">0 cookies, 0 third-party resources, 0 unexpected storage keys</p>
+          </div>
+          <div class="tests-card">
+            <div class="tests-card__top">
+              <span class="tests-card__name">Security</span>
+              <span class="tests-chip tests-chip--pass">PASS</span>
+            </div>
+            <p class="tests-card__detail">Observatory A+, SSL Labs A+</p>
+          </div>
+          <div class="tests-card">
+            <div class="tests-card__top">
+              <span class="tests-card__name">Accessibility</span>
+              <span class="tests-chip tests-chip--pass">PASS</span>
+            </div>
+            <p class="tests-card__detail">Lighthouse accessibility min 100</p>
+          </div>
+          <div class="tests-card">
+            <div class="tests-card__top">
+              <span class="tests-card__name">SEO</span>
+              <span class="tests-chip tests-chip--pass">PASS</span>
+            </div>
+            <p class="tests-card__detail">Lighthouse SEO min 100</p>
+          </div>
+          <div class="tests-card">
+            <div class="tests-card__top">
+              <span class="tests-card__name">HTML</span>
+              <span class="tests-chip tests-chip--pass">PASS</span>
+            </div>
+            <p class="tests-card__detail">0 errors, 0 warning(s) max/page</p>
+          </div>
+          <div class="tests-card">
+            <div class="tests-card__top">
+              <span class="tests-card__name">Trust files</span>
+              <span class="tests-chip tests-chip--pass">PASS</span>
+            </div>
+            <p class="tests-card__detail">integrity.json + signature present, all core trust files verified</p>
+          </div>
+          <div class="tests-card">
+            <div class="tests-card__top">
+              <span class="tests-card__name">Performance</span>
+              <span class="tests-chip tests-chip--review">REVIEW</span>
+            </div>
+            <p class="tests-card__detail">edition pages remain below the preferred 90 threshold, mainly Total Blocking Time</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="security-section" aria-labelledby="tests-perf-h">
+        <h2 class="security-section-heading" id="tests-perf-h">Performance by Target</h2>
+        <p>Behind the performance line: the Lighthouse score recorded for each measured page, set against the preferred threshold.</p>
+        <table class="tests-perf">
+          <thead><tr><th scope="col">Target</th><th scope="col" class="tests-perf__score">Score</th><th scope="col">Status</th></tr></thead>
+          <tbody>
+            <tr>
+              <th scope="row"><code>/</code></th>
+              <td class="tests-perf__score">85</td>
+              <td class="tests-perf__status"><span class="tests-chip tests-chip--review">REVIEW</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><code>/en-au/</code></th>
+              <td class="tests-perf__score">88</td>
+              <td class="tests-perf__status"><span class="tests-chip tests-chip--review">REVIEW</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><code>/fr/</code></th>
+              <td class="tests-perf__score">66</td>
+              <td class="tests-perf__status"><span class="tests-chip tests-chip--review">REVIEW</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="tests-threshold">Preferred threshold: 90</p>
+        <p class="tests-why"><span class="tests-why__label">Why review</span> Edition pages remain below the preferred 90 threshold, mainly Total Blocking Time</p>
+      </section>
+      <!-- attestation -->
+      <section class="security-section" aria-labelledby="tests-attest-h">
+        <h2 class="security-section-heading" id="tests-attest-h">Attestation</h2>
+        <div class="integrity-record-card">
+          <p class="integrity-record-kicker">Signed snapshot</p>
+          <h3 class="integrity-record-title">TESTRESULTS.txt</h3>
+          <p class="integrity-record-status">Detached PGP signature · Edition 2026-06-10</p>
+          <dl class="integrity-record-dl">
+            <div class="integrity-rg integrity-rg--ruled">
+              <dt class="integrity-rg-label">File</dt>
+              <dd class="integrity-rg-value"><a class="integrity-rg-link" href="/integrity/releases/2026-06-10/TESTRESULTS.txt">TESTRESULTS.txt</a></dd>
+            </div>
+            <div class="integrity-rg">
+              <dt class="integrity-rg-label">Signature</dt>
+              <dd class="integrity-rg-value"><a class="integrity-rg-link" href="/integrity/releases/2026-06-10/TESTRESULTS.txt.sig">TESTRESULTS.txt.sig</a></dd>
+              <dd class="integrity-rg-desc">Detached PGP signature</dd>
+            </div>
+            <div class="integrity-rg">
+              <dt class="integrity-rg-label">Fingerprint</dt>
+              <dd class="integrity-rg-value">A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263</dd>
+            </div>
+          </dl>
+        </div>
+        <p class="tests-signed">Signed by <strong>Trent Power</strong><br><span class="tests-fpr">A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263</span></p>
+        <details class="tests-verify">
+          <summary>View verification command</summary>
+          <p>Download the snapshot and its signature, then verify against the published public key.</p>
+          <pre class="tests-cmd">curl -O https://trentpower.fr/integrity/releases/2026-06-10/TESTRESULTS.txt <span class="tests-cmd__op">&amp;&amp;</span>
+curl -O https://trentpower.fr/integrity/releases/2026-06-10/TESTRESULTS.txt.sig <span class="tests-cmd__op">&amp;&amp;</span>
+gpg --verify TESTRESULTS.txt.sig TESTRESULTS.txt</pre>
+        </details>
+      </section>
+
+      <!-- run + artefacts -->
+      <section class="security-section" aria-labelledby="tests-run-h">
+        <h2 class="security-section-heading" id="tests-run-h">Run &amp; Artefacts</h2>
+        <p>Where this record came from: the run that produced it and the signed files it can be checked against.</p>
+        <div class="integrity-record-card">
+          <p class="integrity-record-kicker">Provenance</p>
+          <h3 class="integrity-record-title">Score ledger</h3>
+          <dl class="integrity-record-dl">
+            <div class="integrity-rg">
+              <dt class="integrity-rg-label">Edition</dt>
+              <dd class="integrity-rg-value">2026-06-10</dd>
+            </div>
+            <div class="integrity-rg">
+              <dt class="integrity-rg-label">Run</dt>
+              <dd class="integrity-rg-value">#16  (post-TESTRESULTS publish 2026-05-29)</dd>
+            </div>
+            <div class="integrity-rg">
+              <dt class="integrity-rg-label">Environment</dt>
+              <dd class="integrity-rg-value">production</dd>
+            </div>
+            <div class="integrity-rg">
+              <dt class="integrity-rg-label">Generated</dt>
+              <dd class="integrity-rg-value">2026-06-10T18:19:38Z</dd>
+            </div>
+            <div class="integrity-rg">
+              <dt class="integrity-rg-label">Git commit</dt>
+              <dd class="integrity-rg-value">c7157139</dd>
+            </div>
+            <div class="integrity-rg">
+              <dt class="integrity-rg-label">Run report</dt>
+              <dd class="integrity-rg-value">run-16.html, run-16.md</dd>
+            </div>
+            <div class="integrity-rg">
+              <dt class="integrity-rg-label">Metrics collected</dt>
+              <dd class="integrity-rg-value">370</dd>
+            </div>
+            <div class="integrity-rg">
+              <dt class="integrity-rg-label">Open actions</dt>
+              <dd class="integrity-rg-value">3</dd>
+            </div>
+            <div class="integrity-rg">
+              <dt class="integrity-rg-label">Known validator noise</dt>
+              <dd class="integrity-rg-value">22</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="integrity-record-card">
+          <p class="integrity-record-kicker">Artefacts</p>
+          <h3 class="integrity-record-title">SHA-256</h3>
+          <dl class="integrity-record-dl">
+            <div class="integrity-rg">
+              <dt class="integrity-rg-label">run-16.md</dt>
+              <dd class="integrity-rg-value">55a53a0eb67cec8c714ac8e1878ac8ce47d465bdc4c37e12e32a6efcc70fabdd</dd>
+            </div>
+            <div class="integrity-rg">
+              <dt class="integrity-rg-label">run-16.html</dt>
+              <dd class="integrity-rg-value">8e2b289b03cca211c0a151a09d5eac3bda0d02f15eec89b6fbeefd45688e5119</dd>
+            </div>
+          </dl>
+        </div>
+        <p class="tests-downloads">Open <a href="/integrity/releases/2026-06-10/TESTRESULTS.txt">TESTRESULTS.txt</a>, its <a href="/integrity/releases/2026-06-10/TESTRESULTS.txt.sig">signature</a>, or the full <a href="/integrity/releases/2026-06-10/">release archives</a>.</p>
+      </section>
+
+      <!-- validate this site · external validators, open only when chosen -->
+      <section class="security-section" aria-labelledby="tests-validators-h">
+        <h2 class="security-section-heading" id="tests-validators-h">Validate this site</h2>
+        <p>External validators open only when chosen. Each opens in a new tab and checks the live site.</p>
+        <div class="site-validators">
+          <div class="site-validators-group">
+            <p class="site-validators-group__label">Standards</p>
+            <ul class="site-validators-group__items">
+              <li><a href="https://validator.w3.org/nu/?doc=https://trentpower.fr/" target="_blank" rel="noopener noreferrer">HTML</a></li>
+              <li><a href="https://jigsaw.w3.org/css-validator/validator?uri=https://trentpower.fr/&amp;profile=css3svg" target="_blank" rel="noopener noreferrer">CSS</a></li>
+              <li><a href="https://validator.schema.org/#url=https://trentpower.fr/" target="_blank" rel="noopener noreferrer">Schema</a></li>
+              <li><a href="https://search.google.com/test/rich-results?url=https://trentpower.fr/" target="_blank" rel="noopener noreferrer">Rich Results</a></li>
+            </ul>
+          </div>
+          <div class="site-validators-group">
+            <p class="site-validators-group__label">Performance</p>
+            <ul class="site-validators-group__items">
+              <li><a href="https://pagespeed.web.dev/report?url=https://trentpower.fr/" target="_blank" rel="noopener noreferrer">PageSpeed Insights</a></li>
+              <li><a href="https://www.webpagetest.org/?url=https://trentpower.fr/" target="_blank" rel="noopener noreferrer">WebPageTest</a></li>
+              <li><a href="https://webhint.io/scanner/" target="_blank" rel="noopener noreferrer">Webhint</a></li>
+            </ul>
+          </div>
+          <div class="site-validators-group">
+            <p class="site-validators-group__label">Trust</p>
+            <ul class="site-validators-group__items">
+              <li><a href="https://securityheaders.com/?q=https://trentpower.fr/&amp;followRedirects=on" target="_blank" rel="noopener noreferrer">Security Headers</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/observatory/analyze?host=trentpower.fr" target="_blank" rel="noopener noreferrer">Mozilla Observatory</a></li>
+              <li><a href="https://www.ssllabs.com/ssltest/analyze.html?d=trentpower.fr&amp;latest" target="_blank" rel="noopener noreferrer">SSL Labs</a></li>
+              <li><a href="https://dnssec-analyzer.verisignlabs.com/trentpower.fr" target="_blank" rel="noopener noreferrer">DNSSEC analyser</a></li>
+              <li><a href="https://hstspreload.org/?domain=trentpower.fr" target="_blank" rel="noopener noreferrer">HSTS preload</a></li>
+            </ul>
+          </div>
+          <div class="site-validators-group">
+            <p class="site-validators-group__label">Search</p>
+            <ul class="site-validators-group__items">
+              <li><a href="https://en.wikipedia.org/wiki/Robots.txt" target="_blank" rel="noopener noreferrer">Robots reference</a></li>
+              <li><a href="https://www.xml-sitemaps.com/validate-xml-sitemap.html?op=validate-xml-sitemap&amp;go=1&amp;sitemapurl=https%3A%2F%2Ftrentpower.fr%2Fsitemap.xml" target="_blank" rel="noopener noreferrer">Sitemap validator</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/en-au/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">Return to the homepage</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>Paris, France</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/en-au/privacy/" rel="privacy-policy" aria-describedby="desc-privacy">Privacy</a>
+        <span class="visually-hidden" id="desc-privacy">Read how this site avoids analytics, cookies, profiling, tracking, and third-party assets</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">Verify</button>
+        <span class="visually-hidden" id="desc-cite">Open citation and verification details for this page</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><a href="/en-au/"  aria-describedby="desc-lang-en" lang="en" aria-current="page">English</a> <span class="visually-hidden" id="desc-lang-en">Read this site in English</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><a href="/fr/" aria-describedby="desc-lang-fr" lang="fr">Français</a> <span class="visually-hidden" id="desc-lang-fr">Lire ce site en français</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break tp-rule" aria-hidden="true">
+
+    <!-- bottom stratum · colophon · theme -->
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="Publication verification">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="/en-au/verify/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Edition</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          <span class="site-footer__colophon-note" data-edition-age>Published today</span>
+          <span class="visually-hidden" id="desc-integrity">Open the verification record for this edition — citation, source mirror, fingerprint, signed release</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">Light</button> <span class="visually-hidden" id="desc-theme-light">Switch to the light appearance</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">Auto</button> <span class="visually-hidden" id="desc-theme-auto">Match the system appearance setting</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">Dark</button> <span class="visually-hidden" id="desc-theme-dark">Switch to the dark appearance</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+
+<!-- scripts · progressive enhancement, no telemetry -->
+<script src="/js/theme.js?v=2026-06-10.2898894c" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/sw-register.js?v=2026-06-10.2898894c" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+<script src="/js/reveal.js?v=2026-06-10.2898894c" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+<script src="/js/overlay.js?v=2026-06-10.2898894c" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+<script src="/verify/verification-data.js?v=2026-06-10.2898894c" defer></script>
+<script src="/js/copy.js?v=2026-06-10.2898894c" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/edition.js?v=2026-06-10.2898894c" integrity="sha384-kIhbudFAbfEtCHFdw/AF3cOioeMYPukKzX1c6/gj16bEkO8fm9N7re1FDimxaMaC" defer></script>
+<script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
+<script src="/js/verify-modal.js?v=2026-06-10.2898894c" integrity="sha384-Kb8LrSoY27mMZZl+F/0TsiJ4Yc+Z48xVDXCK3mTaMfNYr+kfj/C+P5ss0lMD/NTl" defer></script>
+<script src="/js/fonts.js?v=2026-06-10.2898894c" integrity="sha384-7r4m2UeG/OZz4cqCSLkeSxpzrVz0h/8qmcYmC2cluDlIxPnVmom5NQVrLOTAXj+f" defer></script>
+
+<!-- body · construction rail -->
+<div class="construction-rail" data-construction-rail aria-hidden="true">
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+  <span class="construction-rail__label">
+    <span class="construction-rail__dot" aria-hidden="true"></span>
+    Under Construction
+  </span>
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+</div>
+</body>
+</html>

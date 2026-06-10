@@ -1,0 +1,53 @@
+/* Archive edition bar — fixed at top of every archived page */
+.archive-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #1F1E1C;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: 6px 16px;
+  line-height: 1.4;
+}
+
+.archive-bar a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.archive-bar a:hover {
+  border-bottom-color: rgba(255, 255, 255, 0.6);
+}
+
+.archive-bar-sep {
+  margin: 0 0.5em;
+  opacity: 0.35;
+}
+
+/* Push page content below the bar */
+body {
+  padding-top: 48px;
+}
+
+/* Push fixed nav below the archive bar */
+.nav {
+  top: 48px;
+}
+
+/* Force all scroll-reveal elements visible (no JS in archive) */
+.hero-name,
+.hero-statement,
+.hero-body,
+.principle,
+.trajectory-chapter,
+.project-card {
+  opacity: 1 !important;
+  transform: none !important;
+}

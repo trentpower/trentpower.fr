@@ -1,0 +1,282 @@
+<!doctype html>
+<!--
+  trentpower.fr · /security/acknowledgments/
+
+  static, semantic, self-managed, privacy-first.
+  responsible security disclosures verified and resolved.
+  no analytics. no cookies. no external assets.
+-->
+<html lang="en-AU" dir="ltr">
+<head>
+  <!-- head · 01 · foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- head · 02 · appearance bootstrap -->
+  <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch(_){}})();</script>
+
+  <!-- head · 03 · document identity -->
+  <title>Security acknowledgements · Trent Power</title>
+  <meta name="description" content="Responsible security disclosures verified and resolved for trentpower.fr.">
+  <meta name="document-edition" content="2026-06-10">
+  <link rel="canonical" href="https://trentpower.fr/en-au/security/acknowledgments/">
+  <link rel="alternate" hreflang="en-AU" href="https://trentpower.fr/en-au/security/acknowledgments/">
+  <link rel="alternate" hreflang="fr" href="https://trentpower.fr/fr/securite/remerciements/">
+  <link rel="alternate" hreflang="x-default" href="https://trentpower.fr/">
+
+  <!-- head · 04 · indexing and discovery -->
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- head · 05 · authorship and identity -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/person.json">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+  <link rel="alternate" type="text/plain" href="/llms.txt">
+  <link rel="me" href="https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg">
+  <link rel="me" href="https://www.linkedin.com/in/trentpower/">
+  <link rel="me" href="https://orcid.org/0009-0002-2652-7188">
+  <link rel="me" href="https://www.crunchbase.com/person/trent-power-3f52">
+
+  <!-- head · 06 · provenance, rights and reuse -->
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+  <link rel="describedby" href="/.well-known/attribution.txt">
+  <link rel="describedby" href="/integrity.json">
+  <link rel="cite-as" href="https://trentpower.fr/en-au/security/acknowledgments/">
+  <link rel="privacy-policy" href="https://trentpower.fr/en-au/privacy/">
+  <link rel="help" href="https://trentpower.fr/en-au/security/">
+
+  <!-- head · 07 · social and sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="Security acknowledgements · Trent Power">
+  <meta property="og:description" content="Responsible security disclosures verified and resolved for trentpower.fr.">
+  <meta property="og:url" content="https://trentpower.fr/en-au/security/acknowledgments/">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:locale:alternate" content="fr_FR">
+  <meta property="og:image" content="https://trentpower.fr/images/og/security-acknowledgments-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Security acknowledgements · Trent Power">
+
+  <!-- head · 08 · application surface -->
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+
+  <!-- head · 09 · rendering and assets -->
+  <link rel="stylesheet" href="/styles.css?v=2026-06-10.2898894c" integrity="sha384-G2EI/5PcxnoeoGAeVPHgpg7kTvWKsox1BqU3BamYJoaX8KqB6bj7j8nIrUibMqLC">
+  <link rel="stylesheet" href="/print.css?v=2026-06-10.2898894c" media="print">
+
+  <!-- head · 10 · structured data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://trentpower.fr/security/acknowledgments/#page",
+  "url": "https://trentpower.fr/en-au/security/acknowledgments/",
+  "name": "Security acknowledgements · Trent Power",
+  "description": "Responsible security disclosures verified and resolved for trentpower.fr.",
+  "inLanguage": "en-AU",
+  "isPartOf": {
+    "@id": "https://trentpower.fr/#website"
+  },
+  "about": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "author": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "publisher": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "datePublished": "2026-02-15T00:00:00+00:00",
+  "dateModified": "2026-06-10T00:00:00+00:00"
+}
+  </script>
+
+  <!-- provenance · page record · generated from the public source repository -->
+  <script type="application/json" id="tp-page-record">
+{
+  "canonical": "https://trentpower.fr/en-au/security/acknowledgments/",
+  "sourceRepository": "https://github.com/trentpower/trentpower.fr",
+  "sourcePath": "content/en/pages/security.yml",
+  "templatePath": "templates/pages/security-acknowledgments.html",
+  "sourceUrl": "https://github.com/trentpower/trentpower.fr/blob/main/content/en/pages/security.yml",
+  "edition": "2026-06-10",
+  "generated": true
+}
+  </script>
+</head>
+<body data-page="acknowledgments" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-10" data-source-sha256-short="--------">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- body · masthead -->
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark u-author" href="/en-au/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- body · primary content -->
+<main class="site" id="main" tabindex="-1">
+  <div class="page">
+
+    <!-- primary · 01 · statement -->
+    <h1 class="page-title">Security acknowledgements</h1>
+    <div class="page-body">
+      <p>This page records responsible security disclosures that have been verified and resolved.</p>
+      <p>There are no acknowledgements at present. This reflects the absence of reportable
+      disclosures to date, not the absence of review or maintenance.</p>
+      <p>If you believe you have found a security issue with this site, please report it
+      responsibly. Contact details and disclosure preferences are listed in security.txt.</p>
+      <p><a href="/en-au/integrity/">Site integrity statement</a></p>
+      <p class="ack-last-reviewed">Last reviewed <time datetime="2026-06-10">2026-06-10</time></p>
+    </div>
+  </div>
+
+</main>
+
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/en-au/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">Return to the homepage</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>Paris, France</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/en-au/privacy/" rel="privacy-policy" aria-describedby="desc-privacy">Privacy</a>
+        <span class="visually-hidden" id="desc-privacy">Read how this site avoids analytics, cookies, profiling, tracking, and third-party assets</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">Verify</button>
+        <span class="visually-hidden" id="desc-cite">Open citation and verification details for this page</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><a href="/en-au/security/acknowledgments/"  aria-describedby="desc-lang-en" lang="en" aria-current="page">English</a> <span class="visually-hidden" id="desc-lang-en">Read this site in English</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><a href="/fr/securite/remerciements/" aria-describedby="desc-lang-fr" lang="fr">Français</a> <span class="visually-hidden" id="desc-lang-fr">Lire ce site en français</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break" aria-hidden="true">
+
+    <!-- bottom stratum · colophon · theme -->
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="Publication verification">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="/en-au/verify/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Edition</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          <span class="site-footer__colophon-note" data-edition-age>Published today</span>
+          <span class="visually-hidden" id="desc-integrity">Open the verification record for this edition — citation, source mirror, fingerprint, signed release</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">Light</button> <span class="visually-hidden" id="desc-theme-light">Switch to the light appearance</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">Auto</button> <span class="visually-hidden" id="desc-theme-auto">Match the system appearance setting</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">Dark</button> <span class="visually-hidden" id="desc-theme-dark">Switch to the dark appearance</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+<!-- scripts · progressive enhancement, no telemetry -->
+<script src="/js/theme.js?v=2026-06-10.2898894c" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/sw-register.js?v=2026-06-10.2898894c" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+<script src="/js/reveal.js?v=2026-06-10.2898894c" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+<script src="/js/overlay.js?v=2026-06-10.2898894c" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+<script src="/verify/verification-data.js?v=2026-06-10.2898894c" defer></script>
+<script src="/js/copy.js?v=2026-06-10.2898894c" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/edition.js?v=2026-06-10.2898894c" integrity="sha384-kIhbudFAbfEtCHFdw/AF3cOioeMYPukKzX1c6/gj16bEkO8fm9N7re1FDimxaMaC" defer></script>
+<script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
+<script src="/js/verify-modal.js?v=2026-06-10.2898894c" integrity="sha384-Kb8LrSoY27mMZZl+F/0TsiJ4Yc+Z48xVDXCK3mTaMfNYr+kfj/C+P5ss0lMD/NTl" defer></script>
+<script src="/js/fonts.js?v=2026-06-10.2898894c" integrity="sha384-7r4m2UeG/OZz4cqCSLkeSxpzrVz0h/8qmcYmC2cluDlIxPnVmom5NQVrLOTAXj+f" defer></script>
+
+
+<!-- print-only trust sheet -->
+<div class="print-trust-sheet print-only" data-print-sheet="acknowledgments" hidden>
+  <header class="print-trust-header">
+    <p class="print-trust-kicker">Security acknowledgments</p>
+    <p class="print-trust-title">Responsible disclosure record</p>
+    <p class="print-trust-lede">Acknowledgements for individuals and researchers who contributed responsibly to the security posture of this site.</p>
+    <p class="print-trust-meta">Edition 2026-06-10 · trentpower.fr/security/acknowledgments/</p>
+  </header>
+
+  <div class="print-trust-grid">
+        <div class="print-trust-card">
+          <p class="print-trust-label"><span class="num">01</span> <span>Disclosure model</span></p>
+          <p>Coordinated, time-bounded, with credit on request.</p>
+        </div>
+        <div class="print-trust-card">
+          <p class="print-trust-label"><span class="num">02</span> <span>Reporting policy</span></p>
+          <p>trent@trentpower.fr · PGP-signed reports preferred · public key at /.well-known/pgp-key.asc.</p>
+        </div>
+        <div class="print-trust-card">
+          <p class="print-trust-label"><span class="num">03</span> <span>Coordinated remediation</span></p>
+          <p>Acknowledge within 72 hours. Patch, verify, publish notes if material.</p>
+        </div>
+        <div class="print-trust-card">
+          <p class="print-trust-label"><span class="num">04</span> <span>Verification process</span></p>
+          <p>Reproduce, hash, sign, and record in the next signed release.</p>
+        </div>
+        <div class="print-trust-card">
+          <p class="print-trust-label"><span class="num">05</span> <span>Security contact</span></p>
+          <p>trent@trentpower.fr · fingerprint A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263.</p>
+        </div>
+        <div class="print-trust-card">
+          <p class="print-trust-label"><span class="num">06</span> <span>Publication status</span></p>
+          <p>Acknowledgement page is the canonical record; updates accompany each signed edition.</p>
+        </div>
+  </div>
+
+  <footer class="print-trust-footer">
+    <div class="print-trust-footer-text">
+      <p class="print-proof">Private · Static · Signed · No tracking</p>
+      <p>Edition 2026-06-10 · trentpower.fr/security/acknowledgments/</p>
+    </div>
+    <div class="print-qr-block" aria-hidden="true">
+      <img class="print-qr-image" src="/images/qr/qr-acknowledgments.svg" width="144" height="144" loading="lazy" decoding="async" alt="">
+      <p class="print-qr-url">trentpower.fr/security/acknowledgments/</p>
+    </div>
+  </footer>
+</div>
+
+
+<!-- body · construction rail -->
+<div class="construction-rail" data-construction-rail aria-hidden="true">
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+  <span class="construction-rail__label">
+    <span class="construction-rail__dot" aria-hidden="true"></span>
+    Under Construction
+  </span>
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+; trentpower.fr — server-side PHP auto_prepend (TEMPLATE, not deployed by build).
+;
+; Why this lives in tools/server/ and NOT in public/:
+;   This file references an absolute server path
+;   (/srv/data/web/vhosts/...) which is meaningful only on the Gandi
+;   instance. Committing it under public/ would (a) leak that path
+;   into git and (b) require .htaccess to keep it 403'd. The build
+;   gate now refuses to ship any .user.ini under public/.
+;
+; Operational state on the live host:
+;   The server keeps its own .user.ini at
+;   /vhosts/trentpower.fr/htdocs/.user.ini. The local lftp deploy and
+;   the GitHub workflow both run `mirror -R` WITHOUT --delete, so the
+;   server-side file is left in place across deploys. This template
+;   exists so the directive is recoverable from version control.
+;
+; If the server file is ever lost, redeploy by hand:
+;   sftp ...@sftp.sd3.gpaas.net
+;   cd /vhosts/trentpower.fr/htdocs
+;   put tools/server/user.ini.example .user.ini
+;
+; .htaccess in public/ already denies HTTP access to .user.ini at the
+; Apache layer (Files + FilesMatch rules), so even if the file is
+; uploaded, it cannot be read over the web.
+
+auto_prepend_file = /srv/data/web/vhosts/trentpower.fr/htdocs/private/access-logger.php

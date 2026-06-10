@@ -1,0 +1,261 @@
+translation:
+  source_page: system
+  source_hash: sha256-a2eb6a5777fc79614a7fb0de028c7b2e839fbc5132c761f9de734522a8fb4bf0
+  status: machine-assisted
+  updated: '2026-05-20'
+meta:
+  '403':
+    title: Accès refusé · Trent Power
+    description: Accès non autorisé.
+  '404':
+    title: Page introuvable · Trent Power
+    description: Page introuvable.
+  '500':
+    title: Une erreur est survenue · Trent Power
+    description: Une erreur s’est produite.
+  maintenance:
+    title: En maintenance · Trent Power
+    description: En maintenance.
+error:
+  '403':
+    kicker: Erreur 403
+    title: Accès refusé
+    body: 'Vous n''avez pas l''autorisation d''accéder à cette page. <a href="/" class="error-home-link" rel="home">Retour à la page d''accueil</a>.'
+    print:
+      kicker: '403'
+      title: Accès indisponible
+      lede: Ce chemin n’est pas accessible publiquement. Le site public n’expose que des fichiers et pages intentionnels.
+      meta: Édition 2026-05-17 · trentpower.fr
+      doc_title: Trent Power - Limite d’accès
+      card:
+        '01':
+          label: 01 Limite d’accès
+          title: Limite d’accès
+          body: Certains chemins sont intentionnellement indisponibles. Les fichiers privés, de sauvegarde et opérationnels sont bloqués.
+        '02':
+          label: 02 Voies publiques
+          title: Voies publiques
+          body: Accueil. Confidentialité & confiance. Intégrité. Sécurité. Source.
+        '03':
+          label: 03 Pourquoi
+          title: Pourquoi
+          body: Réduit l’exposition accidentelle. Maintient des fichiers publics intentionnels. Soutient la posture de confidentialité et de confiance.
+        '04':
+          label: 04 Vérification
+          title: Vérification
+          body: Inspecter /integrity.json. Voir les fichiers sources sélectionnés. Consulter /.well-known/security.txt.
+        '05':
+          label: 05 Posture statique
+          title: Posture statique
+          body: Aucune base de données publique. Aucun compte visiteur. Aucun formulaire. Sans suivi.
+        '06':
+          label: 06 Contact
+          title: Contact
+          body: trent@trentpower.fr · divulgation responsable via /security/
+      footer:
+        proof: Privé · Statique · Signé · Sans suivi
+        edition: Édition 2026-05-17 · trentpower.fr
+      qr:
+        label: trentpower.fr
+  '404':
+    kicker: Erreur 404
+    title: Page introuvable
+    body: 'La page que vous cherchez n''existe pas ou a été déplacée. <a href="/" class="error-home-link" rel="home">Retour à la page d''accueil</a>.'
+    print:
+      kicker: '404'
+      title: Page introuvable
+      lede: L’adresse a peut-être changé, ou la page ne fait plus partie du site public.
+      meta: Édition 2026-05-17 · trentpower.fr
+      doc_title: Trent Power - Page introuvable
+      card:
+        '01':
+          label: 01 Ce qui s’est passé
+          title: Ce qui s’est passé
+          body: L’adresse demandée ne correspond à aucune page publique. Le site reste accessible depuis l’accueil.
+        '02':
+          label: 02 Où aller
+          title: Où aller
+          body: Accueil. Confidentialité & confiance. Intégrité. Sécurité.
+        '03':
+          label: 03 Vérification
+          title: Vérification
+          body: Manifeste public. Vue source. Versions signées.
+        '04':
+          label: 04 Si c’était attendu
+          title: Si attendu
+          body: Vérifier l’URL. Retirer les fragments obsolètes. Essayer la page d’accueil canonique.
+        '05':
+          label: 05 Posture publique
+          title: Posture publique
+          body: Site statique. Sans suivi. Sans formulaire. Sans script tiers.
+        '06':
+          label: 06 Contact
+          title: Contact
+          body: trent@trentpower.fr · LinkedIn · Trent Power
+      footer:
+        proof: Privé · Statique · Signé · Sans suivi
+        edition: Édition 2026-05-17 · trentpower.fr
+      qr:
+        label: trentpower.fr
+  '500':
+    kicker: Erreur 500
+    title: Une erreur est survenue
+    body: 'Le serveur a rencontré une erreur. Réessayez dans un instant ou <a href="/" class="error-home-link" rel="home">retournez à la page d''accueil</a>.'
+    print:
+      kicker: '500'
+      title: Erreur serveur temporaire
+      lede: Un événement inattendu est survenu lors du chargement de cette page. Le site public étant statique, il s’agit probablement d’un incident d’hébergement ou de routage plutôt que d’une défaillance applicative.
+      meta: Édition 2026-05-17 · trentpower.fr
+      doc_title: Trent Power - Erreur serveur temporaire
+      card:
+        '01':
+          label: 01 Ce qui s’est passé
+          title: Ce qui s’est passé
+          body: Le serveur n’a pas pu traiter la requête. Réessayer dans un instant.
+        '02':
+          label: 02 Voies stables
+          title: Voies stables
+          body: Accueil. Intégrité. Sécurité. Source.
+        '03':
+          label: 03 Vérification publique
+          title: Vérification publique
+          body: /integrity.json · /integrity.json.sig · /.well-known/pgp-key.asc
+        '04':
+          label: 04 Architecture
+          title: Architecture
+          body: HTML, CSS et JavaScript statiques. Aucune application publique à l’exécution. Aucune base de données publique.
+        '05':
+          label: 05 Que faire
+          title: Que faire
+          body: Rafraîchir plus tard. Revenir à l’accueil. Contacter si persistant.
+        '06':
+          label: 06 Contact
+          title: Contact
+          body: trent@trentpower.fr · LinkedIn · Trent Power
+      footer:
+        proof: Privé · Statique · Signé · Sans suivi
+        edition: Édition 2026-05-17 · trentpower.fr
+      qr:
+        label: trentpower.fr
+error_404:
+  page_title: Page introuvable
+  body: La page que vous recherchez n’existe pas ou a été déplacée.
+error_500:
+  page_title: Une erreur s’est produite
+  body: |-
+    Le serveur a rencontré une erreur. Réessayez dans quelques instants ou retournez à la
+    page d’accueil.
+maintenance:
+  page_title: En maintenance
+  body: |-
+    Le manifeste signé, les miroirs source et les archives de versions restent accessibles
+    pendant la maintenance. La vérification reste opérationnelle.
+  kicker: Maintenance
+  title: En maintenance
+  lede: Des travaux sont en cours. Revenez dans quelques instants ou retournez à la page d'accueil.
+  print:
+    kicker: État de maintenance
+    title: Mode maintenance temporaire
+    lede: Ce site est temporairement indisponible pendant le déploiement d’une nouvelle édition signée ou d’une mise à jour d’infrastructure.
+    meta: Édition 2026-05-17 · trentpower.fr/maintenance.html
+    doc_title: Trent Power - Maintenance
+    card:
+      '01':
+        label: 01 État de déploiement
+        title: État de déploiement
+        body: Une version signée ou une mise à jour d’infrastructure est en cours.
+      '02':
+        label: 02 Préservation d’intégrité
+        title: Préservation d’intégrité
+        body: L’édition signée précédente reste téléchargeable dans /integrity/releases/.
+      '03':
+        label: 03 Disponibilité publique
+        title: Disponibilité publique
+        body: Le service revient automatiquement dès que la nouvelle édition est signée et vérifiée.
+      '04':
+        label: 04 Versions signées
+        title: Versions signées
+        body: Les éditions archivées restent accessibles indépendamment de cette fenêtre de maintenance.
+      '05':
+        label: 05 Contact de maintenance
+        title: Contact de maintenance
+        body: trent@trentpower.fr - pour toute demande en cas d’indisponibilité prolongée.
+      '06':
+        label: 06 Continuité attendue
+        title: Continuité attendue
+        body: Les URL canoniques sont préservées d’une édition à l’autre ; vos signets restent valides.
+    footer:
+      proof: Privé · Statique · Signé · Sans suivi
+      edition: Édition 2026-05-17 · trentpower.fr/maintenance.html
+    qr:
+      label: trentpower.fr/maintenance.html
+sw_reset:
+  page_title: Réinitialisation du Service Worker
+  lede: |-
+    Efface le cache hors-ligne local de cet appareil uniquement. La publication en ligne
+    et le serveur ne sont pas affectés.
+  secondary: |-
+    Si une édition récente ne s'affiche pas correctement, cet utilitaire rafraîchit le
+    cache local de la publication.
+  local_marker: APPAREIL LOCAL UNIQUEMENT
+  status_label: État du cache local
+  status_initial: Lecture de l'état local…
+  button: Réinitialiser le cache hors-ligne local
+  button_done: Réinitialisation effectuée
+  edition_label: Édition en cache
+  edition_none: Aucune édition en cache détectée
+  clears_heading: Efface
+  clear_sw: Enregistrements du Service Worker
+  clear_caches: Entrées du cache hors-ligne
+  clear_pref: Préférence de langue enregistrée
+  preserves_heading: N'efface pas
+  preserve_history: Historique du navigateur
+  preserve_downloads: Téléchargements
+  preserve_others: Autres sites
+  preserve_server: Contenu du serveur
+  link_home: Accueil
+  link_reload: Recharger l'édition actuelle
+  footnote: |-
+    L'état hors-ligne est conservé localement via les API Cache Storage et Service Worker
+    du navigateur.
+  detected_label: Détecté
+  scope_heading: Portée
+  api_label: API
+  print:
+    kicker: Récupération hors-ligne
+    title: Réinitialisation du Service Worker
+    lede: Utilitaire de récupération pour effacer l’état hors-ligne en cache et actualiser la version publique signée courante.
+    meta: Édition 2026-05-17 · trentpower.fr/sw-reset/
+    doc_title: Trent Power - Réinitialisation du Service Worker
+    card:
+      '01':
+        label: 01 Suppression du cache
+        title: Suppression du cache
+        body: Désenregistre le Service Worker et supprime chaque cache nommé de cette origine.
+      '02':
+        label: 02 Récupération hors-ligne
+        title: Récupération hors-ligne
+        body: Utilisé lorsqu’une copie hors-ligne périmée sert une édition signée obsolète.
+      '03':
+        label: 03 Actualisation de version signée
+        title: Actualisation de version signée
+        body: Le chargement suivant récupère HTML, CSS, JS, polices et fichiers d’intégrité à neuf.
+      '04':
+        label: 04 Compatibilité navigateur
+        title: Compatibilité navigateur
+        body: Fonctionne dans tout navigateur prenant en charge les Service Workers et l’API Cache.
+      '05':
+        label: 05 Continuité de vérification
+        title: Continuité de vérification
+        body: Manifeste et signature inchangés - seules les copies en cache sont évincées.
+      '06':
+        label: 06 Remise à zéro locale
+        title: Remise à zéro locale
+        body: Efface la préférence de langue en cache. La préférence de thème est préservée.
+    footer:
+      proof: Privé · Statique · Signé · Sans suivi
+      edition: Édition 2026-05-17 · trentpower.fr/sw-reset/
+    qr:
+      label: trentpower.fr/sw-reset/
+  card_state: Cache hors-ligne
+  card_state_cleared: Cache hors-ligne effacé

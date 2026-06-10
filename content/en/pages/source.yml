@@ -1,0 +1,324 @@
+meta:
+  source:
+    title: Source mirrors · Trent Power
+    description: Readable public mirrors of selected site files
+source:
+  print:
+    kicker: Source
+    title: Public source view
+    lede: Selected public files are mirrored as plain text so the site can be inspected from any reader, including mobile.
+    meta: Edition 2026-05-17 · trentpower.fr/source/
+    doc_title: Trent Power - Public Source Sheet
+    card:
+      '01':
+        label: 01 What is included
+        title: What is included
+        body: HTML mirrors. CSS. JavaScript. Manifest files. .htaccess mirror.
+      '02':
+        label: 02 What is excluded
+        title: What is excluded
+        body: Credentials. Private notes. Invoices. Backups. Generator internals unless explicitly public.
+      '03':
+        label: 03 How it is organised
+        title: How it is organised
+        body: Sorted by file type, then name. Plain text mirrors. SHA-256 hashes. File sizes.
+      '04':
+        label: 04 Verification
+        title: Verification
+        body: source-manifest.json · /integrity.json · detached signature · public key.
+      '05':
+        label: 05 Files of note
+        title: Files of note
+        body: styles.css.txt · app.js.txt · print.css.txt · htaccess.txt · source-manifest.json
+      '06':
+        label: 06 Principle
+        title: Principle
+        body: Human readers first. Machine-readable files preserve identity, authorship and context.
+    footer:
+      proof: '{{ shared.site.proof_line }}'
+      edition: Edition 2026-05-17 · trentpower.fr/source/
+    qr:
+      label: trentpower.fr/source/
+  page_kicker: Source
+  contents_label: Contents
+  heading: <span class="hero-line">Every public byte,</span><span class="hero-line">in plain text.</span>
+  intro_lede: |-
+    Selected public files, published in readable form. For inspection, preservation, and
+    machine readability. This is the human-readable mirror of the site, not the
+    cryptographic authority — that is Integrity.
+  curation_note: |-
+    This index shows the principal public mirrors. Additional mirrored files may remain
+    available by direct URL where they support verification, recovery, or release
+    integrity.
+  download_lede: Download the public source archive for the current edition
+  download_targz: TAR.GZ
+  download_zip: ZIP
+  download_checksums: Checksums
+  group:
+    published-pages: Published pages
+    trust-records: Trust records
+    scripts: Scripts
+    metadata: Metadata
+  col:
+    validated: Verified
+  group_gloss:
+    published-pages: |-
+      Readable mirrors of the principal public pages, served as plain text so the bytes can
+      be inspected without execution.
+    trust-records: |-
+      Public commitments and identity surfaces. Who publishes the site, what is promised,
+      where disclosure runs.
+    scripts: |-
+      Authored stylesheets and JavaScript the page ships to the browser. Mirrored from
+      source, not the minified deployed bytes.
+    metadata: |-
+      Server configuration and machine-readable records describing the site to crawlers,
+      indexers and language models.
+  editions:
+    eyebrow: Editions
+    title: Edition lineage
+    note:
+      current: Current signed release
+      earlier: Earlier signed release
+  files:
+    403_html_txt:
+      description: Forbidden page.
+    404_html_txt:
+      description: Not found page.
+    500_html_txt:
+      description: Server error page.
+    ai_usage_txt_txt:
+      description: Statement of AI usage and policy for the site.
+    app_enhance_js_txt:
+      description: Progressive enhancement layer. Non-essential interactions, gracefully optional.
+    app_js_txt:
+      description: Authored runtime script. Navigation, language switch, citation drawer wiring.
+    assertion_txt_txt:
+      description: Authorship assertion. Declaration of authorship and integrity intent.
+    attestations_json_txt:
+      description: Public attestations. Verifiable claims about the site.
+    changelog_txt_txt:
+      description: Edition change log. Notable revisions to the public site.
+    cite_js_txt:
+      description: Cite-and-verify drawer. Surfaces canonical URL, page fingerprint and signature.
+    copy_js_txt:
+      description: Shared copy-to-clipboard behaviour, driven by data-copy attributes.
+    edition_js_txt:
+      description: |-
+        Footer edition-age localisation. Reads body[data-edition] and rewrites [data-edition-age]
+        in the document language.
+    fonts_js_txt:
+      description: Post-paint full-font upgrade. Swaps the subset fonts for the full set.
+    fonts_full_css_txt:
+      description: Webfont declarations. Subsets, formats and fallbacks.
+    htaccess_txt:
+      description: Apache configuration. Public-safety scanned before mirroring.
+    humans_txt_txt:
+      description: Credits and notes for the people behind the site.
+    i18n_core_js_txt:
+      description: Editorial translation source. All five languages in one authored JSON.
+    i18n_de_js_txt:
+      description: German translations.
+    i18n_es_js_txt:
+      description: Spanish translations.
+    i18n_it_js_txt:
+      description: Italian translations. Deployed compact bytes.
+    index_html_txt:
+      description: Home page. The editorial entry point.
+    integrity_index_html_txt:
+      description: Integrity overview. The signed manifest, key and release authority.
+    integrity_releases_2026_05_09_index_html_txt:
+      description: Frozen page record for the 2026-05-09 edition.
+    integrity_releases_archive_css_txt:
+      description: Stylesheet used inside frozen release archives. Held alongside its release records.
+    integrity_releases_index_html_txt:
+      description: Release index. The list of signed editions.
+    llms_txt_txt:
+      description: Machine-readable guidance for language models and AI systems.
+    maintenance_html_txt:
+      description: Maintenance notice. Used during planned downtime.
+    manifest_webmanifest_txt:
+      description: Web app manifest. Installable surface metadata.
+    overlay_js_txt:
+      description: Shared overlay lifecycle — focus trap, scroll lock, the cite and project modals.
+    pgp_txt_txt:
+      description: PGP statement. The signing key fingerprint and its use.
+    print_css_txt:
+      description: Print stylesheet. Layout rules for paper output.
+    privacy_index_html_txt:
+      description: Privacy statement. What is collected, retained and shared.
+    readme_txt:
+      description: Orientation note for the source tree. Same text shipped at the root of every release archive.
+    reveal_js_txt:
+      description: Scroll-reveal — fades sections in as they enter the viewport.
+    robots_txt_txt:
+      description: Crawler access policy and public indexing intent.
+    security_acknowledgments_index_html_txt:
+      description: Acknowledgments for public security disclosures.
+    security_index_html_txt:
+      description: Security posture. Architecture, headers and disclosure path.
+    site_metadata_json_txt:
+      description: Site-level metadata. Edition, build, asset version.
+    sitemap_xml_sha256_txt:
+      description: Source mirror of the SHA-256 checksum for sitemap.xml.
+    sitemap_xml_txt:
+      description: Public sitemap. URL inventory for crawlers.
+    source_manifest_json_txt:
+      description: Manifest of the /source/ tree itself. Every mirrored file with its hash.
+    statement_txt_txt:
+      description: Editorial statement. The site's authoring principles.
+    styles_css_txt:
+      description: Authored stylesheet. Mirrored from source, not the minified deployed bytes.
+    sw_cache_manifest_json_txt:
+      description: Service worker cache manifest. Files pinned for offline use.
+    sw_js_txt:
+      description: Service worker. Offline cache for the public site.
+    sw_register_js_txt:
+      description: Service-worker registration and the tp-app Trusted Types policy.
+    sw_reset_index_html_txt:
+      description: Service worker reset. Clears the offline cache.
+    theme_js_txt:
+      description: Theme toggle and the html.js / html.enhanced enhancement flags.
+    verify_index_html_txt:
+      description: Verification interface. Page-level fingerprint checks.
+    verify_modal_js_txt:
+      description: Verify action menu. Five-row overlay handing off to source, citation, integrity, verify and print.
+    verify_verify_js_txt:
+      description: Verification logic. Renders a page record from the verification map.
+    well_known_attribution_txt_txt:
+      description: Author attribution. Names the responsible party for the public site.
+    well_known_build_json_txt:
+      description: Build record. Reproducibility data for the current edition.
+    well_known_person_json_txt:
+      description: |-
+        Machine-readable identity in JSON-LD. The reference used by discovery, federation and
+        verification.
+      role: Canonical identity record
+    well_known_pgp_key_asc_txt:
+      description: ASCII-armoured public signing key. The publisher's signing identity.
+    well_known_publication_json_txt:
+      description: Publication record. Describes the site as a self-managed editorial work.
+    well_known_security_txt_txt:
+      description: Coordinated disclosure policy. Standard /.well-known/security.txt contact and scope.
+      role: Public trust surface
+    well_known_webfinger_txt:
+      description: WebFinger discovery surface. Resolves identity across federated protocols.
+      role: Identity discovery
+source_reader:
+  title: Source reader
+  loading: Loading source…
+  nojs_html: 'JavaScript is required to render the source reader. The raw source mirror is available at <a href="/source/">Source</a>.'
+  action:
+    canonical: Canonical
+    verify: Verify
+    plain_text: Raw
+    copy_code: Copy code
+    wrap_lines: Wrap lines
+    unwrap_lines: Unwrap lines
+    back_to_top: Top
+    copied: Copied
+    view_source: Source
+    view_annotated: Annotated
+    view_rendered_page: View rendered page
+    reading_mode: Reading mode
+    top: Top
+    copy: Copy
+    copy_link: Copy link
+    clear: Clear
+    count_line_one: 1 line
+    count_lines_many: '{n} lines'
+    line_selected: Line {n} selected
+    range_selected: Lines {start} to {end} selected
+    selection_cleared: Selection cleared
+    lines_copied: '{n} lines copied'
+    link_copied: Link copied
+    copy_failed: Copy unavailable
+    link_copied_normalised: Link copied — normalised to lines {start} to {end}
+  meta:
+    validated: Verified
+    part_of: 'Related systems:'
+    document_map: Document map
+    end_of_source: End of source mirror
+    intent: |-
+      This reader presents public source mirrors with structural annotations and signed
+      publication references.
+  integrity:
+    canonical: Canonical file
+    edition: Edition
+    sha256: SHA-256
+    signed_release: Signed release
+  map_label:
+    head: Head
+    identity: Identity
+    discovery: Discovery
+    social_preview: Social preview
+    assets: Assets
+    structured_data: Structured data
+    header: Header
+    main: Main
+    footer: Footer
+    tokens: Tokens
+    fonts: Fonts
+    base: Base
+    layout: Layout
+    components: Components
+    responsive: Responsive
+    print: Print
+    state: State
+    i18n: i18n
+    events: Events
+    modals: Modals
+    copy: Copy
+    verification: Verification
+    init: Init
+    policy: Policy
+    records: Records
+  mode:
+    label: Reading mode
+    source: Source
+    annotated: Annotated
+    raw: Raw
+  end:
+    title: End of source mirror
+    edition: Edition
+    sha256: SHA-256
+    signed_release: Signed release
+  kind:
+    html: HyperText Markup Language
+    css: Cascading Style Sheets
+    js: JavaScript
+    json: JavaScript Object Notation
+    xml: Extensible Markup Language
+    text: Plain text
+    apache: Apache configuration
+    sig: Detached PGP signature
+    asc: ASCII-armoured PGP key
+  gloss:
+    foundations: character encoding, viewport, colour scheme.
+    head: document head — metadata, no rendered content.
+    identity: authorship, application name, attribution links.
+    document: page title, description, canonical url.
+    discovery: indexing and referrer policy.
+    social: open graph and twitter card metadata.
+    assets: stylesheets, scripts, icons, manifest.
+    icons: platform icons and home-screen artwork.
+    structured: json-ld schema, machine-readable identity.
+    header: site header — wordmark and primary nav.
+    footer: colophon, language switch, footer actions.
+    script: site application logic.
+    tokens: design tokens — colours, typography, spacing.
+    fonts: font face declarations and font assets.
+    base: reset and base element typography.
+    layout: page-level layout grammar.
+    components: reusable component styles.
+    responsive: viewport-aware overrides.
+    print: print stylesheet rules.
+    state: application state and runtime variables.
+    i18n: translation lookup and language switching.
+    events: event listeners and interaction wiring.
+    modals: overlay surfaces, dialogs, focus traps.
+    copy: clipboard interactions.
+    verification: signed-manifest and cryptographic references.
+    records: editorial record entries.
+    init: boot sequence — runs once on load.
+    policy: declared site policies.

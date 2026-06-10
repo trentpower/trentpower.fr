@@ -1,0 +1,8 @@
+# Stylelint runs lint-only (no --fix) on the AUTHORED CSS sources only:
+#   tools/styles.src.css, tools/print.src.css, tools/fonts-full.src.css
+# The generated public/*.css is minified + signed; the @layer architecture is
+# enforced separately by tools/validate_css_architecture.py.
+public/**
+node_modules/**
+_archives/**
+**/source/**

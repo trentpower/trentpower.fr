@@ -1,0 +1,437 @@
+name: Deploy to Gandi SFTP + smoke test
+
+# Triggers automatically on every push to main.
+# Can also be triggered manually with the DEPLOY confirmation.
+#
+# Required repo secrets (values are configured in repo settings, never here):
+#   SFTP_HOST         the SFTP endpoint hostname
+#   SFTP_USERNAME     the SFTP user
+#   SFTP_PASSWORD     the SFTP password
+#   SFTP_REMOTE_PATH  the web-root path on the host
+#
+# Optional but recommended secret:
+#   SFTP_KNOWN_HOSTS  the host's known_hosts line(s), e.g. the output of
+#                     `ssh-keyscan -H <SFTP_HOST>` (verify the fingerprint
+#                     out-of-band against Gandi before trusting it).
+#
+# Host-key pinning is CONDITIONAL and safe to merge before the secret exists:
+#   - SFTP_KNOWN_HOSTS set   -> StrictHostKeyChecking=yes + UserKnownHostsFile
+#                               (a wrong/changed host key fails the deploy closed).
+#   - SFTP_KNOWN_HOSTS unset -> falls back to StrictHostKeyChecking=no with a
+#                               loud CI warning, so deploys never break just
+#                               because the secret has not been added yet.
+# See docs/BUILD-AND-DEPLOYMENT.md for how to obtain, set and rotate it.
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type DEPLOY to confirm'
+        required: true
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: ${{ github.event_name == 'push' || github.event.inputs.confirm == 'DEPLOY' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Install lftp + gpg + python + Pillow
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp gnupg python3 python3-pil python3-pip
+          # the content_schemas blocking gate needs jsonschema>=4.18 (the
+          # `referencing` split); ubuntu's apt python3-jsonschema is older, so
+          # install via pip. --break-system-packages is required on the
+          # externally-managed runner python. pymupdf (fitz) backs the
+          # `documentation` blocking gate (README.pdf layout + claim audit).
+          python3 -m pip install --break-system-packages --quiet "jsonschema>=4.18" pymupdf
+
+      - name: Verify integrity.json signature against committed PGP key (isolated keyring)
+        run: |
+          set -eu
+          # seed a throwaway keyring with ONLY the published key, never the
+          # runner's ambient gpg keyring. persist GNUPGHOME via $GITHUB_ENV so
+          # the post-deploy smoke test re-verifies the live signature in the
+          # same isolated keyring. mirrors tools/quality/inline_checks.py:check_gpg.
+          GNUPGHOME="$(mktemp -d)"
+          chmod 700 "$GNUPGHOME"
+          export GNUPGHOME
+          echo "GNUPGHOME=$GNUPGHOME" >> "$GITHUB_ENV"
+          gpg --batch --quiet --import public/.well-known/pgp-key.asc
+          gpg --batch --verify public/integrity.json.sig public/integrity.json
+
+      - name: Restore licensed font binaries (verified against signed manifest)
+        # the klim fonts are deliberately untracked (licence prohibits
+        # redistribution; see metadata/repo-exclusions.json). a fresh
+        # checkout fetches them from the live host and verifies every byte
+        # against the SRI digest in the signed integrity.json — fail-closed.
+        run: python3 tools/build/fetch_licensed_fonts.py
+
+      - name: Read-only release sanity check
+        run: python3 tools/verify/validate_release.py
+
+      - name: SFTP mirror public/ to Gandi
+        env:
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USER: ${{ secrets.SFTP_USERNAME }}
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+          SFTP_REMOTE_DIR: ${{ secrets.SFTP_REMOTE_PATH }}
+          SFTP_KNOWN_HOSTS: ${{ secrets.SFTP_KNOWN_HOSTS }}
+        run: |
+          set -eu
+          # host-key pinning (conditional). when SFTP_KNOWN_HOSTS is set we
+          # pin the host key and refuse to connect on mismatch; otherwise we
+          # fall back to the prior behaviour with a loud warning so a missing
+          # secret never breaks the deploy. see docs/BUILD-AND-DEPLOYMENT.md.
+          SSH_BASE="-a -x -o PubkeyAuthentication=no -o PreferredAuthentications=password"
+          if [ -n "${SFTP_KNOWN_HOSTS:-}" ]; then
+            mkdir -p ~/.ssh
+            chmod 700 ~/.ssh
+            printf '%s\n' "$SFTP_KNOWN_HOSTS" > ~/.ssh/known_hosts
+            chmod 600 ~/.ssh/known_hosts
+            SSH_OPTS="$SSH_BASE -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$HOME/.ssh/known_hosts"
+            echo "host-key pinning: ENABLED (StrictHostKeyChecking=yes)"
+          else
+            SSH_OPTS="$SSH_BASE -o StrictHostKeyChecking=no"
+            echo "::warning::SFTP_KNOWN_HOSTS not set — host key NOT pinned (StrictHostKeyChecking=no). Add the secret to enable pinning; see docs/BUILD-AND-DEPLOYMENT.md."
+          fi
+          # two-pass mirror to avoid the html ↔ assets deploy race.
+          # pass 1 uploads everything EXCEPT *.html — so every js/css
+          # referenced by a versioned ?v= url is fully in place
+          # before the html that names it is visible.
+          # pass 2 uploads only *.html.
+          # without this split, gandi's edge cache can lock in stale
+          # bytes under a brand-new ?v= url during the race window
+          # and serve them with `cache-control: immutable` forever
+          # (see sri-mismatch class of bug).
+          lftp -u "$SFTP_USER","$SFTP_PASSWORD" "sftp://$SFTP_HOST" <<EOF
+          set sftp:auto-confirm yes
+          set sftp:connect-program "ssh $SSH_OPTS"
+          set net:max-retries 3
+          set net:reconnect-interval-base 4
+          cd "$SFTP_REMOTE_DIR"
+          lcd public
+          # pass 1 — assets (everything except *.html)
+          mirror -R --verbose=1 --parallel=4 --no-perms \
+            --exclude-glob '.git*' \
+            --exclude-glob '__pycache__/' \
+            --exclude-glob '*.py' \
+            --exclude-glob '*.pyc' \
+            --exclude-glob '*.template.js' \
+            --exclude-glob 'scripts/' \
+            --exclude-glob 'docs/' \
+            --exclude-glob 'private/' \
+            --exclude-glob 'ZIP/' \
+            --exclude-glob 'htdocs/' \
+            --exclude-glob '_audit*' \
+            --exclude-glob '_rollback*' \
+            --exclude-glob '_archives*' \
+            --exclude-glob '_licences*' \
+            --exclude-glob 'identity_canonical.json' \
+            --exclude '^README\.txt$' \
+            --exclude-glob '*.md' \
+            --exclude-glob 'Klim*' \
+            --exclude-glob '.user.ini' \
+            --exclude-glob '.DS_Store' \
+            --exclude-glob '*.bak' \
+            --exclude-glob '*.old' \
+            --exclude-glob '*.orig' \
+            --exclude-glob '*.html' \
+            . .
+          # pass 2 — every remaining file (in practice, only *.html).
+          # mirror compares against the destination and skips files
+          # that are byte-identical, so pass 2 only re-uploads what
+          # pass 1 deliberately skipped. by now every ?v= url those
+          # html files reference already exists on origin, so the
+          # first cdn request can't lock in stale bytes.
+          mirror -R --verbose=1 --parallel=4 --no-perms \
+            --exclude-glob '.git*' \
+            --exclude-glob '__pycache__/' \
+            --exclude-glob '*.py' \
+            --exclude-glob '*.pyc' \
+            --exclude-glob '*.template.js' \
+            --exclude-glob 'scripts/' \
+            --exclude-glob 'docs/' \
+            --exclude-glob 'private/' \
+            --exclude-glob 'ZIP/' \
+            --exclude-glob 'htdocs/' \
+            --exclude-glob '_audit*' \
+            --exclude-glob '_rollback*' \
+            --exclude-glob '_archives*' \
+            --exclude-glob '_licences*' \
+            --exclude-glob 'identity_canonical.json' \
+            --exclude '^README\.txt$' \
+            --exclude-glob '*.md' \
+            --exclude-glob 'Klim*' \
+            --exclude-glob '.user.ini' \
+            --exclude-glob '.DS_Store' \
+            --exclude-glob '*.bak' \
+            --exclude-glob '*.old' \
+            --exclude-glob '*.orig' \
+            . .
+          bye
+          EOF
+
+      - name: Post-deploy smoke test
+        run: |
+          set -eu
+          # let gandi's http layer settle after the parallel sftp mirror
+          # so the first integrity.json + .sig fetch sees a consistent pair.
+          sleep 15
+          fail=0
+
+          ok_routes=(
+            /
+            /en-au/
+            /fr/
+            /en-au/privacy/
+            /fr/confidentialite/
+            /en-au/security/
+            /fr/securite/
+            /en-au/integrity/
+            /fr/integrite/
+            /en-au/verify/
+            /fr/verifier/
+            /source/
+            /documentation/
+            /documentation/README.pdf
+            /documentation/README.txt
+            /integrity.json
+            /integrity.json.sig
+            /.well-known/security.txt
+            /.well-known/pgp-key.asc
+            /sitemap.xml
+            /sitemap.xml.sha256
+            /robots.txt
+            /humans.txt
+            /llms.txt
+            /changelog.txt
+          )
+          # legacy URLs that must 301 to their /en-au/ edition:
+          #   /en/...   — the pre-rename English tree
+          #   /privacy/ etc. — pre-cut-over single-tree URLs
+          redirect_routes="/en/=/en-au/ /en/privacy/=/en-au/privacy/ /en/security/=/en-au/security/ /en/integrity/=/en-au/integrity/ /en/verify/=/en-au/verify/ /privacy/=/en-au/privacy/ /security/=/en-au/security/ /integrity/=/en-au/integrity/ /verify/=/en-au/verify/"
+          forbidden_routes=(
+            /.user.ini
+            /tools/
+            /templates/
+            /private/
+            /cite.css
+            /documentation/README.md
+          )
+
+          for path in "${ok_routes[@]}"; do
+            code=$(curl -sk -o /dev/null -w "%{http_code}" "https://trentpower.fr$path")
+            if [ "$code" = "200" ]; then
+              printf "  %s  %s\n" "$code" "$path"
+            else
+              printf "  %s  %s  ← EXPECTED 200\n" "$code" "$path"
+              fail=1
+            fi
+          done
+
+          for path in "${forbidden_routes[@]}"; do
+            code=$(curl -sk -o /dev/null -w "%{http_code}" "https://trentpower.fr$path")
+            if [ "$code" = "403" ] || [ "$code" = "404" ]; then
+              printf "  %s  %s\n" "$code" "$path"
+            else
+              printf "  %s  %s  ← EXPECTED 403/404\n" "$code" "$path"
+              fail=1
+            fi
+          done
+
+          # header-level assertions: confirm the cache + CSP + worker
+          # contract the .htaccess defines is what gandi actually serves.
+          # local validators prove what we wrote; only a live fetch
+          # proves what the edge returns.
+          # awk strips the trailing CR itself and reads the whole
+          # response (no early exit) so curl never writes into a closed
+          # pipe — avoids spurious "broken pipe" noise on the runner.
+          get_header() {
+            curl -ski "https://trentpower.fr$2" \
+              | awk -v hdr="$1" '
+                  BEGIN{IGNORECASE=1}
+                  { sub(/\r$/,"") }
+                  tolower($1)==tolower(hdr ":"){ v=$0; sub(/^[^:]+: /,"",v) }
+                  END{ if (v!="") print v }'
+          }
+
+          # legacy single-tree URLs: 301 to their /en/ edition.
+          for pair in $redirect_routes; do
+            old="${pair%%=*}"; want="${pair##*=}"
+            code=$(curl -sk -o /dev/null -w "%{http_code}" "https://trentpower.fr$old")
+            loc=$(get_header location "$old")
+            ok=0
+            case "$loc" in *"$want"*) [ "$code" = "301" ] && ok=1 ;; esac
+            if [ "$ok" = 1 ]; then
+              printf "  301  %s → %s\n" "$old" "$loc"
+            else
+              printf "  %s  %s  ← EXPECTED 301 → %s (loc '%s')\n" "$code" "$old" "$want" "$loc"
+              fail=1
+            fi
+          done
+
+          # source-view CSP carries two independent markers: the source-
+          # reader inline hash (in script-src) and tp-source-view (in
+          # trusted-types). they appear in that order in the header, so
+          # check each separately rather than relying on a glob order.
+          csp_sv=$(get_header content-security-policy /source/view/)
+          sv_tt=0; sv_hash=0
+          case "$csp_sv" in *tp-source-view*) sv_tt=1 ;; esac
+          case "$csp_sv" in *ong18574DRSzuyO*) sv_hash=1 ;; esac
+          if [ "$sv_tt" = 1 ] && [ "$sv_hash" = 1 ]; then
+            echo "  OK    /source/view/ CSP is source-view variant"
+          else
+            echo "  FAIL  /source/view/ CSP missing source-view variant (tt=$sv_tt hash=$sv_hash)"
+            fail=1
+          fi
+
+          # the bilingual reader pages need the source-view CSP too —
+          # the source reader registers the tp-source-view policy.
+          csp_fr_sv=$(get_header content-security-policy /fr/source/voir/)
+          case "$csp_fr_sv" in
+            *tp-source-view*) echo "  OK    /fr/source/voir/ CSP is source-view variant" ;;
+            *) echo "  FAIL  /fr/source/voir/ CSP missing tp-source-view"; fail=1 ;;
+          esac
+
+          csp_root=$(get_header content-security-policy /)
+          case "$csp_root" in
+            *tp-source-view*) echo "  FAIL  / leaked source-view CSP"; fail=1 ;;
+            *tp-app*)         echo "  OK    / carries global CSP" ;;
+            *)                echo "  FAIL  / has no recognisable CSP"; fail=1 ;;
+          esac
+
+          swa=$(get_header service-worker-allowed /sw.js)
+          if [ "$swa" = "/" ]; then
+            echo "  OK    /sw.js Service-Worker-Allowed: /"
+          else
+            echo "  FAIL  /sw.js Service-Worker-Allowed='$swa' (expected '/')"
+            fail=1
+          fi
+
+          ct=$(get_header content-type /sw.js)
+          case "$ct" in
+            application/javascript*) echo "  OK    /sw.js Content-Type js" ;;
+            *) echo "  FAIL  /sw.js Content-Type='$ct'"; fail=1 ;;
+          esac
+
+          cc_html=$(get_header cache-control /)
+          case "$cc_html" in
+            *no-store*) echo "  OK    / Cache-Control no-store" ;;
+            *) echo "  FAIL  / Cache-Control='$cc_html' (expected no-store)"; fail=1 ;;
+          esac
+
+          av=$(curl -sk https://trentpower.fr/site-metadata.json | jq -r .asset_version 2>/dev/null \
+               || curl -sk https://trentpower.fr/site-metadata.json \
+                  | grep -oE '"asset_version"[[:space:]]*:[[:space:]]*"[^"]+"' \
+                  | head -1 | cut -d'"' -f4)
+          if [ -n "$av" ]; then
+            # Clean filename + ?v= query — the post-asset-versioning-
+            # refactor shape. The dated /fonts-full.<v>.css URL no
+            # longer exists on disk (caught by the .htaccess legacy
+            # 301 → /fonts-full.css), so we check the clean+query form.
+            cc_ver=$(get_header cache-control "/fonts-full.css?v=${av}")
+            case "$cc_ver" in
+              *immutable*) echo "  OK    /fonts-full.css?v=${av} Cache-Control includes immutable" ;;
+              *) echo "  FAIL  /fonts-full.css?v=${av} Cache-Control='$cc_ver'"; fail=1 ;;
+            esac
+            # Also sanity-check the styles.css versioned URL — same
+            # contract, catches regressions in either bundle.
+            cc_styles=$(get_header cache-control "/styles.css?v=${av}")
+            case "$cc_styles" in
+              *immutable*) echo "  OK    /styles.css?v=${av} Cache-Control includes immutable" ;;
+              *) echo "  FAIL  /styles.css?v=${av} Cache-Control='$cc_styles'"; fail=1 ;;
+            esac
+          else
+            echo "  FAIL  could not discover asset_version from live site-metadata.json"
+            fail=1
+          fi
+
+          hsts=$(get_header strict-transport-security /)
+          case "$hsts" in
+            *max-age=*) echo "  OK    HSTS present" ;;
+            *) echo "  FAIL  HSTS missing (got '$hsts')"; fail=1 ;;
+          esac
+
+          # integrity.json + integrity.json.sig are uploaded by lftp in
+          # parallel; gandi's http layer can briefly serve one of the two
+          # mid-update, producing a transient bad-signature read. retry
+          # the verify a few times with cache-busted urls before failing.
+          integrity_ok=0
+          for attempt in 1 2 3 4 5; do
+            cb="$(date +%s%N)"
+            curl -sk -H 'Cache-Control: no-cache' -H 'Pragma: no-cache' \
+              -o /tmp/live-integrity.json \
+              "https://trentpower.fr/integrity.json?cb=$cb"
+            curl -sk -H 'Cache-Control: no-cache' -H 'Pragma: no-cache' \
+              -o /tmp/live-integrity.json.sig \
+              "https://trentpower.fr/integrity.json.sig?cb=$cb"
+            if gpg --verify /tmp/live-integrity.json.sig /tmp/live-integrity.json 2>/tmp/gpg.err; then
+              echo "  OK    live integrity.json signature reverifies (attempt $attempt)"
+              integrity_ok=1
+              break
+            fi
+            echo "  attempt $attempt: live integrity.json signature did not verify, retrying in 10s"
+            sleep 10
+          done
+          if [ "$integrity_ok" -ne 1 ]; then
+            echo "  FAIL  live integrity.json signature does not verify after 5 attempts"
+            cat /tmp/gpg.err || true
+            fail=1
+          fi
+
+          [ "$fail" -eq 0 ] || { echo "smoke test failed"; exit 1; }
+          echo "OK: deploy + smoke test green"
+
+  lint:
+    # advisory quality / editorial lint — surfaced in the run summary,
+    # never blocks deploy (separate job; deploy has no `needs:` on it).
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - name: Install python + Pillow
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pil
+      - name: Advisory quality lint (non-blocking)
+        run: python3 tools/quality/lint.py --format markdown >> "$GITHUB_STEP_SUMMARY" || true
+
+  source-quality:
+    # advisory source format + correctness lint (ruff/shellcheck/shfmt/eslint/
+    # stylelint/prettier). non-blocking: no `needs:` on deploy, and quality.sh
+    # runs in QUALITY_ENFORCE=0 mode (exits 0 even on findings). flip to
+    # QUALITY_ENFORCE=1 here once the source is clean (see docs/GATES-CHECKS-AND-QUALITY.md).
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - name: Install native tools (ruff, shellcheck, shfmt)
+        run: |
+          set -eu
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+          curl -LsSf https://astral.sh/ruff/install.sh | sh
+          curl -fsSL -o "$HOME/.local/bin/shfmt" \
+            https://github.com/mvdan/sh/releases/download/v3.10.0/shfmt_v3.10.0_linux_amd64
+          chmod +x "$HOME/.local/bin/shfmt"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Install Node dev tools
+        run: npm ci
+      - name: Source quality (advisory)
+        env:
+          QUALITY_ENFORCE: '0'
+        run: bash tools/quality/quality.sh --check
