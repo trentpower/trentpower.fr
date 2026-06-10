@@ -1,4 +1,4 @@
 # Local tooling dependencies for tools/ scripts run under system python3.
 # rich powers the terminal build cockpit (tools/build_ui.py). Already present
 # on the Pi; pinned loosely for portability.
-rich>=13
+rich>=15.0.0
