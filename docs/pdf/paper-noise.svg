@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="260">
+  <title>paper noise</title>
+  <desc>fractal-noise tile used as a 4.5% alpha tooth texture under the editorial cream background. decorative; conveys no information beyond visual surface character.</desc>
+  <filter id="n">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="3" stitchTiles="stitch"></feTurbulence>
+    <feColorMatrix values="0 0 0 0 0.13  0 0 0 0 0.12  0 0 0 0 0.11  0 0 0 0.045 0"></feColorMatrix>
+  </filter>
+  <rect width="100%" height="100%" filter="url(#n)"></rect>
+</svg>

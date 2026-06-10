@@ -1,0 +1,188 @@
+meta:
+  verify:
+    title: Verify this page · Trent Power
+    description: A public page record showing the canonical URL, source mirror, page fingerprint and signed release archive
+  verify_locally:
+    title: Verify locally · Trent Power
+    description: 'Detached verification notes: signed manifest check from a temporary keyring'
+verify:
+  kicker: Verify
+  page_kicker: Verify page
+  title: Verify this page
+  lede: A public route for checking source, hash, signature and canonical identity.
+  noscript_fallback: JavaScript is required to select and display a page record here. Source mirrors, the signed manifest and release archives remain available through <a href="/source/">Source</a> and <a href="/integrity/">Integrity</a>.
+  meta: Edition 2026-05-17 · trentpower.fr/verify/
+  doc_title: Trent Power - Verification Sheet
+  action:
+    copy_canonical: Copy URL
+    copy_hash: Copy hash
+    copy_command: Copy verification command
+    open_source: Open source mirror
+    open_manifest: Open manifest entry
+    open_signature: Open signature
+    open_key: Open public key
+    copied: Copied
+    copy_manifest_command: Copy manifest command
+    copy_source_command: Copy source command
+    copy_fingerprint: Copy fingerprint
+    view_source_mirror: View source mirror
+    view_source_code: View source code
+    open_source_mirror: Open mirror
+  command:
+    manifest_title: Verify the signed manifest
+    source_title: Verify the source mirror
+    note: |-
+      The signed manifest verifies the published file set. The second command hashes the
+      source mirror so it can be compared against the expected SHA-256 above.
+  unknown:
+    title: Route not in the verification map
+    body: |-
+      This route is not in the public verification map. You can still inspect the public
+      manifest, source view and signed releases.
+    action:
+      source: Source
+      manifest: Integrity manifest
+      releases: Release archive
+  status:
+    found: Found in signed manifest
+    missing: Not found in current public manifest
+  title_default: <span class="hero-line">Check this page</span><span class="hero-line">against source,</span><span class="hero-line">fingerprint</span><span class="hero-line">and signature</span>
+  title_prefix: Verify
+  lede_v2: |-
+    This publication record shows where this page is published, its source,
+    fingerprint and signed release.
+  framing: |-
+    Every page on this site is signed, sourced, and archived. This is the
+    record for the page you came from — it confirms this one page, while
+    Integrity holds the live signing authority and Releases keeps the
+    edition history.
+  local:
+    heading: Verify locally
+    manifest_label: Verify the signed manifest
+    manifest_desc: Checks that /integrity.json was signed by the published public key.
+    mirror_label: Verify this page mirror
+    mirror_desc: Calculates the source mirror fingerprint so it can be compared with the expected value above.
+    intro: "Run two local checks: verify the signed manifest, then compare this page's source mirror against the expected fingerprint."
+    subheading_manifest: Verify signed manifest
+    subheading_mirror: Verify source mirror
+    closing: |-
+      The signed manifest verifies the published file set. The source command hashes this
+      page's mirror so it can be compared against the fingerprint above.
+  thispage:
+    heading: This page
+    row:
+      title: Page title
+      canonical: Canonical URL
+      route: Route
+      source: Source mirror
+      file_type: File type
+      file_size: File size
+      manifest_status: Manifest status
+      validated: Last verified
+      sha256: Page fingerprint
+      release: Release archive
+      file: File
+      citation: Citation
+      route_prefix: Route
+    status:
+      found_manifest: Found in signed manifest
+      source_available: Source available
+      release_archived: Release archived
+      short:
+        signed: Signed
+        source: Mirrored
+        archived: Archive
+    kicker: Page record
+    group:
+      citation: Citation
+      location: Canonical location
+      evidence: Source mirror
+      fingerprint: Page fingerprint
+      archive: Release archive
+    history:
+      heading: This page appears in
+      first_archived_prefix: First archived
+      current_in_prefix: Current in
+      current_label: current
+      edition_prefix: Edition
+      view_release: View release
+      status:
+        first: First archived in this edition
+        unchanged: Unchanged since previous edition
+        changed: Changed since previous edition
+    validated_prefix: Verified
+  selected:
+    manifest: Integrity manifest
+    signature: '{{ shared.verification.signature }}'
+    public_key: Public key
+  general:
+    source: Source viewer
+    releases: Release archive
+  chooser:
+    heading: Related records
+    label:
+      home: Homepage
+      privacy: Privacy
+      security: Security
+      integrity: Integrity
+      verify: Verify
+      source: Source
+      releases: Releases
+slip:
+  stamp_legend_top: 'T.POWER PUBLICATION'
+  stamp_legend_bot: 'SIGNED · ARCHIVED'
+  stamp_mark: 'VERIFIED'
+verify_intro:
+  panel_label: Current edition
+  edition: Edition
+  signing_key: Signing key
+  manifest: Signed manifest
+  signature: '{{ shared.verification.signature }}'
+  public_key: Public key
+  archive: Edition archive
+verify_locally:
+  page_kicker: Verify Locally
+  page_title: <span class="hero-line">Get to</span><span class="hero-line">the terminal!</span>
+  body_intro: |-
+    Detached verification notes for the signed integrity manifest. Run the check in a
+    temporary keyring so the public signing key does not enter your default keychain.
+  body_close: |-
+    The command imports the public key into a throw-away keyring, verifies the signed
+    manifest, and removes the working files. No state is retained on the machine
+    afterwards.
+  print:
+    kicker: Integrity verification
+    title: Verify locally
+    lede: Detached verification notes for independently checking the signed integrity manifest using the published public key.
+    meta: Edition 2026-05-17 · trentpower.fr/integrity/verify-locally/
+    doc_title: Trent Power - Verify Locally
+    card:
+      '01':
+        label: 01 Temporary keyring
+        title: Temporary keyring
+        body: Use a temp GNUPGHOME so the import does not touch your main keyring.
+      '02':
+        label: 02 Import public key
+        title: Import public key
+        body: curl /.well-known/pgp-key.asc · gpg --import pgp-key.asc.
+      '03':
+        label: 03 Verify signature
+        title: Verify signature
+        body: gpg --verify integrity.json.sig integrity.json - expect Good signature.
+      '04':
+        label: 04 Check manifest
+        title: Check manifest
+        body: /integrity.json lists every public file with its SHA-256.
+      '05':
+        label: 05 Compare checksums
+        title: Compare checksums
+        body: Re-hash any file and compare against the manifest entry.
+      '06':
+        label: 06 Reproducibility notes
+        title: Reproducibility notes
+        body: Each signed edition is frozen in /integrity/releases/. No mutable assets.
+    footer:
+      proof: '{{ shared.site.proof_line }}'
+      edition: Edition 2026-05-17 · trentpower.fr/integrity/verify-locally/
+    qr:
+      label: trentpower.fr/integrity/verify-locally/

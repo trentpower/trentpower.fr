@@ -1,0 +1,40 @@
+# Prettier formats ONLY hand-authored YAML / JSON / Markdown.
+# Everything generated, signed, mirrored or archived is off-limits — its bytes
+# are owned by the Python build pipeline and (for public/) hashed in integrity.json.
+
+# generated + signed deploy tree (never reformat)
+public/
+
+# generated metadata / integrity / trust artefacts
+**/integrity*.json
+**/file-metadata.json
+**/site-metadata.json
+**/attestations.json
+**/release.json
+**/sw-cache-manifest.json
+metadata/
+
+# signatures, keys, binaries
+**/*.sig
+**/*.asc
+**/*.min.*
+**/*.ico
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.woff
+**/*.woff2
+
+# frozen archives + source mirrors + editorial exports
+**/integrity/releases/**
+**/source/**
+**/editorial/**
+_archives/
+_licences/
+reports/
+
+# css is linted by stylelint, not formatted by prettier
+tools/*.src.css
+
+# vendored / not ours
+node_modules/

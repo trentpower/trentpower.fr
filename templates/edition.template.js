@@ -1,0 +1,347 @@
+/*
+  trentpower.fr
+  publication metadata · edition-age localisation
+
+  Role:
+  reads the publication date from <body data-edition="YYYY-MM-DD"> and
+  rewrites every element carrying [data-edition-age] with a relative-age
+  string in the document language. the footer's "Published today" line
+  reads as that on the day of publication; on later visits it reads
+  "Published 3 days ago", "1 week ago", "2 months ago" — quiet, archival,
+  never a live verification claim.
+
+  Source:
+  edited here as edition.template.js; compiled to /js/edition.js by
+  generate_site.py (minified, no edition substitution — the script
+  resolves the edition at runtime from the body attribute, so the same
+  bytes work for every page on every build).
+
+  Constraints:
+  - no fetch; csp connect-src 'none' is preserved
+  - no inline event handlers; csp script-src 'self' holds
+  - no telemetry, cookies, third-party scripts
+  - enhancement only: the html renders the literal "Published today"
+    (or "Publiée aujourd'hui") as a static label, so the page means the
+    same with this script absent. later relative ages are an
+    enhancement, not a content guarantee.
+  - local date parsing (new Date(y, m-1, d)) not UTC, because an edition
+    date is a publication day, not an instant.
+  - Math.floor for weeks/months/years so the site does not claim
+    "1 month ago" after half a month.
+*/
+
+(function () {
+  'use strict';
+
+  var AGE_COPY = {
+    en: {
+      today:     'Published today',
+      yesterday: 'Published yesterday',
+      days:   function (n) { return 'Published ' + n + ' days ago'; },
+      weeks:  function (n) { return 'Published ' + n + ' week'  + (n === 1 ? '' : 's') + ' ago'; },
+      months: function (n) { return 'Published ' + n + ' month' + (n === 1 ? '' : 's') + ' ago'; },
+      years:  function (n) { return 'Published ' + n + ' year'  + (n === 1 ? '' : 's') + ' ago'; }
+    },
+    fr: {
+      today:     'Publiée aujourd’hui',
+      yesterday: 'Publiée hier',
+      days:   function (n) { return 'Publiée il y a ' + n + ' jours'; },
+      weeks:  function (n) { return 'Publiée il y a ' + n + ' semaine' + (n === 1 ? '' : 's'); },
+      months: function (n) { return 'Publiée il y a ' + n + ' mois'; },
+      years:  function (n) { return 'Publiée il y a ' + n + (n === 1 ? ' an' : ' ans'); }
+    }
+  };
+
+  function lang() {
+    var d = (document.documentElement.lang || 'en').toLowerCase();
+    return d.indexOf('fr') === 0 ? 'fr' : 'en';
+  }
+
+  // parse YYYY-MM-DD as a local-calendar day, not a utc instant. the
+  // edition is a publication day in paris; treating it as utc midnight
+  // would make the relative age flip a day too early or too late for
+  // visitors in the americas / asia.
+  function parseLocalDate(value) {
+    var p = String(value || '').split('-');
+    if (p.length !== 3) return null;
+    var y = Number(p[0]);
+    var m = Number(p[1]);
+    var d = Number(p[2]);
+    if (!y || !m || !d) return null;
+    return new Date(y, m - 1, d);
+  }
+
+  function diffDays(from, to) {
+    var a = new Date(from.getFullYear(), from.getMonth(), from.getDate());
+    var b = new Date(to.getFullYear(),   to.getMonth(),   to.getDate());
+    return Math.max(0, Math.floor((b - a) / 86400000));
+  }
+
+  function compute(ed) {
+    var date = parseLocalDate(ed);
+    if (!date) return null;
+    var days = diffDays(date, new Date());
+    var copy = AGE_COPY[lang()];
+    if (days === 0) return copy.today;
+    if (days === 1) return copy.yesterday;
+    if (days < 7)   return copy.days(days);
+    if (days < 31)  return copy.weeks(Math.max(1, Math.floor(days / 7)));
+    if (days < 365) return copy.months(Math.max(1, Math.floor(days / 30.4375)));
+    return copy.years(Math.max(1, Math.floor(days / 365.25)));
+  }
+
+  function run() {
+    var ed = document.body && document.body.getAttribute('data-edition');
+    if (!ed) return;
+    var text = compute(ed);
+    if (!text) return;
+    var nodes = document.querySelectorAll('[data-edition-age]');
+    for (var i = 0; i < nodes.length; i++) {
+      nodes[i].textContent = text;
+    }
+  }
+
+  // phase 94 · fr machine-translation disclosure as a first-visit-only
+  // signal. the disclosure (`<em data-translation-disclosure>`) and the
+  // standard edition-age span (`<span data-edition-age hidden>…</span>`)
+  // sit side-by-side in the html: disclosure visible by default, edition-
+  // age hidden. on repeat visits we flip them — disclosure hidden,
+  // edition-age shown and populated by run() above. the marker key is
+  // a publication-day string so it can be audited; resetting localStorage
+  // makes the disclosure return on the next visit.
+  var DISCLOSURE_KEY = 'tp-fr-disclosure-seen';
+  function reconcileDisclosure() {
+    var disc = document.querySelector('[data-translation-disclosure]');
+    if (!disc) return;
+    var age = null;
+    var parent = disc.parentNode;
+    if (parent) age = parent.querySelector('[data-edition-age]');
+    var seen = null;
+    try { seen = localStorage.getItem(DISCLOSURE_KEY); } catch (_) {}
+    if (seen) {
+      // repeat visit — retire the disclosure, surface the edition-age.
+      disc.hidden = true;
+      if (age) age.hidden = false;
+    } else {
+      // first visit — leave the disclosure visible and stamp the marker
+      // so the next visit retires it. use the publication day so the
+      // value is auditable / human-readable.
+      try {
+        var today = new Date().toISOString().slice(0, 10);
+        localStorage.setItem(DISCLOSURE_KEY, today);
+      } catch (_) {}
+    }
+  }
+
+  // phase 94e · homepage imprint as a per-language first-visit signal.
+  // the `<aside data-imprint-once>` block sits above the footer on the
+  // homepage of each language tree. localStorage['tp-imprint-seen:<lang>']
+  // is stamped on first visit and consulted on every subsequent visit
+  // to hide the block. each language has its own marker — first visit
+  // to /en-au/ surfaces the en imprint; first visit to /fr/ surfaces
+  // the fr imprint (which carries the same information, translated).
+  // the css rule `.site-imprint:not([hidden]) + .site-footer` lets
+  // the footer's own top hairline return once the imprint is retired.
+  function reconcileImprint() {
+    var imprint = document.querySelector('[data-imprint-once]');
+    if (!imprint) return;
+    var docLang = (document.documentElement.lang || '').toLowerCase();
+    var lang = docLang.indexOf('fr') === 0 ? 'fr' : 'en-au';
+    var key = 'tp-imprint-seen:' + lang;
+    var seen = null;
+    try { seen = localStorage.getItem(key); } catch (_) {}
+    if (seen) {
+      imprint.hidden = true;
+    } else {
+      try {
+        localStorage.setItem(key, new Date().toISOString().slice(0, 10));
+      } catch (_) {}
+    }
+  }
+
+  function boot() {
+    reconcileDisclosure();
+    reconcileImprint();
+    run();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+
+  // gate v2 · after a same-page edition swap the footer is freshly
+  // grafted in; re-run so the new footer's [data-edition-age] gets
+  // the localised relative-age string + the disclosure visibility is
+  // reconciled against localStorage. cheap idempotent operations.
+  document.addEventListener('tp:edition-swapped', boot);
+})();
+
+/* footer language switcher — gate v2 cross-edition swap.
+
+   the footer's English · Français toggle links to the localised
+   equivalent of the current page (e.g. /en-au/privacy/ ↔
+   /fr/confidentialite/). this enhancement intercepts the click and
+   uses the View Transitions API to cross-fade <main>/<footer> in
+   place rather than reloading the document. localStorage.tp-last-edition
+   is updated to match the choice so the visitor returns to that
+   edition on a future visit to /.
+
+   no-JS fallback: the <a href> resolves as a normal navigation.
+   View Transitions unsupported / fetch failure: also falls back
+   to plain navigation. */
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'tp-last-edition';
+
+  function editionFromHref(href) {
+    try {
+      var u = new URL(href, window.location.origin);
+      if (u.origin !== window.location.origin) return null;
+      var p = u.pathname;
+      if (p.indexOf('/en-au/') === 0) return 'en-au';
+      if (p.indexOf('/fr/')    === 0) return 'fr';
+      return null;
+    } catch (_) { return null; }
+  }
+
+  function currentEdition() {
+    var p = window.location.pathname;
+    if (p.indexOf('/en-au/') === 0) return 'en-au';
+    if (p.indexOf('/fr/')    === 0) return 'fr';
+    return null;
+  }
+
+  function reducedMotion() {
+    return !!(window.matchMedia &&
+              window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+
+  function applySwap(doc, url, target) {
+    var newMain   = doc.querySelector('main');
+    var newFooter = doc.querySelector('footer');
+    if (!newMain) throw new Error('no <main> in fetched edition');
+
+    var oldMain   = document.querySelector('main');
+    var oldFooter = document.querySelector('footer');
+    if (oldMain)   oldMain.replaceWith(newMain);
+    if (oldFooter && newFooter) oldFooter.replaceWith(newFooter);
+
+    var newTitle = doc.querySelector('title');
+    if (newTitle) document.title = newTitle.textContent;
+
+    var newLang = doc.documentElement.getAttribute('lang');
+    if (newLang) document.documentElement.setAttribute('lang', newLang);
+
+    var oldCan = document.querySelector('link[rel="canonical"]');
+    var newCan = doc.querySelector('link[rel="canonical"]');
+    if (oldCan && newCan) oldCan.setAttribute('href', newCan.getAttribute('href'));
+
+    // hreflang cluster — clear, re-emit from destination.
+    var oldAlts = document.querySelectorAll('link[rel="alternate"][hreflang]');
+    for (var i = oldAlts.length - 1; i >= 0; i--) {
+      oldAlts[i].parentNode.removeChild(oldAlts[i]);
+    }
+    var newAlts = doc.querySelectorAll('link[rel="alternate"][hreflang]');
+    var anchor = oldCan || document.head.lastChild;
+    for (var j = 0; j < newAlts.length; j++) {
+      var clone = newAlts[j].cloneNode(true);
+      anchor.parentNode.insertBefore(clone, anchor.nextSibling);
+      anchor = clone;
+    }
+
+    // JSON-LD — replace text content of existing blocks 1:1.
+    var oldLd = document.querySelectorAll('script[type="application/ld+json"]');
+    var newLd = doc.querySelectorAll('script[type="application/ld+json"]');
+    if (oldLd.length === newLd.length) {
+      for (var k = 0; k < oldLd.length; k++) {
+        oldLd[k].textContent = newLd[k].textContent;
+      }
+    }
+
+    var nb = doc.body;
+    if (nb) {
+      document.body.className = nb.className;
+      var attrs = nb.attributes;
+      for (var a = 0; a < attrs.length; a++) {
+        var nm = attrs[a].name;
+        if (nm.indexOf('data-') === 0) {
+          document.body.setAttribute(nm, attrs[a].value);
+        }
+      }
+    }
+
+    if (window.location.pathname !== url) {
+      history.pushState({ edition: target }, '', url);
+    }
+
+    // hero on the destination should paint at rest — the swap is
+    // an in-place cross-fade, not a fresh arrival.
+    document.documentElement.classList.add('hero-static');
+
+    try {
+      document.dispatchEvent(new CustomEvent('tp:edition-swapped', {
+        detail: { edition: target, url: url }
+      }));
+    } catch (_) {}
+  }
+
+  function swapTo(href, target) {
+    return fetch(href, { credentials: 'same-origin' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
+      })
+      .then(function (text) {
+        var doc = new DOMParser().parseFromString(text, 'text/html');
+        var url = new URL(href, window.location.origin).pathname;
+        var run = function () { applySwap(doc, url, target); };
+        if (typeof document.startViewTransition === 'function' &&
+            !reducedMotion()) {
+          document.startViewTransition(run);
+        } else {
+          run();
+        }
+      });
+  }
+
+  function onClick(event) {
+    var link = event.currentTarget;
+    var href = link.getAttribute('href');
+    var target = editionFromHref(href);
+    if (!target) return;
+    if (target === currentEdition()) return; // same edition; let scroll
+    event.preventDefault();
+    try { localStorage.setItem(STORAGE_KEY, target); } catch (_) {}
+    swapTo(href, target).catch(function () {
+      window.location.assign(href);
+    });
+  }
+
+  function wire() {
+    var links = document.querySelectorAll(
+      '.site-footer__language a[href]'
+    );
+    for (var i = 0; i < links.length; i++) {
+      var href = links[i].getAttribute('href');
+      if (editionFromHref(href)) {
+        links[i].addEventListener('click', onClick);
+      }
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', wire);
+  } else {
+    wire();
+  }
+
+  // gate v2 · after a same-page edition swap the footer is freshly
+  // grafted in (replaceWith() destroys the old element and all its
+  // event listeners). re-wire so the new footer's language toggles
+  // intercept clicks. wire() is idempotent against repeat attachment
+  // because the new links are fresh nodes.
+  document.addEventListener('tp:edition-swapped', wire);
+})();

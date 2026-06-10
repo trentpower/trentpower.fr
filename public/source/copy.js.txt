@@ -1,0 +1,241 @@
+/*! trentpower.fr · authored source */
+/*
+  trentpower.fr
+  copy-to-clipboard
+
+  Role:
+  one shared copy-to-clipboard behaviour for the whole site. a single
+  delegated click listener on document handles every copy trigger, so
+  the cite overlay, the verify pages and the source reader no longer
+  each carry their own clipboard code.
+
+  Source:
+  edited here as copy.template.js; compiled to copy.js by
+  generate_site.py (minified, no substitution).
+
+  Contract:
+  a copy trigger is any element matching [data-copy-target] or
+  [data-copy-text].
+    data-copy-target   id of the element whose textContent is copied
+    data-copy-text     a literal string to copy (wins over -target)
+    data-copy-collapse "whitespace" → collapse whitespace runs + trim
+    data-copy-feedback success button text (default: localised "Copied")
+    data-copy-announce id of an aria-live region for the success message
+    data-copy-mode     "cite" → on success the trigger's label becomes
+                       its own confirmation in place ("Cited · Edition
+                       YYYY-MM-DD") for ~1 s, then restores. on failure
+                       the label becomes "Copy failed" / "Échec de la
+                       copie" briefly. the row is briefly stamped by
+                       language; no floating layer, no overlay child,
+                       no absolute positioning.
+                       default (no mode) → legacy textContent swap
+                       to data-copy-feedback ("Copy fingerprint" →
+                       "Copied") for verb-labelled buttons.
+  while the feedback window is open the trigger carries
+  data-state="copied" (success) or data-state="failed" (failure) as
+  a css hook.
+
+  also exposes window.TP_COPY.copy(text) → Promise for callers that
+  build their payload dynamically (the source reader's selection copy).
+
+  Constraints:
+  - no fetch, no inline handlers, no third-party scripts
+  - enhancement only: every copy target is plain readable text in the
+    page, so the page means the same with this script absent
+*/
+
+(function () {
+  'use strict';
+
+  var REVERT_MS = 1500;
+  var CITED_MS  = 1000;
+
+  function lang() {
+    return document.documentElement.lang === 'fr' ? 'fr' : 'en';
+  }
+  function copiedLabel() {
+    return lang() === 'fr' ? 'Copié' : 'Copied';
+  }
+
+  // in-place citation confirmation labels. the trigger row's own text
+  // becomes "Cited · Edition YYYY-MM-DD" for ~1 s on a successful
+  // citation copy, then restores. no floating layer.
+  function citedLabel() {
+    return lang() === 'fr' ? 'Citée' : 'Cited';
+  }
+  function editionWord() {
+    return lang() === 'fr' ? 'Édition' : 'Edition';
+  }
+  function copyFailedLabel() {
+    return lang() === 'fr' ? 'Échec de la copie' : 'Copy failed';
+  }
+  function copyFailedAnnounce() {
+    return lang() === 'fr' ? 'Échec de la copie de citation' : 'Citation copy failed';
+  }
+  // edition source priority: body[data-edition] (substituted at build
+  // time on every page) → <meta name="document-edition">. both are
+  // swept to the canonical edition by generate_site.py; reading either
+  // means the inscription always matches the page the visitor is on.
+  function editionDate() {
+    var b = document.body && document.body.dataset && document.body.dataset.edition;
+    if (b) return b;
+    var m = document.querySelector('meta[name="document-edition"]');
+    return m ? (m.getAttribute('content') || '') : '';
+  }
+
+  // hidden-textarea + execCommand fallback for non-secure contexts and
+  // older engines where the async clipboard api is absent or rejects.
+  function execCommandCopy(text) {
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        // phase 96 · class, not inline style (csp style-src-attr 'none').
+        ta.className = 'tp-copy-fallback';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand && document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (ok) resolve(); else reject();
+      } catch (_) { reject(); }
+    });
+  }
+
+  // two-tier clipboard write: the async clipboard api first, the
+  // textarea fallback when it is absent OR rejects (older safari, a
+  // denied permission, a non-secure context). resolves on success.
+  function writeClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(function () {
+        return execCommandCopy(text);
+      });
+    }
+    return execCommandCopy(text);
+  }
+
+  function payloadFor(trigger) {
+    if (trigger.hasAttribute('data-copy-text')) {
+      return trigger.getAttribute('data-copy-text') || '';
+    }
+    var targetId = trigger.getAttribute('data-copy-target');
+    var target = targetId ? document.getElementById(targetId) : null;
+    var raw = target ? (target.textContent || '') : '';
+    if (trigger.getAttribute('data-copy-collapse') === 'whitespace') {
+      return raw.replace(/\s+/g, ' ').trim();
+    }
+    return raw.replace(/\s+$/, '');
+  }
+
+  // ─── aria-live region helper ───────────────────────────────────────────
+  // resolves the live region keyed by data-copy-announce, empties it,
+  // then writes the message on the next tick so assistive tech reliably
+  // notices the change. returns the region (or null) so callers can
+  // clear it again when the visible feedback window closes.
+  function announce(trigger, msg) {
+    var announceId = trigger.getAttribute('data-copy-announce');
+    var region = announceId ? document.getElementById(announceId) : null;
+    if (!region) return null;
+    region.textContent = '';
+    setTimeout(function () { region.textContent = msg; }, 0);
+    return region;
+  }
+
+  // ─── feedback (success) ────────────────────────────────────────────────
+  function feedback(trigger) {
+    if (trigger.getAttribute('data-state') === 'copied' ||
+        trigger.getAttribute('data-state') === 'failed') return;
+    var done = trigger.getAttribute('data-copy-feedback') || copiedLabel();
+    var region = announce(trigger, done);
+
+    // mode A · in-place citation confirmation. the trigger's visible
+    // label becomes its own confirmation ("Cited · Edition YYYY-MM-DD")
+    // for ~1 s, then restores. the row is briefly stamped by language;
+    // no floating layer, no overlay child, no absolute positioning.
+    if (trigger.getAttribute('data-copy-mode') === 'cite') {
+      var resting = trigger.textContent;
+      var ed = editionDate();
+      trigger.textContent = ed
+        ? citedLabel() + ' · ' + editionWord() + ' ' + ed
+        : citedLabel();
+      trigger.setAttribute('data-state', 'copied');
+      // store the resting label so rapid repeat clicks restore the
+      // original rather than the cited inscription.
+      trigger._restingLabel = resting;
+      if (trigger._restoreTimer) window.clearTimeout(trigger._restoreTimer);
+      trigger._restoreTimer = window.setTimeout(function () {
+        trigger.textContent = trigger._restingLabel || resting;
+        trigger.removeAttribute('data-state');
+        trigger._restingLabel = null;
+        trigger._restoreTimer = null;
+        if (region) region.textContent = '';
+      }, CITED_MS);
+      // micro-int #10 · also signal the citation source text so it
+      // can flicker italic→roman→italic. micro-interactions.js listens
+      // for this event and toggles .is-acknowledging on .tp-citation.
+      // the in-place "Cited · Edition …" label above remains the
+      // primary confirmation (per the no-floating-feedback rule);
+      // the source flash is a second quiet beat.
+      try {
+        document.dispatchEvent(new CustomEvent('tp:citation-copied'));
+      } catch (_) {}
+      return;
+    }
+
+    // mode B · textContent swap. legacy/default for buttons whose
+    // resting label is a verb ("Copy fingerprint" → "Copied").
+    var resting2 = trigger.textContent;
+    trigger.textContent = done;
+    trigger.setAttribute('data-state', 'copied');
+    setTimeout(function () {
+      trigger.textContent = resting2;
+      trigger.removeAttribute('data-state');
+      if (region) region.textContent = '';
+    }, REVERT_MS);
+  }
+
+  // ─── failure (cite mode only) ──────────────────────────────────────────
+  // clipboard write rejected — denied permission, non-secure context,
+  // engine without execCommand fallback. only the cite-mode trigger
+  // surfaces this; the legacy verb-button swap stays silent on failure
+  // as it always has.
+  function failure(trigger) {
+    if (trigger.getAttribute('data-copy-mode') !== 'cite') return;
+    if (trigger.getAttribute('data-state') === 'copied' ||
+        trigger.getAttribute('data-state') === 'failed') return;
+    var resting = trigger.textContent;
+    trigger.textContent = copyFailedLabel();
+    trigger.setAttribute('data-state', 'failed');
+    var region = announce(trigger, copyFailedAnnounce());
+    trigger._restingLabel = resting;
+    if (trigger._restoreTimer) window.clearTimeout(trigger._restoreTimer);
+    trigger._restoreTimer = window.setTimeout(function () {
+      trigger.textContent = trigger._restingLabel || resting;
+      trigger.removeAttribute('data-state');
+      trigger._restingLabel = null;
+      trigger._restoreTimer = null;
+      if (region) region.textContent = '';
+    }, CITED_MS);
+  }
+
+  document.addEventListener('click', function (e) {
+    var trigger = e.target && e.target.closest
+      ? e.target.closest('[data-copy-target], [data-copy-text]')
+      : null;
+    if (!trigger) return;
+    var payload = payloadFor(trigger);
+    if (!payload) return;
+    e.preventDefault();
+    writeClipboard(payload).then(
+      function () { feedback(trigger); },
+      function () { failure(trigger); }
+    );
+  });
+
+  // programmatic hook for callers that assemble their payload at click
+  // time (e.g. the source reader copying the current line selection).
+  window.TP_COPY = {
+    copy: function (text) { return writeClipboard(String(text == null ? '' : text)); }
+  };
+
+})();

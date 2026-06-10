@@ -1,0 +1,60 @@
+meta:
+  privacy:
+    title: Privacy & Trust · Trent Power
+    description: A simple, privacy-respectful site with no tracking, analytics, cookies, profiling, or embedded third-party requests while you browse
+privacy:
+  page_title: Privacy & Trust
+  page_kicker: Privacy & Trust
+  page_h1: <span class="hero-line">Nothing tracked.</span><span class="hero-line">Nothing to delete.</span>
+  body_intro: |-
+    This site does not track visitors. There are no analytics, cookies, profiling tools,
+    or third-party services operating in the background.
+  docs_note: |-
+    A complete technical description of the site's architecture, privacy posture,
+    verification model and publication process is available in the
+    <a href="/documentation/README.pdf">public documentation</a>.
+  body_detail: |-
+    No personal data is collected. The server processes only what is necessary to keep
+    the site secure and functioning. External links are standard references and make no
+    external requests until opened. Any <a class="invite-link" href="/local/">browser
+    storage is local to your device</a>, covering preferences such as language and
+    appearance, first-visit markers that dismiss the homepage imprint and French
+    translation notice once seen, and service-worker install timestamps used only to
+    show when the offline cache was last refreshed. This local storage is never sent anywhere.
+  body_records: Public inspection and verification records are published separately. You can read the <a href="/security/" aria-describedby="desc-security-threat-model">Security & threat model</a> for the full posture.
+  print:
+    kicker: Privacy & Trust
+    title: Privacy-first by design
+    lede: This site is intentionally simple and privacy-respectful. It uses no tracking, analytics, cookies, profiling, or embedded third-party requests while you browse.
+    meta: Edition 2026-05-17 · trentpower.fr/privacy/
+    card:
+      '01':
+        label: 01 No tracking
+        title: No tracking
+        body: No analytics. No cookies. No profiling. No third-party requests while browsing.
+      '02':
+        label: 02 No data collection
+        title: No data collection
+        body: No public forms. No visitor accounts. No behavioural tracking. No advertising infrastructure.
+      '03':
+        label: 03 Verification route
+        title: Verification route
+        body: Integrity page. Security page. Public manifest. Source view.
+      '04':
+        label: 04 Design principle
+        title: Privacy as posture
+        body: Privacy is not a compliance layer. It is part of the site’s editorial and professional posture.
+      '05':
+        label: 05 What you can check
+        title: What you can check
+        body: View source. Read /integrity.json. Verify the signature. Inspect the security headers.
+      '06':
+        label: 06 Contact
+        title: Contact
+        body: trent@trentpower.fr · canonical route trentpower.fr/privacy/
+    footer:
+      proof: '{{ shared.site.proof_line }}'
+      edition: Edition 2026-05-17 · trentpower.fr/privacy/
+    qr:
+      label: trentpower.fr/privacy/
+    doc_title: Trent Power - Privacy Trust Sheet

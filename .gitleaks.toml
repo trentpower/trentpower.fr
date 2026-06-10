@@ -1,0 +1,14 @@
+# gitleaks configuration for trentpower.fr
+#
+# extends the default ruleset; the only allowance is the published
+# OpenPGP public-key fingerprint, which appears in release test
+# transcripts and verification pages by design. a fingerprint of a
+# *public* key is public material, not a credential.
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "published pgp public-key fingerprint"
+regexTarget = "line"
+regexes = ['''PGP key fingerprint: [0-9A-F]{40}''']

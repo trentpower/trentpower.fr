@@ -1,0 +1,491 @@
+{
+  "schema_version": 1,
+  "generated_from": "content/shared/routes.yml",
+  "note": "GENERATED — edit content/shared/routes.yml (the source of truth), not this file. Regenerate with tools/generate_routes_json.py.",
+  "languages": [
+    "en-AU",
+    "fr"
+  ],
+  "routes": [
+    {
+      "id": "home.en-au",
+      "route_key": "home",
+      "path": "/en-au/",
+      "language": "en-AU",
+      "locale": "en_AU",
+      "template": "home",
+      "content": "content/en/pages/home.yml",
+      "schema": "schemas/content/home.schema.json",
+      "canonical": "https://trentpower.fr/en-au/",
+      "alternate": [
+        {
+          "hreflang": "fr",
+          "href": "https://trentpower.fr/fr/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": false
+    },
+    {
+      "id": "home.fr",
+      "route_key": "home",
+      "path": "/fr/",
+      "language": "fr",
+      "locale": "fr_FR",
+      "template": "home",
+      "content": "content/fr/pages/home.yml",
+      "schema": "schemas/content/home.schema.json",
+      "canonical": "https://trentpower.fr/fr/",
+      "alternate": [
+        {
+          "hreflang": "en-AU",
+          "href": "https://trentpower.fr/en-au/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": false
+    },
+    {
+      "id": "privacy.en-au",
+      "route_key": "privacy",
+      "path": "/en-au/privacy/",
+      "language": "en-AU",
+      "locale": "en_AU",
+      "template": "privacy",
+      "content": "content/en/pages/privacy.yml",
+      "schema": "schemas/content/privacy.schema.json",
+      "canonical": "https://trentpower.fr/en-au/privacy/",
+      "alternate": [
+        {
+          "hreflang": "fr",
+          "href": "https://trentpower.fr/fr/confidentialite/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": false
+    },
+    {
+      "id": "privacy.fr",
+      "route_key": "privacy",
+      "path": "/fr/confidentialite/",
+      "language": "fr",
+      "locale": "fr_FR",
+      "template": "privacy",
+      "content": "content/fr/pages/privacy.yml",
+      "schema": "schemas/content/privacy.schema.json",
+      "canonical": "https://trentpower.fr/fr/confidentialite/",
+      "alternate": [
+        {
+          "hreflang": "en-AU",
+          "href": "https://trentpower.fr/en-au/privacy/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": false
+    },
+    {
+      "id": "security.en-au",
+      "route_key": "security",
+      "path": "/en-au/security/",
+      "language": "en-AU",
+      "locale": "en_AU",
+      "template": "security",
+      "content": "content/en/pages/security.yml",
+      "schema": "schemas/content/security.schema.json",
+      "canonical": "https://trentpower.fr/en-au/security/",
+      "alternate": [
+        {
+          "hreflang": "fr",
+          "href": "https://trentpower.fr/fr/securite/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "security.fr",
+      "route_key": "security",
+      "path": "/fr/securite/",
+      "language": "fr",
+      "locale": "fr_FR",
+      "template": "security",
+      "content": "content/fr/pages/security.yml",
+      "schema": "schemas/content/security.schema.json",
+      "canonical": "https://trentpower.fr/fr/securite/",
+      "alternate": [
+        {
+          "hreflang": "en-AU",
+          "href": "https://trentpower.fr/en-au/security/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "security-acknowledgments.en-au",
+      "route_key": "security-acknowledgments",
+      "path": "/en-au/security/acknowledgments/",
+      "language": "en-AU",
+      "locale": "en_AU",
+      "template": "security-acknowledgments",
+      "content": "content/en/pages/security.yml",
+      "schema": "schemas/content/security.schema.json",
+      "canonical": "https://trentpower.fr/en-au/security/acknowledgments/",
+      "alternate": [
+        {
+          "hreflang": "fr",
+          "href": "https://trentpower.fr/fr/securite/remerciements/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "security-acknowledgments.fr",
+      "route_key": "security-acknowledgments",
+      "path": "/fr/securite/remerciements/",
+      "language": "fr",
+      "locale": "fr_FR",
+      "template": "security-acknowledgments",
+      "content": "content/fr/pages/security.yml",
+      "schema": "schemas/content/security.schema.json",
+      "canonical": "https://trentpower.fr/fr/securite/remerciements/",
+      "alternate": [
+        {
+          "hreflang": "en-AU",
+          "href": "https://trentpower.fr/en-au/security/acknowledgments/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "integrity.en-au",
+      "route_key": "integrity",
+      "path": "/en-au/integrity/",
+      "language": "en-AU",
+      "locale": "en_AU",
+      "template": "integrity",
+      "content": "content/en/pages/integrity.yml",
+      "schema": "schemas/content/integrity.schema.json",
+      "canonical": "https://trentpower.fr/en-au/integrity/",
+      "alternate": [
+        {
+          "hreflang": "fr",
+          "href": "https://trentpower.fr/fr/integrite/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "integrity.fr",
+      "route_key": "integrity",
+      "path": "/fr/integrite/",
+      "language": "fr",
+      "locale": "fr_FR",
+      "template": "integrity",
+      "content": "content/fr/pages/integrity.yml",
+      "schema": "schemas/content/integrity.schema.json",
+      "canonical": "https://trentpower.fr/fr/integrite/",
+      "alternate": [
+        {
+          "hreflang": "en-AU",
+          "href": "https://trentpower.fr/en-au/integrity/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "integrity-releases.en-au",
+      "route_key": "integrity-releases",
+      "path": "/en-au/integrity/releases/",
+      "language": "en-AU",
+      "locale": "en_AU",
+      "template": "integrity-releases",
+      "content": "content/en/pages/integrity.yml",
+      "schema": "schemas/content/integrity.schema.json",
+      "canonical": "https://trentpower.fr/en-au/integrity/releases/",
+      "alternate": [
+        {
+          "hreflang": "fr",
+          "href": "https://trentpower.fr/fr/integrite/archives/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "integrity-releases.fr",
+      "route_key": "integrity-releases",
+      "path": "/fr/integrite/archives/",
+      "language": "fr",
+      "locale": "fr_FR",
+      "template": "integrity-releases",
+      "content": "content/fr/pages/integrity.yml",
+      "schema": "schemas/content/integrity.schema.json",
+      "canonical": "https://trentpower.fr/fr/integrite/archives/",
+      "alternate": [
+        {
+          "hreflang": "en-AU",
+          "href": "https://trentpower.fr/en-au/integrity/releases/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "integrity-verify-locally.en-au",
+      "route_key": "integrity-verify-locally",
+      "path": "/en-au/integrity/verify-locally/",
+      "language": "en-AU",
+      "locale": "en_AU",
+      "template": "integrity-verify-locally",
+      "content": "content/en/pages/verify.yml",
+      "schema": "schemas/content/verify.schema.json",
+      "canonical": "https://trentpower.fr/en-au/integrity/verify-locally/",
+      "alternate": [
+        {
+          "hreflang": "fr",
+          "href": "https://trentpower.fr/fr/integrite/verifier-localement/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "integrity-verify-locally.fr",
+      "route_key": "integrity-verify-locally",
+      "path": "/fr/integrite/verifier-localement/",
+      "language": "fr",
+      "locale": "fr_FR",
+      "template": "integrity-verify-locally",
+      "content": "content/fr/pages/verify.yml",
+      "schema": "schemas/content/verify.schema.json",
+      "canonical": "https://trentpower.fr/fr/integrite/verifier-localement/",
+      "alternate": [
+        {
+          "hreflang": "en-AU",
+          "href": "https://trentpower.fr/en-au/integrity/verify-locally/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "verify.en-au",
+      "route_key": "verify",
+      "path": "/en-au/verify/",
+      "language": "en-AU",
+      "locale": "en_AU",
+      "template": "verify",
+      "content": "content/en/pages/verify.yml",
+      "schema": "schemas/content/verify.schema.json",
+      "canonical": "https://trentpower.fr/en-au/verify/",
+      "alternate": [
+        {
+          "hreflang": "fr",
+          "href": "https://trentpower.fr/fr/verifier/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "verify.fr",
+      "route_key": "verify",
+      "path": "/fr/verifier/",
+      "language": "fr",
+      "locale": "fr_FR",
+      "template": "verify",
+      "content": "content/fr/pages/verify.yml",
+      "schema": "schemas/content/verify.schema.json",
+      "canonical": "https://trentpower.fr/fr/verifier/",
+      "alternate": [
+        {
+          "hreflang": "en-AU",
+          "href": "https://trentpower.fr/en-au/verify/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "source.en-au",
+      "route_key": "source",
+      "path": "/en-au/source/",
+      "language": "en-AU",
+      "locale": "en_AU",
+      "template": "source",
+      "content": "content/en/pages/source.yml",
+      "schema": "schemas/content/source.schema.json",
+      "canonical": "https://trentpower.fr/en-au/source/",
+      "alternate": [
+        {
+          "hreflang": "fr",
+          "href": "https://trentpower.fr/fr/source/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "source.fr",
+      "route_key": "source",
+      "path": "/fr/source/",
+      "language": "fr",
+      "locale": "fr_FR",
+      "template": "source",
+      "content": "content/fr/pages/source.yml",
+      "schema": "schemas/content/source.schema.json",
+      "canonical": "https://trentpower.fr/fr/source/",
+      "alternate": [
+        {
+          "hreflang": "en-AU",
+          "href": "https://trentpower.fr/en-au/source/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "source-view.en-au",
+      "route_key": "source-view",
+      "path": "/en-au/source/view/",
+      "language": "en-AU",
+      "locale": "en_AU",
+      "template": "source-view",
+      "content": "content/en/pages/source.yml",
+      "schema": "schemas/content/source.schema.json",
+      "canonical": "https://trentpower.fr/en-au/source/view/",
+      "alternate": [
+        {
+          "hreflang": "fr",
+          "href": "https://trentpower.fr/fr/source/voir/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    },
+    {
+      "id": "source-view.fr",
+      "route_key": "source-view",
+      "path": "/fr/source/voir/",
+      "language": "fr",
+      "locale": "fr_FR",
+      "template": "source-view",
+      "content": "content/fr/pages/source.yml",
+      "schema": "schemas/content/source.schema.json",
+      "canonical": "https://trentpower.fr/fr/source/voir/",
+      "alternate": [
+        {
+          "hreflang": "en-AU",
+          "href": "https://trentpower.fr/en-au/source/view/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://trentpower.fr/"
+        }
+      ],
+      "editable": true,
+      "preview": true,
+      "trust_surface": true
+    }
+  ]
+}

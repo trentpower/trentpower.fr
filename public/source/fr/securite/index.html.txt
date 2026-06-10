@@ -1,0 +1,453 @@
+<!doctype html>
+<!--
+  trentpower.fr · /security/
+
+  static, semantic, self-managed, privacy-first.
+  architecture · controls · public verification surface · residual risk.
+  no analytics. no cookies. no external assets.
+
+  simplicity over complexity.
+  transparency over obscurity.
+  verifiable integrity over trust assumptions.
+-->
+<html lang="fr" dir="ltr">
+<head>
+  <!-- head · 01 · foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- head · 02 · appearance bootstrap -->
+  <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch(_){}})();</script>
+
+  <!-- head · 03 · document identity -->
+  <title>Sécurité &amp; modèle de menace · Trent Power</title>
+  <meta name="description"
+        content="Architecture de sécurité, contrôles opérationnels, surfaces publiques de vérification et risques résiduels">
+  <meta name="document-edition" content="2026-06-10">
+  <link rel="canonical" href="https://trentpower.fr/fr/securite/">
+  <link rel="alternate" hreflang="en-AU" href="https://trentpower.fr/en-au/security/">
+  <link rel="alternate" hreflang="fr" href="https://trentpower.fr/fr/securite/">
+  <link rel="alternate" hreflang="x-default" href="https://trentpower.fr/">
+
+  <!-- head · 04 · indexing and discovery -->
+  <meta name="robots" content="index, follow">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- head · 05 · authorship and identity -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/person.json">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+  <link rel="alternate" type="text/plain" href="/llms.txt">
+  <link rel="me" href="https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg">
+  <link rel="me" href="https://www.linkedin.com/in/trentpower/">
+  <link rel="me" href="https://orcid.org/0009-0002-2652-7188">
+  <link rel="me" href="https://www.crunchbase.com/person/trent-power-3f52">
+
+  <!-- head · 06 · provenance, rights and reuse -->
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+  <link rel="describedby" href="/.well-known/attribution.txt">
+  <link rel="describedby" href="/integrity.json">
+  <link rel="cite-as" href="https://trentpower.fr/fr/securite/">
+  <link rel="privacy-policy" href="https://trentpower.fr/fr/confidentialite/">
+  <link rel="help" href="https://trentpower.fr/fr/securite/">
+
+  <!-- head · 07 · social and sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="Sécurité &amp; modèle de menace · Trent Power">
+  <meta property="og:description" content="Architecture de sécurité, contrôles opérationnels, surfaces publiques de vérification et risques résiduels">
+  <meta property="og:url" content="https://trentpower.fr/fr/securite/">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="en_AU">
+  <meta property="og:image" content="https://trentpower.fr/images/og/security-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Sécurité &amp; modèle de menace · Trent Power">
+
+  <!-- head · 08 · application surface -->
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+
+  <!-- head · 09 · rendering and assets -->
+  <link rel="stylesheet" href="/styles.css?v=2026-06-10.d9e8cb64" integrity="sha384-G2EI/5PcxnoeoGAeVPHgpg7kTvWKsox1BqU3BamYJoaX8KqB6bj7j8nIrUibMqLC">
+  <link rel="stylesheet" href="/print.css?v=2026-06-10.d9e8cb64" media="print">
+
+  <!-- head · 10 · structured data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://trentpower.fr/security/#page",
+  "url": "https://trentpower.fr/fr/securite/",
+  "name": "Security · Trent Power",
+  "description": "Security architecture, operational controls, public verification surfaces and residual risks",
+  "inLanguage": "fr",
+  "isPartOf": {
+    "@id": "https://trentpower.fr/#website"
+  },
+  "about": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "author": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "publisher": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://trentpower.fr/images/og/security-og.png",
+    "width": 1200,
+    "height": 630
+  },
+  "datePublished": "2026-02-15T00:00:00+00:00",
+  "dateModified": "2026-06-10T00:00:00+00:00"
+}
+  </script>
+</head>
+<body data-page="security" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-10" data-source-sha256-short="--------">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- body · masthead -->
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark u-author" href="/fr/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- body · primary content -->
+<main class="site security-page" id="main" tabindex="-1">
+  <div class="page">
+
+    <!-- primary · 01 · statement -->
+    <p class="page-kicker">Sécurité et modèle de menace</p>
+    <h1 class="page-title hero-stack measure-tight"><span class="hero-line">Statique.</span><span class="hero-line">Auto-hébergé.</span><span class="hero-line">Vérifiable.</span></h1>
+    <div class="page-body">
+      <p class="page-lede">Comment ce site est hébergé, ce qu’il protège, ce qu’il ne protège pas - et comment
+      chacun peut le vérifier indépendamment.</p>
+
+      <!-- primary · 01b · contents -->
+      <nav class="security-contents" aria-label="Sommaire">
+        <ol class="security-contents-list">
+          <li><a href="#security-architecture-heading">1. Architecture</a></li>
+          <li><a href="#security-assets-heading">2. Actifs protégés</a></li>
+          <li><a href="#security-threat-heading">3. Modèle de menace</a></li>
+          <li><a href="#security-controls-heading">4. Contrôles</a></li>
+          <li><a href="#security-public-verification-heading">5. Surface de vérification publique</a></li>
+          <li><a href="#security-residual-heading">6. Risque résiduel</a></li>
+          <li><a href="#security-disclosure-heading">7. Divulgation</a></li>
+          <li><a href="#security-design-heading">8. Principes de conception</a></li>
+          <li><a href="#security-testing-heading">9. Vérification &amp; tests</a></li>
+        </ol>
+      </nav>
+
+      <!-- primary · 02 · architecture -->
+      <section class="security-section" aria-labelledby="security-architecture-heading">
+        <h2 class="security-section-heading" id="security-architecture-heading">1. Architecture</h2>
+        <section class="verify-card card" aria-labelledby="security-architecture-heading">
+          <div class="verify-card__header">
+            <p class="eyebrow">Architecture</p>
+          </div>
+          <dl class="record-grid">
+            <div class="record-grid__row meta-row">
+              <dt>Navigateur</dt>
+              <dd><abbr title="HyperText Transfer Protocol Secure">HTTPS</abbr> · ni cookies ni analyses</dd>
+            </div>
+            <div class="record-grid__row meta-row">
+              <dt>Hébergement statique</dt>
+              <dd>Apache · Gandi · Paris · déploiement <abbr title="Secure File Transfer Protocol">SFTP</abbr></dd>
+            </div>
+            <div class="record-grid__row meta-row">
+              <dt>Fichiers du site</dt>
+              <dd><abbr title="HyperText Markup Language">HTML</abbr> · <abbr title="Cascading Style Sheets">CSS</abbr> · JavaScript natif · polices auto-hébergées</dd>
+            </div>
+            <div class="record-grid__row meta-row">
+              <dt>Cache hors-ligne</dt>
+              <dd>Service worker · cache local dès la première visite</dd>
+            </div>
+            <div class="record-grid__row meta-row">
+              <dt>Confiance</dt>
+              <dd>Intégrité · Vérification · Source · Éditions</dd>
+            </div>
+            <div class="record-grid__row meta-row">
+              <dt>Archive</dt>
+              <dd>Instantanés signés et figés</dd>
+            </div>
+          </dl>
+        </section>
+        <p class="security-architecture-note">Les routes d'inspection publiques exposent le manifeste signé, les enregistrements de
+        page, les miroirs source lisibles et les éditions archivées sans exposer
+        l'infrastructure privée.</p>
+      </section>
+
+      <!-- primary · 03 · assets protected -->
+      <section class="security-section" aria-labelledby="security-assets-heading">
+        <h2 class="security-section-heading" id="security-assets-heading">2. Actifs protégés</h2>
+        <p>Les contrôles décrits ici protègent :</p>
+        <ul class="i18n-list"><li>La propriété du domaine</li><li>L’intégrité DNS</li><li>L’intégrité du compte d’hébergement</li><li>L’intégrité du contenu public</li><li>La clé de signature utilisée pour l’authenticité des versions</li></ul>
+      </section>
+
+      <!-- primary · 04 · threat model -->
+      <section class="security-section" aria-labelledby="security-threat-heading">
+        <h2 class="security-section-heading" id="security-threat-heading">3. Modèle de menace</h2>
+        <section class="security-subsection" aria-labelledby="security-threat-infra">
+          <h3 class="security-subheading" id="security-threat-infra">Compromission de l’infrastructure</h3>
+          <ul class="i18n-list"><li>Prise de contrôle du compte registrar</li><li>Détournement <abbr title="Domain Name System">DNS</abbr></li><li>Compromission des identifiants d’hébergement</li></ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-threat-content">
+          <h3 class="security-subheading" id="security-threat-content">Altération du contenu</h3>
+          <ul class="i18n-list"><li>Modification de fichiers après déploiement</li><li>Injection de JavaScript malveillant</li><li>Altération silencieuse des ressources statiques</li></ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-threat-admin">
+          <h3 class="security-subheading" id="security-threat-admin">Abus administratif</h3>
+          <ul class="i18n-list"><li>Credential stuffing</li><li>Analyse automatisée des vulnérabilités</li></ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-threat-noise">
+          <h3 class="security-subheading" id="security-threat-noise">Bruit internet courant</h3>
+          <p>Sondage automatisé continu pour les chemins <abbr title="Content Management System">CMS</abbr> courants, les fichiers de configuration ou les points d’entrée connus. Ces éléments sont traités comme des conditions de fond persistantes plutôt que comme des événements exceptionnels.</p>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-threat-delivery">
+          <h3 class="security-subheading" id="security-threat-delivery">Livraison et fraîcheur</h3>
+          <ul class="i18n-list"><li>Une version ancienne mais valablement signée servie à la place d’une plus récente</li><li>Un cache navigateur / service worker corrompu ou périmé côté client</li></ul>
+        </section>
+      </section>
+
+      <!-- primary · 05 · controls -->
+      <section class="security-section" aria-labelledby="security-controls-heading">
+        <h2 class="security-section-heading" id="security-controls-heading">4. Contrôles</h2>
+        <section class="security-subsection" aria-labelledby="security-controls-registrar">
+          <h3 class="security-subheading" id="security-controls-registrar">Registrar &amp; <abbr title="Domain Name System">DNS</abbr></h3>
+          <ul class="i18n-list"><li><abbr title="Multi-Factor Authentication">MFA</abbr> activée</li><li>Verrouillage du registrar actif</li><li><abbr title="Domain Name System Security Extensions">DNSSEC</abbr> activé et validé</li><li>Enregistrements <abbr title="Certificate Authority Authorization">CAA</abbr> restreignant l’émission de certificats</li></ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-controls-hosting">
+          <h3 class="security-subheading" id="security-controls-hosting">Hébergement</h3>
+          <ul class="i18n-list"><li>Authentification multi-facteurs activée</li><li>Déploiement <abbr title="Secure File Transfer Protocol">SFTP</abbr> uniquement</li><li>Aucune exposition <abbr title="Secure Shell">SSH</abbr> shell</li><li>Aucune exécution en arrière-plan planifiée</li></ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-controls-content">
+          <h3 class="security-subheading" id="security-controls-content">Contenu public</h3>
+          <ul class="i18n-list"><li>Architecture statique réduisant la surface d’attaque côté serveur</li><li><abbr title="Content Security Policy">CSP</abbr> stricte démarrant par <code>default-src 'none'</code></li><li>Aucun chargement de ressource externe</li><li>Aucune exécution de script dynamique</li><li>Stockage navigateur local limité aux préférences du lecteur (langue, apparence), aux marqueurs de première visite qui retirent l’imprimerie de la page d’accueil et la mention de traduction automatique, et aux horodatages d’installation du service worker indiquant uniquement quand le cache hors-ligne a été rafraîchi ; consultable sur la <a href="/local/">console de l’appareil local</a> ; aucun cookie, aucun identifiant d’analyse ou de publicité, aucun suivi de session ni profilage comportemental</li></ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-controls-monitoring">
+          <h3 class="security-subheading" id="security-controls-monitoring">Surveillance</h3>
+          <ul class="i18n-list"><li>Analyse structurée des journaux</li><li>Détection de patterns et scoring des anomalies</li><li>Détection de dérive d’intégrité des fichiers par rapport à la base de référence signée</li></ul>
+        </section>
+      </section>
+
+      <!-- primary · 06 · public verification surface -->
+      <section class="security-section" aria-labelledby="security-public-verification-heading">
+        <h2 class="security-section-heading" id="security-public-verification-heading">5. Surface de vérification publique</h2>
+        <section class="security-subsection" aria-labelledby="security-public-routes">
+          <h3 class="security-subheading" id="security-public-routes">Routes d’inspection</h3>
+          <p>Le site expose des routes d'inspection publique pour que le contenu publié puisse être
+          contrôlé sans accès à l'infrastructure privée.</p>
+          <ul class="i18n-list"><li><a href="/fr/integrite/" aria-label="Ouvrir l’archive d’intégrité des publications signées, de la clé publique et du manifeste"><code>/integrity/</code></a> recense les éditions signées, la clé publique et le manifeste</li><li><a href="/fr/verifier/" aria-label="Ouvrir l’outil de vérification des URL canoniques, miroirs source et empreintes de page"><code>/verify/</code></a> recense l'<abbr title="Uniform Resource Locator">URL</abbr> canonique d'une page, son miroir source et son empreinte</li><li><a href="/fr/source/" aria-label="Ouvrir les miroirs lisibles du code source de certains fichiers publics"><code>/source/</code></a> publie les miroirs lisibles d'une sélection de fichiers publics</li><li><a href="/fr/integrite/archives/" aria-label="Ouvrir les instantanés figés et signés des publications"><code>/integrity/releases/</code></a> conserve les instantanés signés et figés</li></ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-public-scope">
+          <h3 class="security-subheading" id="security-public-scope">Ce qu’elles ne couvrent pas</h3>
+          <p>Ces routes facilitent l'inspection et la provenance. Elles ne suppriment pas la nécessité de protéger le <abbr title="Domain Name System">DNS</abbr>, les identifiants d'hébergement et la clé privée de signature.</p>
+        </section>
+      </section>
+
+      <!-- primary · 07 · residual risk -->
+      <section class="security-section" aria-labelledby="security-residual-heading">
+        <h2 class="security-section-heading" id="security-residual-heading">6. Risque résiduel</h2>
+        <p>Ce modèle protège le site statique public. Il ne protège pas contre la compromission
+        du bureau d’enregistrement, de l’hébergement, des appareils clients ou de la clé
+        privée.</p>
+        <section class="security-subsection" aria-labelledby="security-residual-out-of-scope">
+          <h3 class="security-subheading" id="security-residual-out-of-scope">Hors du périmètre</h3>
+          <p>Ce modèle ne tente pas de traiter :</p>
+          <ul class="i18n-list"><li>Compromission physique de l’infrastructure d’hébergement</li><li>Compromission de la racine <abbr title="Domain Name System">DNS</abbr> mondiale</li><li>Compromission d’une autorité de certification (<abbr title="Certificate Authority">CA</abbr>)</li><li>Adversaires étatiques</li><li>Exploits navigateur zero-day sur les appareils clients</li></ul>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-residual-primary">
+          <h3 class="security-subheading" id="security-residual-primary">Où le risque se concentre</h3>
+          <p>Les risques principaux restent la compromission du domaine, du <abbr title="Domain Name System">DNS</abbr>, de l'hébergement et de la clé de signature privée.</p>
+        </section>
+        <section class="security-subsection" aria-labelledby="security-residual-assume">
+          <h3 class="security-subheading" id="security-residual-assume">Hypothèses opérationnelles</h3>
+          <ul class="i18n-list"><li>Un auteur unique de confiance contrôle la source et chaque publication</li><li>La seule clé privée de signature réside sur la machine locale de l'auteur, jamais dans la CI</li><li>L'intégrité de cette machine est supposée ; sa compromission est hors périmètre</li><li>Les lecteurs vérifient l'empreinte de la clé hors bande avant de se fier à une signature</li></ul>
+        </section>
+      </section>
+
+      <!-- primary · 08 · disclosure -->
+      <section class="security-section" aria-labelledby="security-disclosure-heading">
+        <h2 class="security-section-heading" id="security-disclosure-heading">7. Divulgation</h2>
+        <p>La divulgation responsable est la bienvenue. Les coordonnées de sécurité et les instructions de communication chiffrée sont publiées sur <a href="/.well-known/security.txt" aria-describedby="desc-security-contact"><code>/.well-known/security.txt</code></a>.</p>
+        <span class="visually-hidden" id="desc-security-contact">Lire la politique de divulgation security.txt de ce site</span>
+      </section>
+
+      <!-- primary · 09 · design principles -->
+      <section class="security-section" aria-labelledby="security-design-heading">
+        <h2 class="security-section-heading" id="security-design-heading">8. Principes de conception</h2>
+        <ul class="i18n-list"><li>Simplicité plutôt que complexité</li><li>Comportement déterministe plutôt que systèmes dynamiques</li><li>Transparence plutôt qu’obscurité</li><li>Intégrité vérifiable plutôt qu’hypothèses de confiance</li></ul>
+      </section>
+
+      <!-- primary · 10 · verification and testing -->
+      <section class="security-section" aria-labelledby="security-testing-heading">
+        <h2 class="security-section-heading" id="security-testing-heading">9. Vérification &amp; tests</h2>
+        <section class="security-subsection" aria-labelledby="security-testing-per-edition">
+          <h3 class="security-subheading" id="security-testing-per-edition">Contrôles par édition</h3>
+          <p>Chaque édition publiée est contrôlée par rapport à un ensemble fixe de cibles publiques. Les contrôles couvrent la disponibilité, la confidentialité, les en-têtes de sécurité, l’accessibilité, le référencement et le balisage, et le résultat est consigné sous forme d’instantané signé avec l’édition.</p>
+          <p><a href="/tests/" aria-label="Voir les derniers résultats de tests signés">Voir les derniers résultats de tests</a> sur <code>/tests/</code>.</p>
+        </section>
+      </section>
+
+      <!-- primary · 11 · accessibility -->
+      <section class="security-section" aria-labelledby="security-accessibility-heading">
+        <h2 class="security-section-heading" id="security-accessibility-heading">10. Accessibilité</h2>
+        <p>Le site vise le niveau <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.2 AA. L'instantané de test signé de chaque édition publiée enregistre une vérification d'accessibilité automatisée, et la navigation au clavier, la structure des repères et l'ordre de focus sont vérifiés manuellement. Les exceptions connues sont indiquées ici plutôt que sous-entendues ; aucune n'est actuellement déclarée.</p>
+      </section>
+
+    </div>
+  </div>
+
+</main>
+
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/fr/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">Retour à l’accueil</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>Paris, France</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/fr/confidentialite/" rel="privacy-policy" aria-describedby="desc-privacy">Confidentialité</a>
+        <span class="visually-hidden" id="desc-privacy">Découvrir comment ce site évite les analytiques, cookies, profilage, traceurs et
+        services tiers</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">Vérifier</button>
+        <span class="visually-hidden" id="desc-cite">Ouvrir les détails de citation et de vérification de cette page</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><a href="/en-au/security/"  aria-describedby="desc-lang-en" lang="en">English</a> <span class="visually-hidden" id="desc-lang-en">Read this site in English</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><a href="/fr/securite/" aria-describedby="desc-lang-fr" lang="fr" aria-current="page">Français</a> <span class="visually-hidden" id="desc-lang-fr">Lire ce site en français</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break" aria-hidden="true">
+
+    <!-- bottom stratum · colophon · theme -->
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="Vérification de la publication">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="/fr/verifier/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Édition</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          <em class="site-footer__translation-inline" data-translation-disclosure>Ceci est un rendu machine. <a href="/en-au/">L'édition de l'auteur est en anglais</a>.</em><span class="site-footer__colophon-note" data-edition-age hidden>Publiée aujourd'hui</span>
+          <span class="visually-hidden" id="desc-integrity">Ouvrir le dossier de vérification de cette édition — citation, miroir source, empreinte et archive signée</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">Clair</button> <span class="visually-hidden" id="desc-theme-light">Passer à l’apparence claire</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">Auto</button> <span class="visually-hidden" id="desc-theme-auto">Suivre les réglages d’apparence du système</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">Sombre</button> <span class="visually-hidden" id="desc-theme-dark">Passer à l’apparence sombre</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+<!-- body · print edition -->
+<div class="print-trust-sheet print-only" data-print-sheet="security" hidden>
+  <header class="print-trust-header">
+    <p class="print-trust-kicker">Sécurité &amp; modèle de menace</p>
+    <p class="print-trust-title">Statique, auto-géré, axé sur la vérification</p>
+    <p class="print-trust-lede">Le site public est composé de HTML, CSS et JavaScript natif, avec des en-têtes stricts, aucune logique serveur à l’exécution, aucune base de données publique et aucun script tiers.</p>
+    <p class="print-trust-meta">Édition 2026-06-10 · trentpower.fr/security/</p>
+  </header>
+
+  <figure class="print-trust-diagram" aria-hidden="true">
+    <img src="/images/architecture/architecture.svg" alt="" class="print-trust-diagram-image" width="1200" height="680">
+  </figure>
+
+  <div class="print-trust-grid">
+    <div class="print-trust-card">
+      <p class="print-trust-label"><span class="num">01</span> <span>Architecture</span></p>
+      <p>HTML, CSS, JavaScript natif. Déploiement auto-géré sur Apache (Gandi, Paris). Aucune base de données publique.</p>
+    </div>
+    <div class="print-trust-card">
+      <p class="print-trust-label"><span class="num">02</span> <span>En-têtes de sécurité</span></p>
+      <p><abbr title="Content Security Policy">CSP</abbr> par défaut deny. <abbr title="HTTP Strict Transport Security">HSTS</abbr>. <abbr title="Cross-Origin Opener Policy">COOP</abbr> / <abbr title="Cross-Origin Embedder Policy">COEP</abbr> / <abbr title="Cross-Origin Resource Policy">CORP</abbr>. Referrer-Policy no-referrer. Permissions-Policy verrouillée.</p>
+    </div>
+    <div class="print-trust-card">
+      <p class="print-trust-label"><span class="num">03</span> <span>Actifs protégés</span></p>
+      <p>Identité. Contenu publié. Fichiers de vérification publics. Intégrité du code source.</p>
+    </div>
+    <div class="print-trust-card">
+      <p class="print-trust-label"><span class="num">04</span> <span>Modèle de menaces</span></p>
+      <p>Injection de contenu. Compromission des identifiants d’hébergement. Usurpation d’identité. Fichiers obsolètes ou altérés.</p>
+    </div>
+    <div class="print-trust-card">
+      <p class="print-trust-label"><span class="num">05</span> <span>Contrôles</span></p>
+      <p>Aucun script tiers. Aucun formulaire public. Manifeste d’intégrité signé. Exposition de fichiers restreinte. Cache piloté par service worker.</p>
+    </div>
+    <div class="print-trust-card">
+      <p class="print-trust-label"><span class="num">06</span> <span>Risque résiduel</span></p>
+      <p>Le risque hébergeur et registrar demeure. L’exposition d’un site statique est réduite, pas éliminée. Voie de divulgation responsable publiée.</p>
+    </div>
+  </div>
+
+  <footer class="print-trust-footer">
+    <div class="print-trust-footer-text">
+      <p class="print-proof">Privé · Statique · Signé · Sans suivi</p>
+      <p>Édition 2026-06-10 · trentpower.fr/security/</p>
+    </div>
+    <div class="print-qr-block" aria-hidden="true">
+      <img class="print-qr-image" src="/images/qr/qr-security.svg" width="144" height="144" loading="lazy" decoding="async" alt="">
+      <p class="print-qr-url">trentpower.fr/security/</p>
+    </div>
+  </footer>
+</div>
+
+<!-- scripts · progressive enhancement, no telemetry -->
+<script src="/js/theme.js?v=2026-06-10.d9e8cb64" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/sw-register.js?v=2026-06-10.d9e8cb64" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+<script src="/js/reveal.js?v=2026-06-10.d9e8cb64" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+<script src="/js/overlay.js?v=2026-06-10.d9e8cb64" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+<script src="/verify/verification-data.js?v=2026-06-10.d9e8cb64" defer></script>
+<script src="/js/copy.js?v=2026-06-10.d9e8cb64" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/edition.js?v=2026-06-10.d9e8cb64" integrity="sha384-kIhbudFAbfEtCHFdw/AF3cOioeMYPukKzX1c6/gj16bEkO8fm9N7re1FDimxaMaC" defer></script>
+<script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
+<script src="/js/verify-modal.js?v=2026-06-10.d9e8cb64" integrity="sha384-6soCAm6ZECBoqkgQuoQ0A7eBj3SD+nLOgHlfffbxBlhJGCxHOO+CPermVfmvYXu0" defer></script>
+<script src="/js/fonts.js?v=2026-06-10.d9e8cb64" integrity="sha384-kRel595dQiUN7pFngNGyqiBEOQ0yxQKPCtfFmv4gRqmnR/RcUqVurl6+G6h/FJqx" defer></script>
+
+
+<!-- body · construction rail -->
+<div class="construction-rail" data-construction-rail aria-hidden="true">
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+  <span class="construction-rail__label">
+    <span class="construction-rail__dot" aria-hidden="true"></span>
+    En Construction
+  </span>
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+</div>
+</body>
+</html>

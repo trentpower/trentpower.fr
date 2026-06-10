@@ -1,0 +1,101 @@
+{
+  "$schema": "https://trentpower.fr/.well-known/publication.json",
+  "site": "https://trentpower.fr",
+  "name": "Trent Power",
+  "publication_model": {
+    "kind": "static_signed_publication",
+    "delivery": "static_html_css_javascript_only",
+    "runtime_dependencies": "none",
+    "third_party_runtime": false,
+    "frameworks": false,
+    "build_artefact": "deterministic; release archives reproducible byte-for-byte; signatures emitted offline against a published PGP key"
+  },
+  "edition_model": {
+    "scheme": "calendar_date",
+    "format": "YYYY-MM-DD",
+    "asset_version_format": "{edition}.{8-hex bundle hash}",
+    "release_cadence": "irregular; editorial — issued when content warrants"
+  },
+  "integrity_model": {
+    "manifest": "/integrity.json",
+    "manifest_signature": "/integrity.json.sig",
+    "signature_algorithm": "PGP detached, ASCII-armoured",
+    "hash_algorithm": "SHA-256",
+    "public_key": "/.well-known/pgp-key.asc",
+    "key_fingerprint": "A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263",
+    "per_edition_archives": "/integrity/releases/<edition>/",
+    "frozen_archive_immutability": true,
+    "release_archive_signatures": "every .zip / .tar.gz / SHA256SUMS / integrity-redistributable.json carries a detached .sig"
+  },
+  "source_transparency": {
+    "philosophy": "Every publishable byte is mirrored at /source/ as plain text so the bytes the live site serves can be read without tooling.",
+    "text_mirrors": "/source/<live-path>.txt",
+    "binary_mirrors": "/source/<live-path>.<ext>.base64.txt",
+    "manifest": "/source/source-manifest.json",
+    "exclusions_policy": "every public file is either mirrored at /source/ or excluded with an explicit per-file reason",
+    "completeness_gate": "every public file is either mirrored or explicitly excluded"
+  },
+  "authorship": {
+    "statement": "All content and code are reviewed manually before publication. Selective language model assistance may be used for drafting or structuring, but no automated publishing occurs.",
+    "automated_publishing": false,
+    "manual_review_before_publication": true,
+    "language_model_assistance": "selective drafting or structuring only",
+    "commit_metadata_policy": "no Co-Authored-By / Generated-by / AI-assisted-by trailers",
+    "canonical_documentation": "/humans.txt"
+  },
+  "privacy": {
+    "analytics": false,
+    "cookies": false,
+    "third_party_requests": false,
+    "advertising": false,
+    "forms": false,
+    "local_storage": ["language_preference"],
+    "session_storage": false,
+    "server_logs": "hosting-provider-default",
+    "attestations": "/attestations.json"
+  },
+  "security_posture": {
+    "csp": "default-src 'none'; per-build hash allowlist for inline JSON-LD + speculation rules",
+    "trusted_types": true,
+    "coop": "same-origin",
+    "coep": "require-corp",
+    "corp": "same-origin",
+    "hsts": "max-age=31536000; includeSubDomains",
+    "frame_ancestors": "none",
+    "referrer_policy": "no-referrer",
+    "permissions_policy": "13 APIs denied; clipboard-write self-only"
+  },
+  "machine_readable_endpoints": {
+    "person": "/.well-known/person.json",
+    "webfinger": "/.well-known/webfinger",
+    "security_txt": "/.well-known/security.txt",
+    "pgp_key": "/.well-known/pgp-key.asc",
+    "humans_txt": "/humans.txt",
+    "llms_txt": "/llms.txt",
+    "ai_usage_txt": "/ai-usage.txt",
+    "site_metadata": "/site-metadata.json",
+    "attestations": "/attestations.json",
+    "verification_records": "/verify/verification-data.js",
+    "source_manifest": "/source/source-manifest.json",
+    "editorial_copy_master": "/editorial/editorial_copy.json",
+    "editorial_review_md": "/editorial/editorial-copy-review.md",
+    "editorial_review_html": "/editorial/editorial-copy-review.html",
+    "editorial_review_docx": "/editorial/editorial-copy-review.docx",
+    "editorial_review_pdf": "/editorial/editorial-copy-review.pdf",
+    "editorial_review_en_md": "/editorial/editorial-copy-review.en.md",
+    "editorial_review_en_html": "/editorial/editorial-copy-review.en.html",
+    "editorial_review_en_docx": "/editorial/editorial-copy-review.en.docx",
+    "editorial_review_en_pdf": "/editorial/editorial-copy-review.en.pdf"
+  },
+  "deployment": {
+    "host": "Apache on Gandi Simple Hosting (Paris)",
+    "method": "SFTP mirror, non-destructive (no --delete)",
+    "ci_role": "uploads bytes already committed; never rebuilds, never signs",
+    "operator_role": "build, sign, commit, push — all locally; deploy is bytes already in git"
+  },
+  "license": {
+    "content": "© Trent Power. Published for reading and study; reuse of writing or imagery should preserve attribution.",
+    "code": "Code patterns may be referenced freely.",
+    "fonts": "Signifier / Söhne / Söhne Mono — licensed from Klim Type Foundry; not redistributed in source archives"
+  }
+}

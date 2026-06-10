@@ -1,0 +1,185 @@
+site:
+  name: trentpower.fr
+  location: Paris, France
+  proof_line: Private · Static · Signed · No tracking
+  edition_label: Edition
+construction_rail:
+  # global construction-rail label · rendered by render_pages.py into
+  # every public page just before </body>. uppercase styling is applied
+  # by .construction-rail__label CSS (text-transform: uppercase). the
+  # phrase "under construction" stays consistent across editions as an
+  # archival web artefact; the french rendering uses "en construction"
+  # because the existing language-gate convention already established
+  # a translated form, and dropping it now would feel less authored.
+  label: Under Construction
+verification:
+  manifest: Signed manifest
+  signature: Detached signature
+  public_key: Public key
+  source_mirror: Source mirror
+  page_fingerprint: Page fingerprint
+  canonical_url: Canonical URL
+actions:
+  copy: Copy
+  copied: Copied
+  close: Close
+  view_source: View source
+  verify_page: Verify this page
+  print_profile: Print profile
+linkdesc:
+  home: Return to the homepage
+  privacy: Read how this site avoids analytics, cookies, profiling, tracking, and third-party assets
+  cite: Open citation and verification details for this page
+  integrity: Open the verification record for this edition — citation, source mirror, fingerprint, signed release
+  linkedin: Open Trent Power’s LinkedIn profile in a new tab without sending referrer data
+  github: Open the public source repository of this site on GitHub in a new tab without sending referrer data
+  email: Contact Trent Power by email
+  source: View the public source mirror of this site, with readable annotations and line references
+  verify: Check the current page against the published integrity data
+  now: Read what Trent Power is currently focused on
+  theme_light: Switch to the light appearance
+  theme_auto: Match the system appearance setting
+  theme_dark: Switch to the dark appearance
+  lang_en: Read this site in English
+  lang_fr: Lire ce site en français
+  verify_locally: Read the instructions to verify the publication locally with command-line tools
+  manifest: Download the signed integrity manifest (JSON listing every public file and its SHA-256)
+  signature: Download the detached PGP signature for the integrity manifest
+  checksums: Download the SHA-256 checksums for the signed release archives
+  public_key: Download the public PGP key used to sign releases
+  zip: Download the source archive as a ZIP file
+  targz: Download the source archive as a TAR.GZ file
+  security_threat_model: Read the security architecture and threat model for this site
+  security_contact: Read the security.txt disclosure policy for this site
+footer:
+  privacy: Privacy
+  lang_toggle: FR
+  location: Paris, France
+  verify: Verify
+  theme:
+    light: Light
+    auto: Auto
+    dark: Dark
+  proof:
+    edition: Edition
+    signed: Signed
+    manifest_link: Integrity manifest
+    # phase 93 · trust-hierarchy refactor. the colophon edition link is
+    # the footer's primary trust destination on every page; it now leads
+    # to the user-facing /verify/ hub rather than the technical
+    # /integrity/ archive (which remains reachable as a secondary
+    # reference from the /verify/ page's related-records panel).
+    manifest_link_href: /en-au/verify/
+    sha_label: SHA-256
+    published_today: Published today
+    # phase 94 · the colophon-note element is content-driven so the fr
+    # rendering can carry the machine-translation disclosure inline
+    # (italic serif, no data-edition-age hook) while the en rendering
+    # keeps the data-edition-age hook so edition.js can update the
+    # "published today" / "yesterday" / "n days ago" text at runtime.
+    colophon_note_html: '<span class="site-footer__colophon-note" data-edition-age>Published today</span>'
+    aria_label: Publication verification
+    last_verified: Verified
+    sha_title: Open the verification record for this edition
+    machine_note: Verified against release
+    machine_note_href: /en-au/verify/
+    relative:
+      today: today
+      yesterday: yesterday
+      days: '{n} days ago'
+      months: '{n} months ago'
+      years: '{n} years ago'
+  provenance:
+    line: Author's English edition.
+modal:
+  title: A personal project.
+  lede: What’s On in Paris is held privately while it is still being shaped.
+  note: If you’d like to see it, I’d be happy to share access.
+  cta_subject: What's On in Paris Access Request
+  cta_aria: Request access by email
+  close: Close
+cite:
+  hover: Copy citation
+  copied: Copied
+  site_label: Personal Site
+  edition_label: Edition
+  label:
+    action: Cite & verify
+  overlay:
+    # the only `cite.overlay.*` keys that survive the verify-modal
+    # refactor are the page_title.* short titles (still consumed by
+    # the new modal to populate the centred sub-title) and the two
+    # legacy strings still referenced by /verify/'s in-page copy
+    # button (cite.overlay.action.copy_citation,
+    # cite.overlay.toast.citation_copied). every other overlay copy
+    # key moved to `verify_modal:` below.
+    action:
+      copy_citation: Copy citation
+    toast:
+      citation_copied: Citation copied
+    page_title:
+      home: Client Strategy & Growth Systems
+      privacy: Privacy statement
+      security: Security posture
+      integrity: Integrity record
+      verify: Verify page
+      source: Source reader
+      source-reader: Source reader
+      acknowledgments: Security acknowledgements
+      integrity-verify-locally: Verify locally
+      releases: Release archive
+      release-archive: Release archive · 2026-05-09
+      forbidden: Access not available
+      not-found: Page not found
+      server-error: Temporary server error
+      maintenance: Down for maintenance
+      sw-reset: Service worker reset
+verify_modal:
+  title: Verify, cite or read the source.
+  menu_label: Page verification actions
+  close: Close
+  # phase 93 · the integrity row was retired in the trust-hierarchy
+  # refactor (verify is the user-facing hub; integrity stays linked
+  # from /verify/'s related-records panel). row keys below match the
+  # verify-modal.template.js LABELS dictionary in order: page (primary)
+  # → source → copy → print.
+  row:
+    page_verb: Verify this page
+    page_meta: Publication record · Verification
+    source_verb: View this page’s source
+    source_meta: Cmd + U
+    source_meta_touch: Source mirror · HTML edition
+    copy_verb: Copy citation
+    copy_copied: Copied to clipboard
+    print_verb: Print this page
+    print_meta: Cmd + P
+    print_meta_touch: Print or export PDF
+copy:
+  command: Copy command
+  copied: Copied
+  failed: Copy failed
+trust_routes:
+  heading: Trust routes
+  privacy_label: Privacy
+  privacy_desc: What this site does not collect
+  security_label: Security
+  security_desc: How the site is protected
+  integrity_label: Integrity
+  integrity_desc: How releases are signed
+  verify_label: Verify
+  verify_desc: How a page can be checked
+  source_label: Source
+  source_desc: Readable mirrors of public files
+  releases_label: Releases
+  releases_desc: Frozen signed snapshots
+# phase 94 · homepage imprint. printed-book verso colophon shown above
+# the site footer on the homepage only; the data-article-imprint hook
+# is a placeholder so future long articles (≥ 1500 words) can reuse
+# the same block. en + fr copy diverge below; the asterism glyph and
+# the copyright stamp are shared.
+imprint:
+  aria_label: Publication imprint
+  edition_mark_aria: Edition mark
+  line_html: 'Set in <i>Signifier</i>, <i>Söhne</i> and <i>Söhne Mono</i>.<br>Composed in Paris. First edition published <time datetime="2026-05-23">23 May 2026</time>.'
+  stamp_edition: '№ 06 · Edition 2026-06-10'
+  stamp_copyright_html: '&copy; <span class="since">1997&ndash;</span>2026 Trent Power'

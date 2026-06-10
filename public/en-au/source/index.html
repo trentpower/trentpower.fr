@@ -1,0 +1,542 @@
+<!doctype html>
+<!--
+  trentpower.fr · public source mirror
+  static, self-managed, privacy-first
+  plain-text mirrors of public files at /source/*.txt
+-->
+<html lang="en-AU">
+<head>
+  <!-- head · 01 · foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- head · 03 · document identity -->
+  <title>Source mirrors · Trent Power</title>
+  <meta name="description" content="Readable public mirrors of selected site files">
+  <link rel="canonical" href="https://trentpower.fr/en-au/source/">
+  <link rel="alternate" hreflang="en-AU" href="https://trentpower.fr/en-au/source/">
+  <link rel="alternate" hreflang="fr" href="https://trentpower.fr/fr/source/">
+  <link rel="alternate" hreflang="x-default" href="https://trentpower.fr/">
+
+  <!-- head · 04 · indexing and discovery -->
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- head · 05 · authorship and identity -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/attribution.txt">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+
+  <!-- head · 07 · social and sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="Source mirrors · Trent Power">
+  <meta property="og:description" content="Readable public mirrors of selected site files">
+  <meta property="og:url" content="https://trentpower.fr/en-au/source/">
+  <meta property="og:image" content="https://trentpower.fr/images/og/source-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Source mirrors · Trent Power">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="Source mirrors · Trent Power">
+  <meta name="twitter:description" content="Readable public mirrors of selected site files">
+  <meta name="twitter:image"       content="https://trentpower.fr/images/og/source-og.png">
+  <meta name="twitter:image:alt"   content="Source mirrors · Trent Power">
+  <meta name="twitter:site"        content="@trentpower">
+  <meta name="twitter:creator"     content="@trentpower">
+
+  <!-- head · 08 · application surface -->
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+
+  <!-- head · 09 · rendering and assets -->
+  <link rel="stylesheet" href="/styles.css?v=2026-06-10.d9e8cb64" integrity="sha384-G2EI/5PcxnoeoGAeVPHgpg7kTvWKsox1BqU3BamYJoaX8KqB6bj7j8nIrUibMqLC">
+  <link rel="stylesheet" href="/print.css?v=2026-06-10.d9e8cb64" media="print">
+
+  <!-- head · 10 · structured data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "@id": "https://trentpower.fr/source/#article",
+  "headline": "Source · Trent Power",
+  "url": "https://trentpower.fr/en-au/source/",
+  "description": "Public source mirrors. Plain-text inspection of every active publishable byte.",
+  "inLanguage": "en-AU",
+  "isPartOf": {
+    "@id": "https://trentpower.fr/#website"
+  },
+  "author": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "publisher": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "datePublished": "2026-02-15",
+  "dateModified": "2026-06-10T00:00:00+00:00",
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://trentpower.fr/images/og/source-og.png",
+    "width": 1200,
+    "height": 630
+  }
+}
+  </script>
+</head>
+<body data-page="source" data-layout="masthead" data-surface="record" data-masthead="brand-only" class="source-page" data-edition="2026-06-10" data-source-sha256-short="--------">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark" href="/en-au/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="site" id="main" tabindex="-1" itemscope itemtype="https://schema.org/TechArticle">
+  <div class="page">
+    <p class="page-kicker">Source</p>
+    <h1 class="page-title hero-stack"><span class="hero-line">Every public byte,</span><span class="hero-line">in plain text.</span></h1>
+    <div class="page-body">
+      <p class="page-lede">Selected public files, published in readable form. For inspection, preservation, and
+      machine readability. This is the human-readable mirror of the site, not the
+      cryptographic authority — that is Integrity.</p>
+
+      <p class="source-curation-note">This index shows the principal public mirrors. Additional mirrored files may remain
+      available by direct URL where they support verification, recovery, or release
+      integrity.</p>
+
+      <!-- primary · group jump-list -->
+      <nav class="source-contents" aria-label="Contents">
+        <ul class="source-contents-list">
+          <li><a href="#source-group-published-pages">Published pages</a></li>
+          <li><a href="#source-group-trust-records">Trust records</a></li>
+          <li><a href="#source-group-scripts">Scripts</a></li>
+          <li><a href="#source-group-metadata">Metadata</a></li>
+        </ul>
+      </nav>
+
+      <div class="source-registry-wrap">
+      <!-- BEGIN source-registry -->
+      <article class="integrity-record-card source-group-card" aria-labelledby="source-group-published-pages">
+        <header class="source-group-header">
+          <h2 class="source-group-title" id="source-group-published-pages"><span>Published pages</span></h2>
+          <p class="source-group-count" aria-label="21 entries">21</p>
+        </header>
+        <p class="source-group-gloss">Readable mirrors of the principal public pages, served as plain text so the bytes can be inspected without execution.</p>
+        <dl class="source-registry">
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2F403.html"><code>403.html</code></a> <a class="source-entry-raw" href="/source/403.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">13.1 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="bnUdFBcLSYbzZKlWcL/KAlZhZBHGcOSbtafvew0lx+g=">bnUdFBcLSYbz</samp></p></dd>
+            <dd class="source-entry-desc">Forbidden page.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2F404.html"><code>404.html</code></a> <a class="source-entry-raw" href="/source/404.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">13.0 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="aAYHpVGyf+83NqYsQ+JivGQDPwtHhmWyxFs5dYsyAa4=">aAYHpVGyf+83</samp></p></dd>
+            <dd class="source-entry-desc">Not found page.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2F500.html"><code>500.html</code></a> <a class="source-entry-raw" href="/source/500.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">13.1 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="jZkEteJ+JEqqctq3t4LgWqM5jCznIFE2Cl7kHT9BwAw=">jZkEteJ+JEqq</samp></p></dd>
+            <dd class="source-entry-desc">Server error page.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fen-au%2F"><code>en-au/index.html</code></a> <a class="source-entry-raw" href="/source/en-au/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">35.6 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="HLDlfmYlJDZpsuXmoIfE+NuFDXDAcExOVZIGTqOGgNg=">HLDlfmYlJDZp</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fen-au%2Fintegrity%2F"><code>en-au/integrity/index.html</code></a> <a class="source-entry-raw" href="/source/en-au/integrity/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">19.7 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="FqMz7KeFNfA8uQJai3Mz8bHE82swZ8Wg+6V4CqjkM/M=">FqMz7KeFNfA8</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fen-au%2Fintegrity%2Freleases%2F"><code>en-au/integrity/releases/index.html</code></a> <a class="source-entry-raw" href="/source/en-au/integrity/releases/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">19.6 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="FtNnYgeCb/RqWHu+WB+XBy7Juf4LBxyZaLDWtZ7a9Pc=">FtNnYgeCb/Rq</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fen-au%2Fintegrity%2Fverify-locally%2F"><code>en-au/integrity/verify-locally/index.html</code></a> <a class="source-entry-raw" href="/source/en-au/integrity/verify-locally/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">15.1 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="dC3UUPPqUh/cf3fMNc+ju+op9/DCL43++0acsYqOO94=">dC3UUPPqUh/c</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fen-au%2Fprivacy%2F"><code>en-au/privacy/index.html</code></a> <a class="source-entry-raw" href="/source/en-au/privacy/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">15.3 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="EGdXEh44me6pQITArR6Hu76zkRIr2okQqZS4I+6zrIw=">EGdXEh44me6p</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fen-au%2Fsecurity%2Facknowledgments%2F"><code>en-au/security/acknowledgments/index.html</code></a> <a class="source-entry-raw" href="/source/en-au/security/acknowledgments/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">14.3 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="ye1zZVwvURyR2F3qDv1qRUaZgNcQgbawNNLjEtYZY4s=">ye1zZVwvURyR</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fen-au%2Fsecurity%2F"><code>en-au/security/index.html</code></a> <a class="source-entry-raw" href="/source/en-au/security/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">28.8 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="T/YPWusjz46QYM/M9F0s5f63t9Xjxe48e1LIhMP1jlA=">T/YPWusjz46Q</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fen-au%2Fverify%2F"><code>en-au/verify/index.html</code></a> <a class="source-entry-raw" href="/source/en-au/verify/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">15.2 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="sOD/3Q8AyTsfU6Bqg6IewN/cR6F2whOM7FqyCAALpkE=">sOD/3Q8AyTsf</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Ffr%2Fconfidentialite%2F"><code>fr/confidentialite/index.html</code></a> <a class="source-entry-raw" href="/source/fr/confidentialite/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">16.1 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="CvOnhMLtZ9yuuATsGYelcRMZyCYJMcEtBT4+nbqz108=">CvOnhMLtZ9yu</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Ffr%2F"><code>fr/index.html</code></a> <a class="source-entry-raw" href="/source/fr/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">36.9 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="FlLLmOZEp5fblqZd5bUA86zF2ldv+I5FmNO5H3DNfRg=">FlLLmOZEp5fb</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Ffr%2Fintegrite%2Farchives%2F"><code>fr/integrite/archives/index.html</code></a> <a class="source-entry-raw" href="/source/fr/integrite/archives/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">20.2 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="woxJlyi8wDPm7se5B8tMs9LmQFPRrMfOXOSI1s9Utgs=">woxJlyi8wDPm</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Ffr%2Fintegrite%2F"><code>fr/integrite/index.html</code></a> <a class="source-entry-raw" href="/source/fr/integrite/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">20.2 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="LjGnqd9/9cQj7Rm6WaLfmtTs1FUqTaoUBk82BGC4kqw=">LjGnqd9/9cQj</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Ffr%2Fintegrite%2Fverifier-localement%2F"><code>fr/integrite/verifier-localement/index.html</code></a> <a class="source-entry-raw" href="/source/fr/integrite/verifier-localement/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">15.5 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="lVakQeaFpw3A8BeKTmw4DkcQFI8vFFGvcGKIjfvQEwM=">lVakQeaFpw3A</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Ffr%2Fsecurite%2F"><code>fr/securite/index.html</code></a> <a class="source-entry-raw" href="/source/fr/securite/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">30.6 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="K4RrPwZDxBQ3o/p7W+4ZZNd3SBEXYYTuxfQj/UrH7/8=">K4RrPwZDxBQ3</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Ffr%2Fsecurite%2Fremerciements%2F"><code>fr/securite/remerciements/index.html</code></a> <a class="source-entry-raw" href="/source/fr/securite/remerciements/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">14.8 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="jqI+T6sx11x+mx6MRl1OL3LfZk8pQhLlrj24Q5R3xsE=">jqI+T6sx11x+</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Ffr%2Fverifier%2F"><code>fr/verifier/index.html</code></a> <a class="source-entry-raw" href="/source/fr/verifier/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">15.6 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="Rz2nc7eBx0tCx/lVgXe2rmZE1MCieGLcFt4mGoARGXM=">Rz2nc7eBx0tC</samp></p></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2F"><code>index.html</code></a> <a class="source-entry-raw" href="/source/index.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">10.9 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="nhxDsysZ57HsMVmeiXhZaFUcIhY2l2IhswxvV0LSiec=">nhxDsysZ57Hs</samp></p></dd>
+            <dd class="source-entry-desc">Home page. The editorial entry point.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fmaintenance.html"><code>maintenance.html</code></a> <a class="source-entry-raw" href="/source/maintenance.html.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="HyperText Markup Language">HTML</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">13.5 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="4SAEB/mfemui81eqUbEBArGU7u/qFHa1uW2jW+r2k4Y=">4SAEB/mfemui</samp></p></dd>
+            <dd class="source-entry-desc">Maintenance notice. Used during planned downtime.</dd>
+          </div>
+        </dl>
+      </article>
+      <article class="integrity-record-card source-group-card" aria-labelledby="source-group-trust-records">
+        <header class="source-group-header">
+          <h2 class="source-group-title" id="source-group-trust-records"><span>Trust records</span></h2>
+          <p class="source-group-count" aria-label="10 entries">10</p>
+        </header>
+        <p class="source-group-gloss">Public commitments and identity surfaces. Who publishes the site, what is promised, where disclosure runs.</p>
+        <dl class="source-registry">
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2F.well-known%2Fattribution.txt"><code>.well-known/attribution.txt</code></a> <a class="source-entry-raw" href="/source/.well-known/attribution.txt.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Plain text">TXT</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">390 B</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="oSzaz8vXgK+BYMC0hEVCSPo0lPp4rwBKwgLRMEBL6Rg=">oSzaz8vXgK+B</samp></p></dd>
+            <dd class="source-entry-desc">Author attribution. Names the responsible party for the public site.</dd>
+          </div>
+          <div class="source-entry" data-critical="true">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2F.well-known%2Fperson.json"><code>.well-known/person.json</code></a> <a class="source-entry-raw" href="/source/.well-known/person.json.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript Object Notation">JSON</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">3.1 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="QP9osH6OVwaIKRYyEQqrina0EDA1s/2K4reSkfBPq7M=">QP9osH6OVwaI</samp></p></dd>
+            <dd class="source-entry-desc"><span class="source-entry-role">Canonical identity record</span> <span class="source-entry-desc-text">Machine-readable identity in JSON-LD. The reference used by discovery, federation and
+verification.</span></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2F.well-known%2Fpublication.json"><code>.well-known/publication.json</code></a> <a class="source-entry-raw" href="/source/.well-known/publication.json.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript Object Notation">JSON</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">4.7 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="Wip1js65oeW+vPx3fW0aavmmA/dXDIEIuMoklI5/rTU=">Wip1js65oeW+</samp></p></dd>
+            <dd class="source-entry-desc">Publication record. Describes the site as a self-managed editorial work.</dd>
+          </div>
+          <div class="source-entry" data-critical="true">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2F.well-known%2Fsecurity.txt"><code>.well-known/security.txt</code></a> <a class="source-entry-raw" href="/source/.well-known/security.txt.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Plain text">TXT</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">1.5 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="OeE0g7hequv/sN9tRxdrCETU670FKNmHJyf5x6Zy2lI=">OeE0g7hequv/</samp></p></dd>
+            <dd class="source-entry-desc"><span class="source-entry-role">Public trust surface</span> <span class="source-entry-desc-text">Coordinated disclosure policy. Standard /.well-known/security.txt contact and scope.</span></dd>
+          </div>
+          <div class="source-entry" data-critical="true">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2F.well-known%2Fwebfinger"><code>.well-known/webfinger</code></a> <a class="source-entry-raw" href="/source/.well-known/webfinger.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Plain text">TXT</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">327 B</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="i5Q+f35Z9HNRAM3xAxYcrQA+ly/ZBu1V6oONAmFTF5k=">i5Q+f35Z9HNR</samp></p></dd>
+            <dd class="source-entry-desc"><span class="source-entry-role">Identity discovery</span> <span class="source-entry-desc-text">WebFinger discovery surface. Resolves identity across federated protocols.</span></dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fai-usage.txt"><code>ai-usage.txt</code></a> <a class="source-entry-raw" href="/source/ai-usage.txt.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Plain text">TXT</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">974 B</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="KCGgNuPPWi8tmdrtleJwI0EuGgMrWeAkZUaYHNDvinY=">KCGgNuPPWi8t</samp></p></dd>
+            <dd class="source-entry-desc">Statement of AI usage and policy for the site.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fassertion.txt"><code>assertion.txt</code></a> <a class="source-entry-raw" href="/source/assertion.txt.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Plain text">TXT</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">1.2 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="e1vqC6De55Z1+k+CHmSei5Q3ur3sG+59vc58jQlF8wk=">e1vqC6De55Z1</samp></p></dd>
+            <dd class="source-entry-desc">Authorship assertion. Declaration of authorship and integrity intent.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fhumans.txt"><code>humans.txt</code></a> <a class="source-entry-raw" href="/source/humans.txt.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Plain text">TXT</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">2.3 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="AnP6/S4dIbllCer8+PFJC9kz+HRo/LoYM/GBHYk7HFU=">AnP6/S4dIbll</samp></p></dd>
+            <dd class="source-entry-desc">Credits and notes for the people behind the site.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fpgp.txt"><code>pgp.txt</code></a> <a class="source-entry-raw" href="/source/pgp.txt.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Plain text">TXT</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">3.1 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="rvgu/o1MmjSAvnF3b6Fws3ik3fao6Ioz33hKhNW+Deg=">rvgu/o1MmjSA</samp></p></dd>
+            <dd class="source-entry-desc">PGP statement. The signing key fingerprint and its use.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fstatement.txt"><code>statement.txt</code></a> <a class="source-entry-raw" href="/source/statement.txt.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Plain text">TXT</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">1.3 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="6gPA2f+QHkRwQDeBBixS9MyYQ/xKYBel49DNmGDSZSg=">6gPA2f+QHkRw</samp></p></dd>
+            <dd class="source-entry-desc">Editorial statement. The site's authoring principles.</dd>
+          </div>
+        </dl>
+      </article>
+      <article class="integrity-record-card source-group-card" aria-labelledby="source-group-scripts">
+        <header class="source-group-header">
+          <h2 class="source-group-title" id="source-group-scripts"><span>Scripts</span></h2>
+          <p class="source-group-count" aria-label="12 entries">12</p>
+        </header>
+        <p class="source-group-gloss">Authored stylesheets and JavaScript the page ships to the browser. Mirrored from source, not the minified deployed bytes.</p>
+        <dl class="source-registry">
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fjs%2Fcopy.js"><code>copy.js</code></a> <a class="source-entry-raw" href="/source/copy.js.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript">JS</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">4.6 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="pel8k9PVYI7OwQKQFL+tu6yk7L02XPbHvHqOWNm/1KQ=">pel8k9PVYI7O</samp></p></dd>
+            <dd class="source-entry-desc">Shared copy-to-clipboard behaviour, driven by data-copy attributes.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fjs%2Fedition.js"><code>edition.js</code></a> <a class="source-entry-raw" href="/source/edition.js.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript">JS</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">7.4 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="SgQkkh0C3HFNR/PT0X5SNIbxWRIqRLCBVlOo+T3MhsE=">SgQkkh0C3HFN</samp></p></dd>
+            <dd class="source-entry-desc">Footer edition-age localisation. Reads body[data-edition] and rewrites [data-edition-age]
+in the document language.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fjs%2Ffonts.js"><code>fonts.js</code></a> <a class="source-entry-raw" href="/source/fonts.js.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript">JS</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">1.2 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="Hj9VDtkTiD7h06erDd17opRRPBWyZDr3vstJ2h90x9g=">Hj9VDtkTiD7h</samp></p></dd>
+            <dd class="source-entry-desc">Post-paint full-font upgrade. Swaps the subset fonts for the full set.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fjs%2Foverlay.js"><code>overlay.js</code></a> <a class="source-entry-raw" href="/source/overlay.js.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript">JS</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">3.5 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="zSqbmSDbJE0zpYuRre4gLX2yfcm+rAoylsj//MuW5Ow=">zSqbmSDbJE0z</samp></p></dd>
+            <dd class="source-entry-desc">Shared overlay lifecycle — focus trap, scroll lock, the cite and project modals.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fprint.css"><code>print.css</code></a> <a class="source-entry-raw" href="/source/print.css.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Cascading Style Sheets">CSS</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">27.5 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="UYemyBJEv6ZbwlIhI6Q6e48OTwzIdGK1fDOLGf5Gy1c=">UYemyBJEv6Zb</samp></p></dd>
+            <dd class="source-entry-desc">Print stylesheet. Layout rules for paper output.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fjs%2Freveal.js"><code>reveal.js</code></a> <a class="source-entry-raw" href="/source/reveal.js.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript">JS</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">1.5 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="BBGu3W+wvBqdmi6rez4OxqV4eG7deryILWIkUZPg8Zs=">BBGu3W+wvBqd</samp></p></dd>
+            <dd class="source-entry-desc">Scroll-reveal — fades sections in as they enter the viewport.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fstyles.css"><code>styles.css</code></a> <a class="source-entry-raw" href="/source/styles.css.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Cascading Style Sheets">CSS</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">149.7 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="R/SWPMf2TQTQwwofWAWyJ2mjeWqlmC3qYSDEQMaa/dA=">R/SWPMf2TQTQ</samp></p></dd>
+            <dd class="source-entry-desc">Authored stylesheet. Mirrored from source, not the minified deployed bytes.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fsw-register.js"><code>sw-register.js</code></a> <a class="source-entry-raw" href="/source/sw-register.js.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript">JS</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">1.8 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="EzEtESu3W/MokXkP0Gju22/WjWl/SJkamhrLCYS8dyc=">EzEtESu3W/Mo</samp></p></dd>
+            <dd class="source-entry-desc">Service-worker registration and the tp-app Trusted Types policy.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fsw.js"><code>sw.js</code></a> <a class="source-entry-raw" href="/source/sw.js.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript">JS</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">9.7 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="+2zp/kZMtM+Ifv0yxu8g9YOqNpAdnUZyekk5A3TVTMg=">+2zp/kZMtM+I</samp></p></dd>
+            <dd class="source-entry-desc">Service worker. Offline cache for the public site.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fjs%2Ftheme.js"><code>theme.js</code></a> <a class="source-entry-raw" href="/source/theme.js.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript">JS</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">1.5 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="hZpsNbdsQHHsvrcldLFkpDep9L9g+69eJJGfR16OUmM=">hZpsNbdsQHHs</samp></p></dd>
+            <dd class="source-entry-desc">Theme toggle and the html.js / html.enhanced enhancement flags.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fjs%2Fverify-modal.js"><code>verify-modal.js</code></a> <a class="source-entry-raw" href="/source/verify-modal.js.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript">JS</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">13.1 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="3EPgHrX4WIbGwoGe387Xyi/uaBcG+zmfp34cAqc4PpI=">3EPgHrX4WIbG</samp></p></dd>
+            <dd class="source-entry-desc">Verify action menu. Five-row overlay handing off to source, citation, integrity, verify and print.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fverify%2Fverify.js"><code>verify/verify.js</code></a> <a class="source-entry-raw" href="/source/verify/verify.js.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript">JS</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">21.7 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="pydvvckk7ELTdjhiRqApG2PRbtcycsQ0tPd3WvrzTkc=">pydvvckk7ELT</samp></p></dd>
+            <dd class="source-entry-desc">Verification logic. Renders a page record from the verification map.</dd>
+          </div>
+        </dl>
+      </article>
+      <article class="integrity-record-card source-group-card" aria-labelledby="source-group-metadata">
+        <header class="source-group-header">
+          <h2 class="source-group-title" id="source-group-metadata"><span>Metadata</span></h2>
+          <p class="source-group-count" aria-label="6 entries">6</p>
+        </header>
+        <p class="source-group-gloss">Server configuration and machine-readable records describing the site to crawlers, indexers and language models.</p>
+        <dl class="source-registry">
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2F.htaccess"><code>.htaccess</code></a> <a class="source-entry-raw" href="/source/htaccess.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Apache HTTP server configuration">Apache</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">24.7 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="9xSoUmaec/7U5/lnJfJPg9NaVQPtUrKY8vaJfHWs0yo=">9xSoUmaec/7U</samp></p></dd>
+            <dd class="source-entry-desc">Apache configuration. Public-safety scanned before mirroring.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fattestations.json"><code>attestations.json</code></a> <a class="source-entry-raw" href="/source/attestations.json.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript Object Notation">JSON</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">454 B</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="gHJWdZKY0esHE3i6NI/NkuoDIb8bNYur/6XRMCBwcIE=">gHJWdZKY0esH</samp></p></dd>
+            <dd class="source-entry-desc">Public attestations. Verifiable claims about the site.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fllms.txt"><code>llms.txt</code></a> <a class="source-entry-raw" href="/source/llms.txt.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Plain text">TXT</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">2.4 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="tTKFqWYK/0FzJRknPZTSkJl/v/zln3DRRQwES1ZNji8=">tTKFqWYK/0Fz</samp></p></dd>
+            <dd class="source-entry-desc">Machine-readable guidance for language models and AI systems.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Frobots.txt"><code>robots.txt</code></a> <a class="source-entry-raw" href="/source/robots.txt.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Plain text">TXT</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">493 B</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="Cn845Rjry/gaw7EkhWF8MmWRalQc6DxO478wdcraLEk=">Cn845Rjry/ga</samp></p></dd>
+            <dd class="source-entry-desc">Crawler access policy and public indexing intent.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fsite-metadata.json"><code>site-metadata.json</code></a> <a class="source-entry-raw" href="/source/site-metadata.json.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="JavaScript Object Notation">JSON</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">2.1 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="2Q3jP/Zqc1P8hlFewYpJSZ/OXKzOgbNS7l0Ard+/ZDE=">2Q3jP/Zqc1P8</samp></p></dd>
+            <dd class="source-entry-desc">Site-level metadata. Edition, build, asset version.</dd>
+          </div>
+          <div class="source-entry">
+            <dt class="source-entry-name"><a href="/source/view/?path=%2Fsitemap.xml"><code>sitemap.xml</code></a> <a class="source-entry-raw" href="/source/sitemap.xml.txt">Plain text</a></dt>
+            <dd class="source-entry-meta"><abbr title="Plain text">TXT</abbr> <span class="source-entry-sep" aria-hidden="true">·</span> <span class="source-entry-size">4.8 KB</span>
+              <p class="source-entry-hash"><abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> <samp title="xd+FiNKs36RLuUhucnyVuFV//YaqoDuz8H1ET8lT7qk=">xd+FiNKs36RL</samp></p></dd>
+            <dd class="source-entry-desc">Public sitemap. URL inventory for crawlers.</dd>
+          </div>
+        </dl>
+      </article>
+      <!-- END source-registry -->
+      </div>
+
+
+    </div>
+  </div>
+
+</main>
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/en-au/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">Return to the homepage</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>Paris, France</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/en-au/privacy/" rel="privacy-policy" aria-describedby="desc-privacy">Privacy</a>
+        <span class="visually-hidden" id="desc-privacy">Read how this site avoids analytics, cookies, profiling, tracking, and third-party assets</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">Verify</button>
+        <span class="visually-hidden" id="desc-cite">Open citation and verification details for this page</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><a href="/en-au/source/"  aria-describedby="desc-lang-en" lang="en" aria-current="page">English</a> <span class="visually-hidden" id="desc-lang-en">Read this site in English</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><a href="/fr/source/" aria-describedby="desc-lang-fr" lang="fr">Français</a> <span class="visually-hidden" id="desc-lang-fr">Lire ce site en français</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break" aria-hidden="true">
+
+    <!-- bottom stratum · colophon · theme -->
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="Publication verification">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="/en-au/verify/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Edition</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          <span class="site-footer__colophon-note" data-edition-age>Published today</span>
+          <span class="visually-hidden" id="desc-integrity">Open the verification record for this edition — citation, source mirror, fingerprint, signed release</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">Light</button> <span class="visually-hidden" id="desc-theme-light">Switch to the light appearance</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">Auto</button> <span class="visually-hidden" id="desc-theme-auto">Match the system appearance setting</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">Dark</button> <span class="visually-hidden" id="desc-theme-dark">Switch to the dark appearance</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+
+<!-- scripts · progressive enhancement, no telemetry -->
+<script src="/verify/verification-data.js?v=2026-06-10.d9e8cb64" defer></script>
+
+
+<script src="/js/theme.js?v=2026-06-10.d9e8cb64" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/sw-register.js?v=2026-06-10.d9e8cb64" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+<script src="/js/reveal.js?v=2026-06-10.d9e8cb64" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+
+<script src="/js/overlay.js?v=2026-06-10.d9e8cb64" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+
+<script src="/js/copy.js?v=2026-06-10.d9e8cb64" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/edition.js?v=2026-06-10.d9e8cb64" integrity="sha384-kIhbudFAbfEtCHFdw/AF3cOioeMYPukKzX1c6/gj16bEkO8fm9N7re1FDimxaMaC" defer></script>
+<script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
+<script src="/js/verify-modal.js?v=2026-06-10.d9e8cb64" integrity="sha384-6soCAm6ZECBoqkgQuoQ0A7eBj3SD+nLOgHlfffbxBlhJGCxHOO+CPermVfmvYXu0" defer></script>
+<script src="/js/fonts.js?v=2026-06-10.d9e8cb64" integrity="sha384-kRel595dQiUN7pFngNGyqiBEOQ0yxQKPCtfFmv4gRqmnR/RcUqVurl6+G6h/FJqx" defer></script>
+
+
+<!-- body · construction rail -->
+<div class="construction-rail" data-construction-rail aria-hidden="true">
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+  <span class="construction-rail__label">
+    <span class="construction-rail__dot" aria-hidden="true"></span>
+    Under Construction
+  </span>
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+</div>
+</body>
+</html>

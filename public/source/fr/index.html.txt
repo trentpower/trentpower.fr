@@ -1,0 +1,734 @@
+<!doctype html>
+<!--
+  trentpower.fr
+
+  static, semantic, self-managed, privacy-first.
+  no analytics. no cookies. no external assets.
+  public integrity manifest: /integrity.json
+
+  irc. geocities. betty. ttn. since 1997.
+
+  visitor counters.
+  guestbooks.
+  “under construction”.
+  animated gifs and midi files that played
+  whether you wanted them to or not.
+
+  we did not know what we were building.
+  we just knew we could.
+
+  if you have read this far, you remember ctrl+u.
+
+  the web was a library
+  you could open the spine of.
+
+  it still is, here.
+-->
+<html lang="fr" dir="ltr">
+<head>
+  <!-- head · 01 · foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#FAF7F0">
+
+  <!-- head · 02 · appearance bootstrap -->
+  <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const L='tp-last-edition',O='tp-lang';if(!localStorage.getItem(L)){const o=localStorage.getItem(O)||'';if(o==='en'){localStorage.setItem(L,'en-au');localStorage.removeItem(O);}else if(o==='fr'){localStorage.setItem(L,'fr');localStorage.removeItem(O);}}}catch(_){}try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m;if(sessionStorage.getItem('tp-skip-hero-anim')){e.classList.add('hero-static');sessionStorage.removeItem('tp-skip-hero-anim');}}catch(_){}window.addEventListener('pageshow',function(ev){if(ev.persisted)e.classList.add('hero-static');});setTimeout(()=>e.classList.add('fonts-ready'),2500);})();</script>
+
+  <!-- head · 03 · document identity -->
+  <title>Stratégie Client &amp; Systèmes de Croissance · Trent Power</title>
+  <meta name="description"
+        content="Stratégie client, systèmes de croissance et adoption culturelle à l’échelle mondiale">
+  <meta name="document-edition" content="2026-06-10">
+  <link rel="canonical" href="https://trentpower.fr/fr/">
+  <link rel="alternate" hreflang="en-AU" href="https://trentpower.fr/en-au/">
+  <link rel="alternate" hreflang="fr" href="https://trentpower.fr/fr/">
+  <link rel="alternate" hreflang="x-default" href="https://trentpower.fr/">
+
+  <!-- head · 04 · indexing and discovery -->
+  <meta name="robots" content="index, follow">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- head · 05 · authorship and identity -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/person.json">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+  <link rel="alternate" type="text/plain" href="/llms.txt">
+  <link rel="me" href="https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg">
+  <link rel="me" href="https://www.linkedin.com/in/trentpower/">
+  <link rel="me" href="https://orcid.org/0009-0002-2652-7188">
+  <link rel="me" href="https://www.crunchbase.com/person/trent-power-3f52">
+
+  <!-- head · 06 · provenance, rights and reuse -->
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+  <link rel="describedby" href="/.well-known/attribution.txt">
+  <link rel="describedby" href="/integrity.json">
+  <link rel="cite-as" href="https://trentpower.fr/fr/">
+  <link rel="privacy-policy" href="https://trentpower.fr/fr/confidentialite/">
+  <link rel="help" href="https://trentpower.fr/fr/securite/">
+
+  <!-- head · 07 · social and sharing -->
+  <meta property="og:type" content="profile">
+  <meta property="profile:first_name" content="Trent">
+  <meta property="profile:last_name" content="Power">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="Stratégie Client &amp; Systèmes de Croissance · Trent Power">
+  <meta property="og:description" content="Stratégie client, systèmes de croissance et adoption culturelle à l’échelle mondiale">
+  <meta property="og:url" content="https://trentpower.fr/fr/">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="en_AU">
+  <meta property="og:image" content="https://trentpower.fr/images/og/home-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Stratégie Client &amp; Systèmes de Croissance · Trent Power">
+
+  <!-- head · 08 · application surface -->
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+
+  <!-- head · 09 · rendering and assets -->
+  <link rel="preload" href="/fonts/subsets/signifier-light-hero.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/signifier-light-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/subsets/soehne-kraftig-nav.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/subsets/soehne-mono-buch-labels.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/styles.css?v=2026-06-10.d9e8cb64" integrity="sha384-G2EI/5PcxnoeoGAeVPHgpg7kTvWKsox1BqU3BamYJoaX8KqB6bj7j8nIrUibMqLC">
+  <link rel="stylesheet" href="/print.css?v=2026-06-10.d9e8cb64" media="print">
+
+  <!-- head · structured data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://trentpower.fr/#trent-power",
+      "name": "Trent Power",
+      "givenName": "Trent",
+      "familyName": "Power",
+      "url": "https://trentpower.fr",
+      "sameAs": [
+        "https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg",
+        "https://www.linkedin.com/in/trentpower/",
+        "https://orcid.org/0009-0002-2652-7188",
+        "https://www.crunchbase.com/person/trent-power-3f52"
+      ],
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ORCID",
+        "value": "0009-0002-2652-7188",
+        "url": "https://orcid.org/0009-0002-2652-7188"
+      },
+      "jobTitle": "Directeur Groupe, Développement Client & Relations Clients",
+      "disambiguatingDescription": "Stratégie client, systèmes de croissance et adoption culturelle à l'échelle mondiale",
+      "description": "Trent Power est un leader basé à Paris en stratégie client et développement client dans l'industrie du luxe.",
+      "nationality": {
+        "@type": "Country",
+        "name": "Australia"
+      },
+      "worksFor": {
+        "@type": "Organization",
+        "name": "LVMH",
+        "sameAs": "https://www.wikidata.org/wiki/Q504998"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Paris",
+        "addressCountry": "FR"
+      },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "University of Sydney",
+        "sameAs": "https://www.wikidata.org/wiki/Q486285"
+      },
+      "knowsAbout": [
+        "Stratégie client",
+        "Développement client",
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://trentpower.fr/fr/#clienteling-definition",
+          "name": "Clienteling",
+          "url": "https://trentpower.fr/fr/#clienteling-definition"
+        },
+        "CRM",
+        "Retail de luxe",
+        "Adoption culturelle",
+        "Gestion du changement organisationnel",
+        "IA dans les relations clients",
+        "Systèmes de gouvernance"
+      ],
+      "knowsLanguage": [
+        {
+          "@type": "Language",
+          "name": "English",
+          "alternateName": "en"
+        },
+        {
+          "@type": "Language",
+          "name": "French",
+          "alternateName": "fr"
+        }
+      ],
+      "mainEntityOfPage": {
+        "@id": "https://trentpower.fr/fr/#profile-page"
+      },
+      "subjectOf": [
+        {
+          "@type": "WebPage",
+          "name": "VivaTech 2025 speaker profile",
+          "url": "https://vivatech.com/speakers/trent-power"
+        },
+        {
+          "@type": "WebPage",
+          "name": "D-Congress 2024 overview",
+          "url": "https://dcongress.com/about-us/"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Fostering meaningful client relationships at LVMH",
+          "url": "https://www.insidelvmh.com/article/fostering-meaningful-client-relationships-at-lvmh"
+        }
+      ],
+      "image": {
+        "@type": "ImageObject",
+        "@id": "https://trentpower.fr/#trent-power-image",
+        "url": "https://trentpower.fr/images/portraits/trent-power.jpg",
+        "creditText": "David Arous",
+        "copyrightNotice": "© David Arous",
+        "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "acquireLicensePage": "https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg",
+        "creator": {
+          "@type": "Person",
+          "name": "David Arous",
+          "url": "https://histoiresdimages.pixieset.com/davidarous-histoiresdimages-agencephoto/"
+        }
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://trentpower.fr/#website",
+      "name": "Trent Power",
+      "description": "Stratégie client, systèmes de croissance et adoption culturelle à l'échelle mondiale",
+      "url": "https://trentpower.fr/",
+      "author": {
+        "@id": "https://trentpower.fr/#trent-power"
+      },
+      "publisher": {
+        "@id": "https://trentpower.fr/#trent-power"
+      },
+      "copyrightYear": 2026,
+      "copyrightHolder": {
+        "@id": "https://trentpower.fr/#trent-power"
+      },
+      "inLanguage": [
+        "en-AU",
+        "fr"
+      ],
+      "datePublished": "2026-02-22",
+      "dateModified": "2026-06-10T00:00:00+00:00"
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": "https://trentpower.fr/fr/#profile-page",
+      "url": "https://trentpower.fr/fr/",
+      "name": "Trent Power — Profile",
+      "datePublished": "2026-02-22",
+      "dateModified": "2026-06-10T00:00:00+00:00",
+      "mainEntity": {
+        "@id": "https://trentpower.fr/#trent-power"
+      },
+      "about": {
+        "@id": "https://trentpower.fr/#trent-power"
+      },
+      "primaryImageOfPage": {
+        "@id": "https://trentpower.fr/#trent-power-image"
+      },
+      "isPartOf": {
+        "@id": "https://trentpower.fr/#website"
+      },
+      "hasPart": [
+        {
+          "@type": "WebPageElement",
+          "@id": "https://trentpower.fr/fr/#approach",
+          "name": "Approche"
+        },
+        {
+          "@type": "WebPageElement",
+          "@id": "https://trentpower.fr/fr/#trajectory",
+          "name": "Parcours"
+        },
+        {
+          "@type": "WebPageElement",
+          "@id": "https://trentpower.fr/fr/#contact",
+          "name": "Contact"
+        }
+      ],
+      "inLanguage": "fr",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          ".hero-statement",
+          ".hero-body",
+          ".principle-title"
+        ]
+      }
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://trentpower.fr/fr/#clienteling-definition",
+      "name": "Clienteling",
+      "description": "Le clienteling est la pratique disciplinée qui transforme ce qu’un Conseiller Client sait en quelque chose qu’un Client ressent. Dès que les interactions deviennent mécaniques, ce n’est plus du clienteling.",
+      "url": "https://trentpower.fr/fr/#clienteling-definition",
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "@id": "https://trentpower.fr/#definitions",
+        "name": "Définitions utilisées sur trentpower.fr",
+        "url": "https://trentpower.fr/"
+      }
+    }
+  ]
+}
+  </script>
+
+</head>
+
+<body data-page="home" data-layout="masthead" data-surface="editorial" data-edition="2026-06-10" data-source-sha256-short="--------">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- body · masthead -->
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark u-author" href="/fr/" aria-describedby="desc-home-masthead" aria-current="page"><span>Trent</span> <span>Power</span></a>
+      <span class="visually-hidden" id="desc-home-masthead">Retour à l’accueil</span>
+    </div>
+  </div>
+</header>
+
+<!-- body · primary content -->
+<main class="site" id="main" tabindex="-1">
+  <article class="home-profile h-card" aria-labelledby="p-mission">
+
+    <div hidden>
+      <span class="p-name"><bdi>Trent Power</bdi></span>
+      <a class="u-url u-uid" href="https://trentpower.fr/fr/">https://trentpower.fr/</a>
+      <data class="u-photo" value="https://trentpower.fr/images/portraits/trent-power.jpg"></data>
+      <span class="p-locality">Paris</span>
+      <span class="p-country-name">France</span>
+    </div>
+
+    <!-- primary · 01 · positioning -->
+    <header class="hero" id="top">
+      <p class="hero-kicker"><bdi>Trent Power</bdi></p>
+      <h1 class="hero-statement hero-statement--broken p-note" id="p-mission"><span class="hero-line">Stratégie client,</span><br><span class="hero-line"><mark>systèmes de croissance</mark></span><br><span class="hero-line">et adoption culturelle</span><br><span class="hero-line">à l’échelle mondiale.</span></h1>
+      <p class="hero-body" id="p-role">Je pilote la stratégie client au niveau du Groupe, en me concentrant sur les systèmes,
+      la gouvernance et les façons de travailler qui transforment les relations clients en
+      valeur à long terme. Mon travail se situe à l’intersection de la stratégie, de la
+      technologie et des relations humaines, avec un impact qui se déploie à grande échelle
+      et dans la durée.</p>
+    </header>
+
+    <!-- primary · 02 · approach -->
+    <section id="approach" class="section-approach" aria-labelledby="approach-title">
+      <h2 class="section-label" id="approach-title"><span class="label-num">02</span> <span class="section-label__text">Approche</span></h2>
+      <ul class="principles">
+
+        <li class="principle">
+          <h3 class="principle-title" id="p-growth">La croissance client exige une discipline</h3>
+          <p class="principle-body" id="p-growth-detail">Une croissance durable repose sur des systèmes élégants.</p>
+        </li>
+
+        <li class="principle">
+          <h3 class="principle-title" id="p-clienteling">Le clienteling transforme la transaction en sens</h3>
+          <p class="principle-body" id="p-clienteling-detail" itemscope itemtype="https://schema.org/DefinedTerm">Le <dfn id="clienteling-definition" itemprop="name">clienteling</dfn><meta itemprop="url" content="https://trentpower.fr/fr/#clienteling-definition"> <span itemprop="description">est la pratique disciplinée qui transforme ce qu’un Conseiller Client sait en quelque chose qu’un Client ressent. Dès que les interactions deviennent mécaniques, ce n’est plus du clienteling.</span></p>
+        </li>
+
+        <li class="principle">
+          <h3 class="principle-title" id="p-adoption">L’adoption compte plus que les outils</h3>
+          <p class="principle-body" id="p-adoption-detail">Une stratégie ou une technologie ne crée de la valeur que lorsque les équipes lui font
+          confiance et choisissent de l’utiliser. La confiance se mérite, l’utilité se démontre.
+          Les Conseillers Clients sont des Clients de première ligne et des collaborateurs
+          essentiels.</p>
+        </li>
+
+        <li class="principle">
+          <h3 class="principle-title" id="p-ai">L’IA doit amplifier les relations humaines</h3>
+          <p class="principle-body" id="p-ai-detail">L’authenticité est un avantage humain, elle ne peut pas être automatisée. La
+          confiance, l’empathie et le jugement se construisent dans l’instant, à travers le ton
+          et la présence. J’utilise l’IA pour réduire les frictions, afin que chacun puisse être
+          plus pertinent, plus cohérent et plus humain, à grande échelle.</p>
+        </li>
+
+        <li class="principle">
+          <h3 class="principle-title" id="p-governance">La gouvernance crée de l’élan</h3>
+          <p class="principle-body" id="p-governance-detail">Des responsabilités claires, une cadence régulière et des priorités créent
+          l’alignement, accélèrent les décisions et permettent le passage à l’échelle.</p>
+        </li>
+
+        <li class="principle">
+          <h3 class="principle-title" id="p-taste">Le goût est un avantage stratégique</h3>
+          <p class="principle-body" id="p-taste-detail">Le discernement et la conscience culturelle façonnent les interactions en quelque
+          chose de précieux et mémorable.</p>
+        </li>
+
+      </ul>
+    </section>
+
+    <!-- primary · 03 · credentials -->
+    <section id="credentials" class="section-credentials" aria-labelledby="credentials-title">
+      <h2 class="section-label" id="credentials-title"><span class="label-num">03</span> <span class="section-label__text">Parcours académique</span></h2>
+      <div class="credentials-list">
+        <div class="credential-item">
+          <h3 class="credential-title">University of Sydney</h3>
+          <p class="credential-detail">Master, 2009.</p>
+        </div>
+        <div class="credential-item">
+          <h3 class="credential-title">Formation exécutive sélective</h3>
+          <p class="credential-detail">Apprentissage senior en continu — intelligence artificielle, comportement
+          consommateur, transformation organisationnelle et coaching en leadership.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- primary · 04 · trajectory -->
+    <section id="trajectory" class="section-trajectory" aria-labelledby="trajectory-title">
+      <h2 class="section-label" id="trajectory-title"><span class="label-num">04</span> <span class="section-label__text">Parcours</span></h2>
+
+      <ol class="trajectory-list" aria-label="Career chronology">
+        <li class="trajectory-item" data-era="background">
+          <time class="trajectory-year" datetime="1997">1997</time>
+          <span class="trajectory-marker" aria-hidden="true"></span>
+          <article class="trajectory-card card">
+            <p class="trajectory-kicker">Parcours initial</p>
+            <h3 class="trajectory-title">Entrepreneur web</h3>
+            <p class="trajectory-detail">Construire des plateformes et des communautés en ligne</p>
+            <p class="trajectory-period">1997 — 2004</p>
+          </article>
+        </li>
+        <li class="trajectory-item" data-era="maisons">
+          <time class="trajectory-year" datetime="2004">2004</time>
+          <span class="trajectory-marker" aria-hidden="true"></span>
+          <article class="trajectory-card card">
+            <p class="trajectory-kicker">Maisons</p>
+            <h3 class="trajectory-title">Direction senior en <a href="/fr/#clienteling-definition" aria-label="Lire la définition de Clienteling utilisée sur ce site">Clienteling</a>, <abbr title="Customer Relationship Management">CRM</abbr> & Retail</h3>
+            <p class="trajectory-org">BVLGARI</p>
+            <p class="trajectory-period">2004 — 2017</p>
+          </article>
+        </li>
+        <li class="trajectory-item" data-era="previous">
+          <time class="trajectory-year" datetime="2017">2017</time>
+          <span class="trajectory-marker" aria-hidden="true"></span>
+          <article class="trajectory-card card">
+            <p class="trajectory-kicker">Précédent</p>
+            <h3 class="trajectory-title">Responsable Groupe Clienteling</h3>
+            <p class="trajectory-org"><abbr title="Louis Vuitton Moët Hennessy">LVMH</abbr></p>
+            <p class="trajectory-period">2017 — 2023</p>
+          </article>
+        </li>
+        <li class="trajectory-item trajectory-item--current" data-era="current" aria-current="step">
+          <time class="trajectory-year" datetime="2023">2023</time>
+          <span class="trajectory-marker" aria-hidden="true"></span>
+          <article class="trajectory-card card">
+            <p class="trajectory-kicker">Actuel</p>
+            <h3 class="trajectory-title p-job-title">Directeur Groupe, Développement Client &amp; Relations Clients</h3>
+            <p class="trajectory-org p-org"><abbr title="Louis Vuitton Moët Hennessy">LVMH</abbr></p>
+            <p class="trajectory-detail">Stratégie client à l’échelle du Groupe, à travers Maisons et marchés</p>
+            <p class="trajectory-period">2023 — aujourd’hui</p>
+          </article>
+        </li>
+      </ol>
+    </section>
+
+    <!-- primary · 05 · projects -->
+    <section id="projects" class="section-projects" aria-labelledby="projects-title">
+      <h2 class="section-label" id="projects-title"><span class="label-num">05</span> <span class="section-label__text">Projets</span></h2>
+
+      <article class="project-card project-card--editorial card" aria-labelledby="project-paris-title">
+        <h3 class="project-name" id="project-paris-title">What's On in Paris</h3>
+        <p class="project-desc" id="p-project-paris">Un système privé d’intelligence culturelle pour Paris, combinant localisation, effort,
+        jugement éditorial et goût personnel pour décider plus calmement ce qui mérite une
+        sortie.</p>
+        <p class="project-subline">Une expérimentation personnelle autour des systèmes de goût, de la pertinence locale
+        et de la recommandation à échelle humaine.</p>
+
+        <figure class="project-preview" aria-labelledby="project-paris-preview-title">
+          <div class="preview-header" id="project-paris-preview-title">Cette semaine près de Jourdain, 20e</div>
+          <ul class="preview-items">
+            <li class="preview-item">
+              <div>
+                <span class="preview-tier tier-walk">🚶 <span class="tier-label">à pied</span></span>
+                <span class="preview-title">Live at La Maroquinerie</span>
+                <div class="preview-editorial">"A dark synthwave night of neon basslines. Loud, cinematic, and built for the dancefloor."</div>
+              </div>
+              <div class="preview-meta"><data class="tp-tick" value="13">13 min</data></div>
+            </li>
+
+            <li class="preview-item">
+              <div>
+                <span class="preview-tier tier-walk">🚶 <span class="tier-label">à pied</span></span>
+                <span class="preview-title">Coffee at Candle Kids</span>
+                <div class="preview-editorial">"Flat white, and give Voltaire a pat."</div>
+              </div>
+              <div class="preview-meta"><data class="tp-tick" value="12">12 min</data></div>
+            </li>
+
+            <li class="preview-item">
+              <div>
+                <span class="preview-tier tier-metro">🚇 <span class="tier-label">métro</span></span>
+                <span class="preview-title">Opening at 22,48 m²</span>
+                <div class="preview-editorial">"A series of hypercolour abstractions, oscillating between image and afterimage, perception and pulse."</div>
+              </div>
+              <div class="preview-meta"><data class="tp-tick" value="3">3 stops</data></div>
+            </li>
+          </ul>
+          <figcaption class="project-preview-caption">Un échantillon de sélections d'intelligence culturelle, une semaine, un quartier.</figcaption>
+        </figure>
+
+        <button class="project-link project-link-btn" id="access-btn" type="button">
+          <span>Voir le projet</span> <span class="arrow">→</span>
+        </button>
+      </article>
+    </section>
+
+    <!-- primary · 06 · contact -->
+    <section class="section-contact home-contact" id="contact" aria-labelledby="contact-title">
+      <h2 class="section-label" id="contact-title"><span class="label-num">06</span> <span class="section-label__text">Contact</span></h2>
+      <p class="contact-headline stack-copy"><span>Écrivez-moi,</span><span>et je <em>vous répondrai.</em></span></p>
+      <address class="contact-address">
+        <a class="contact-email" href="mailto:trent&#64;trentpower.fr" aria-describedby="desc-email">trent&#64;trentpower.fr</a>
+        <span class="visually-hidden" id="desc-email">Contacter Trent Power par e-mail</span>
+      </address>
+      <div class="contact-secondary">
+        <a href="https://www.linkedin.com/in/trentpower/" target="_blank" rel="me noopener noreferrer" referrerpolicy="no-referrer" aria-describedby="desc-linkedin">LinkedIn <span class="tp-external-arrow" aria-hidden="true">↗</span></a>
+        <span class="visually-hidden" id="desc-linkedin">Ouvrir le profil LinkedIn de Trent Power dans un nouvel onglet, sans transmettre l’URL
+        d’origine</span>
+      </div>
+      <div class="contact-secondary">
+        <a href="https://github.com/trentpower/trentpower.fr" target="_blank" rel="me noopener noreferrer" referrerpolicy="no-referrer" aria-describedby="desc-github">GitHub <span class="tp-external-arrow" aria-hidden="true">↗</span></a>
+        <span class="visually-hidden" id="desc-github">Ouvrir le dépôt source public de ce site sur GitHub dans un nouvel onglet, sans
+        transmettre l’URL d’origine</span>
+      </div>
+    </section>
+
+  </article>
+</main>
+
+<!-- body · project access dialog -->
+<div class="modal-shell-scrim" id="modal" role="presentation" aria-hidden="true" data-inert-default>
+  <section class="shell" role="dialog" aria-modal="true" aria-labelledby="access-modal-title" aria-describedby="access-modal-copy" id="access-modal">
+    <button class="shell-close" id="modal-close" type="button" aria-label="Fermer">×</button>
+    <h2 class="shell-title" id="access-modal-title">Un projet personnel.</h2>
+    <p class="shell-lede" id="access-modal-copy">What’s On in Paris est tenu privé tant qu’il est en cours d’élaboration.</p>
+    <hr class="shell-rule">
+    <div class="body-region">
+      <p class="ax-note">Si vous souhaitez le voir, je serais heureux de vous en donner l’accès.</p>
+      <a class="ax-cta" href="mailto:trent@trentpower.fr?subject=What%27s%20On%20in%20Paris%20Demande%20d%27acces" aria-label="Demander l’accès par e-mail">trent&#64;trentpower.fr</a>
+    </div>
+  </section>
+</div>
+
+<!-- body · imprint · printed-book verso colophon -->
+<aside class="site-imprint" data-article-imprint data-imprint-once aria-label="Imprimerie de la publication">
+  <span class="site-imprint__glyph" aria-hidden="true">⁂</span>
+  <p class="site-imprint__line">Composée en <i>Signifier</i>, <i>Söhne</i> et <i>Söhne Mono</i>.<br>Mise en page à Paris. Première édition publiée le <time datetime="2026-05-23">23 mai 2026</time>.</p>
+  <ul class="site-imprint__stamp" aria-label="Marque d'édition">
+    <li>№ 06 · Édition 2026-06-10</li>
+    <li>&copy; <span class="since">1997&ndash;</span>2026 Trent Power</li>
+  </ul>
+</aside>
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/fr/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">Retour à l’accueil</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>Paris, France</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/fr/confidentialite/" rel="privacy-policy" aria-describedby="desc-privacy">Confidentialité</a>
+        <span class="visually-hidden" id="desc-privacy">Découvrir comment ce site évite les analytiques, cookies, profilage, traceurs et
+        services tiers</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">Vérifier</button>
+        <span class="visually-hidden" id="desc-cite">Ouvrir les détails de citation et de vérification de cette page</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><a href="/en-au/"  aria-describedby="desc-lang-en" lang="en">English</a> <span class="visually-hidden" id="desc-lang-en">Read this site in English</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><a href="/fr/" aria-describedby="desc-lang-fr" lang="fr" aria-current="page">Français</a> <span class="visually-hidden" id="desc-lang-fr">Lire ce site en français</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break tp-rule" aria-hidden="true">
+
+    <!-- bottom stratum · colophon · theme -->
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="Vérification de la publication">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="/fr/verifier/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Édition</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          <em class="site-footer__translation-inline" data-translation-disclosure>Ceci est un rendu machine. <a href="/en-au/">L'édition de l'auteur est en anglais</a>.</em><span class="site-footer__colophon-note" data-edition-age hidden>Publiée aujourd'hui</span>
+          <span class="visually-hidden" id="desc-integrity">Ouvrir le dossier de vérification de cette édition — citation, miroir source, empreinte et archive signée</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">Clair</button> <span class="visually-hidden" id="desc-theme-light">Passer à l’apparence claire</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">Auto</button> <span class="visually-hidden" id="desc-theme-auto">Suivre les réglages d’apparence du système</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">Sombre</button> <span class="visually-hidden" id="desc-theme-dark">Passer à l’apparence sombre</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+<!-- body · print edition -->
+<div class="print-profile print-only" hidden>
+
+  <!-- print · archival seal -->
+  <svg class="print-seal" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+    <path fill="currentColor" d="M26.3,6.9s1.6-2.4,1.6-2.4h0c-.3-.1-.9,0-.9,0,0-.2.5-.9.5-.9h-.7c0-.1-.1.2-.1.2l-.5,1.2h.9c0,0-.8,1.9-.8,1.9Z"/>
+  </svg>
+
+  <!-- print · identity -->
+  <header class="print-top">
+    <p class="print-eyebrow"><bdi>Trent Power</bdi></p>
+    <p class="print-headline">Stratégie client, systèmes de croissance et adoption culturelle à l’échelle mondiale</p>
+    <p class="print-contact-line">trent@trentpower.fr · <span>LinkedIn · Trent Power</span></p>
+    <p class="print-summary">Je dirige la stratégie client au niveau Groupe, en me concentrant sur les systèmes, la gouvernance et les méthodes de travail qui transforment les relations clients en valeur durable. Mon travail se situe à l’intersection de la stratégie, de la technologie et des relations humaines, avec un impact qui passe à l’échelle et qui dure.</p>
+  </header>
+
+  <!-- print · approach -->
+  <div class="print-section print-approach">
+    <p class="print-label">Approche</p>
+    <ol class="print-principles">
+      <li><span class="print-num">01</span><span class="print-prin">La croissance client exige une discipline</span></li>
+      <li><span class="print-num">02</span><span class="print-prin">Le clienteling transforme la transaction en sens</span></li>
+      <li><span class="print-num">03</span><span class="print-prin">L’adoption compte plus que les outils</span></li>
+      <li><span class="print-num">04</span><span class="print-prin">L’IA doit amplifier les relations humaines</span></li>
+      <li><span class="print-num">05</span><span class="print-prin">La gouvernance crée de l’élan</span></li>
+      <li><span class="print-num">06</span><span class="print-prin">Le goût est un avantage stratégique</span></li>
+    </ol>
+  </div>
+
+  <!-- print · credentials -->
+  <div class="print-section print-credentials">
+    <p class="print-label">Parcours académique</p>
+    <dl>
+      <dt>University of Sydney</dt>
+      <dd>Master, 2009.</dd>
+      <dt>Formation exécutive sélective</dt>
+      <dd>Apprentissage senior en continu — intelligence artificielle, comportement consommateur, transformation organisationnelle et coaching en leadership.</dd>
+    </dl>
+  </div>
+
+  <!-- print · trajectory and project -->
+  <div class="print-section print-grid print-lower">
+    <div class="print-trajectory">
+      <p class="print-label">Parcours</p>
+      <dl>
+        <dt>Actuel</dt>
+        <dd>Directeur Groupe, Développement Client &amp; Relations Clients · LVMH</dd>
+        <dt>Précédent</dt>
+        <dd>Direction senior en Clienteling, CRM et Développement Client</dd>
+        <dt>Parcours initial</dt>
+        <dd>Travaux digitaux et entrepreneuriaux fondateurs : plateformes et communautés en ligne</dd>
+      </dl>
+    </div>
+    <div class="print-project">
+      <p class="print-label">Point de preuve</p>
+      <p class="print-project-title">What’s On in Paris</p>
+      <p>Un système privé d’intelligence culturelle pour Paris, combinant localisation, effort, jugement éditorial et goût personnel pour décider plus calmement de ce qui mérite que l’on sorte de chez soi.</p>
+    </div>
+  </div>
+
+  <!-- print · trust chain -->
+  <div class="print-architecture-strip" aria-hidden="true">
+    <p class="print-architecture-caption">Statique, respectueux de la vie privée, signé et inspectable</p>
+    <ol class="print-architecture-chain">
+      <li>Navigateur</li>
+      <li>Hébergement</li>
+      <li>Fichiers</li>
+      <li>Cache</li>
+      <li>Confiance</li>
+      <li>Archive</li>
+    </ol>
+  </div>
+
+  <!-- print · footer -->
+  <footer class="print-section print-profile-footer">
+    <div class="print-profile-footer-text">
+      <p class="print-proof">Privé · Statique · Signé · Sans suivi</p>
+      <p class="print-evidence">Document public · HTML · Édition du 17 mai 2026</p>
+      <p class="print-edition">Édition <time datetime="2026-06-10">2026-06-10</time> · https://trentpower.fr/</p>
+      <p class="print-citation">Trent Power. Site personnel. Paris, France.</p>
+    </div>
+    <div class="print-qr-block" aria-hidden="true">
+      <img class="print-qr-image"
+           src="/images/qr/print-qr-trentpower.svg"
+           width="144"
+           height="144"
+           loading="lazy"
+           decoding="async"
+           alt="">
+      <p class="print-qr-url">trentpower.fr</p>
+    </div>
+  </footer>
+
+</div>
+
+<!-- scripts · progressive enhancement · no telemetry, cookies, or third-party code -->
+
+<!-- scripts · page record -->
+<script src="/verify/verification-data.js?v=2026-06-10.d9e8cb64" defer></script>
+
+<!-- scripts · appearance -->
+<script src="/js/theme.js?v=2026-06-10.d9e8cb64" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/js/reveal.js?v=2026-06-10.d9e8cb64" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+<script src="/js/fonts.js?v=2026-06-10.d9e8cb64" integrity="sha384-kRel595dQiUN7pFngNGyqiBEOQ0yxQKPCtfFmv4gRqmnR/RcUqVurl6+G6h/FJqx" defer></script>
+
+<!-- scripts · publication metadata -->
+<script src="/js/edition.js?v=2026-06-10.d9e8cb64" integrity="sha384-kIhbudFAbfEtCHFdw/AF3cOioeMYPukKzX1c6/gj16bEkO8fm9N7re1FDimxaMaC" defer></script>
+<script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
+
+<!-- scripts · interaction -->
+<script src="/js/overlay.js?v=2026-06-10.d9e8cb64" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+<script src="/js/copy.js?v=2026-06-10.d9e8cb64" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/verify-modal.js?v=2026-06-10.d9e8cb64" integrity="sha384-6soCAm6ZECBoqkgQuoQ0A7eBj3SD+nLOgHlfffbxBlhJGCxHOO+CPermVfmvYXu0" defer></script>
+
+<!-- scripts · resilience -->
+<script src="/sw-register.js?v=2026-06-10.d9e8cb64" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+
+
+<!-- body · construction rail -->
+<div class="construction-rail" data-construction-rail aria-hidden="true">
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+  <span class="construction-rail__label">
+    <span class="construction-rail__dot" aria-hidden="true"></span>
+    En Construction
+  </span>
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+</div>
+</body>
+</html>

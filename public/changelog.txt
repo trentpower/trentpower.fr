@@ -1,0 +1,3367 @@
+# trentpower.fr — changelog
+# Plain text. Newest first. Manually reviewed before publication.
+# Canonical source: https://trentpower.fr/changelog.txt
+
+
+2026-06-10 — Public opening; the repository becomes the record (Edition 2026-06-10)
+---------------------------------------------------------------------------------
+The source repository at github.com/trentpower/trentpower.fr opens to
+the public: authored source, build pipeline, gates, documentation,
+signed public bytes and integrity records, presented as one clean
+public starting point. The signed editions ledger continues unbroken —
+every earlier release archive remains published and verifiable.
+
+Repository and identity
+  • GitHub joins the verified identity set: a rel="me" profile link on
+    the homepage contact block, the Person sameAs record, llms.txt and
+    site metadata all carry the repository URL.
+  • Dual licence stated at the root: MIT for the code, CC BY-SA 4.0
+    for the authored content; NOTICE.md is the map.
+  • The local editor backend is retired from the toolchain; the build
+    ceremony, gates and score ledger are unchanged.
+
+
+2026-05-23 — Australian English edition; gate becomes an edition gate (Edition 2026-05-23)
+---------------------------------------------------------------------------------
+The English route moves from /en/ to /en-au/ and carries the BCP47 tag
+en-AU so the Australian English authorship is machine-claimable. The
+French route stays at /fr/ with plain lang="fr" — the region tag only
+carries meaning where it disambiguates, and there is no other French
+rendering to distinguish against. Legacy /en/... URLs permanently 301
+to their /en-au/... equivalent.
+
+The root language gate is reframed as an edition gate. The title becomes
+"Choose an edition.", the options stack vertically (Australian English
+on top with a near-invisible paper tint to suggest primacy, Français
+below), captions read in sentence case ("Author's edition" /
+"Machine-translated rendering"), and the inset focus outline is dropped
+for a quieter warm tint on focus. Returning visitors see a single-line
+lede — "Last read in English." / "Dernière lecture en français." —
+swapped pre-paint from localStorage. On selection the scrim dissolves
+over ~280ms before the route changes (respects prefers-reduced-motion;
+no-JS visitors navigate instantly).
+
+Routing and metadata
+  • Internal language key stays "en"; only the URL segment (/en-au/),
+    BCP47 tag (en-AU), and og:locale (en_AU) change at the public
+    surface. Content directories, data-lang/data-gate hooks, and
+    localStorage keys are unchanged.
+  • .htaccess emits a LEGACY_LANG_REDIRECT_RULES family (/en/...
+    → /en-au/...) alongside the existing single-tree redirects.
+  • Generators (sitemap, source mirrors, verification map, public-
+    exposure manifest, service-worker precache) and most validators
+    auto-follow via routes.route_path / route_output / hreflang_cluster.
+  • Historical release archives at /integrity/releases/<earlier-dates>/
+    remain byte-frozen and continue to carry their original /en/ paths.
+
+2026-05-19 — Bilingual static editions (Edition 2026-05-19)
+---------------------------------------------------------------------------------
+The site moves from a single tree with runtime language switching to
+two parallel static editions. The root is now a small language gate;
+every page is published twice, once under /en/ and once under /fr/,
+each a complete hand-readable document. French URLs use French words
+(/fr/confidentialite/, /fr/securite/, /fr/verifier/). No language
+JavaScript, no localStorage language state, no client-side text
+substitution — each edition is the source.
+
+Editions and routing
+  • Root / is a static, JavaScript-free gate offering both editions.
+  • /en/ and /fr/ trees rendered from clean templates plus per-
+    language editorial copy. Each page is self-canonical and carries
+    an en/fr/x-default hreflang cluster.
+  • Old single-tree paths (/privacy/, /integrity/, …) redirect once
+    to their English edition; French URLs never redirect.
+  • Per-language error documents, plus a neutral root fallback for
+    requests matching neither tree.
+
+Runtime simplification
+  • The translation runtime is removed: no i18n bundle, no language
+    toggle, no data-i18n attributes in the published pages. Footer
+    language controls are ordinary <a> links between editions.
+  • Service worker, CSP and integrity model carry over unchanged in
+    shape; the CSP no longer needs an i18n Trusted-Types policy.
+
+2026-05-17 — Editorial cohesion (Edition 2026-05-17)
+---------------------------------------------------------------------------------
+A signed edition that pulls together the editorial-cohesion bundles
+shipped since 2026-05-09. Same posture, sharper details. No new
+dependencies. No external requests. CSP, headers, integrity model
+unchanged.
+
+Footer — masthead variant
+  • Wholesale redesign across the active site pages and both
+    generator templates (source view, source reader). Stratified
+    typography drives hierarchy via family + size + opacity rather
+    than colour. Top stratum (identity, nav, language) over bottom
+    stratum (imprint, theme) with a whisper rule between them.
+  • Centred stack on mobile, asymmetric 3-col over 2-col grid at
+    >= 720 px under body[data-layout="masthead"].
+  • Publication row restructured from <p>.seg to <dl>/<dt>/<dd>.
+    Proof loader rewritten to walk the new structure; hides the
+    matching dt+dd pair if its value never receives a payload.
+  • "Cite & verify" label retired to "Verify". data-cite-open
+    attribute intact; the dialog still opens. cite.label.action
+    key kept one cycle for grace.
+  • Footer regression on /source/ and /integrity/releases/ resolved
+    — the generator templates were never swept; both now emit the
+    new markup and the publication row stops rendering as default
+    browser blue.
+
+Privacy — precise framing
+  • "No third-party services" replaced with "no embedded third-party
+    services or third-party requests while you browse". External
+    identity links (rel="me", security, integrity) are ordinary
+    references, contacted only if opened. Clarification added inline.
+  • "Most sites take a different approach" strapline removed in
+    both languages. The page now states what this site does, not
+    what others do.
+
+Security — verification routes
+  • Section 5 "Public verification surface" — the four route
+    references (/integrity/, /verify/, /source/, /integrity/releases/)
+    upgraded from plain <code> to real anchors with concise
+    aria-label destinations. en + fr aligned.
+
+Source reader — illuminated-manuscript token colours
+  • The tokenizer already emitted semantic classes; the CSS now
+    honours them. Oxblood reserved exclusively for trust claims
+    (integrity, crossorigin, rel="canonical", rel="me"). Lapis
+    (light) / sage (dark) for strings; gall purple (light) /
+    lavender (dark) for numbers. Italic at full opacity for
+    comments, lifted from ghost to authored marginalia. Three
+    axes — colour, weight, value — never colour alone.
+  • Print stylesheet extended to neutralise the v2 semantic
+    variants so paper output remains monochrome.
+
+Clienteling — structured definition (machine-readable)
+  • The homepage definition of Clienteling is now exposed in three
+    layers: inline microdata (itemscope itemtype="DefinedTerm"),
+    a JSON-LD DefinedTerm node in the consolidated @graph at
+    @id #clienteling, and a light DefinedTerm reference in
+    person.json knowsAbout. No coinage claim — this records the
+    site's published definition, not authorship of the term.
+
+Edition mechanics
+  • data-edition + RELEASE_TAG bumped to 2026-05-17.
+  • New signed release artefacts at /integrity/releases/2026-05-17/
+    (ZIP, TAR.GZ, SHA256SUMS, detached signatures).
+  • /integrity/releases/ lineage card promotes 17 May to current,
+    demotes 9 May to previous release. February 2026 remains the
+    initial release.
+
+
+2026-05-12 — Root-cause corrective sprint (Phase 34)
+---------------------------------------------------------------------------------
+One PR, six surgical fixes addressing accumulated drift in the cite
+trigger, footer layout, sw-reset styling, and trust-line behaviour.
+
+Cite & verify (root cause)
+  • Restored case-correct identifiers in templates/cite.template.js
+    (buildRelatedNav, techMQ, syncTechOpen, liveStatus,
+    handleActionClick, setTimeout, toastKey/toastText/toastFallback).
+    The Phase 19 lowercase-comments pass had inadvertently
+    lowercased these function and variable definitions while leaving
+    their call sites untouched — every cite-button click threw a
+    ReferenceError at runtime.
+  • Single trigger contract: the footer "Cite & verify" element is
+    now `<button type="button" data-cite-open>` on every page (was
+    `<a href="/verify/" class="cite-btn">`). `cite.js` binds to all
+    `[data-cite-open]` triggers; `.cite-btn` survives as a styling
+    hook only.
+  • If the overlay infrastructure (window.TP_OVERLAY) is unavailable,
+    the click falls back to navigating to /verify/ with a console
+    warning. The dialog gets a stable `id="cite-dialog"` so
+    `aria-controls` resolves.
+
+Footer
+  • One canonical footer system. Three left-aligned compact rows
+    on mobile, single horizontal rail on desktop (>= 760 px).
+  • Language buttons joined by `·` separators; action items joined
+    by `·` separators between siblings.
+  • Tightened padding, removed centred-block geometry. Underline-
+    on-hover and focus-visible outlines preserved.
+  • Touch-target hooks (`.cite-btn` min-height 44px, `.footer-lang
+    button` 44×44) preserved for validate_lighthouse_invariants.py
+    L4/L8.
+  • Frozen-archive legacy selectors (`.footer-left/.footer-right/
+    .footer-privacy-full/.footer-privacy-short/.cite-btn-default/
+    .cite-btn-hover`) kept as a clearly-marked residual block so
+    immutable archive pages still render coherently.
+
+/sw-reset/ page
+  • Restyled with the same micro-grid record system used by /verify/.
+    The status panel is now a `.verify-card` containing an editorial
+    eyebrow + h2 + `.record-grid` + `.record-actions`. The scope
+    section uses `.record-grid--quiet`.
+  • The record-grid CSS was re-scoped from `.verify-page` to
+    `:is(.verify-page, .sw-reset-page)` so both pages share the
+    same editorial register.
+  • Legacy `.sw-reset-status-panel/.sw-reset-status-list/.sw-reset-
+    columns/.sw-reset-col-heading/.sw-reset-col-list/.sw-reset-
+    links/.sw-reset-link/.sw-reset-footnote/.sw-reset-btn` rules
+    removed (dead after markup migration); `.sw-reset-marker` kept
+    as a quiet eyebrow above the page title.
+  • Three new i18n keys added across five locales:
+    `sw_reset.detected_label`, `sw_reset.scope_heading`,
+    `sw_reset.api_label`.
+
+Homepage trust line
+  • Removed the .js-dependent reveal sequence in app.template.js +
+    styles.src.css. The trust-line is now always-visible at its
+    designed mono opacity. Failure modes where the .js class or the
+    .visible toggle never applied (and the trust-line was either
+    invisible or showed as an unstyled fragment) are eliminated.
+
+CSS architecture
+  • Trust-line `.js`-state opacity-0 rule removed.
+  • Footer block rewritten end-to-end; legacy
+    `text-align: center !important` and `display: flex !important`
+    declarations removed in favour of a single non-!important
+    cascade.
+
+Files modified
+  templates/cite.template.js, templates/app.template.js,
+  public/{index,privacy/index,verify/index,sw-reset/index,
+  integrity/index,security/index,security/acknowledgments/index,
+  403,404,500,maintenance}.html, tools/styles.src.css,
+  tools/i18n/strings.json, tools/generate_source_view.py.
+  Plus regenerated derivatives (styles.css, cite.js, app.js,
+  i18n-core.js, i18n/{it,es,de}.js, all SRI hashes, sw.js cache
+  name, /source/ mirrors, public HTML pages).
+
+
+2026-05-11 — Mobile hardening, print regression, honest back links, refined focus
+---------------------------------------------------------------------------------
+A full iterative pass on iPhone Safari rendering, the print-CSS
+cascade, back-link semantics, and the keyboard-focus system —
+bringing every public surface into line with the editorial register.
+
+Mobile navigation
+  • Disclosure scoped to the homepage. Non-home pages (privacy,
+    integrity, security, verify, source, error pages, maintenance,
+    sw-reset, releases, acknowledgments) no longer render homepage
+    anchor links on mobile.
+  • Open menu sits in flow inside a sticky nav, pushing hero down
+    naturally. Items right-align under the MENU button via display:
+    block + text-align: right.
+  • Anchor navigation handled natively by the browser. The custom
+    scrollToTarget interception is removed; CSS scroll-margin-top
+    (88 px mobile, 96 px desktop on the home section IDs) handles
+    the sticky-header offset.
+  • Nav setup runs synchronously on script execution — no longer
+    deferred to requestIdleCallback, so the menu is wired up before
+    the user can interact. setOpen(false) on first paint guarantees
+    the closed state regardless of prior attribute drift.
+  • Removed: ResizeObserver overflow detection, data-nav-state
+    machinery, scroll-direction nav-hide, smooth-scroll handler.
+    The mobile nav is now deterministic, native-first, and small
+    enough that the regression cannot return — guarded by the new
+    validate_nav_regression.py predeploy gate (predeploy step 25)
+    which asserts the simplified shape across app.js, index.html
+    and styles.css on every build.
+  • Nav-toggle restraint: oxblood at rest, ink on interaction;
+    borderless, compact.
+  • Cascade architecture: legacy `.nav` and `.nav-links` rules
+    moved from unlayered into @layer components. The @layer pages
+    homepage disclosure rules (which sit later in the cascade
+    order) now win normally without relying on !important —
+    restoring the spec'd open-state layout (display: grid;
+    text-align: right; items right-aligned under MENU). Per CSS
+    Cascade Layers Level 5, normal author declarations cascade
+    later-layer-wins; unlayered author rules silently override all
+    layered rules. The validate_nav_regression.py predeploy gate
+    now also asserts every .nav-links rule in styles.src.css is
+    layered, so this cascade defect cannot return.
+  • Belt-and-braces: open-state text-align: right carries
+    !important on both the panel rule and the descendant <a>
+    rule. The cascade-layer fix above already wins normally; the
+    !important markers ensure the right-alignment wins
+    UNCONDITIONALLY against any future unforeseen rule. The
+    !important budget in validate_css_architecture.py bumps from
+    12 to 14 to account for the two new markers; the new
+    validate_nav_regression.py assertions catch any silent
+    removal in a future refactor.
+
+Dark-mode accent refinement (deep crimson split)
+  • Dark-mode accent register moved from bright coral (#E68675)
+    to deep crimson (#9E2F2A) — lacquered ink, oxblood leather,
+    archival annotation. Applied to decorative accent surfaces:
+    project-card vertical rail, trust-line bullet, hover-
+    underline ::after fill, ::selection background.
+  • Split-token architecture preserves WCAG AA contrast on
+    every accent-coloured TEXT use:
+      --accent       = #9E2F2A   decorative deep crimson
+      --accent-text  = #D86459   AA-compliant text (~4.9:1
+                                  vs --paper-main on dark)
+      --accent-hover = #B13A34   subtle brighten on hover
+    87 `color: var(--ac)` text declarations migrate to
+    `color: var(--accent-text)`. Decorative `background`,
+    `outline`, `border-bottom-color` etc. stay on `var(--ac)`
+    so they pick up the deep crimson in dark mode and the
+    existing oxblood in light mode.
+  • Light-mode palette unchanged. `--accent-text` aliases
+    `--accent` (oxblood) in light mode; `--accent-hover`
+    aliases `--ac2` (warmer oxblood) so existing rules
+    continue to behave identically.
+  • Focus-visible ring rebuilt on the brighter --accent-text
+    hue so it composites to ≥3:1 against dark paper (WCAG
+    1.4.11 non-text contrast). The deep crimson is too dark
+    for focus rings on dark paper at any reasonable alpha;
+    using --accent-text keeps the editorial register and
+    ring visibility together.
+  • ::selection in dark mode overrides text colour to --ink
+    (cream #F0EAE0) so selected text reads at ~6.2:1 on the
+    deep crimson background. Preserves AA for selected text.
+  • .sw-reset-btn:focus-visible outline migrated from
+    var(--ac) to var(--accent-text) so the focus indicator
+    is visible at AA in dark mode.
+  • validate_css_architecture.py:
+      - REQUIRED_TOKENS gains --accent-text (canonical).
+      - Contrast pair updated: --accent-text vs --paper-main
+        ≥ 4.5:1 (was --accent). --accent itself is
+        decorative and not held to the text threshold.
+  • Editorial register: feels like a signed digital artefact
+    rather than a modern AI startup website.
+
+Homepage anchor landing
+  • Section IDs sit directly on the four <section> elements
+    (#approach, #trajectory, #projects, #contact) — no empty
+    anchor-target span stand-ins.
+  • Native browser anchor navigation owns the scroll. JS does
+    not preventDefault, does not call scrollTo, does not call
+    scrollIntoView for nav anchor clicks. The menu close on
+    link click runs synchronously; the browser performs the
+    fragment jump in the same frame.
+  • CSS scroll-margin-top (7.5 rem mobile / 7 rem desktop on
+    each section ID) lands the section heading comfortably
+    below the sticky header with elegant breathing room.
+    Token names changed from --header-offset-* to --anchor-
+    offset-* to match the brief; values bumped from 88/96 px
+    to 7.5/7 rem (120/112 px) to give the heading more room
+    on iPhone Safari, where the address bar's state can shift
+    the effective viewport between paint and anchor jump.
+  • Bare ID selectors (#approach { … }) live in @layer
+    overrides as a narrow, intentional rule pair (four IDs,
+    one property). The previous attribute-selector form
+    [id="approach"] (specificity 0,1,0) was a workaround for
+    @layer base; bare IDs are clearer and the layer move
+    keeps the architecture validator green.
+  • .nav-links carries `transition: none` on mobile so the
+    menu close on link click is instantaneous. iOS Safari
+    calculates anchor landing in the same frame as the click;
+    a height transition would change the document height
+    between click and anchor calculation, causing the browser
+    to land at the wrong scroll position.
+  • New validate_home_anchors.py predeploy gate (step 26):
+    asserts the four section IDs are on canonical <section>s,
+    that nav links point to those IDs, that no anchor-target
+    spans regress, and that no preventDefault / scrollTo /
+    scrollIntoView is added to a click handler that targets
+    a[href^="#"]. The cascade-layer regression that delayed
+    PR #11 → #14 cannot return silently.
+
+Mobile masthead alignment
+  • Trent Power wordmark and MENU button now share a single
+    optical baseline on mobile. Previously the wordmark sat
+    higher than the toggle because the nav-inner used
+    `align-items: start` and the wordmark's stacked TRENT/POWER
+    was anchored top-of-row while the toggle was anchored
+    bottom-of-row. New rule pair:
+      .nav { padding-block: calc(env(safe-area-inset-top)
+                                  + 0.5rem) 0.375rem }
+      .nav-inner { grid-template-columns: auto auto;
+                   justify-content: space-between;
+                   align-items: center }
+    The padding gives the row an intentional height (with iOS
+    notch awareness) instead of a fixed min-height, and the
+    centred grid axis vertically aligns the multi-line wordmark
+    against the single-line toggle without per-element offsets
+    or transforms.
+  • .nav-mark resets: align-self: center; display: inline-grid
+    (stacks TRENT/POWER as grid rows); line-height: 0.88
+    (very tight, keeps the stacked mark compact); margin/padding
+    zeroed.
+  • .nav-toggle resets: align-self: center; align-items: center;
+    line-height: 1; margin/padding zeroed; min-height: 44px tap
+    target preserved.
+  • The legacy mobile rules (@media max-width 600/390 px in
+    @layer components) keep their max-width / font-size on
+    .nav-mark; the @layer pages homepage overrides win on
+    layout/alignment per the cascade-layer order.
+
+Mobile menu dropdown spacing
+  • Opened mobile menu is now compact and rhythmically connected
+    to the MENU button instead of stretched as a tall side
+    panel. Vertical gap between Approach / Trajectory / Projects
+    / Contact set to a flat 0.5rem (8 px). Top padding on the
+    open panel set to 0.5rem; bottom padding removed.
+  • .nav-links a uses display: inline-flex + align-items:
+    center + justify-content: flex-end. Padding-block on each
+    link is 0; min-height: 44px preserves the tap target via
+    flexbox centring rather than padding.
+  • Reads as one editorial dropdown group anchored under MENU.
+
+Semantic HTML hardening (Phase 1)
+  • <main id="main"> now carries tabindex="-1" on every active
+    HTML page (and the /source/ generator). Skip-link `href=
+    "#main"` now delivers keyboard focus to the <main> landmark
+    on activation; the negative tabindex keeps <main> out of
+    the natural tab order while accepting programmatic focus.
+  • <a class="nav-mark" href="/"> on every page now carries
+    `aria-label="Trent Power home"`. The two glyph spans
+    ("Trent", "Power") are aggregated into a single AT-
+    readable link name. Homepage additionally carries
+    `aria-current="page"` so assistive tech announces the
+    wordmark as the link to the page the visitor is already on.
+  • Homepage project-card converted from <div> to <article>
+    with `aria-labelledby="project-paris-title"`. The existing
+    <h3 class="project-name">What's On in Paris</h3> gains
+    `id="project-paris-title"`. Project cards now read as
+    standalone articles for syndication / AT navigation. Zero
+    visual change (the .project-card class still drives layout).
+  • Error pages (403, 404, 500) gain an eyebrow
+    `<p class="verify-kicker">Error NNN</p>` before <h1>,
+    matching the maintenance.html pattern. The .verify-kicker
+    class already provides the editorial mono-uppercase
+    register; no new CSS.
+  • CSS: new `abbr[title]` rule in @layer base — quiet dotted
+    underline + cursor: help so future <abbr> markup renders
+    in the editorial register. Actual <abbr> wrap of PGP /
+    SHA-256 / CSP across body prose is deferred to Phase 2
+    because most occurrences sit inside `data-i18n`
+    containers (textContent overwrite would wipe the markup
+    on language switch); needs `data-i18n-html` migration or
+    surface-by-surface manual review.
+
+Semantic consistency final pass (Phase 5)
+  Surgical consistency sweep that closes the four small gaps
+  flagged by the 21-section consistency brief. 17 of 21 brief
+  items were already discharged across Phases 1-4 (PRs #20-#23);
+  this PR completes the remaining four. Zero visual change.
+
+  1. id="nav" applied to every page's main nav. Previously only
+     the homepage had <nav class="nav" id="nav" aria-label="Main
+     navigation">; ten other HTML files + the /source/ generator
+     carried the same nav but without the id. The id supports
+     skip-link / menu-toggle aria-controls targeting and reads
+     as a stable hook for assistive tech across the site.
+
+  2. Footer language buttons wrapped in a real list. Previously:
+       <nav class="footer-lang" aria-label="Language">
+         <button>EN</button> <button>FR</button> … (5 bare buttons)
+       </nav>
+     Now:
+       <nav class="footer-lang" aria-label="Language">
+         <ul class="footer-lang-list">
+           <li><button lang="en" …>EN</button></li>
+           <li><button lang="fr" …>FR</button></li>
+           … (5 list items)
+         </ul>
+       </nav>
+     AT now announces a labelled nav landmark containing a list
+     of 5 buttons. Layout migrated from .footer-lang to the
+     inner .footer-lang-list (flex with the inline-grid @supports
+     branch preserved). Zero visual diff.
+
+  3. lang="en|fr|it|es|de" attributes added to each language
+     button, matching its data-lang value. AT now announces each
+     abbreviation in its own language ("FR" pronounced in French,
+     "IT" in Italian, etc.).
+
+  4. <aside class="trust-line"> now carries aria-label="Site
+     trust commitments". Previously an anonymous landmark; now
+     named so it appears with a meaningful label in the
+     accessibility tree and screen-reader rotors.
+
+  CSS:
+    .footer-lang  — now just typography (font-family / size /
+                    letter-spacing); layout moved to inner ul
+    .footer-lang-list — list-reset + the flex/inline-grid layout
+                    that previously lived on .footer-lang;
+                    @supports + @media branches preserved
+    .footer-lang-list li — margin/padding reset
+
+  Generator:
+    tools/generate_source_view.py updated so /source/index.html
+    carries the same id="nav" + footer-lang-list markup on every
+    rebuild.
+
+  Validators: all 17 sub-scripts green. No CSP / Trusted Types
+  impact (no JS / inline-script change). No integrity drift
+  beyond expected asset version rotation.
+
+  The 21-section consistency brief is now fully discharged. The
+  24-section semantic HTML hardening brief is discharged. The
+  site ships clean semantic HTML across every public surface.
+
+  Deferred to Phase 2/3/4 (tracked, not regressed):
+    · <time datetime> wraps for remaining plain-text dates
+    · <var> / <samp> on integrity verification command block
+    · nav-links <div> → <ul><li> conversion (CSS flex/grid
+      coupling needs careful refactor)
+    · principles <div class="principle"> → list form (editorial
+      judgment needed)
+    · JSON-LD schema graph deep audit
+    · img width/height audit for CLS reduction
+
+Print-profile semantic correction (Phase 6)
+  Surgical semantic correction inside the print-only profile
+  architecture in public/index.html (the
+  <section class="print-profile print-only" aria-hidden="true">
+  block rendered only in print preview). Resolves the five Nu
+  HTML Checker warnings flagged for sections / articles lacking
+  a heading. Zero visual change to the printed sheet; zero
+  change to the visible homepage (the block is aria-hidden and
+  scoped by .print-only).
+
+  Warnings closed:
+    1. .print-profile.print-only — was <section> with no
+       heading. Converted to <div>: it is a layout wrapper,
+       not a thematic section.
+    2. .print-section.print-approach — kept as <section>
+       (it IS a thematic block). Added
+       aria-labelledby="print-approach-title" and promoted
+       <p class="print-label">Approach</p> to
+       <h2 class="print-label" id="print-approach-title">.
+    3. .print-section.print-grid.print-lower — was <section>
+       with no heading. Converted to <div>: it is a two-column
+       layout grid wrapping two articles, not a thematic
+       section.
+    4. .print-trajectory — kept as <article>. Added
+       aria-labelledby="print-trajectory-title" and promoted
+       <p class="print-label">Trajectory</p> to
+       <h2 class="print-label" id="print-trajectory-title">.
+    5. .print-architecture-strip — was <section
+       aria-hidden="true"> with no heading. Converted to
+       <div>: decorative trust chain, not a thematic section.
+
+  Untouched:
+    · <article class="print-project"> already carries an <h3>
+       (the project title) — validator does not flag it; the
+       brief marks aria-labelledby as optional.
+    · <footer class="print-section print-profile-footer"> — a
+       <footer> landmark needs no heading.
+    · All other <p class="print-eyebrow|headline|contact-line|
+       summary"> in the print top — these are paragraphs of
+       editorial copy, not section labels.
+
+  CSS / JS impact: none. Every .print-* CSS selector in
+  tools/styles.src.css and tools/print.src.css is class-only
+  (no p.print-label, no section.print-*, no article.print-*).
+  Swapping <section> for <div> and <p class="print-label"> for
+  <h2 class="print-label"> changes zero CSS matches; the
+  .print-label class still drives the mono small-caps register
+  on the heading element.
+
+  ID safety: print-approach-title and print-trajectory-title
+  are namespaced distinct from the visible-homepage IDs
+  approach-title and trajectory-title — no collision.
+
+  Validators: all 17 sub-scripts green; validate_html_
+  correctness.py confirms no duplicate IDs. Nu HTML Checker
+  re-run resolves the five warnings.
+
+Outline cleanup · modal placement, print-only demotion,
+principles list (Phase 7)
+  Surgical pass to clean the HTML document outline and source
+  mirror readability without changing the visible design, the
+  modal behaviour, the print sheet or any editorial copy. Three
+  related fixes.
+
+  1. View project modal moved after <main>. Previously the
+     modal-overlay <div> sat between the site-header and <main>,
+     so the W3C outline showed the modal <h2> "What's On in
+     Paris" before the page <h1>. The block now sits between
+     </main> and the page <footer>, so the outline starts with
+     the <h1> as it should. The modal still opens from the
+     "View project" button (#access-btn), still closes via
+     #modal-close / Escape / click-outside, still returns focus
+     to the trigger; openOverlay() and closeOverlay() in
+     app-enhance.template.js are unchanged. The modal remains
+     a sibling of <main>, so the "inert on open" treatment
+     (setInert(#main); setInert(#nav)) still walls the dialog
+     off from the rest of the page correctly.
+
+  2. Print-only profile demoted from sectioning/heading
+     elements to layout-only div + p. The print-only block is
+     aria-hidden="true" and exists only to render a one-page
+     CV when the visitor uses the browser's "Print" command;
+     yet the W3C outline checker still picked up its <h2>
+     "Approach", <h2> "Trajectory" and <h3> "What's On in
+     Paris" as document-outline entries — duplicating the
+     visible-page headings and polluting source/index.html.txt.
+     Phase 6 had added those headings (and aria-labelledby
+     wiring on the surrounding <section>/<article>) so the
+     Nu HTML Checker would stop flagging "section lacks
+     heading" warnings; Phase 7 takes the cleaner approach by
+     dropping the sectioning elements entirely:
+       • <section class="print-section print-approach"
+         aria-labelledby="print-approach-title"> →
+         <div class="print-section print-approach">.
+       • <h2 class="print-label" id="print-approach-title">
+         Approach</h2> → <p class="print-label">Approach</p>.
+       • <article class="print-trajectory"
+         aria-labelledby="print-trajectory-title"> →
+         <div class="print-trajectory">.
+       • <h2 class="print-label" id="print-trajectory-title">
+         Trajectory</h2> → <p class="print-label">Trajectory
+         </p>.
+       • <article class="print-project"> →
+         <div class="print-project">.
+       • <h3 data-i18n="print.project.title">What's On in
+         Paris</h3> → <p class="print-project-title"
+         data-i18n="print.project.title">What's On in
+         Paris</p>.
+     The whole print-profile tree is now div/p (with the
+     dedicated <header class="print-top"> and <footer class=
+     "print-section print-profile-footer"> retained — those
+     are landmark elements that don't need a heading).
+     Validator still happy: no sectioning elements means no
+     "section lacks heading" warnings; outline still happy:
+     no headings inside an aria-hidden region.
+
+  3. Principles converted to a real <ul>. The five Approach
+     principles on the homepage were authored as a flat
+     <div class="principles"> containing five
+     <div class="principle"> siblings. They are conceptually
+     a numbered set of beliefs — a list. <div class="principles">
+     → <ul class="principles">, each <div class="principle">
+     → <li class="principle">. The five <h3 class="principle-
+     title"> inside each principle are preserved verbatim.
+     Assistive technology now announces "list of 5 items"
+     when entering the Approach section.
+
+  CSS:
+    .principles — adds `list-style: none;` to suppress the
+                  default <ul> bullet glyph. Global * reset
+                  already zeros margin/padding on every
+                  element, so no other reset is needed.
+    .print-project h3 — renamed to
+    .print-project p.print-project-title (replaces the old
+                  element selector with a class selector,
+                  identical declarations, same !important
+                  weight, higher specificity than the sibling
+                  .print-project p rule so the title still
+                  wins).
+    h1, h2, h3, .print-label — the page-break-after: avoid
+                  rule now also names .print-project-title so
+                  the print pagination still avoids breaking
+                  immediately after the project title.
+
+  Print preview, screen layout, modal behaviour, cite-button
+  behaviour, principle reveal animation, page-break placement:
+  all unchanged. Validators: all 18 sub-scripts green; source
+  mirrors regenerated. The Nu HTML Checker still reports zero
+  errors and zero warnings. The W3C outline view now begins
+  with the page <h1> "Client strategy, growth systems, and
+  cultural adoption at global scale." and contains no
+  duplicate "What's On in Paris", "Approach" or "Trajectory"
+  entries.
+
+  Deferred (next pass):
+    · <div class="preview-items"> → <ul> (same pattern as
+      principles; scoped out of this PR for tight surgical
+      diff)
+    · <div class="nav-links"> → <ul> (still gated on the
+      validate_nav_regression.py element check; needs
+      coordinated CSS + validator update)
+    · <time datetime> in the footer cite-btn label and the
+      print-edition line (requires data-i18n-html migration
+      via the Trusted Types `tp-i18n` policy)
+
+Deferred-item cleanup · preview-items list, nav-links list,
+<time> wraps on cite-btn + print-edition (Phase 8)
+  Discharges the three "Deferred (next pass)" items tracked
+  in the Phase 7 changelog entry above. No visible design
+  change. No CSP regression. No editorial copy change.
+
+  1. <div class="preview-items"> → <ul class="preview-items">,
+     three <div class="preview-item"> siblings → <li class=
+     "preview-item">. The week-of-Paris preview rows in the
+     Projects card are now a real list. Class-only CSS
+     selectors (.preview-items, .preview-item, .preview-
+     item:last-child) still match the new element types;
+     `list-style: none;` added to .preview-items suppresses
+     the default <ul> bullet.
+
+  2. <div class="nav-links" id="nav-links" hidden> →
+     <ul class="nav-links" id="nav-links" hidden>, four bare
+     <a> nav anchors → <li><a>…</a></li>. The mobile-menu
+     disclosure container is now a real list. To preserve the
+     flex/grid layout coupling without restructuring the
+     cascade-layer disclosure rules (which depend on the <a>
+     being the direct flex/grid item of .nav-links), `.nav-
+     links li { display: contents; }` collapses the <li> box
+     out of layout while preserving its list-item role for AT.
+     `list-style: none;` added to .nav-links. validate_nav_
+     regression.py's container regex extended from
+     `(?:div|nav)` to `(?:div|nav|ul)` so the gate accepts
+     the new element shape.
+
+  3. <time datetime="…"> wraps added to two editorial date
+     stamps, both routed through `data-i18n-html` so the
+     translation system carries the markup verbatim via the
+     existing `tp-i18n` Trusted Types policy (createHTML
+     passthrough; the I18N source is build-time inlined from
+     tools/i18n/strings.json, operator-authored, no runtime
+     sanitisation needed).
+
+       Footer cite-btn label (every active HTML page + the
+         rendered source page):
+         Before: <span class="cite-btn-default"
+                   data-i18n="cite.label.default">&copy;
+                   2026 Paris, France</span>
+         After:  <span class="cite-btn-default"
+                   data-i18n-html="cite.label.default">
+                   &copy; <time datetime="2026">2026</time>
+                   Paris, France</span>
+
+       Print-profile edition line (index.html only — the
+         block is homepage-scoped):
+         Before: <p class="print-edition" data-i18n="print.
+                   footer.edition">Edition 2026-05-09 ·
+                   https://trentpower.fr/</p>
+         After:  <p class="print-edition" data-i18n-html=
+                   "print.footer.edition">Edition <time
+                   datetime="2026-05-09">2026-05-09</time> ·
+                   https://trentpower.fr/</p>
+
+     i18n/strings.json: cite.label.default and print.footer.
+     edition updated across all five languages (en / fr / it
+     / es / de) to carry the same <time> wraps. The
+     localised prefix word ("Édition", "Edizione", "Edición",
+     "Edition" / "Ausgabe") sits outside the <time> element
+     so prefix translation continues to work and the visible
+     ordering follows each locale's editorial convention.
+
+     generate_site.py: edition-sync sweep extended. Both
+     _sweep_edition_in_html and _sweep_edition_in_strings now
+     also rewrite `<time datetime="YYYY-MM-DD">YYYY-MM-DD
+     </time>` patterns to the canonical edition, in addition
+     to the existing plain-text `Edition YYYY-MM-DD` sweep
+     (EDITION_PREFIX_RE) which cannot cross HTML tags. The
+     new sweep is idempotent against the existing
+     verify-intro panel <time> stamp (anchored separately by
+     the targeted regex at verify-intro-edition-value).
+
+  No JS change — `data-i18n-html` is already routed through
+  the existing setTrustedHTML() helper in app.template.js.
+  No CSP change — the `tp-i18n` Trusted Types policy already
+  authorises createHTML; the new <time> elements carry no
+  scripts, no event handlers, no styles, just a datetime
+  attribute.
+
+  Validators: all 17 content validators green; source
+  mirrors regenerated; asset versions rotate.
+
+Modal title outline polish (Phase 9)
+  Final outline polish. The W3C outline of the homepage now
+  ends at the modal title "What's On in Paris" — an interface
+  layer rather than part of the editorial document outline.
+  Demote the modal heading from <h2> to <p> while preserving
+  the accessible dialog name via aria-labelledby:
+
+  Before:
+    <h2 class="modal-label" id="modal-title">What's On in
+        Paris</h2>
+  After:
+    <p class="modal-label" id="modal-title">What's On in
+        Paris</p>
+
+  Untouched: id="modal-title", class="modal-label",
+  aria-labelledby="modal-title" on the dialog, aria-modal,
+  aria-describedby, modal-close button, opening trigger
+  (#access-btn), focus management, click-outside / Escape
+  close, CSS appearance. The .modal-label CSS selector is
+  class-only (no `h2.modal-label` or `.modal h2` rules in
+  styles.src.css or print.src.css), so the typography on
+  the new <p> renders identically to the prior <h2>.
+
+  Accessibility: the dialog's accessible name continues to
+  come from aria-labelledby="modal-title", which resolves to
+  the visible text "What's On in Paris" regardless of the
+  underlying element type. VoiceOver / NVDA / JAWS announce
+  the dialog title unchanged. The W3C outline view no longer
+  picks up an h2 after Contact.
+
+  Validators: all 17 content validators green; source mirror
+  regenerated.
+
+PageSpeed audit · no action (Phase 10)
+  Documentation-only pass. PageSpeed Insights on the live
+  home page flagged two warnings:
+
+    · Render-blocking CSS: /styles.css (~14.9 KiB transfer,
+      ~190 ms estimated saving).
+    · Forced reflow: ~51 ms, source not attributed.
+
+  After a full audit, the decision is to **accept both
+  warnings with rationale** and ship no code changes. The
+  audit notes are recorded here so the next visitor to the
+  performance question doesn't re-litigate them from scratch.
+
+  Render-blocking CSS — why we are not inlining critical CSS:
+    · public/.htaccess already serves CSS with both Brotli
+      (mod_brotli) and gzip (mod_deflate). The 14.9 KiB
+      PageSpeed sees is the post-compression transfer size.
+      Inlining doesn't save bytes; it only saves the round-
+      trip cost of one HTTP/2 request before first paint.
+    · PageSpeed's 190 ms is a slow-3G model number. On the
+      4G/5G connections most visitors actually have, the
+      practical RTT saving is closer to 30–60 ms — well
+      below what an inline <style> block + CSP-hash
+      machinery + a duplicated source of truth for above-
+      the-fold styles is worth.
+    · Content-Security-Policy is strict (style-src 'self').
+      Inline <style> is currently blocked without a SHA-256
+      hash whitelist. The site already runs that machinery
+      for inline <script> (STATIC_CSP_HASHES + csp_hash() in
+      tools/generate_site.py), so the precedent exists; the
+      maintenance burden (every header / hero typography
+      tweak becomes a two-file edit) does not justify it.
+    · fetchpriority="high" on <link rel="stylesheet"> is the
+      conventional best practice for a single-stylesheet
+      site and already signals priority to the browser.
+      Removing it without A/B data is unjustified.
+
+  Forced reflow — why we are not refactoring switchLanguage():
+    · The audit's three reflow candidates all sit inside
+      switchLanguage() in tools/app.template.js (L243, L267,
+      L291). That function only fires on a footer language-
+      button click — which PageSpeed's automated test never
+      performs. "Fixing" them changes code without moving
+      PageSpeed's number.
+    · The most likely real source of the 51 ms is the
+      .fonts-loaded class flip inside _loadFullFonts() in
+      tools/app-enhance.template.js, which swaps subset →
+      full font families on document.fonts.ready + rAF.
+      That swap triggers a doc-wide relayout and is the
+      cost of the existing progressive font enhancement
+      strategy. There is no surgical fix that preserves the
+      current font ladder.
+    · Confirming the source needs a Chrome DevTools
+      Performance trace on a cold homepage load. Until that
+      profile exists, we don't refactor blindly.
+
+  What would change the decision:
+    · If real-mobile-device LCP data showed fetchpriority=
+      "high" hurting first paint, we'd remove it.
+    · If cold-load FOUC became user-visible on the most
+      common viewer device, we'd revisit the minimal
+      ~250-byte FOUC-guard inline <style> option (the CSP-
+      hash machinery extension is well-scoped if it's
+      needed later).
+    · If a DevTools profile attributed the 51 ms to
+      switchLanguage() or another fixable site, we'd open
+      that as a new brief.
+
+  No code changes in this commit. No CSS, no JS, no CSP, no
+  validator updates. Asset versions do not rotate.
+
+Sub-page print-sheet semantic restraint (Phase 11)
+  Carries the homepage's Phase 7 print-profile demotion to
+  every other print sheet on the site. Eight sub-page print
+  sheets were still wrapped in <section> / <article> inside
+  aria-hidden="true" blocks; this phase converts them to
+  layout-only <div>s so the W3C document outline of every
+  page no longer carries anonymous sectioning landmarks for
+  print-only duplicates.
+
+  Pattern (applied 8 times, identical shape on each page):
+
+    Before:
+      <section class="print-utility-sheet print-only"
+               data-print-sheet="…" aria-hidden="true">
+        <header class="print-utility-header">…</header>
+        <section class="print-utility-grid">
+          <article class="print-utility-card">…</article>
+          × 6
+        </section>
+        <footer class="print-utility-footer">…</footer>
+      </section>
+
+    After:
+      <div class="print-utility-sheet print-only"
+           data-print-sheet="…" aria-hidden="true">
+        <header class="print-utility-header">…</header>
+        <div class="print-utility-grid">
+          <div class="print-utility-card">…</div>
+          × 6
+        </div>
+        <footer class="print-utility-footer">…</footer>
+      </div>
+
+  Five pages use the print-utility-* family (403, 404, 500,
+  /verify/, /integrity/releases/); three use the
+  print-trust-* family (privacy, integrity, security). 16
+  tag conversions per page × 8 pages = 128 element swaps,
+  all mechanical.
+
+  CSS verification:
+    grep '^section\.print-(utility|trust)' tools/styles.src.css
+        tools/print.src.css → no hits.
+    Every .print-utility-* and .print-trust-* selector in
+    both source CSS files is class-only (no element prefix).
+    The element swap changes zero CSS matches; typography,
+    grid layout, page breaks and print pagination on every
+    print sheet render exactly as before.
+
+  Also folded in:
+    public/sw-reset/index.html had two bare <section> layout
+    wrappers (inside .sw-reset-columns) with no class and no
+    heading — pure column shells. Converted to <div> for
+    consistency with the layout-only rule.
+
+  Two additional pages confirmed clean by grep:
+    · public/maintenance.html — no print sheet (correct;
+      maintenance is single-line copy)
+    · public/security/acknowledgments/index.html — no
+      print sheet (correct; record-style page)
+
+  Visible homepage, all sub-pages, modal, cite-button,
+  language switcher, print previews of every touched page:
+  all unchanged. No CSS / JS / CSP / Trusted Types change.
+  Asset versions rotate normally because the build sees
+  changed HTML mtimes; SRI digests on /styles.css and
+  /print.css are stable. All 17 content validators green;
+  source mirrors regenerated.
+
+Technical semantics on the integrity + verify pages (Phase 12)
+  Light-touch precision pass over the most technical-document-
+  shaped pages on the site. Adds `<code>` semantics around
+  file paths and identifiers that already render in monospace
+  via class styling, plus a single high-value `<abbr>`
+  expansion for PGP. The aim is restraint: a few well-placed
+  wraps that make the source feel literate without dressing
+  the prose up in tags.
+
+  /integrity/ (visible page):
+    The "Signed release" record card's manifest, signature,
+    public-key, and checksum links now carry an inner <code>
+    around the visible path text:
+      <a href="/integrity.json">/integrity.json</a>
+        → <a href="/integrity.json"><code>/integrity.json</code></a>
+    Same shape for /integrity.json.sig, /.well-known/
+    pgp-key.asc, SHA256SUMS, SHA256SUMS.sig. Visual identical
+    (the existing .integrity-rg-link class already drives
+    the mono register); semantic now matches /verify/'s
+    pre-existing pattern from Phase 4. The link target
+    discoverability for assistive technology improves —
+    NVDA / VoiceOver announce "code" before the path,
+    cueing the reader that the token is a literal identifier.
+
+  /verify/ (print-only utility cards):
+    The six print-utility cards on the verify print sheet
+    now wrap their inline path / fingerprint / command
+    references in <code>:
+      <p>/integrity.json — SHA-256 hashes …</p>
+        → <p><code>/integrity.json</code> — SHA-256 hashes …</p>
+    Card 03 also wraps the literal fingerprint
+    (`A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263`)
+    in <code>. Card 06's full verify command is now wrapped
+    in <code> inside its existing <p class="print-utility-
+    code"> shell (the class still drives the mono register
+    + scroll-overflow; the <code> just makes the semantics
+    machine-legible).
+
+  i18n: one key migrated to data-i18n-html so the markup
+  travels with the translation:
+    integrity.record.desc.signature, all 5 languages:
+      "Detached PGP signature" →
+      "Detached <abbr title="Pretty Good Privacy">PGP</abbr> signature"
+    (en / fr / it / es / de localised independently so the
+    abbreviation expansion is uniform but the surrounding
+    syntax stays per-language.)
+
+  Out of scope (intentional restraint):
+    · Source page data table — over-marking risk would
+      clutter the table; deferred to a separate pass with
+      editorial review.
+    · Sub-page translated bodies on privacy / security /
+      acknowledgments / sw-reset — minimal high-value
+      technical tokens visible in copy; the cost of a
+      data-i18n-html migration per token outweighs the
+      benefit for this round. Tracked as candidates if a
+      future pass wants to add CSP / SRI / SHA / DNSSEC
+      expansions to running prose.
+    · <kbd> / <samp> — no keyboard interaction or terminal
+      output is documented in current copy that would
+      benefit from being marked up.
+
+  Validators: all 17 content validators green; source
+  mirrors regenerated.
+
+I18N extraction · the only high-leverage refactor left in
+the 6-phase brief (Phase 13)
+  The 6-phase "ruthlessly elegant" refactor brief asked for
+  comprehensive work across semantics, accessibility, CSS, JS,
+  metadata and performance. Audit found that the canonical-
+  identity → derived-files pipeline (drives /.well-known/
+  person.json, /site-metadata.json, /llms.txt, /manifest.
+  webmanifest, every JSON-LD block, every document-edition
+  meta tag, the citation string) is already structural in
+  tools/generate_site.py — drift is impossible while the
+  generator runs before deploy. Source-mirror correctness is
+  already enforced by the DRIFT predeploy gate in tools/
+  validate_source_mirrors.py. Heading hierarchy, modal title,
+  list semantics, print-only demotion, technical `<code>` /
+  `<abbr>` wraps were all discharged in Phases 6–12. The two-
+  file JS split (app.js critical + app-enhance.js deferred via
+  requestIdleCallback) is already correct shape.
+
+  One real high-leverage item remained: the I18N dictionary
+  was inlined into app.js by the build, inflating the
+  critical-path script from ~4 KB of application logic to
+  ~215 KB on disk (~57 KB gzipped). Cold-load visitors paid
+  to parse the full translation tree before any DOM mutation
+  could run.
+
+  Build pipeline change:
+    tools/generate_site.py no longer prepends
+      var I18N = {…strings.json…};
+    to app.js. Instead it writes the dictionary to a separate
+    same-origin script:
+      public/i18n.js  →  `window.I18N = {…};`
+    and app.js's prelude becomes the single line
+      var I18N = window.I18N || {};
+    The browser loads both scripts with `defer`; document
+    order guarantees /i18n.js runs first so window.I18N is
+    populated by the time /app.js executes. No CSP change
+    (`script-src 'self'` already authorises the bundle); no
+    Trusted Types change (the policy already governs
+    innerHTML / script-URL sinks via the `tp-i18n` policy
+    name — unrelated to where the I18N data lives).
+
+  Wiring:
+    · public/i18n.js (203 KB) is the new same-origin script
+      bundle. Source mirror at /source/i18n.js.txt exposes
+      the authored tools/i18n/strings.json (not the build
+      output) so a visitor reads readable JSON rather than a
+      compact one-line literal.
+    · All 13 active HTML files carry
+        <script src="/i18n.js?v=…" integrity="sha384-…" defer></script>
+      immediately before
+        <script src="/app.js?v=…" integrity="sha384-…" defer></script>
+      generate_sri.py picks up the new tag's SHA-384 digest
+      automatically; the asset-version `?v=…` cache-buster
+      sweep already covers /i18n.js because it is now part
+      of ASSET_BUNDLE in generate_site.py.
+    · Service-worker precache: /i18n.js added to
+      tools/public_inventory.PUBLIC_SCRIPTS so offline
+      visitors still language-switch correctly.
+    · Source-view rendered page: the new tag is in the
+      rendered HTML template; generate_source_view.py emits
+      the same script-tag triplet as every other page.
+
+  Validation:
+    validate_lighthouse_invariants.py gains a new L8 check:
+      (a) public/app.js does NOT contain a literal
+          `var I18N={` followed by anything other than
+          `window.I18N` within 30 chars (the dictionary
+          inlining shape must NOT return).
+      (b) Every active HTML file carries a
+          <script src="/i18n.js"> tag, AND that tag appears
+          BEFORE <script src="/app.js"> (so `defer` document
+          order guarantees window.I18N is defined when
+          app.js executes).
+
+  Footprint:
+    Before:
+      /app.js     ~215 KB / ~57 KB gzip   (I18N + ~4 KB code)
+    After:
+      /app.js     ~11 KB  / ~4 KB gzip    (application only)
+      /i18n.js    ~200 KB / ~53 KB gzip   (dictionary only)
+    Total cold-load transfer is the same; critical-path parse
+    cost drops from ~215 KB to ~11 KB — a 19× reduction in
+    the bytes the main thread has to JIT before app.js
+    begins to run. The dictionary parses after first paint
+    via the second deferred script, off the LCP path.
+
+  Cache behaviour:
+    · /i18n.js carries the same `?v=<asset_version>` cache-
+      buster as every other bundle. The version changes only
+      when the dictionary changes; editorial-edition bumps
+      that don't touch translation copy cache-hit the
+      previous /i18n.js bundle.
+    · /app.js cache-busts independently. Application-code
+      changes no longer force re-download of a 53 KB
+      dictionary.
+
+  Risk acknowledged:
+    First-visit visitors with a stored non-English language
+    preference (`localStorage.tp-lang = 'fr'` etc.) see the
+    page render in its static English fallback for the
+    ~10–30 ms window between the i18n bundle arriving and
+    app.js's applyLanguage() walk completing. The existing
+    inline language-detect script at line 21 of every <head>
+    still sets html.lang + html.dataset.lang synchronously
+    so AT and CSS lang-selectors are correct; only the
+    visible text waits. This matches the existing fonts-
+    loaded swap pattern and is acceptable for a static
+    editorial site.
+
+  What's NOT touched (intentional, per the brief's "ruthless
+  about elegance"):
+    · No further JS decomposition (no menu.js, no cite.js
+      split beyond the existing app.js / app-enhance.js /
+      cite.js triplet).
+    · No per-language lazy loading (would require a network
+      round-trip on every language switch and conflict with
+      offline behaviour).
+    · No "new edition available" SW toast (adds JS for a
+      flow that current cache-busting handles silently).
+    · No CSS architecture / typography audit (no specific
+      bug; designer judgement scope).
+    · No image AVIF/WebP derivative pipeline (feature
+      addition, not simplification).
+    · No identity-coherence validator (the generator
+      structurally prevents drift; belt-and-braces).
+    · No footer cite-btn / colophon split (the brief offers
+      it but it's a visible UX change; deferred pending an
+      explicit design decision).
+
+  Validators: all 17 content validators green; source
+  mirrors regenerated; new L8 invariant passes.
+
+Footer colophon + abbreviation enrichment + nav no-JS
+(Phase 14)
+  Your post-Phase-13 audit confirmed Lighthouse scores were
+  excellent but the semantic-HTML pass was still shallow. This
+  phase addresses the four highest-priority remaining gaps the
+  audit flagged: the overloaded cite-btn (footer mixed static
+  copyright with an interactive action), the near-total absence
+  of <abbr> wraps on translated copy, missing <code> markup on
+  the security disclosure path, and the nav-links being hidden
+  by default in a way that broke no-JS primary-navigation
+  reachability.
+
+  1. Footer split (every active HTML page + the rendered source
+     page)
+
+     Before:
+       <button class="cite-btn" …>
+         <span class="cite-btn-default" data-i18n-html="cite.label.default">
+           &copy; <time datetime="2026">2026</time> Paris, France
+         </span>
+         <span class="cite-btn-hover" data-i18n="cite.label.hover">
+           Cite &amp; verify
+         </span>
+       </button>
+
+     After:
+       <small class="footer-colophon">
+         &copy; <time datetime="2026">2026</time> Trent Power, Paris, France
+       </small>
+       <button class="cite-btn" data-i18n="cite.label.action" …>
+         Cite &amp; verify
+       </button>
+
+     The static copyright/location now sits as a <small> sibling
+     of the cite-btn instead of inside it. Visually, both
+     phrases are visible simultaneously — no more hover/focus
+     swap — matching the editorial register the brief asked for.
+     The .footer-left layout becomes a flex container with a
+     small gap; on the narrowest viewports the colophon wraps to
+     its own line. .cite-btn keeps min-width: 10em + min-height:
+     44px so Lighthouse L8 _check_cite_btn_touch_target still
+     passes.
+
+     i18n: cite.label.default and cite.label.hover are deleted
+     across 5 languages. A new clean cite.label.action key
+     replaces them with consistently-translated action labels
+     ("Cite & verify" / "Citer et vérifier" / "Cita e verifica"
+     / "Citar y verificar" / "Zitieren und prüfen"). The earlier
+     cite.label.hover translations had drifted between "Cite &
+     verify" (EN) and "Copy citation" (FR/IT/ES/DE) — the new
+     key fixes the drift.
+
+     JS hook: cite.template.js still queries
+     document.querySelector('.cite-btn'), a class-only selector
+     unaffected by the inner-structure change. The cite-drawer
+     openOverlay() / closeOverlay() lifecycle is untouched.
+
+     CSS: removed .cite-btn-default, .cite-btn-hover, and the
+     three hover/focus/[aria-expanded="true"] swap rules. Added
+     .footer-colophon typography (mono, --fg3, tabular-nums on
+     the <time>) sized to match the previous register.
+
+  2. Abbreviation + technical-semantics enrichment
+
+     <abbr title="…"> wraps added on first-use across translated
+     copy, with all five languages updated to carry the markup
+     through the existing Trusted-Types-gated data-i18n-html /
+     data-i18n-list apply path. Single-key changes:
+
+       index.html — trajectory.previous_title (data-i18n →
+         data-i18n-html): wrap CRM with
+         <abbr title="Customer Relationship Management">.
+       security/index.html — security.s4_content_list (data-
+         i18n-list, no attribute change required because the
+         list renderer already routes through setTrustedHTML):
+         wrap CSP first occurrence with
+         <abbr title="Content Security Policy">.
+       security/index.html — security.s4_registrar_list:
+         <abbr title="Multi-Factor Authentication">MFA</abbr>
+         and
+         <abbr title="Domain Name System Security Extensions">DNSSEC</abbr>.
+       security/index.html — security.print.card.02.body (data-
+         i18n → data-i18n-html): wrap CSP, HSTS, COOP, COEP,
+         CORP — five abbreviations in one print-utility-card
+         description line.
+       integrity/index.html — integrity.print.card.01.body
+         (data-i18n → data-i18n-html): wrap SHA-256 with
+         <abbr title="Secure Hash Algorithm, 256-bit">.
+
+     <code> wrap added to the security disclosure path. The
+     security.s7_body string previously rendered the path
+     /.well-known/security.txt as plain text. The i18n strings
+     for all five languages now embed the link with an inner
+     <code> wrap:
+       …published at <a href="/.well-known/security.txt">
+         <code>/.well-known/security.txt</code></a>.
+
+     <data value="…"> wraps on the homepage preview-items.
+     Walk-times and metro stops were plain text; they now carry
+     machine-readable numeric values:
+       <data value="13">13 min</data>
+       <data value="12">12 min</data>
+       <data value="3">3 stops</data>
+
+  3. Nav no-JS fallback (homepage)
+
+     Before:
+       <ul class="nav-links" id="nav-links" hidden>
+       .nav-links[hidden] { display: none !important; }
+       initHomeNav() toggled both aria-expanded AND hidden.
+
+     After:
+       <ul class="nav-links" id="nav-links">     /* no hidden */
+       html.js .nav-toggle[aria-expanded="false"] + .nav-links {
+         display: none;
+       }
+       initHomeNav() toggles only aria-expanded; CSS reads it
+       through the adjacent-sibling selector.
+
+     Result: visitors without JS get no `.js` class on <html>,
+     so the new CSS rule doesn't match and the panel stays
+     visible inline below the toggle — primary navigation
+     reachable. JS-enabled visitors see the same closed-state
+     behaviour as before, driven by aria-expanded instead of
+     the hidden attribute.
+
+     Validator update: validate_nav_regression.py now asserts
+     the inverse — `hidden` MUST NOT be on the nav-links
+     container, and the new html.js + [aria-expanded] sibling
+     rule must be present in styles.css. The legacy
+     .nav-links[hidden] CSS rule is explicitly tested for
+     absence so we cannot regress.
+
+  Visible diff:
+    · Every page footer reads "© 2026 Trent Power, Paris,
+      France · Cite & verify" with both phrases visible
+      simultaneously (no hover swap).
+    · Acronyms read inline on Approach (CRM), Security (CSP,
+      MFA, DNSSEC, HSTS, COOP, COEP, CORP), and Integrity
+      (SHA-256) — AT announces the expansion on first read.
+    · No visual change to layout, typography, or interaction
+      beyond the footer.
+
+  Out of scope (Phase 15+):
+    · Native <dialog> for the project modal — the existing
+      modal-overlay lifecycle is shared by both the project
+      modal and the cite drawer; the brief said "consider";
+      defer.
+    · Per-language / per-page i18n splitting — would require
+      network round-trip on language switch; conflicts with
+      offline behavior. Phase 13's bundle-split already cut
+      critical-path parse cost 19×.
+    · Additional abbreviations on lower-priority pages
+      (privacy/, source/, acknowledgments/) — the high-value
+      first occurrences are on the four pages updated above.
+    · Footer-nav extension with Integrity + Source links —
+      the brief's example showed these; deferred to keep the
+      mobile footer's visual weight unchanged.
+
+  Validators: all 18 content validators green; nav-regression
+  validator now asserts the new no-JS-safe shape; source
+  mirrors regenerated.
+
+Footer editorial recompose + semantic default sync (Phase 15)
+  Post-Phase-14 the footer was technically split but visually
+  fragmented — your audit read it as four unrelated tiles
+  (EN FR IT ES DE / © 2026 Trent Power, Paris, France / Cite &
+  verify / Privacy) on mobile, with no editorial hierarchy.
+  And View Source on the homepage still showed plain "LVMH" /
+  "CRM" because Phase 14 only updated tools/i18n/strings.json,
+  not the static HTML default text. This phase fixes both.
+
+  Question answered first: the build pipeline does NOT strip
+  semantics. The HTML files under public/ are static authored
+  source, not template-generated. tools/generate_site.py
+  performs only
+  narrow sweeps (asset versions, edition dates, JSON-LD
+  dateModified, data-edition, CSP hash refresh, SRI digests);
+  it never rewrites prose or strips inline elements. The
+  reason Ctrl-U showed bare "LVMH" / "CRM" is simply that
+  Phase 14's <abbr> wraps lived only in the i18n strings —
+  the static HTML defaults persisted byte-for-byte unwrapped.
+
+  1. Footer recompose to a 3-zone editorial grid
+
+     Today (Phase 14):
+       <footer class="footer">
+         <div class="footer-left">…colophon…cite-btn…</div>
+         <div class="footer-right">
+           <nav class="footer-lang">…EN FR IT ES DE…</nav>
+           <a class="footer-privacy">
+             <span class="footer-privacy-full">Privacy & Trust</span>
+             <span class="footer-privacy-short">Privacy</span>
+           </a>
+         </div>
+       </footer>
+
+     After (Phase 15):
+       <footer class="footer">
+         <small class="footer-colophon">
+           &copy; <time datetime="2026">2026</time> Trent Power
+           <span class="footer-colophon-place">Paris, France</span>
+         </small>
+         <nav class="footer-lang" aria-label="Language">
+           <ul class="footer-lang-list">…EN FR IT ES DE…</ul>
+         </nav>
+         <nav class="footer-actions" aria-label="Verify and privacy">
+           <button class="cite-btn" data-i18n="cite.label.action">
+             Cite &amp; verify
+           </button>
+           <a href="/privacy/" class="footer-privacy"
+              rel="privacy-policy" data-i18n="footer.privacy">Privacy</a>
+         </nav>
+       </footer>
+
+     Layout (CSS):
+       Desktop: 3 columns — identity (minmax(0,1fr)) | languages
+       (auto, centred) | actions (minmax(0,1fr), end-aligned).
+       Mobile (≤700px): 2 rows — language row spans both
+       columns on row 1; identity sits bottom-left, actions
+       bottom-right on row 2. Colophon's <span class="footer-
+       colophon-place"> goes from inline (with a left-margin
+       gap) to its own block line so "Paris, France" never
+       pushes the row off-screen.
+
+       Action pair: cite-btn and privacy link sit inside the
+       new <nav class="footer-actions"> as one deliberate pair,
+       with a 44px tap-target floor preserved on the link.
+
+     i18n:
+       cite.label.action — already added in Phase 14.
+       footer.privacy — shortened to single editorial form
+         ("Privacy" / "Confidentialité" / "Privacy" /
+         "Privacidad" / "Datenschutz"). The Phase-7
+         dual-span (Privacy & Trust / Privacy) is retired;
+         footer.privacy_short is deleted from strings.json.
+
+     CSP/SRI:
+       The error-page inline script (403/404/500) used to
+       target document.querySelector('.footer-right a') to
+       apply the privacy translation. After the recompose
+       there's no .footer-right wrapper; the privacy link is
+       now reached via .footer-privacy directly. Updated the
+       inline script's selector and bumped STATIC_CSP_HASHES
+       in tools/generate_site.py from
+       sha256-6IU4kJUH23u9bEELiD8ZdnaSmU+/A6HoR4mKug6Msl0=
+       to sha256-S6IBUSE75ht3YupTFlScvC5ywDG8lHSAikBioLHjYK8=
+       so the live page's strict CSP keeps validating the
+       inline script.
+
+  2. Semantic default sync — HTML defaults now mirror i18n
+
+     The runtime translation payload already carried
+     Phase-14's <abbr> wraps; this commit brings the static
+     HTML defaults into lockstep so no-JS visitors and the
+     Ctrl-U view both see the same semantic register.
+
+     public/index.html:
+       · trajectory.current_org: data-i18n → data-i18n-html;
+         HTML default now reads
+         <abbr title="Louis Vuitton Moët Hennessy">LVMH</abbr>.
+         (LVMH was never wrapped — Phase 14 missed it.)
+         All 5 i18n strings updated to carry the same wrap.
+       · trajectory.previous_title: HTML default now reads
+         "Senior leadership across Clienteling, <abbr title=
+         "Customer Relationship Management">CRM</abbr>, and
+         Client Development". (i18n already had the wrap
+         post-Phase-14; HTML default catches up.)
+
+     public/security/index.html:
+       · security.s4_registrar_list HTML default: <abbr
+         title="Multi-Factor Authentication">MFA</abbr>
+         enabled + <abbr title="Domain Name System Security
+         Extensions">DNSSEC</abbr> enabled and validated.
+       · security.s4_content_list HTML default: strict
+         <abbr title="Content Security Policy">CSP</abbr>
+         starting from <code>default-src 'none'</code>.
+       · security.print.card.02.body HTML default: full
+         five-abbr line (CSP, HSTS, COOP, COEP, CORP).
+
+     public/integrity/index.html:
+       · integrity.print.card.01.body HTML default:
+         <code>/integrity.json</code> — <abbr title="Secure
+         Hash Algorithm, 256-bit">SHA-256</abbr> hashes of
+         every intentional public file.
+
+     Coverage now (HTML defaults, no-JS view):
+       public/index.html:            2 <abbr>
+       public/security/index.html:   4 lines with <abbr>
+                                     (5 acronyms on the
+                                     print-card line + 3
+                                     list items)
+       public/integrity/index.html:  2 <abbr> (PGP + SHA-256)
+
+  Out of scope (Phase 16+):
+    · i18n bundle split into core (en+fr) + lazy
+      (it/es/de) — separate PR; not bundled here.
+    · Native <dialog> for the project modal — brief said
+      "consider"; deferred.
+    · Per-page abbr enrichment on privacy/, source/,
+      acknowledgments/ — high-value first occurrences are
+      now covered on the four key pages.
+    · Footer-nav extension with Integrity + Source links —
+      deferred to preserve mobile footer's visual weight.
+
+  Validators: all 18 content validators green; source
+  mirrors regenerated; nav-regression invariant from
+  Phase 14 preserved; updated CSP-hash line in
+  STATIC_CSP_HASHES.
+
+i18n bundle split · core (en+fr) + lazy (it/es/de) (Phase 16)
+  Phase 13 extracted the I18N dictionary out of /app.js into a
+  separate /i18n.js (~200 KB / ~53 KB gzip), cutting critical-
+  path JS from 215 KB → 11 KB. The i18n bundle itself still
+  shipped all five languages to every visitor regardless of
+  which one they actually needed. This phase splits the bundle
+  further so a default English / French visitor only downloads
+  the languages they can possibly read.
+
+  Build pipeline (tools/generate_site.py):
+    /public/i18n-core.js    — en + fr only
+                              81 KB on disk / 22 KB gzip
+    /public/i18n/it.js      — Italian only (lazy)
+                              41 KB / 12 KB gzip
+    /public/i18n/es.js      — Spanish only (lazy)
+                              42 KB / 12 KB gzip
+    /public/i18n/de.js      — German only (lazy)
+                              42 KB / 12 KB gzip
+    /public/i18n.js         — REMOVED (Phase 13 monolithic
+                              bundle no longer generated; the
+                              build now removes the orphan if
+                              it lingers on disk).
+
+  Wiring:
+    · Every active HTML page (13 files + the rendered
+      /source/index.html template) now links
+        <script src="/i18n-core.js?v=…" defer
+                integrity="sha384-…"></script>
+      immediately before
+        <script src="/app.js?v=…" defer …></script>
+      Phase 13's /i18n.js script tag is removed.
+    · Optional language bundles are NOT linked in any HTML.
+      They load on demand only.
+
+  Runtime loader (templates/app.template.js):
+    · _safeScriptURL ALLOWED_PREFIXES gains `/i18n-core.js`
+      and `/i18n/` so the Trusted-Types `tp-i18n` policy
+      authorises dynamic loads of per-language bundles.
+    · A new loadOptionalLang(lang, onLoaded) helper creates
+      a <script> element via trustedScriptURL(), appends it
+      to <head>, and fires the callback on load. Tracks
+      in-flight loads so repeated applyLanguage() calls
+      don't enqueue duplicate <script> tags.
+    · applyLanguage(lang) gates on the lazy bundle: if
+      OPTIONAL_LANGS[lang] and window.I18N[lang] is
+      undefined, the loader is triggered, the page renders
+      in fr (if the browser is French) or en fallback, and
+      re-applies in `lang` from the load's onload callback.
+
+  Behaviour:
+    · First-load default en/fr: i18n-core.js arrives via
+      <script defer>; app.js runs; applyLanguage('en' | 'fr')
+      succeeds immediately. No dynamic load.
+    · First-load it/es/de (stored localStorage.tp-lang):
+      app.js runs, applyLanguage('it') sees window.I18N.it
+      undefined, fires loadOptionalLang('it'), renders the
+      English fallback for ~30–80 ms on HTTP/2 4G, then
+      re-applies in Italian when the lazy bundle arrives.
+      Instant on second visit via SW precache.
+    · Language switch click EN→IT: same path. EN↔FR is
+      instant because both ship in core.
+
+  Service worker precache:
+    tools/public_inventory.PUBLIC_SCRIPTS drops /i18n.js,
+    adds /i18n-core.js + /i18n/{it,es,de}.js. All four
+    precached so offline switching still works without
+    network on any return visit.
+
+  Source mirror:
+    tools/generate_source_view.py MIRROR drops i18n.js,
+    adds i18n-core.js.txt + i18n/{it,es,de}.js.txt.
+    SOURCE_MIRROR_MAP routes i18n-core.js.txt to the
+    authored tools/i18n/strings.json (the full five-language
+    tree, readable JSON). Per-language mirrors emit the
+    deployed bytes — the authored source is already covered
+    by i18n-core.js.txt.
+
+  L8 invariant update (tools/validate_lighthouse_invariants.py):
+    Now asserts:
+      · public/app.js does not inline the dictionary
+        (unchanged from Phase 13).
+      · public/i18n-core.js exists and assigns window.I18N.
+      · public/i18n/{it,es,de}.js each exist and extend
+        window.I18N.<lang>.
+      · public/i18n.js (the Phase-13 monolithic bundle) is
+        GONE.
+      · Every active HTML file links /i18n-core.js BEFORE
+        /app.js (defer document order); no HTML still links
+        the legacy /i18n.js.
+
+  CSP / SRI:
+    No CSP change. `script-src 'self'` already authorises
+    same-origin dynamic loads; Trusted Types `tp-i18n`
+    policy approves the new `/i18n-core.js` and `/i18n/`
+    prefixes via _safeScriptURL. generate_sri.py picks up
+    SHA-384 digests for the new /i18n-core.js <script> tag
+    automatically. Per-language bundles are loaded
+    dynamically (no static <script integrity=…> tag); their
+    integrity is enforced by the signed integrity.json
+    manifest and the SW precache cache-name (which embeds
+    every precached file's bytes).
+
+  Footprint (cold-load transfer in gzip):
+    Before (Phase 13):
+      app.js          ~4 KB
+      i18n.js         ~53 KB (all 5 languages)
+      Total           ~57 KB
+    After (Phase 16):
+      English/French visitor:
+        app.js        ~4 KB
+        i18n-core.js  ~22 KB
+        Total         ~26 KB  (59% reduction)
+      Italian/Spanish/German first visit:
+        app.js        ~4 KB
+        i18n-core.js  ~22 KB
+        i18n/<lang>.js ~12 KB (lazy, after first-paint)
+        Total         ~38 KB cold-load  (33% reduction)
+    Return visits hit SW precache for all four bundles —
+    language switching among any locale is instant.
+
+  Out of scope:
+    · Per-page i18n splitting — high complexity, ~2–5 KB
+      win per page; not worth it.
+    · ES `import()` syntax — would require type="module"
+      breaking defer document-order guarantees + complicate
+      SRI. The <script> injection pattern is simpler and
+      already authorised by Trusted Types.
+    · SW "new edition available" toast — separate concern.
+
+  Validators: all 18 content validators green; source
+  mirrors regenerated; Trusted Types validator green
+  (createElement + trustedScriptURL on one statement, same
+  pattern as the existing app-enhance.js lazy load).
+
+Swiss Utility Rail footer (Phase 17)
+  Final footer composition. Earlier phases got the semantics
+  right (Phase 14 split colophon from cite-button, Phase 15
+  composed three editorial zones) but the result still read
+  as four loose tiles on mobile — language buttons floating,
+  cite button drifting, privacy abandoned at the edge. This
+  phase replaces the markup and CSS with a single composed
+  imprint: identity line above, quiet horizontal rail beneath.
+  Dieter Rams restraint, early Apple developer-doc register,
+  printed colophon.
+
+  Markup (every active HTML page + the rendered source-view
+  template):
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <small class="site-footer__identity">
+          &copy; <time datetime="2026">2026</time> Trent Power,
+          Paris, France
+        </small>
+        <div class="site-footer__rail">
+          <nav class="site-footer__languages footer-lang"
+               aria-label="Language">
+            <ul class="site-footer__language-list footer-lang-list">
+              <li><button type="button" lang="en" data-lang="en"
+                          aria-pressed="true">
+                <span aria-hidden="true">EN</span>
+                <span class="visually-hidden">English</span>
+              </button></li>
+              … FR / IT / ES / DE …
+            </ul>
+          </nav>
+          <nav class="site-footer__links" aria-label="Footer">
+            <button class="site-footer__action cite-btn"
+                    type="button"
+                    aria-haspopup="dialog" aria-expanded="false"
+                    aria-label="Cite and verify this page"
+                    data-i18n="cite.label.action">
+              Cite &amp; verify
+            </button>
+            <a class="footer-privacy" href="/privacy/"
+               rel="privacy-policy" data-i18n="footer.privacy">
+              Privacy
+            </a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+
+  Visible layout:
+    Desktop · identity on top, rail below in a single row.
+      Languages on the left (EN · FR · IT · ES · DE — a
+      typographic phrase with `·` separators rendered via
+      `li + li::before`, NOT five equally-spaced pills).
+      Cite & verify and Privacy as the right-end pair.
+    Mobile ≤640px · strictly left-aligned per the user's
+      strong guidance. Rail collapses to a single column:
+      language row wraps to two lines (EN · FR · IT then
+      ES · DE within a max-width: 13rem block), then Cite &
+      verify on its own line, then Privacy on its own line.
+      No centred / symmetric layout. No right-floating
+      elements. No "app footer" feel.
+
+  Language buttons:
+    Visible text is the 2-letter code (`<span aria-hidden
+    ="true">EN</span>`). The accessible name comes from a
+    sibling `<span class="visually-hidden">English</span>`
+    so AT announces "English" / "Français" / "Italiano" /
+    "Español" / "Deutsch" — not the abbreviation. The
+    `lang` attribute on each button matches the locale.
+    Active language uses `aria-pressed="true"` and renders
+    with --fg; inactive languages render with --fg3.
+
+  Class hooks (deliberate deviation from a pure-BEM rename):
+    The brief specified BEM-only classes. The implementation
+    keeps `.cite-btn`, `.footer-lang`, `.footer-lang-list`,
+    `.footer-privacy` as secondary classes on the new BEM
+    elements so the existing JS surface stays intact:
+      · cite.template.js `document.querySelector('.cite-btn')`
+        (4 hits) — no change.
+      · app.template.js `document.querySelectorAll('.footer-lang
+        button[data-lang]')` (8 hits) — no change.
+      · Error-page (403/404/500) inline-script applier
+        targets `.footer-privacy` and `.footer-lang button` —
+        no change. STATIC_CSP_HASHES stays as-is (inline
+        script byte-identical).
+      · validate_lighthouse_invariants.py L4 touch-target
+        regex finds `.cite-btn { min-height: 44px; }` and
+        `.footer-lang button { min-width: 44px; min-height:
+        44px; }` — preserved as one-line shims in the new
+        CSS block.
+
+  CSS:
+    The Phase-15 footer block (.footer 3-column grid,
+    .footer-colophon, .footer-actions, .cite-btn styling,
+    .footer-privacy-full / -short legacy spans) is removed.
+    The legacy .footer-lang typography + 5-column inline-grid
+    rules at the end of styles.src.css are also retired
+    (they competed with the new BEM rules at equal
+    specificity but later source order). The new
+    `.site-footer*` ruleset is one self-contained block:
+      · token-driven: --mono, --bd, --fg, --fg3, --page-max
+      · padding clamps respect safe-area-inset-bottom
+      · the `·` separator is a `::before` pseudo on
+        `li + li` so it reads as a typographic phrase
+      · `aria-pressed="true"` darkens the active language
+        without boxing it
+      · `:focus-visible` outlines via `1px solid currentColor`
+        + 0.35rem outset, matched to the imprint register
+      · `@media (forced-colors: active)` keeps the rail
+        readable under Windows High Contrast (CanvasText
+        border + outline)
+      · mobile rail is `display: grid` with a single column,
+        languages capped at max-width 13rem so they wrap
+        naturally; actions stack with `display: grid;
+        justify-items: start`
+
+  No CSP / SRI / Trusted Types change. No JS hook change.
+  No i18n key change (`cite.label.action` + `footer.privacy`
+  exist from Phase 14/15). No SW precache change. No
+  validator change.
+
+  Visible diff:
+    Footer now reads as one composed imprint, not four
+    floating tiles. Mobile is unmistakably left-aligned.
+    Tap targets ≥44 px on desktop, 40 px on mobile (per the
+    brief's narrower mobile padding).
+
+  Validators: all 18 content validators green; source
+  mirrors regenerated.
+
+i18n production discipline (Phase 18)
+  Finishes the Phase-16 bundle split with production
+  hygiene. The lazy /i18n/<lang>.js fetches now cache-bust
+  in lockstep with every other asset, and a new strict
+  validator enforces locale parity across the editorial
+  translation tree.
+
+  1. Cache-bust on lazy language fetches
+
+     Phase 16's runtime loader constructed
+     `/i18n/<lang>.js` without a `?v=` query string.
+     Service-worker visitors were safe (SW cache name busts
+     on byte change) but non-SW first cold-loads + browsers
+     with SW disabled used the default HTTP cache policy
+     from .htaccess — risking a stale response after a
+     translation edit.
+
+     Fix:
+       templates/app.template.js declares
+         var I18N_VTAG = '';
+       which the build patches via _patch_js_literal to
+         var I18N_VTAG = '2026-05-09.<hash8>';
+       loadOptionalLang() builds the URL as
+         /i18n/<lang>.js?v=<I18N_VTAG>
+       so every lazy fetch carries the canonical asset
+       version. The browser HTTP cache cache-busts cleanly
+       on translation edits.
+
+     Stability against the chicken-and-egg hazard:
+       tools/generate_site.py adds _I18N_VTAG_RE that
+       normalises the patched literal back to the empty
+       form before _compute_asset_version hashes app.js,
+       so the version embedded in the literal never
+       cycles the hash it carries. Same pattern as the
+       existing _VER_LITERAL_RE that protects the
+       /app-enhance.<v>.js and /fonts-full.<v>.css
+       references in app.js. Verified stable across two
+       consecutive rebuilds (same asset_version both runs).
+
+  2. New strict validator · validate_i18n_consistency.py
+
+     Wired into predeploy via the validate_*.py glob.
+     Three rules over tools/i18n/strings.json:
+
+       R1 KEY-SET PARITY — every dotted-path key present
+          in `en` must also exist in fr/it/es/de. Extra
+          keys in non-EN locales are flagged.
+       R2 NO EMPTY STRINGS — every string value across
+          all five locales must contain at least one
+          non-whitespace character.
+       R3 HTML-TAG PARITY — if an EN string contains
+          inline html (<abbr>, <code>, <time>, <var>,
+          <samp>, <kbd>), every non-EN translation of
+          the same key must carry the same set of tag
+          names (counted set-wise; attributes may
+          differ). Catches the common regression where
+          a translator strips markup.
+
+     Current state: validator passes clean — five locales
+     share an identical key set, no empty strings, html-
+     tag parity holds across every key with inline
+     markup. No stale keys surfaced; no pruning needed
+     in this PR.
+
+  3. Lowercase-comment normalisation
+
+     The lazy-i18n region in templates/app.template.js
+     had a few sentence-cased inline comments authored in
+     Phase 16. Normalised to lowercase per the project's
+     authorial rule. Banner comments in i18n-core.js and
+     i18n/<lang>.js were already lowercase from Phase 16;
+     no change needed there.
+
+  4. Out of scope (deliberately)
+
+     · <link rel="modulepreload"> / <link rel="preload">
+       for /i18n-core.js — both en and fr already ship
+       in core, so the "switch to the other core lang"
+       case has zero load latency. Adding a preload tag
+       would duplicate the existing <script defer>
+       (already requested at parse time). Brief
+       explicitly forbids preloading it/es/de.
+     · Adding any i18n library — brief forbids.
+     · Adding a framework — brief forbids.
+
+  Items already shipped in Phase 16, audited and confirmed
+  in place here:
+     · en + fr in core, lazy it/es/de on selection (Phase 16).
+     · Graceful fallback on import failure: script.onerror
+       cleans the in-flight tracker silently;
+       applyLanguage renders en/fr fallback while the load
+       is in flight and stays there if it fails — page
+       never breaks.
+     · html.lang updated on every language switch by
+       applyLanguage (Phase 16).
+     · aria-pressed updated by the existing footer-lang
+       JS path on every switch.
+     · No-JS visitors see English HTML defaults; language
+       buttons are inert but visible.
+
+  All validators green (18 existing + 1 new = 19); source
+  mirrors regenerated; asset versions rotate. No CSP / SRI
+  / Trusted Types change.
+
+lowercase comments authorial rule (phase 19)
+  a deliberate register shift. all comment prose and short
+  .txt documentation files are authored lowercase from this
+  edition onward. the change is editorial, not functional —
+  one voice across source, no decorative capitals, no
+  shouting in the margins.
+
+  1. fix script · tools/fix_lowercase_comments.py
+
+     walks a curated TARGETS list and lowercases comment
+     regions in place. per-file kind handlers:
+
+       · html      strip <!-- … --> prose; inline <script>
+                   blocks (csp-hashed) are skipped byte-for-
+                   byte so the hash list does not drift.
+       · css       /* … */ blocks only.
+       · js        // line + /* */ block comments. docstring
+                   templates lowercased.
+       · python    # line comments only; triple-quoted
+                   docstrings left intact (they read as
+                   structured prose, not commentary).
+                   warning words preserved: IMPORTANT NOTE
+                   TODO WARNING FIXME XXX HACK.
+       · .htaccess # line comments + section banners.
+       · .txt      whole-file prose.
+
+     preserve heuristic — a token stays as written if it:
+       contains /, \, _, @, :
+       has a middle . or middle -
+       is a hex hash ([0-9a-f]{8,})
+       starts with -- (css var / cli flag)
+       (python only) is a warning word
+
+     everything else lowercases.
+
+  2. validator · tools/validate_lowercase_comments.py
+
+     delegates to the fix script's HANDLERS + TARGETS. runs
+     the fix in memory and reports diffs as file:line:snippet.
+     exits non-zero on any drift. wired into predeploy as
+     explicit step 28.
+
+  3. predeploy explicit wire-ups
+
+     phase 18's validate_i18n_consistency.py was not wired
+     into predeploy_check.py's explicit step list (the
+     docstring's "via the validate_*.py glob" referred to a
+     glob that does not exist). corrected: both new validators
+     are now explicit steps 27 + 28.
+
+  4. scope and exclusions
+
+     in-scope (tier a + b):
+       · 14 html pages (section markers)
+       · 3 css sources (banner labels)
+       · 3 js templates (inline + docstring comments)
+       · ~30 python tool files (line comments only; warning
+         words preserved)
+       · .htaccess (section banners)
+       · 6 short .txt files (humans.txt, llms.txt, ai-usage.
+         txt, assertion.txt, statement.txt, attribution.txt)
+
+     deliberately out of scope:
+       · public/changelog.txt — phases 1-18 grandfathered.
+         the rule applies to phase 19+ entries (this one).
+         18 phases of record stay as authored; flattening
+         them would lose fidelity on code-identifier
+         references (I18N, CSP, PGP, SHA-256 etc.) for
+         small consistency gain.
+       · pgp.txt — protocol data, uppercase by convention.
+       · robots.txt, .well-known/security.txt, sitemap.xml.
+         sha256 — protocol/data files.
+       · inline <script> blocks in html — csp-hashed; the
+         hash list must stay byte-stable.
+       · frozen archives under /integrity/releases/<edition>/
+         — immutable per the frozen-archive validator.
+
+     tier c · public/index.html source banner
+
+       the authored banner is the editorial reference for
+       the rule. it now reads (visible only via view-source):
+
+         trentpower.fr
+         static, semantic, self-managed, privacy-first
+         no analytics, no cookies, no external assets
+         public integrity manifest: /integrity.json
+
+         irc. geocities. betty. ttn. since 1997.
+         visitor counters · guestbooks · "under construction".
+         animated gifs and midi files that played whether
+         you wanted them to or not.
+
+         we didn't know what we were building.
+         we just knew we could.
+
+         if you've read this far, you remember ctrl+u
+         the web was a library you could open the spine of.
+         it still is, here.
+
+  5. generator-emitted comments + llms.txt
+
+     tools/generate_site.py emits <!-- structured data -->
+     (was <!-- Structured data -->) and writes llms.txt with
+     lowercase label rows + lowercased identity values. the
+     json-ld payloads themselves are untouched — schema.org
+     casing is preserved where it matters legally.
+
+     tools/generate_source_view.py's <head> emit-template
+     also lowercased (<!-- open graph -->, <!-- icons -->,
+     <!-- identity -->, <!-- stylesheets -->, <!-- structured
+     data -->).
+
+  6. byte-stability gates verified
+
+     · STATIC_CSP_HASHES list unchanged across the rebuild;
+       inline <script> bodies untouched.
+     · asset_version stable across two rebuilds (the
+       comment edits do not enter the hash basis except via
+       expected paths).
+     · sri integrity hashes refresh for any file whose
+       content actually changed, which is the contract.
+
+  validators: 19 existing + 1 new (validate_lowercase_
+  comments.py) + 1 wire-up correction (validate_i18n_
+  consistency.py now explicit) = 21 total. all green.
+
+footer recompose · swiss utility rail (phase 20)
+  the phase 17 footer was structurally correct but composed
+  badly at 390 px: five language buttons scattered across the
+  width, "cite & verify" and "privacy" right-floated on their
+  own rows, and the column-2 grid pulling the actions
+  visually away from the rail on mobile. the cause was a
+  flex-wrap mismatch — `.site-footer__rail` swapped to
+  `grid-template-columns: 1fr` below 640 px, but the
+  language list stayed `display: flex; flex-wrap: wrap` with
+  `· ` separators, producing a stair-step layout instead of
+  one typographic phrase.
+
+  fix:
+    1. dropped the `.site-footer__*` bem prefix. the new
+       primary class names match the legacy js hooks
+       (`.footer-lang`, `.cite-btn`, `.footer-privacy`),
+       removing the secondary-class shim phase 17 carried.
+    2. footer shape is now: a colophon `<small>` on top, then
+       a single `.footer-rail` flex row containing two
+       `<nav>` regions (language + actions). desktop:
+       `justify-content: space-between` (languages left,
+       actions right). mobile (≤700 px): `display: grid;
+       justify-content: start` so the rail stacks fully
+       left-aligned, no right floats, no centred symmetry.
+    3. language list reads as one phrase via the
+       `.footer-lang-list li + li::before { content: "·" }`
+       separator. actions row uses the same separator pattern
+       for "cite & verify · privacy".
+    4. `<small class="footer-colophon">` + `<time
+       datetime="2026">2026</time>` semantics preserved. the
+       brief's `.footer / .footer-inner / .footer-rail /
+       .footer-lang / .footer-actions` shape is now exactly
+       what ships.
+
+  applied across all 13 public pages (home, privacy, source,
+  verify, integrity, integrity/releases, security,
+  security/acknowledgments, 403, 404, 500, maintenance,
+  sw-reset) and the source-view generator template so any
+  regenerated mirror keeps the new shape.
+
+i18n switching correctness (phase 20)
+  static analysis of the phase 16 lazy loader confirmed the
+  click-time flow itself worked: local `var I18N` and
+  `window.I18N` reference the same object, and the lazy
+  bundles correctly mutate that object with `window.I18N
+  .<lang> = {...}`. but two real bugs produced the user-
+  visible symptom that it/es/de "fail":
+
+  1. persistence bug · the original `detectLanguage`
+     short-circuited `if (stored && I18N[stored]) return
+     stored;`, but at boot `I18N` only carries en + fr.
+     stored='it' fell through to navigator detection and
+     reverted to en/fr. the user's it/es/de choice did not
+     survive a reload.
+  2. premature persistence + aria-pressed flicker ·
+     `switchLanguage` wrote localstorage before the lazy
+     bundle had loaded, and `applyLanguage` synchronously
+     flipped aria-pressed to the en/fr fallback while the
+     load was in flight. on failure (network 404, csp block)
+     the stored preference would still be the optional lang
+     even though the page never rendered it.
+
+  fix — rewrote the language flow in
+  templates/app.template.js with a four-function shape:
+
+    renderLanguage(lang)      pure dom mutator. does not
+                              touch localstorage and does
+                              not flip aria-pressed.
+                              returns true if applied.
+    updateLangControls(lang)  flips aria-pressed only.
+    loadOptionalLang(lang)    returns a promise that
+                              resolves true on success,
+                              false on failure. multiple
+                              callers chain via an inflight
+                              array.
+    applyLanguage(lang)       orchestrator: load → render →
+                              persist + aria-pressed, but
+                              only after render succeeds.
+                              returns the lang actually
+                              applied.
+
+  startup is now `bootLanguage()`:
+    · stored core lang → synchronous render + aria.
+    · stored optional lang → render core fallback now, mark
+      stored lang as pressed optimistically, then upgrade
+      asynchronously. on success, render optional. on
+      failure, snap aria-pressed back to the core fallback
+      and clear the bad stored preference so the next visit
+      does not retry.
+
+  click flow is now:
+    · `switchLanguage` calls `applyLanguage(lang).then(...)`
+      then runs the scroll-anchor + settle animation.
+      localstorage and aria-pressed update only on success.
+    · network failure: applylanguage resolves with whatever
+      the page last successfully rendered; no broken state.
+
+  csp / trusted-types untouched. the loader still uses
+  `document.createElement('script')` + the existing
+  `tp-i18n` trustedscripturl policy (no dynamic `import()`,
+  which would require csp + tt policy work).
+
+i18n runtime validator (phase 20)
+  added tools/validate_i18n_runtime.py. wired as predeploy
+  step 29. closes the runtime-output gap that phase 18's
+  validate_i18n_consistency.py left open (that validator
+  only reads tools/i18n/strings.json — the authored source).
+
+  the new validator reads the compiled bundles on disk and
+  asserts:
+
+    r1. each `/public/i18n/{it,es,de}.js` exists + > 1 kb
+        (catches truncation / empty writes).
+    r2. `/public/i18n-core.js` carries the canonical banner
+        + `window.I18N={` + both `"en":` and `"fr":` keys.
+    r3. each lazy file carries `window.I18N=window.I18N||
+        {};window.I18N.<lang>={` and ends with `};` (catches
+        missing-tail corruption).
+    r4. each lazy file's leaf-key count matches the same
+        locale in strings.json (catches partial / pruned
+        writes).
+    r5. public/index.html has 5 footer buttons with
+        data-lang="en|fr|it|es|de" + aria-pressed.
+
+generator regex repair (phase 20)
+  phase 19 lowercased `<!-- Structured data -->` to
+  `<!-- structured data -->` in tools/generate_site.py, but
+  the strip-and-inject regex in the same file stayed
+  case-sensitive (`<!--\s*Structured data...`). each build
+  appended a fresh marker instead of replacing the previous
+  one; index.html ended up with seven stacked
+  `<!-- structured data -->` comments by the time the
+  pattern was spotted. fixed by making the strip regex
+  match both cases (`[Ss]tructured data`). idempotent
+  rebuilds verified.
+
+  the same case-sensitive bug existed in the faq strip and
+  the structured-data spacing collapse — both fixed in the
+  same pass.
+
+footer + i18n preserve heuristic (phase 20)
+  fix_lowercase_comments.py preserve heuristic gained one
+  rule: tokens containing an internal `[a-z][A-Z]` (camelcase
+  identifier pattern). this lets comments reference code
+  identifiers (`renderLanguage`, `loadOptionalLang`,
+  `requestAnimationFrame`, `updateLangControls`) without
+  the validator flagging them as uppercase prose. the
+  identifiers in the surrounding code remain grep-friendly.
+
+  validators: 21 from phase 19 + 1 new (validate_i18n_
+  runtime.py) = 22 total. all green except validate_
+  release.py (gpg env-only, missing public key in build env;
+  unchanged from phase 19).
+
+verify page hierarchy (phase 21)
+  the /verify/ page opened with a "current edition" panel
+  (signed manifest, detached signature, public key, edition
+  archive), then the actual page record card appeared much
+  later via verify.js. backwards: the user came to verify
+  *this page*, so the page record is the primary object and
+  the edition-level anchors are supporting infrastructure.
+
+  fix — minimal hierarchy swap, no content removed:
+
+    1. public/verify/index.html · moved the static
+       `<section class="verify-intro-panel">` (current
+       edition) from immediately under the lede to
+       immediately under the `<div id="verify-root">` js
+       render target. the page now reads:
+         · header
+         · "Verify" kicker
+         · h1 "Verify this page"
+         · lede
+         · page record card (verify.js)
+         · related records (verify.js)
+         · current edition (supporting infrastructure)
+         · ← privacy back link
+         · footer
+
+    2. tools/styles.src.css · tightened the lede→card top
+       margin from `clamp(24px, 3.5vw, 36px)` to
+       `clamp(16px, 2.2vw, 24px)` so the card lands closer
+       to the lede; bumped the card→intro bottom margin to
+       `clamp(32px, 5vw, 56px)` so the panel below reads as
+       a separate supporting block.
+
+    3. `.verify-intro-panel` margin tightened on top (the
+       card above provides the gap) and slightly relaxed on
+       the bottom (separator to the back link).
+
+  no content was removed. all paths and hashes still use
+  `<code>`; all dates still use `<time datetime="…">`. the
+  current edition values (edition date, signing key
+  fingerprint, manifest path, signature path, public-key
+  path, edition-archive path) are unchanged.
+
+  validators: 22 from phase 20. all green except validate_
+  release.py (gpg env-only, unchanged).
+
+defensive markup degradation (phase 22)
+  emergency response to a production incident: the live site
+  showed four cosmetic regressions in iphone safari on a fresh
+  deploy in private browsing — the footer language buttons
+  rendered with both the visible glyph and the
+  `<span class="visually-hidden">` long-name siblings shown
+  inline ("EN English · FR Français · IT Italiano · …"); the
+  homepage trust-line rendered both `.trust-line-full` and
+  `.trust-line-short` stacked, with the inner `<a>` elements
+  painted browser-default blue underlined; it/es/de language
+  switching did not work; the cite & verify button did not
+  open the modal.
+
+  static audit of the local main head confirmed that
+  every relevant css rule and js handler was present and
+  correct, and that every sri hash in the html matched the
+  on-disk bytes of `styles.css`, `app.js`, `cite.js` and
+  `i18n-core.js` byte-for-byte. the production rendering
+  disagreed with the local code in a way that is consistent
+  with a deploy/serving issue (stale or partial bytes on the
+  host) rather than a code bug.
+
+  rather than chase that disagreement without network access
+  to the host, this phase makes the markup degrade
+  gracefully — so even when css partially fails on the wire,
+  the page reads as intended:
+
+    1. language buttons collapsed from
+         `<button …><span aria-hidden="true">EN</span><span class="visually-hidden">English</span></button>`
+       to
+         `<button … aria-label="English">EN</button>`.
+       accessible name still comes from `aria-label`; screen
+       readers announce "English" unchanged. visible glyph is
+       just `EN`. no dependency on the `.visually-hidden`
+       utility class.
+
+    2. homepage trust-line `<a href="/privacy/">` and
+       `<a href="/integrity/">` replaced with plain `<span>`.
+       the trust-line is a declarative badge ("privacy-first
+       · static · no tracking · signed releases"), not
+       navigation; the privacy and integrity pages remain
+       reachable from the nav and the footer. browser default
+       rendering is now inherited text colour, no underline.
+       even with css failure the line cannot paint blue.
+
+    3. `.trust-line-short` carries the html `hidden` attribute
+       as a defensive fallback. on mobile the css media query
+       overrides it with `display: inline !important` (the
+       `!important` is load-bearing here — it must beat the
+       ua stylesheet `[hidden] { display: none }`). on
+       desktop both the html attribute and the existing
+       `display: none` rule converge on hidden; on mobile the
+       short line wins. when css fails entirely, only the
+       full line shows — never both stacked.
+
+  applied across all 13 public html pages (home, privacy,
+  source, verify, integrity, integrity/releases, security,
+  security/acknowledgments, 403, 404, 500, maintenance,
+  sw-reset) and the `generate_source_view.py` template that
+  emits `/source/index.html`. 65 language buttons swept
+  (5 buttons × 13 pages).
+
+  side effect — asset_version rotates from 97cc7f5c to
+  d886a419 because every html page changed bytes. that
+  rotation is desirable: it forces every browser, http cache,
+  and service worker on the wire to re-fetch the entire
+  bundle on next visit, which is exactly the behaviour the
+  user needs to push through whatever stale state the host
+  is in.
+
+  no content removed; no functional regression. validators:
+  22 from phase 21. all green except validate_release.py
+  (gpg env-only, unchanged).
+
+no-js mobile layout (phase 23)
+  the phase 22 fix removed the visible failure modes (no more
+  blue trust-line, no more "EN English" run-on) but on the
+  next iphone screenshot the page was still rendering desktop
+  layout at portrait width — nav links inline, trust-line
+  showing the long english phrase, and the mobile footer
+  stack not collapsing. the diagnosis pointed at the inline
+  language-bootstrap script failing to run on the host (the
+  script that sets `html.classList.add('js')`), which left
+  every `html.js`-gated mobile rule inert.
+
+  this phase removes that dependency:
+
+    1. mobile nav-collapse rule
+       before: `html.js .nav-toggle[aria-expanded="false"] +
+                .nav-links { display: none }`
+       after:  same rule for html.js (kept), PLUS an
+               `@media (max-width: 900px)` rule that hides
+               nav-links unconditionally. when the inline
+               bootstrap is blocked, the @media rule fires
+               on every mobile viewport and nav-links is
+               collapsed correctly. on desktop both rules
+               are inert.
+
+       the homepage-scoped variant
+       (`html.js body[data-page="home"] .nav-toggle[…] +
+       .nav-links { display: none !important }`) drops the
+       `html.js` gate entirely. mobile homepages now hide
+       the closed nav-links regardless of script state.
+
+    2. mobile breakpoint bumped 700px → 900px in three
+       responsive blocks (nav, trust-line, footer rail).
+       iphone landscape on pro max reaches ~932 css px;
+       small tablets and the "request desktop site" pattern
+       also fall inside 900 now, so the mobile rules apply
+       across every device the user reasonably tests on.
+
+    3. defensive `!important` markers added to four mobile
+       rules: `.trust-line-full { display: none }`,
+       `.footer-rail { display: grid; justify-content: start }`,
+       and `.footer-actions { justify-content: start }`. each
+       is documented in-place. the
+       `STYLES_IMPORTANT_BUDGET` in validate_css_architecture
+       lifted from 12 to 16 with the rationale recorded.
+
+    4. belt-and-braces in app.template.js: the first line of
+       the iife now runs
+         try { document.documentElement.classList.add('js'); }
+       so even if the inline bootstrap is blocked, the
+       deferred /app.js still adds the `js` class to <html>
+       when it executes. the `html.js`-gated rules then start
+       applying after parse — first paint may show no-js
+       layout briefly, then snap to the js layout. cheap,
+       idempotent.
+
+  side effect — asset_version rotates again (forces fresh
+  fetches across every cache + sw on the wire, same mechanism
+  as phase 22).
+
+  what this does NOT fix:
+    · whatever is blocking the inline bootstrap on the host
+      (csp header drift, trusted-types policy mismatch,
+      service-worker stale response, edge cdn rewrite —
+      unknown without browser devtools access).
+    · the symptom-side fix here is sufficient: the page
+      renders correctly regardless of whether js works.
+
+  validators: 22 from phase 22; budget lift documented in
+  validate_css_architecture. all green except validate_
+  release.py (gpg env-only, unchanged).
+
+footer block-flow rewrite (phase 25)
+  emergency rewrite after the user shipped phases 22 → 24 and
+  the footer STILL rendered broken on iphone safari — language
+  row spread full width, "cite & verify" and "privacy" on
+  separate rows at opposite ends. every previous fix had tried
+  to make a flex/grid `.footer-rail` collapse on mobile via
+  an `@media (max-width: 900px)` rule. the @media never matched
+  on the user's production environment for reasons we could not
+  diagnose without browser devtools (possibilities: cdn rewrite
+  of the css file, sw stale serve, ios viewport quirk, host
+  middleware). every shipped fix looked correct locally and
+  failed identically on the live site.
+
+  phase 25 inverts the cascade so the bug becomes impossible:
+
+    markup · the `<div class="footer-rail">` flex/grid container
+    is replaced with three block-level `<p class="footer-line">`
+    paragraphs. they stack via browser-default block flow.
+    the html is:
+      <p class="footer-line footer-colophon">…</p>
+      <p class="footer-line footer-lang">…</p>
+      <p class="footer-line footer-actions">…</p>
+    inside `.footer-lang` the five language buttons sit as
+    siblings of the `<p>` (no nested `<ul>` + `<li>` wrapper —
+    direct children of the paragraph). same for `.footer-actions`.
+    the `· ` separator is a `+ *::before` pseudo on direct
+    siblings. zero layout dependence on flex or grid.
+
+    css · mobile is the unconditional default. desktop is now
+    the conditional override via `@media (min-width: 901px)`,
+    which sets `.footer-inner { display: grid; grid-template-
+    areas: ... }` to put the rail on one row. if that media
+    query fails to match for any reason, the page silently
+    falls back to the mobile block-flow shape — which reads
+    correctly on any width.
+
+    bulletproofing · if css fails to load entirely (deploy
+    skew, sri mismatch, cdn 500), browser defaults render
+    three stacked `<p>` blocks with inline buttons/anchors,
+    each row left-aligned. that is exactly the mobile design.
+    unbreakable.
+
+  swept across all 13 public html pages (home, privacy, source,
+  verify, integrity, integrity/releases, security,
+  security/acknowledgments, 403, 404, 500, maintenance, sw-reset)
+  and the `generate_source_view.py` template. obsolete css
+  rules (`.footer-rail`, `.footer-lang-list`, the
+  `max-width: 900px` mobile override block) removed entirely.
+
+  hook continuity: `.footer-lang button[data-lang]`, `.cite-btn`,
+  `.footer-privacy` retained as primary class names. existing
+  js (`app.template.js` language switcher, `cite.template.js`
+  modal trigger) continues to bind unchanged.
+
+  validators: 22 from phase 23. all green except validate_
+  release.py (gpg env-only, unchanged).
+
+trust-line short on mobile + footer table (phase 27)
+  two more cascade-inversion fixes after pr #44 deployed the
+  centered footer. the user pointed out:
+
+    1. the homepage trust-line was still showing the full
+       english phrase ("privacy-first · static · no tracking
+       · signed releases") on iphone — wraps to two ugly
+       lines at 11 px. phase 23 had added an
+       `@media (max-width: 900px)` rule that should swap to
+       the short variant ("private · static · signed"), but
+       the @media never fired on the user's production
+       environment (same root cause every previous mobile
+       fix hit until phase 25 inverted the footer cascade).
+
+    2. the centered footer from pr #44 felt loose — "doesn't
+       look designed at all". the three centered phrases sat
+       with too much vertical air between them, more like
+       sparse metadata than a composed colophon.
+
+  fix · cascade inversion + tighter typography:
+
+    trust-line markup (`public/index.html`):
+      .trust-line-short loses its `hidden` attribute.
+      .trust-line-full gains the `hidden` attribute. now a
+      no-css visitor sees only the short variant (the html
+      `hidden` attribute applies via ua stylesheet).
+
+    trust-line css (`tools/styles.src.css`):
+      `.trust-line-full { display: none }` and
+      `.trust-line-short { display: inline }` are the
+      unconditional defaults. an `@media (min-width: 901px)`
+      block flips them — desktop reveals the full phrase,
+      hides the short. previously the cascade ran the other
+      way; production never fired the mobile @media.
+
+    footer typography (same file):
+      padding tightened (top clamp 36→24, bottom 32→20).
+      per-row 1 px hairlines via `.footer-line { border-
+      bottom: 1px solid var(--bd) }` — last row's border
+      suppressed. row vertical rhythm carried by
+      `padding-block: 0.55rem`; margins removed. all three
+      rows use the same 0.66 rem font + 0.1 em letter-
+      spacing, so the footer reads as a uniform 3-row
+      typographic table. colophon stays the only colour
+      distinction (fg2 vs fg3 for the rows below).
+
+  result on iphone portrait:
+    ────────────────────────────
+    © 2026 trent power, paris, france
+    ────────────────────────────
+    en · fr · it · es · de
+    ────────────────────────────
+    cite & verify · privacy
+    ────────────────────────────
+
+  three rows of equal weight, separated by visible hairlines,
+  centered. structured like a printed colophon table — exactly
+  the "mini graph / table" register the user asked for.
+
+  hooks unchanged. csp / sri / trusted types byte-stable. no
+  i18n strings touched (both short and full variants stay
+  defined for all 5 languages).
+
+  validators: 22 from phase 26. all green except validate_
+  release.py (gpg env-only, unchanged).
+
+Viewport + safe-area
+  • Every public HTML page's viewport meta tag now declares
+    `viewport-fit=cover` so the layout reaches the full visual
+    viewport (notch, Dynamic Island, rounded corners, home-
+    indicator strip) on modern iPhones and edge-to-edge
+    Android devices. No `maximum-scale`, no `user-scalable=
+    no`, no `shrink-to-fit=no` — pinch-zoom and accessibility
+    preserved. Updated across all 14 active pages: /, /403,
+    /404, /500, /maintenance, /privacy, /security, /security/
+    acknowledgments, /integrity, /integrity/releases, /
+    integrity/releases/2026-05-09, /source, /verify, /sw-reset.
+    `tools/generate_source_view.py` (the generator that emits
+    /source/index.html) updated to match so the contract
+    persists across rebuilds.
+  • New `--safe-top / --safe-right / --safe-bottom / --safe-
+    left` tokens in @layer tokens :root, each `env(safe-area-
+    inset-*, 0px)` with a 0 fallback. Single point of reference
+    for edge-touching layout.
+  • `.nav` (default rule, @layer components) now carries
+    `padding-top: var(--safe-top)` so non-home pages with
+    `position: fixed; top: 0` sit below the iOS notch /
+    Dynamic Island in viewport-fit=cover mode. The homepage
+    @layer pages override still wins via cascade (it sets its
+    own padding-block including env(safe-area-inset-top)).
+  • `.nav-inner` horizontal padding rewritten with logical
+    properties + max():
+      padding-inline-start: max(clamp(24px, 5vw, 80px),
+                                var(--safe-left));
+      padding-inline-end:   max(clamp(24px, 5vw, 80px),
+                                var(--safe-right));
+    Landscape iPhone (notch on left or right) no longer slides
+    the nav row content under the notch.
+  • `.modal-overlay` (full-screen cite/citation/verify modal)
+    padding upgraded from flat `24px` to per-side `max(24px,
+    var(--safe-*))` so modal content respects the notch and
+    home-indicator on every side in viewport-fit=cover mode.
+  • Existing safe-area applications preserved:
+      main.site { padding-bottom: env(safe-area-inset-bottom) }
+      .footer { padding-bottom: calc(24px + env(safe-area-
+                                                inset-bottom)) }
+    Both already protected the iOS home-indicator strip; no
+    change needed.
+
+Mobile night-cap refinements
+  • Homepage wordmark register restored to match the rest of
+    the site. The earlier homepage-only override (display:
+    inline-grid; line-height: 0.88) squeezed the stacked
+    TRENT/POWER glyph tighter than every other page; dropped
+    so the legacy @layer components rule (display: block;
+    line-height: 1.08) wins via cascade and the wordmark reads
+    consistently across /, /privacy/, /source/, /integrity/,
+    /security/, /verify/, /sw-reset/, error pages.
+  • Mobile menu dropdown gap tightened 0.5rem → 0.25rem.
+    Four-link stack (APPROACH / TRAJECTORY / PROJECTS /
+    CONTACT) now sits with 4 px between links. Each link still
+    44 px tall via inline-flex centring (WCAG 2.5.5 tap target
+    preserved). Reads as one compact group, not a stretched
+    panel.
+  • Mobile anchor offset switched from fixed 7.5rem to
+    `calc(env(safe-area-inset-top) + 4.5rem)`. Mobile nav
+    height varies (~58 px non-notch, ~102 px notched iPhone);
+    the dynamic offset lands the section heading ~14 px below
+    the nav at every viewport. Desktop offset stays 7rem
+    (desktop browsers don't expose meaningful safe-area-inset-
+    top; the fixed value is already correct there).
+  • Source page rolled back to the original <table class=
+    "source-table"> register. PR #13's subgrid system and PR
+    #14's vertical .source-record system are both retired.
+    /source/ now renders as a calm mod_autoindex-style 5-col
+    catalogue (Name · Type · Size · Validated · SHA-256) on
+    desktop, collapsing Type/Size/Validated to an inline
+    .source-meta-mobile strip below the filename on ≤700 px.
+    The generator (tools/generate_source_view.py) and the
+    .source-table CSS family restored verbatim from commit
+    0bd3bdd (Merge PR #12 — pre-PR-#13 ancestor).
+
+Source page · subgrid editorial record system
+  • /source/ refactored from a <table class="source-table"> to a
+    CSS Grid + subgrid record-grid system. 5-column editorial
+    alignment (path · type · size · validated · hash) holds
+    across rows via subgrid; fallback to independent grid
+    templates per row preserves alignment in older browsers
+    without subgrid support.
+  • New reusable component family in @layer components:
+      .record-grid          5-column default
+      .record-grid--source  explicit 5-col modifier
+      .record-grid--3col    descriptive variant (path · purpose
+                            · action), used for the Verification
+                            group at the bottom of /source/ and
+                            future /integrity/releases/ migration
+      .record-row           article wrapper, subgrid passthrough
+                            with grid-template-columns: inherit
+                            fallback for browsers without subgrid
+      .record-label         path · mono · long-path-safe via
+                            overflow-wrap: anywhere
+      .record-type / .record-size / .record-validated
+                            mono tertiary metadata · --fg2 muted
+      .record-hash          mono · --fg3 quietest · long hash safe
+      .record-value         serif body · descriptive purpose text
+      .record-action        right-aligned mono · --accent-text
+                            link with subtle border-bottom
+      .record-group         semantic <section> wrapper
+      .record-group-label   uppercase mono heading register
+      .record-group-count   --fg3 quiet count suffix
+  • Group structure (Pages, Styles, Scripts, Metadata, Well-known,
+    Server, Release records, Verification) moves from
+    <tr class="source-group-row"><th colspan="5"> rowgroup
+    semantics into proper <section class="record-group"> with a
+    quiet <h3 class="record-group-label"> heading. Improves
+    source-parsing, LLM interpretation, and screen-reader
+    semantics — sections are first-class document landmarks.
+  • Verification group now uses the 3-column descriptive variant.
+    Live signed files (integrity.json, SHA256SUMS, pgp-key.asc,
+    etc.) read as records with editorial purpose text on the page,
+    not as title="…" tooltip text only.
+  • Mobile (≤760 px): grid collapses to single-column flow;
+    tertiary metadata (type/size/validated/hash) collapses to a
+    compact inline strip below the path. Inspectability preserved
+    without five stacked rows per file. No oversized cards.
+  • Long paths and hashes wrap safely via overflow-wrap: anywhere.
+    No horizontal overflow on 320 px viewports.
+  • Quiet row hover register: 1.2 % ink-overlay (light mode) /
+    1.8 % paper-overlay (dark mode). Reads as register, not as
+    zebra striping.
+  • Editorial direction: the Source page reads as a public
+    technical archive — a signed appendix, not a directory listing.
+
+Hero / trust-line
+  • Hero border-bottom removed (was visibly cutting between hero
+    text and the trust-line). Padding-top widened so the hero text
+    always clears the nav at every width.
+  • Trust-line returned to the hero header so 'Private · Static ·
+    Signed' sits above the fold on iPhone portrait — visible
+    immediately without scrolling.
+
+Print regression
+  • Diagnosed and fixed a CSS cascade-layer !important inversion
+    that was causing every public page to print near-blank on iOS
+    Safari. Print containers now win the cascade.
+  • Print-X-footers (.print-profile-footer, .print-trust-footer,
+    .print-utility-footer) reflowed from absolute positioning into
+    in-flow grid placement (align-self: end) so iOS Safari can no
+    longer paginate them onto a second page.
+  • Body capped to A4 printable area as belt-and-braces; defensive
+    baseline at the top of @media print covers all screen-only
+    wrappers.
+
+Footer
+  • Mobile footer two-row hybrid: language row centred on top;
+    copyright bottom-left, Privacy bottom-right. Tighter vertical
+    rhythm between rows. Safe-area-inset-bottom respected so iOS
+    Safari's bottom chrome never collides with the footer.
+  • Language row collapses to a flex/wrap centred row that fits
+    EN/FR/IT/ES/DE on a single line at 320 px and wraps cleanly at
+    higher zoom.
+
+Honest back links
+  • Every '← Back' link replaced with its true destination:
+    /privacy/ → ← Home (rel='home'); /integrity/, /security/,
+    /verify/, /source/ → ← Privacy; /integrity/releases/ → ←
+    Integrity; /integrity/releases/<edition>/ → ← Releases. Error
+    pages, /sw-reset/, /security/acknowledgments/ → ← Home with
+    rel='home'. /maintenance.html ships no back link (terminal
+    screen).
+  • JS history-back enhancement removed — links are honest static
+    anchors. No document.referrer; no localStorage navigation
+    stack; no analytics; no custom navigation history.
+
+Editorial focus system
+  • Refined :focus-visible system replaces browser-default debug
+    rectangles. Design tokens (--focus-colour as 45 % alpha
+    oxblood; 2 px ring; 3 px offset; 0 radius) carry through every
+    focusable surface. Dark-mode token variant lifts the alpha for
+    contrast.
+  • Inline text links use a typographic underline-on-focus
+    (text-decoration-color, 2 px thickness, 0.18 em offset) instead
+    of a box.
+  • Buttons, nav controls, and CTAs use the calm token-based
+    outline. iOS Safari pointer:coarse strips non-focus-visible
+    focus so taps no longer leave a persistent outline behind.
+  • Keyboard navigation, VoiceOver, and Switch Control accessibility
+    preserved. WCAG 2.4.7 compliance verified at the oxblood-on-
+    paper contrast threshold.
+
+Other
+  • iPhone Safari safe-area-inset-bottom respected on .footer and
+    main.site so the project-card CTA never sits behind the bottom
+    address bar.
+  • Hero min-height supplemented with 100svh so iOS Safari retracts
+    chrome correctly. html, body upgraded to overflow-x: clip.
+  • Long-token resilience extended to PGP fingerprint and mono URL
+    display.
+  • Education list items server-rendered into the homepage so the
+    block reads correctly for default EN visitors (the perf-
+    optimised i18n early-return previously left them empty).
+
+
+2026-05-10 — CSS architecture, accessibility, and mobile hardening
+------------------------------------------------------------------
+A full-day engineering pass across the stylesheet, HTML
+semantics, accessibility contract, and mobile rendering. No
+content changes; every change is structural, standards-compliance,
+or progressive-enhancement.
+
+CSS cascade-layer architecture
+  • Stylesheet rewritten onto explicit @layer stack:
+    reset → tokens → base → layout → components → utilities →
+    overrides. Eliminates specificity battles and makes the
+    override surface predictable. New validate_css_architecture.py
+    gate enforces the contract on every build.
+  • Orphan hex values tokenised — every colour now references a
+    CSS custom property; the #EFEBE3 fallback dropped in favour
+    of the token.
+  • Subgrid adopted for the architecture and integrity-verification
+    rows so columns align across sibling cards without a shared
+    wrapper.
+
+Dark mode and contrast modes
+  • Full dark-mode pass via prefers-color-scheme: dark — all
+    surfaces, text, borders, and icons invert correctly without
+    leaking warm-light assumptions.
+  • prefers-contrast: more — tightens borders and lifts text
+    contrast a further step for users who request it.
+  • forced-colors — all custom colours yield to the system
+    palette; no information lost in Windows High Contrast or
+    equivalent modes.
+  • color-scheme: light dark declared in <meta>; theme-color
+    uses a media query to switch between warm ivory and dark
+    slate so the browser chrome matches in both modes.
+
+Accessibility
+  • ARIA restraint sweep — redundant aria-labels removed from
+    nav-mark and trust-line; roles and labels now only present
+    where they add information above the DOM.
+  • Copy-button gains aria-live="polite" status region;
+    screen-readers announce copy success without a focus move.
+  • popstate progressive enhancement — #cite hash survives a
+    reload and browser back closes the cite panel cleanly.
+  • Adaptive nav toggle — width-driven disclosure; wide viewports
+    show the full nav inline, narrow viewports collapse to a
+    hidden-attribute toggle at the 760 px breakpoint.
+
+HTML semantics
+  • Landmark structure corrected: <header> wraps the site header,
+    <footer> sits outside <main>, single <h1> per page enforced.
+  • Semantic HTML5 elements introduced: <dl>/<dt>/<dd> for term
+    pairs, <aside> for supplementary panels, <output> for dynamic
+    values, <figure> for illustrative blocks, <time datetime>
+    for all date references, rel="me" on identity links.
+  • Section ids moved from anchor-target <span>s onto the
+    <section> elements themselves; data-edition migrated from
+    <html> to <body>; data-page attribute dropped entirely.
+  • Contact email is a real mailto: link; progressive-enhancement
+    JS handler intercepts it only when clipboard API is available.
+
+Mobile and iOS
+  • Mobile nav uses the hidden attribute for state (not
+    display:none in CSS) so assistive technology sees the toggle.
+  • Viewport safe-area-inset-bottom applied to the footer so
+    iOS Safari's bottom chrome does not overlap content.
+  • Horizontal overflow audit across all viewports — no component
+    causes a scroll at any breakpoint.
+  • Education section gains a static fallback for viewports
+    below 400 px where the card layout would collapse.
+
+Print
+  • Defensive baseline re-established after the data-page
+    migration broke print selectors; all print-only rules now
+    target body[data-page] instead of html[data-page].
+  • .site-header hidden in print (folio chrome takes over).
+
+What stays unchanged
+  • All site content, editorial copy, and JSON-LD.
+  • Integrity workflow, GPG signing pipeline, release archives.
+  • Validation gates 1–24 (all green).
+
+
+2026-05-09 — Editorial review document refinement (v2)
+-------------------------------------------------------
+A typography-only refinement pass on the editorial review
+documents. Editable copy is now unquestionably the only true
+dark text on the page; everything else recedes to make space
+for it. Adds proper folios (running header + page-of-pages
+footer) across HTML, DOCX, and PDF.
+
+Palette adjustments — copy alone holds full contrast
+  • Editable copy: #15140F (unchanged — protagonist).
+  • Metadata:      #6B655D → #857F75 (10–15% lighter).
+  • Keys:          #A29A8E → #9A9388.
+  • New "ghost" tier #B5ADA0 for status pips and chip outlines.
+  • New "soft rule" #EFEAE0 for sub-section dividers.
+
+Spacing isolation around editable copy
+  • Entry-to-entry: 28pt → 42pt vertical rhythm.
+  • Pre-copy gap: 4pt → 14pt (copy visually breathes above
+    metadata).
+  • Section transitions: top padding 36pt → 56pt; section
+    rule lighter (0.4pt → 0.3pt).
+  • Widows/orphans tightened (3 → 4) on copy and lang rows so
+    no language row floats alone across a page break.
+
+PDF folios
+  • Switched PDF rendering from raw `chromium --print-to-pdf`
+    to Playwright + system Chromium so per-page header / footer
+    templates work (Chromium's CLI alone does not expose them).
+  • Header: trentpower.fr · <document title> · Edition 2026-05-09
+  • Footer: EDITORIAL — CONFIDENTIAL · Page X / Y
+  • Both rendered in muted Inter sans at 8pt, low-contrast warm
+    grey, with thin 22mm side margins matching the page body.
+  • Per-variant titles ("Editorial Copy Review" vs "Editorial
+    Copy Review · English only").
+
+DOCX folios
+  • tools/build_editorial_reference_docx.py now also injects
+    word/header1.xml + word/footer1.xml into the reference
+    docx, registers them in [Content_Types].xml, adds the
+    relationships, and rewrites <w:sectPr/> to reference them.
+  • Footer page-of-pages uses Word PAGE / NUMPAGES field codes
+    so Word and LibreOffice both resolve dynamically.
+  • Pandoc preserves the section-properties references when it
+    renders the DOCX, so every Word page now carries the same
+    chrome.
+
+HTML refinements
+  • Sticky running-bar at the top of the screen view
+    (trentpower.fr · document · Edition · ivory background with
+    backdrop-filter blur). Hidden in print so the Chromium
+    folio takes over.
+  • Metadata, key, and note paragraphs cooled by 1–2 points
+    on size and shifted into the muted/faint tiers.
+
+Outcome
+  • English-only PDF: 121 pages of A4 (was 100; reflects the
+    extra editorial spacing and the new folio chrome).
+  • Multilingual PDF: 286 pages of A4 (was 246).
+  • PDF file sizes drop materially (~4 MB → 1.3 MB) — Playwright
+    emits cleaner PDF byte-streams than the legacy print-to-pdf
+    path.
+
+What stays unchanged
+  • Extraction logic, source-of-truth model, key structure,
+    multilingual logic, integrity workflow, build architecture,
+    validation gates 19–23.
+  • Site visual layout, head metadata, JSON-LD, CSP/Trusted
+    Types contract.
+
+
+2026-05-09 — Editorial review document redesign
+-----------------------------------------------
+Visual + typographic overhaul of the editorial review documents
+so they read as editorial manuscripts rather than generated
+software exports. Same content, redesigned presentation across
+HTML, DOCX, and PDF.
+
+Typography & palette
+  • Editable copy is now the protagonist — large serif at 14pt
+    in a near-black warm ink (#15140F) on warm ivory (#FAF7F0),
+    with generous line-height and a 34em max measure for
+    long-read comfort.
+  • Metadata recedes — sans-serif, 8.5pt, muted warm grey
+    (#6B655D), uppercase with 0.08em tracking; reads as a
+    bibliographic byline rather than a database row.
+  • Keys are quiet — mono, 8.5pt, faint warm taupe (#A29A8E).
+  • Restrained oxblood (#6E1A14) used only for cover marker,
+    Part numbers, and the English-language label in
+    multilingual stacks.
+  • Subtle warm rules (#E5DFD3) — no hard borders, no card UI,
+    no shadows on print.
+
+Per-entry block redesign
+  • Old: KEY heading + four-line metadata block + clustered
+    language rows.
+  • New: small chip + surface byline → quiet mono key →
+    editable copy in serif → optional faint italic note.
+    The reviewer's eye lands on the editable text first.
+  • Type chips with restrained colour swatches (title / body /
+    button / label / metadata / structured / accessibility) so
+    the reviewer can scan content type at a glance.
+  • A status pip placeholder sits left of each entry — visual
+    hook for future reviewed/pending/needs-rewrite tracking
+    without committing to the workflow now.
+
+Spacing & rhythm
+  • Larger entry-to-entry vertical rhythm.
+  • Real section breaks: Part 01, Part 02 … numbered,
+    page-break before each section in print, with restrained
+    "Foreword" / "Appendix" markers.
+  • Editorial cover with edition marker, lede, submeta, and a
+    six-row metadata bibliography (Edition · Asset version ·
+    Generated · Languages · Entries).
+  • Sticky table of contents on desktop (≥ 1100 px viewport),
+    pinned to a 220-px left rail.
+  • Print CSS with widows / orphans (3 / 3), keep-together
+    blocks, page-break-before on each section, page-break-after
+    on the cover.
+
+DOCX — TP-styled reference document
+  • New tools/editorial-review-reference.docx defines nine
+    named TP-* paragraph styles: TP Title, TP Section, TP
+    Subhead, TP Editable Copy, TP Metadata, TP Key, TP Note,
+    TP Cover, TP Entry. Generated programmatically from
+    pandoc's default reference docx via
+    tools/build_editorial_reference_docx.py — no python-docx
+    dependency.
+  • The HTML carries `custom-style="TP …"` div wrappers around
+    each entry's metadata, key, copy, and note paragraphs.
+    Pandoc reads the styled HTML and applies the corresponding
+    TP-* paragraph style to each block, so professional
+    copywriters opening the .docx in Word, Pages, or Google
+    Docs see the same visual hierarchy as the HTML and PDF —
+    and can re-skin the document by editing nine style
+    definitions instead of touching individual paragraphs.
+
+PDF rendering
+  • Headless Chromium prints the styled HTML to PDF, so the
+    PDF inherits every typography, spacing, and pagination
+    decision from the HTML. Consistent visual identity
+    across HTML / DOCX / PDF.
+
+Build pipeline
+  • tools/build_editorial_reference_docx.py is a one-shot
+    asset-builder (not part of the per-build pipeline) — runs
+    once per design refresh and commits the resulting
+    reference.docx to the repo so the build runs offline.
+  • tools/generate_editorial_binaries.py now drives the DOCX
+    via HTML→DOCX with --reference-doc, no longer
+    Markdown→DOCX. Each variant pair (multilingual + English-
+    only) renders DOCX and PDF from the same HTML source.
+
+What stays unchanged
+  • Extraction logic, source-of-truth model, key structure,
+    string grouping, multilingual logic, integrity workflow,
+    build architecture, validation gates 19–23.
+  • The deployed website's typography, layout, and CSP /
+    Trusted Types contract.
+
+Outcome
+  • English-only PDF: 100 pages of A4 (was 85).
+  • Multilingual PDF: 246 pages of A4 (was 154).
+  • Larger page counts reflect the editorial breathing room
+    the brief asked for; the documents read as manuscripts,
+    not exports.
+
+
+2026-05-09 — Rich Results cleanup + English-only editorial export
+-----------------------------------------------------------------
+Surgical pass to clear the two issues Google Rich Results Test
+flagged on the homepage, plus a leaner editorial-review variant
+for English-only copywriters.
+
+Rich Results
+  • Removed the duplicate `<article itemscope itemtype="https://
+    schema.org/ProfilePage">` microdata declaration from the
+    homepage. The canonical JSON-LD ProfilePage at
+    `https://trentpower.fr/#profile-page` is now the single
+    representation. Critical "ProfilePage missing mainEntity"
+    issue cleared.
+  • dateModified everywhere across the JSON-LD graph upgrades
+    from `YYYY-MM-DD` to full ISO-8601 datetime
+    `YYYY-MM-DDT00:00:00+00:00` (midnight UTC of the canonical
+    edition — deterministic, no clock drift). Non-critical
+    "Invalid datetime value" warning cleared. Applies to
+    homepage WebSite + ProfilePage, plus integrity / source
+    TechArticle and privacy / verify / sw-reset / releases
+    WebPage nodes via the central regex sweep.
+
+English-only editorial export
+  • New variants alongside the multilingual review documents,
+    for copywriters who only need English:
+      /editorial/editorial-copy-review.en.md
+      /editorial/editorial-copy-review.en.html
+      /editorial/editorial-copy-review.en.docx
+      /editorial/editorial-copy-review.en.pdf
+    The English-only PDF runs ~85 pages of A4, vs ~154 pages for
+    the multilingual document.
+  • The structured master `editorial_copy.json` remains
+    multilingual — single source of truth, all four variant
+    documents are derived views.
+  • The original multilingual review documents are byte-for-byte
+    unchanged.
+  • `.well-known/publication.json` adds four new
+    `machine_readable_endpoints` keys pointing at the .en
+    artefacts.
+
+
+2026-05-09 — Editorial-copy review system
+-----------------------------------------
+A copy-review workflow for non-engineers. Every public-facing
+string in the site, organised so a copywriter, editor or
+strategist can read, annotate and propose rewrites without
+touching HTML.
+
+What ships at /editorial/
+  • /editorial/editorial_copy.json — the structured master.
+    717 entries × five languages, sorted deterministically.
+  • /editorial/editorial-copy-review.md — Markdown editable
+    master with cover, editorial principles, page-by-page
+    sections, multilingual appendix, change-tracking appendix.
+  • /editorial/editorial-copy-review.html — printable styled
+    HTML for desk review or browser print-to-PDF.
+  • /editorial/editorial-copy-review.docx — Word document
+    rendered via pandoc; opens in Word, Pages, Google Docs.
+  • /editorial/editorial-copy-review.pdf — 154-page A4 review
+    document rendered via headless Chromium.
+
+How it works
+  • The multilingual master remains tools/i18n/strings.json.
+    extract_editorial_copy.py pivots it into a flat per-key
+    structure, supplements with JSON-LD human-readable strings
+    and aria/alt text, and writes editorial_copy.json.
+  • generate_editorial_review.py reads that JSON and writes the
+    Markdown + HTML.
+  • generate_editorial_binaries.py renders the DOCX and PDF.
+  • All outputs are part of the signed integrity manifest.
+    .md files are no longer excluded from the manifest; the
+    editorial review .md is an intentional public artefact.
+
+Predeploy gate 23/23
+  • validate_editorial_copy.py — confirms shape, deterministic
+    ordering, English coverage, no internal-tool-name leaks in
+    entry values or notes.
+
+What stays unchanged
+  • Visual layout, head metadata, JSON-LD, i18n source of
+    truth, .htaccess, integrity model, Service Worker, CSP,
+    Trusted Types, Lighthouse architecture.
+  • The site itself does not gain a CMS or web editor; the
+    review system is offline-readable artefacts.
+
+
+2026-05-09 — Final editorial pass (continued)
+---------------------------------------------
+A whole-codebase editorial pass on the deployed bytes themselves.
+No layout change, no visual change, no Lighthouse-gaming. The aim
+was to make the public artefact read as one disciplined author.
+
+Generated-asset banners
+  • Every public CSS and JS file now carries a calm short banner:
+    "/*! trentpower.fr · <name> · generated · signed via
+    /integrity.json */". No tool paths, no template names, no
+    build commands, no I18N implementation detail.
+  • /sw.js banner shortened to the same form. The "Combined
+    surface…" comment becomes a calm architectural label:
+    "// Combined surface — install · activate · fetch".
+
+/source/ mirrors expose authored source
+  • The six asset mirrors at /source/ now show the readable
+    operator-edited source rather than the compact production
+    bytes:
+      /source/styles.css.txt        → authored CSS source
+      /source/print.css.txt         → authored print-CSS source
+      /source/fonts-full.css.txt    → authored font-loading source
+      /source/app.js.txt            → authored JS source
+      /source/app-enhance.js.txt    → authored JS source
+      /source/cite.js.txt           → authored JS source
+    Each mirror carries a one-line banner reading "trentpower.fr ·
+    authored source". The mapped source path itself is not
+    exposed in the public mirror.
+  • Other mirrors continue to mirror their public counterpart
+    byte-for-byte.
+
+Predeploy validation gates 19–22
+  • validate_public_comment_hygiene  — fails the build if any
+    deployed HTML/CSS/JS asset contains explicit internal names
+    (build-script paths, generator filenames). Allowlist for the
+    changelog and the literal htaccess.txt mirror.
+  • validate_source_mirror_readability — fails if any of the six
+    remapped /source/ asset mirrors looks minified or is missing
+    the "authored source" banner.
+  • validate_no_runtime_contamination — fails if any deployed JS
+    or HTML <script> body contains markers of analytics, dev
+    tooling, live-reload, EventSource, WebSocket, or Socket.IO
+    runtime. Editorial body copy stating "no analytics" is
+    permitted.
+  • validate_html_correctness — parses the 13 active pages and
+    fails on heading-tag mismatches, duplicate IDs, or duplicate
+    canonical/description/og:title/og:url tags.
+
+Confirmed correct (no edit required)
+  • Heading hierarchy across the homepage and all error pages —
+    every <h_n> closes as </h_n>.
+  • Head metadata coverage — every active page has og:site_name,
+    full Twitter card, referrer, and document-edition.
+  • Schema.org WebSite + Person enrichments and identity graph.
+
+Apache .htaccess
+  • The dotfile rule
+    `<FilesMatch "^\.(?!well-known)"> Require all denied`
+    is intentionally retained. /.well-known/ reachability is
+    operationally critical and the existing rule is correct.
+
+Outcome
+  • Predeploy gates extend from 18 to 22.
+  • The deployed CSS/JS bytes shift naturally because banners
+    change; asset_version recomputes for the active edition.
+  • Mobile Lighthouse ceiling stays at 98 / 100 / 100 / 100; the
+    /styles.css render-blocking warning remains an intentional
+    architectural trade-off.
+
+
+2026-05-09 — Performance architecture: font subsetting, JS split, full-font lazy load
+-----------------------------------------------------------------------------------
+Single sprint that closes the Lighthouse mobile chase started on
+2026-05-08. Performance metrics on /, mobile:
+  - Started: 98 / 100 / 100 / 100 (Performance / Accessibility /
+    Best Practices / SEO).
+  - Targets: keep A11y / BP / SEO at 100; lift Performance toward
+    100; LCP under 2.0 s.
+The whole arc lands as one canonical 2026-05-09 entry; the
+intermediate 05-10, 05-11 and 05-12 stamps used during iteration
+are collapsed away. Below is the cumulative shape.
+
+CSS source/output split + minification
+  • tools/styles.src.css and tools/print.src.css are the readable
+    operator-edited sources. generate_site.py minifies them via
+    tools/minify.py and writes the deployed bytes to
+    public/styles.css and public/print.css. License header
+    preserved. styles.css 125 KB → 67 KB; print 37 KB → 23 KB.
+
+Service Worker + 403 hardening
+  • <FilesMatch sw.js> in .htaccess sets Content-Type:
+    application/javascript, Service-Worker-Allowed: /, and
+    no-cache, no-store, must-revalidate. Without explicit
+    Content-Type the browser refused the worker under the
+    site-wide X-Content-Type-Options: nosniff and Lighthouse
+    logged "unknown error when fetching the script".
+  • SW registration moved off the critical path into a
+    window-load listener; forced reg.update() dropped (the SW
+    already calls skipWaiting + clients.claim). Diagnostic
+    logging gated behind ?debug-sw=1.
+  • 403 page identity fixed: <body data-page='maintenance'> →
+    'forbidden'; static title/h1/body rewritten to "Forbidden /
+    You don't have permission to access this page"; "forbidden"
+    entry added to the inline i18n dict on 403/404/500 across
+    all five languages.
+
+Touch-target audit
+  • .footer-lang button declares min-width: 44px and min-height:
+    44px on the element itself. Previous ::before pseudo-element
+    trick was visual-only and did not satisfy Lighthouse.
+    Inter-button gap held at 8 px; row total stays under 252 px
+    on every breakpoint.
+
+JSON-LD @graph consolidation (carried forward from 05-08)
+  • Homepage emits one inline JSON-LD block with @graph (Person +
+    WebSite + ProfilePage); WebSite has the canonical id
+    https://trentpower.fr/#website. Utility pages (/verify/,
+    /sw-reset/, /source/) carry one WebPage block with isPartOf
+    pointing at #website. validate_schema_graph.py is wired as
+    predeploy step 16.
+
+Versioned /verify/verification-data.<edition>.<sha8>.js
+  • generate_verification_map.py emits both /verify/
+    verification-data.js (alias, 5-min revalidate) and
+    /verify/verification-data.<edition>.<sha8>.js (immutable for
+    one year via .htaccess). HTML pages reference the editioned
+    URL; SHA shifts whenever payload bytes change so immutable
+    cannot serve stale data.
+
+Font strategy
+  • Three Critical subsets generated by tools/build_font_subsets.py
+    (pyftsubset/fontTools wrapper) cover en/fr/it/es/de
+    above-the-fold:
+      /fonts/subsets/signifier-light-hero.woff2          16 KB (was 30)
+      /fonts/subsets/soehne-kraftig-nav.woff2             5 KB (was 18)
+      /fonts/subsets/soehne-mono-buch-labels.woff2        5 KB (was 12)
+    Glyph sets in tools/font-subsets/{home-hero,nav-labels,
+    mono-labels}.txt.
+  • Critical aliases ('Signifier Critical', 'Söhne Critical',
+    'Söhne Mono Critical') are the ONLY @font-face declarations
+    in /styles.css. The CSS variables --serif / --sans / --mono
+    resolve to the Critical alias first, then to system fallbacks
+    (Georgia, system-ui, ui-monospace). The full editorial
+    weights are NOT referenced anywhere in /styles.css, so no
+    full WOFF2 enters the LCP critical request chain.
+  • Homepage carries a single font preload — the Signifier hero
+    subset, fetchpriority="high".
+  • New /fonts-full.css carries the full @font-face declarations
+    plus a `.fonts-loaded :root` override that switches the
+    variables to put the full families first. Loaded as a
+    same-origin stylesheet by /app-enhance.js after first paint;
+    the link's load event adds .fonts-loaded to <html>. Subset
+    and full font share identical glyph metrics so the swap is
+    glyph-by-glyph with no layout shift.
+
+JS architecture
+  • New tools/minify.py: pure-Python state-machine CSS + JS
+    minifiers, no external deps.
+  • generate_site.py emits app.js + cite.js minified.
+  • New templates/app-enhance.template.js carries the project
+    overlay lifecycle (focus trap, click-outside, Escape), the
+    print-time document.title swap, AND the post-LCP full-font
+    loader. /app.js exports window.I18N + window.LANG_CYCLE and
+    dynamically injects /app-enhance.js after requestIdleCallback
+    fires (script URL gated by tp-i18n Trusted Types).
+  • cite.js init() — which builds the citation overlay shell —
+    moved from DOMContentLoaded to requestIdleCallback (with a
+    500 ms setTimeout fallback). Removes a ~50 ms long task on
+    first paint without affecting the cite-button click latency.
+  • Three deferred enhancement chunks (scroll reveal, smooth
+    scroll, email obfuscation) wrapped in a single
+    requestIdleCallback inside /app.js.
+
+HTML hygiene
+  • Five .principle-title <h3> rules on /index.html now close
+    with </h3> (previously </h2> — browsers tolerated, validators
+    flagged). validate_lighthouse_invariants.py L7 added as a
+    regression guard.
+  • cite.css merged into styles.css (628 B; one fewer
+    render-blocking <link> request).
+  • Stale "Structured data · Person" / "Structured data ·
+    WebSite" comment markers stripped from the homepage <head>;
+    Open Graph / Icons / font-preload / stylesheet sections
+    relabelled in one voice across all 13 active pages.
+
+.htaccess hygiene
+  • Dotfile FilesMatch simplified to `<FilesMatch "^\.">` with a
+    one-line comment noting that .well-known/ files are served
+    by explicit rules and don't start with "." so no exception
+    is needed.
+
+Validation
+  • Predeploy 17/17 + release 3/3 (validate_lighthouse_invariants.py
+    is step 17, gates inline event handlers / eval / sw.js
+    Content-Type / 44×44 touch targets / editioned
+    verification-data / preload count / principle close tags).
+  • PGP signature on integrity.json verifies (key fingerprint
+    A729 591B 450D 3F59 3694  98BD 8299 1F25 04AE 0263).
+  • Source mirrors regenerated; subset fonts excluded from
+    mirroring + release archives on Klim licence basis (same
+    treatment as the full weights).
+  • Trusted Types policy contract unchanged. CSP, HSTS, COOP,
+    COEP, CORP, Permissions-Policy unchanged. 5-language
+    coverage preserved.
+
+Polish pass — metadata, cache TTLs, subset-first everywhere
+  • Three canonical meta tags added to every active HTML page
+    via a generate-time sweep:
+      <meta property="og:site_name" content="Trent Power">
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="referrer" content="no-referrer">
+  • Subset-first typography rolled out to every utility page.
+    The full-font preload pair (signifier-regular.woff2 +
+    soehne-buch.woff2) is gone from /403, /404, /500,
+    /maintenance, /privacy, /integrity, /integrity/releases,
+    /security, /security/acknowledgments, /sw-reset, /source
+    and /verify. The hero-subset preload remains on / only.
+  • /app-enhance.js and /fonts-full.css now ship in two URLs:
+    /app-enhance.<edition>.<sha8>.js and
+    /fonts-full.<edition>.<sha8>.css carry
+    `Cache-Control: public, max-age=31536000, immutable`;
+    the unversioned aliases keep `no-cache, must-revalidate`
+    for offline / fallback access. /app.js dynamically loads
+    the versioned URL through the tp-i18n Trusted Types
+    policy (allowlist prefix broadened from `/app-enhance.js`
+    to `/app-enhance.`).
+  • Schema.org page types reconciled per the page-content
+    brief: /privacy/ stays WebPage; /integrity/ and /source/
+    move to TechArticle (explanatory technical writing about
+    how the site is built and verified) with author +
+    publisher pointing at the canonical Person id and
+    datePublished + dateModified declared.
+    validate_schema_graph.py accepts both shapes.
+  • Comment harmonisation across the public tree: numbered
+    print-section scaffolding ("1. Identity", "2. Approach",
+    "3. Trajectory + Project", "4. Micro architecture strip",
+    "5. Footer") replaced with restrained "Print profile · X"
+    labels; the matching numbered comments on /security/ also
+    cleaned.
+  • New predeploy step 18 (validate_fonts.py): walks every
+    /fonts/ URL in styles.css, fonts-full.css, /index.html
+    preloads, sw-cache-manifest and integrity manifest, and
+    fails the build if any reference does not resolve to a
+    file on disk — or if a font on disk is referenced
+    nowhere. Catches stale preloads + orphaned weights.
+  • Build pipeline gains an asset-version normalisation pass
+    so the version literal embedded in /app.js by the
+    versioning substitution does not feed back into the hash
+    that defines it (the build no longer oscillates between
+    two values).
+
+External runtime contamination audit
+  • Repository-wide and live-deployment scan triggered by a
+    PageSpeed report listing socket.io and an oddstrader.com
+    websocket. Both are foreign to this site; the audit
+    confirms zero references in any HTML, CSS, JS, Python,
+    JSON, .htaccess or template file in the repo, and zero
+    references in the bytes the live host serves for /,
+    every utility page, /app.js, /app-enhance.js or /cite.js.
+    The deployed CSP `connect-src 'none'` blocks WebSocket,
+    fetch, XHR and EventSource by spec, so any such request
+    cannot originate from the page's own JavaScript.
+  • Most likely external source: a browser extension or local
+    network tooling injecting content scripts on top of the
+    rendered page during the test run. No action on this
+    repository is warranted; the site is clean.
+
+Generated-file banners
+  • Every emitted CSS and JS file now opens with a one-line
+    `/*! ... GENERATED — edit tools/<src>, run tools/build.sh */`
+    banner so an operator opening the deployed file knows
+    where to make changes. Banners survive minification
+    because the `/*! ... */` form is preserved by the
+    license-header rule. Applied to:
+      /styles.css, /print.css, /fonts-full.css,
+      /app.js, /app-enhance.js, /cite.js.
+
+Structured-data + head correctness pass
+  • Homepage @graph enriched. Person now carries givenName +
+    familyName + identifier (typed PropertyValue with
+    propertyID="ORCID") + mainEntityOfPage pointing at the
+    ProfilePage @id. knowsLanguage moves from bare ISO
+    strings to typed Language objects. WebSite gains
+    description + copyrightYear (2026) + copyrightHolder
+    pointing at the canonical Person @id. ProfilePage gains
+    a SpeakableSpecification with cssSelector targeting
+    .hero-statement, .hero-body and .principle-title — a
+    semantic clarity signal for text-to-speech and machine
+    extraction, not a guaranteed AI authority claim.
+  • Twitter cards completed across every active HTML page.
+    twitter:title, twitter:description, twitter:image and
+    twitter:image:alt now mirror their og:* counterparts so
+    Twitter / X preview cards render with the same surface
+    as the Open Graph preview. Source-page template at
+    tools/generate_source_view.py also updated.
+  • <meta name="referrer" content="no-referrer"> moved out
+    of its isolated trailing position into the primary
+    document-identity block (between document-edition and
+    canonical) on all 13 pages, so the referrer policy sits
+    next to robots and the canonical URL where related
+    privacy directives belong.
+  • Page-level Schema.org itemscope microdata added to the
+    primary content element of /privacy/ (WebPage),
+    /integrity/ (TechArticle) and /source/ (TechArticle).
+    Complements the existing JSON-LD blocks; satisfies the
+    schema brief's request for content-element rather than
+    page-wrapper level itemtype declarations.
+
+Stabilisation pass — head labels + font-ready + Twitter handle
+  • Head section comments collapsed to the calm short-label
+    set: <!-- Open Graph -->, <!-- Twitter/X -->, <!-- Icons -->,
+    <!-- Identity -->, <!-- Critical font subset -->,
+    <!-- Stylesheets -->, <!-- Print stylesheet -->,
+    <!-- Structured data -->. Long narrated labels — "Tier-1
+    font preloads (critical for first paint)", "Identity &
+    verification", "Hero serif subset · first-viewport glyphs
+    across the five site languages", "Structured data — single
+    @graph (Person + WebSite + ProfilePage)" — replaced with
+    one-line architectural section labels. Applied across every
+    active HTML page and the source-page f-string template.
+  • /app-enhance.js's .fonts-loaded class addition now waits
+    for document.fonts.ready before flipping --serif / --sans /
+    --mono. The previous pattern added the class on the link's
+    `load` event — when fonts-full.css was parsed but fonts had
+    not yet fetched — which produced two style recalcs (one
+    when the variables flipped, another when fonts arrived).
+    With document.fonts.ready, both happen inside one frame
+    after every pending font load resolves or hits its
+    font-display: optional 100 ms timeout. Targets the
+    unattributed forced-reflow time PageSpeed reported.
+  • Twitter / X site + creator handles added: twitter:site +
+    twitter:creator both `@trentpower` on every active page.
+    Cards now render with full attribution when shared on X.
+
+Stabilisation — first-paint applyLanguage skip on English
+  • The static HTML is authored in English. /app.js's
+    applyLanguage walked every [data-i18n] element on first
+    paint even when the detected language was English, which
+    cost ~50–100 ms of main-thread work for what amounted to
+    no-op writes. /app.js now early-returns from the heavy
+    DOM walk when detectLanguage() resolves to "en" and
+    documentElement.lang is already "en". The light state
+    (data-lang attribute, footer-lang aria-pressed flags)
+    still gets set synchronously for accessibility. Targets
+    the four-long-task report from PageSpeed without
+    affecting language switching, which still triggers the
+    full pass on user click.
+
+
+2026-05-08 — Trust-layer hardening; publication-infrastructure layer
+--------------------------------------------------------------------
+Trusted Types CSP now covers script-URL sinks as well as innerHTML.
+The tp-i18n policy gained createScriptURL with a strict same-origin
+prefix + extension allowlist; navigator.serviceWorker.register now
+routes through it. A new build gate (validate_trusted_types.py)
+refuses to ship if any unwrapped sink reappears.
+
+Two small machine-readable companions joined the trust surface.
+/.well-known/build.json declares the build's runtime posture (static,
+no framework, no tracking, signed releases, source mirrors).
+/sw-cache-manifest.json restates the Service Worker's critical /
+optional precache lists in JSON so verifiers no longer have to parse
+JS to enumerate the cache surface.
+
+A new /sw-reset/ page provides a calm local recovery utility for
+visitors whose offline cache has gone stale. It detects Service
+Worker registrations on this device, unregisters them, clears the
+cache entries trentpower.fr created, and removes only the single
+language-preference key the site uses. Nothing on the live host is
+touched. The page is network-only at the SW level so a stale
+recovery page can never block its own recovery, is noindexed,
+ships in all five site languages (with dynamic status messages
+translated via a hidden JSON template block + MutationObserver on
+<html lang>), and carries its own print stylesheet rules.
+
+The three utility pages — /sw-reset/, /source/, /verify/ — now share
+one publication-infrastructure visual register: mono caps headings,
+hairline borders, no colour signals. /verify/ gains a small static
+intro panel above the per-route record card with the edition-level
+anchors (signed manifest, detached signature, public key, per-edition
+archive, signing key fingerprint). All three pages now carry inline
+WebPage JSON-LD referencing the canonical Person via @id; the
+homepage gains a ProfilePage block satisfying Google Rich Results.
+
+The changelog freshness gate is now a hard build failure (was a
+soft warning): a canonical edition newer than the topmost changelog
+date blocks deploy until an entry is written. Editorial control
+preserved — the machine never writes prose, only detects the gap
+and refuses to ship until it is closed.
+
+
+2026-05-05 — Record-layer calmed; localStorage disclosure
+---------------------------------------------------------
+Back-of-house pages (Privacy, Verify, Integrity, Source, Releases,
+Security, error pages) calm their supporting-text and rule tokens by
+a small amount. Primary text — page titles, filenames, fingerprints,
+download links — stays unchanged so evidence reads crisply; only the
+secondary register (metadata labels, descriptions, group counts,
+table column headers) softens. The homepage is unaffected.
+
+Privacy gains a one-line disclosure that the site uses local
+browser storage only for language preference, with no transmission.
+attestations.json is restated in a more precise machine-readable
+shape (analytics / cookies / third_party_requests / advertising /
+forms / local_storage / server_logs). Source gains a quiet helper
+sentence explaining that mirrors are served as plain text so the
+browser displays the file rather than executing it.
+
+The full directory-preserving /source/{path}.txt rewrite, the
+integrity-live / integrity-redistributable manifest split, and a
+consolidated validate_release.py gate are recorded as the next
+dedicated pass — they touch the trust layer's URL space and are
+shipped separately to keep this calm pass low-risk.
+
+
+2026-05 — Record-layer typographic pass
+---------------------------------------
+The trust pages (verify, integrity, source, security) consolidated
+onto a single warm-grey "record layer" surface, distinct from the
+ivory front-of-house. Mastheads on these pages render brand-only;
+the primary navigation belongs to the public profile.
+
+Project card on the homepage was lifted onto the highest paper tier
+so it reads as a raised sheet rather than a flat panel.
+
+Per-page verification map exposed at /verify/?path=/<route>/.
+
+
+2026-02 — Initial signed release
+--------------------------------
+First public edition with /integrity.json (signed manifest) and
+/integrity.json.sig (detached PGP signature). Public signing key
+published at /.well-known/pgp-key.asc. Per-page verification flow
+introduced at /verify/.
+
+Site is static, single-author, and self-hosted on Apache (Gandi,
+Paris). No analytics, no cookies, no third-party requests at runtime.
+
+
+# End of file.

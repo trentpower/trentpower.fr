@@ -1,0 +1,27 @@
+# Ruff — the linter + formatter for the Python build pipeline (tools/**/*.py).
+# Pragmatic, not the whole catalogue. `ruff format` owns formatting; `ruff check`
+# reports correctness issues. Generated/archived trees are excluded.
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [
+  "public",
+  "_archives",
+  "_retired",
+  "_licences",
+  "reports",
+  "design_explorations",
+  "redesigns",
+]
+
+[tool.ruff.lint]
+# E/W pycodestyle, F pyflakes (real bugs), I import-order, B bugbear, UP pyupgrade.
+select = ["E", "F", "W", "I", "B", "UP"]
+# line-length is enforced by the formatter, not the linter (avoid double-reporting).
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"

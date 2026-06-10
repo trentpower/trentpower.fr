@@ -1,0 +1,32 @@
+{
+  "$schema": "https://trentpower.fr/.well-known/build.json",
+  "site": "https://trentpower.fr",
+  "edition": "2026-06-10",
+  "generated_at": "2026-06-10",
+  "static": true,
+  "framework": null,
+  "tracking": false,
+  "trusted_types": true,
+  "csp_strict": true,
+  "signed_release": true,
+  "source_mirrors": true,
+  "language_model_assistance": "selective drafting or structuring only",
+  "automated_publishing": false,
+  "publication_policy": "https://trentpower.fr/.well-known/publication.json",
+  "integrity_manifest": "https://trentpower.fr/integrity.json",
+  "integrity_signature": "https://trentpower.fr/integrity.json.sig",
+  "public_key": "https://trentpower.fr/.well-known/pgp-key.asc",
+  "key_fingerprint": "A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263",
+  "git_commit": "f6bbb2d47a1466073366e8c9b83ee6b14e9e97f2",
+  "python_version": "3.13.5",
+  "builder_platform": "Linux aarch64",
+  "public_file_count": 138,
+  "public_tree_sha256": "805def7ac1740f233e30df723b601a2483ec1a8190898e3a70ff3247528337af",
+  "gpg_fingerprint": "A729591B450D3F59369498BD82991F2504AE0263",
+  "build_phases": [
+    "generate",
+    "integrity",
+    "derive",
+    "sign"
+  ]
+}

@@ -1,0 +1,256 @@
+translation:
+  source_page: integrity
+  source_hash: sha256-2f2440230fae76f69d2baee018142342ae30944fd72cd692ec57a7514d0e8e09
+  status: machine-assisted
+  updated: '2026-05-20'
+meta:
+  integrity:
+    title: Intégrité · Trent Power
+    description: Éditions publiques signées, manifeste d’intégrité, signature détachée et clé publique
+  releases:
+    title: Éditions · Trent Power
+    description: Instantanés signés et figés du site public
+integrity:
+  page_kicker: Intégrité
+  page_h1: <span class="hero-line">Signé.</span><span class="hero-line">Vérifiable.</span><span class="hero-line">Reproductible.</span>
+  page_title: Intégrité
+  body_intro: Le manifeste vivant, la clé de signature et l’empreinte de version de l’édition courante — l’autorité cryptographique du site tel qu’il est aujourd’hui, là où les <a href="/integrity/releases/">Éditions</a> conservent l’historique des versions. Pour une vérification indépendante, <a href="/integrity/verify-locally/" aria-describedby="desc-verify-locally">vérifier localement</a>.
+  footer_hash_note: Le hash affiché dans le pied de page est le préfixe <abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> de l’artefact source de la page — le miroir sous <code>/source/</code>. Il ne s’agit pas d’un hash calculé par le navigateur ni du <abbr title="Document Object Model">DOM</abbr> rendu. L’enregistrement complet de vérification est disponible via <a href="/fr/verifier/" aria-describedby="desc-verify">Vérifier</a>.
+  file_integrity: /integrity.json · hachages SHA-256 de tous les fichiers publics
+  file_sig: /integrity.json.sig · signature PGP détachée
+  file_key: /.well-known/pgp-key.asc · clé de signature publique
+  copy_button: Copier
+  copy_button_done: Copié
+  fingerprint_copy: Copier l’empreinte
+  fingerprint_copied: Copiée
+  print:
+    kicker: Intégrité
+    title: Vérification publique signée
+    lede: Les fichiers publiés sont listés dans un manifeste public et signés par une signature <abbr title="Pretty Good Privacy">PGP</abbr> détachée afin que toute mise à jour puisse être vérifiée de manière indépendante.
+    meta: Édition 2026-05-17 · trentpower.fr/integrity/
+    card:
+      '01':
+        label: 01 Manifeste
+        title: Manifeste
+        body: <code>/integrity.json</code> - empreintes <abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> de chaque fichier public intentionnel.
+      '02':
+        label: 02 Signature
+        title: Signature détachée
+        body: /integrity.json.sig - signature <abbr title="Pretty Good Privacy">PGP</abbr> détachée qui certifie le manifeste.
+      '03':
+        label: 03 Clé publique
+        title: Clé publique
+        body: /.well-known/pgp-key.asc - empreinte A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263.
+      '04':
+        label: 04 Versions
+        title: Versions figées
+        body: '/integrity/releases/ - instantanés publics : de février 2026 à juin 2026.'
+      '05':
+        label: 05 Voie source
+        title: Voie source
+        body: /source/ - vue texte publique de fichiers sources sélectionnés. Aucun secret, aucun artefact privé.
+      '06':
+        label: 06 Vérification
+        title: Vérification
+        body: curl -O trentpower.fr/integrity.json && curl -O trentpower.fr/integrity.json.sig && gpg --verify integrity.json.sig integrity.json
+    footer:
+      proof: Privé · Statique · Signé · Sans suivi
+      edition: Édition 2026-05-17 · trentpower.fr/integrity/
+    qr:
+      label: trentpower.fr/integrity/
+    doc_title: Trent Power - Certificat d’intégrité
+  record:
+    kicker: Édition signée
+    title: <time datetime="2026-05">Mai 2026</time>
+    status_short: Signature · Empreinte · Manifeste
+    label:
+      manifest: Manifeste
+      signature: Signature détachée
+      public_key: Clé publique
+      archives: Archives
+      checksums: Sommes de contrôle
+      fingerprint: Empreinte
+    desc:
+      manifest: Empreintes <abbr title="Secure Hash Algorithm, 256-bit">SHA-256</abbr> des fichiers publics
+      signature: Signature <abbr title="Pretty Good Privacy">PGP</abbr> détachée
+      public_key: Clé publique de signature
+      archives: Édition publique signée des sources
+      checksums: Liste de sommes de contrôle signée pour les archives
+    action:
+      view_manifest: Voir le manifeste
+      view_releases: Voir les éditions
+    group:
+      signature: Signature et clé de signature
+      verification: Manifeste et sommes de contrôle
+      archives: Archives source
+      fingerprint: Empreinte de version
+  verify_release_local:
+    summary: Vérification locale avancée
+    note: Exécute la vérification du manifeste signé dans un trousseau temporaire.
+releases:
+  page_title: Versions
+  body_intro: Chaque <dfn id="signed-release">édition</dfn> est un instantané figé et signé du site public au moment de la publication. Les archives sources peuvent être téléchargées, et des sommes de contrôle et signatures sont fournies pour la vérification locale.
+  editions_heading: Éditions
+  archive_heading: Archives d'édition
+  archive_current_kicker: Édition actuelle
+  archive_earlier_summary: Éditions antérieures
+  edition_jun10_date: 10 juin 2026
+  edition_jun10_desc: <cite>Ouverture publique</cite>
+  edition_jun10_meta: Instantané signé · Édition actuelle
+  edition_may23_date: 23 mai 2026
+  edition_may23_desc: <cite>Sprint de publication composée</cite>
+  edition_may23_meta: Instantané signé · Édition précédente
+  group:
+    current: Édition actuelle
+    archive: Archives
+  view_release: Voir l’édition
+  download_checksums_sig: Sommes de contrôle & signature
+  aria:
+    actions_current: Téléchargements et vérification de l’édition actuelle
+    actions_archive: Fiche d’édition
+  detail:
+    page_title: Mai 2026
+    intro: |-
+      Archives d’édition signées pour l’édition du 17 mai 2026. Une liste de sommes de
+      contrôle signée vérifie l’ensemble des archives ; les sommes de contrôle vérifient les
+      fichiers téléchargés ; des signatures détachées vérifient directement chaque archive.
+      Le manifeste signé publié à /integrity.json reste l’autorité du site en direct.
+    card:
+      kicker: Fichiers d’édition
+      title: 17 mai 2026
+      status: ZIP · TAR.GZ · Sommes de contrôle · Signatures
+      label:
+        zip: ZIP
+        zip_sig: Signature ZIP
+        zip_sha: Somme ZIP
+        targz: TAR.GZ
+        targz_sig: Signature TAR.GZ
+        targz_sha: Somme TAR.GZ
+        sums: Liste de sommes de contrôle
+        sums_sig: Signature de la liste
+      desc:
+        zip: Instantané portable de la source publique
+        sig: Signature <abbr title="Pretty Good Privacy">PGP</abbr> détachée
+        sha: Somme de contrôle SHA-256
+        targz: Archive technique de préservation
+        sums: Liste SHA-256 des archives de l’édition
+        sums_sig: Signature <abbr title="Pretty Good Privacy">PGP</abbr> détachée sur SHA256SUMS
+    note: Les fichiers d’archive ne sont pas inclus dans /integrity.json afin d’éviter un hachage récursif. Ils sont vérifiés séparément au moyen de la liste de sommes de contrôle signée, des sommes de contrôle SHA-256 individuelles et de signatures détachées. <a href="/integrity/">Intégrité</a> reste l’autorité du site en direct.
+  edition_feb: Février 2026 · première version signée
+  edition_feb_date: Février 2026
+  edition_feb_desc: <cite>Première édition signée</cite>
+  print:
+    kicker: Versions
+    title: Éditions publiques figées
+    lede: Les instantanés de versions publiques préservent des éditions choisies du site avec des ressources locales afin que leur conception et leur intégrité puissent être inspectées dans le temps.
+    meta: Édition 2026-05-17 · trentpower.fr/integrity/releases/
+    doc_title: Trent Power - Archive des versions
+    card:
+      '01':
+        label: 01 Mai 2026
+        title: Mai 2026
+        body: Édition finale Signifier, Söhne, Söhne Mono. Noms de fichiers actifs propres. Profil imprimé d’une page. Fiches de confiance.
+      '02':
+        label: 02 Février 2026
+        title: Février 2026
+        body: Première version signée. Système visuel antérieur. Préservée comme archive historique.
+      '03':
+        label: 03 Principe d’archive
+        title: Principe d’archive
+        body: Ressources figées. CSS et polices locales. Aucune dépendance de style mutable en direct.
+      '04':
+        label: 04 Voie d’intégrité
+        title: Voie d’intégrité
+        body: /integrity.json · /integrity.json.sig · /.well-known/pgp-key.asc
+      '05':
+        label: 05 Pourquoi
+        title: Pourquoi
+        body: Vérifiabilité. Auteur. Continuité. Confiance publique.
+      '06':
+        label: 06 Où inspecter
+        title: Où inspecter
+        body: /integrity/releases/2026-05-17/ · /integrity/releases/2026-05-09/ · /integrity/releases/2026-02/ · /source/
+    footer:
+      proof: Privé · Statique · Signé · Sans suivi
+      edition: Édition 2026-05-17 · trentpower.fr/integrity/releases/
+    qr:
+      label: trentpower.fr/integrity/releases/
+  edition_feb_meta: Instantané signé · Édition initiale
+  edition_may09_date: 9 mai 2026
+  edition_may09_desc: <cite>Édition finale de mai</cite>
+  edition_may09_meta: Instantané signé · Édition antérieure
+  edition_may17_date: 17 mai 2026
+  edition_may17_desc: <cite>Cohérence éditoriale</cite>
+  edition_may17_meta: Instantané signé · Édition précédente
+  edition_may19_date: 19 mai 2026
+  edition_may19_desc: <cite>Éditions bilingues</cite>
+  edition_may19_meta: Instantané signé · Édition précédente
+  download_zip: Télécharger ZIP
+  download_targz: Télécharger TAR.GZ
+  # Direction C · l’édition actuelle comme fiche, les éditions antérieures
+  # comme registre. Seules les chaînes éditoriales vivent ici ; les
+  # données par édition (dates, titres, accession, préfixes SHA-256)
+  # sont résolues dans le gabarit depuis integrity.json / release.json.
+  direction_c:
+    hero:
+      kicker: Archives
+      line_1: Figées.
+      line_2: Signées.
+      line_3: Inspectables.
+      lede: Un instantané signé est conservé pour chaque édition de la publication. Ceci est l’historique des éditions ; l’autorité de signature en direct se trouve sur Intégrité. Chaque archive est une copie complète du site au moment de sa publication, accompagnée d’un manifeste SHA-256 agrégé et d’une signature PGP détachée, afin que le contenu puisse être inspecté — de manière indépendante, sur votre propre machine, sans avoir à faire confiance à ce serveur.
+    record:
+      kicker: Édition courante
+      live_tag: En ligne
+      meta_suffix: l’édition en cours.
+      group_archives: Archives sources
+      group_records: Pièces de vérification
+      group_fingerprint: Empreinte de l’édition · SHA-256
+      cta_view: Consulter cette édition
+      cta_copy_idle: Copier l’empreinte
+      cta_copy_done: Empreinte copiée
+      cta_verify: Vérifier localement
+      aria_actions: Actions sur l’édition
+    earlier:
+      label: Éditions antérieures
+      count: cinq archivées · 2026·02 → 2026·05·23
+      verb_view: Consulter
+      sha_key: SHA-256
+      historical_note: Pièce historique · sans archives
+    foot_note: Les éditions antérieures sont conservées telles quelles — elles ne sont pas régénérées lorsque le site évolue. Elles préservent le design et le registre d’intégrité de la publication à un moment donné. Voir <a href="/integrity/">/integrite/</a> pour le manifeste vivant et la signature.
+release_archive:
+  print:
+    kicker: Archive de version signée
+    title: Édition 2026-05-17
+    lede: 'Archive publique de l’édition signée de mai 2026 : manifestes, sommes de contrôle, signatures détachées et archives sources reproductibles.'
+    meta: Édition 2026-05-17 · trentpower.fr/integrity/releases/2026-05-09/
+    doc_title: Trent Power - Archive 2026-05-09
+    card:
+      '01':
+        label: 01 Manifeste
+        title: Manifeste
+        body: /integrity.json - empreintes SHA-256 de chaque fichier public au moment de l’édition.
+      '02':
+        label: 02 Signature détachée
+        title: Signature détachée
+        body: /integrity.json.sig - signature PGP détachée du manifeste.
+      '03':
+        label: 03 Sommes d’archive
+        title: Sommes d’archive
+        body: /integrity/releases/2026-05-09/SHA256SUMS - sommes pour ZIP et TAR.GZ.
+      '04':
+        label: 04 Archive source
+        title: Archive source
+        body: trentpower-fr-2026-05-09.zip · trentpower-fr-2026-05-09.tar.gz - déterministes.
+      '05':
+        label: 05 Statut de vérification
+        title: Statut de vérification
+        body: gpg --verify integrity.json.sig integrity.json contre la clé publique.
+      '06':
+        label: 06 Empreinte de version
+        title: Empreinte de version
+        body: Signée par A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263.
+    footer:
+      proof: Privé · Statique · Signé · Sans suivi
+      edition: Édition 2026-05-17 · trentpower.fr/integrity/releases/2026-05-09/
+    qr:
+      label: trentpower.fr/integrity/releases/2026-05-09/

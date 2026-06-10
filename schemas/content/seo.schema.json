@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trentpower.fr/schemas/content/seo.schema.json",
+  "title": "SEO / meta entry",
+  "description": "One per-surface metadata block under a page's `meta` map. title and description are required; the rest are optional SEO fields the editor may set.",
+  "type": "object",
+  "required": ["title", "description"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "og_title": { "type": "string" },
+    "og_description": { "type": "string" },
+    "og_locale": { "type": "string" },
+    "canonical": { "type": "string" },
+    "hreflang": { "type": "string" },
+    "robots": { "type": "string" },
+    "schema_type": { "type": "string" }
+  },
+  "additionalProperties": false
+}

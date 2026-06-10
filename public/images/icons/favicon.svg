@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .st0 {
+        font-family: 'SoehneMono-Kraftig', 'Söhne Mono', ui-monospace, monospace;
+        font-size: 16px;
+      }
+
+      .st0, .st1 {
+        fill: #6e1a14;
+      }
+
+      .st2 {
+        fill: #f6f4f0;
+      }
+    </style>
+  </defs>
+  <rect class="st2" y="0" width="32" height="32"/>
+  <text class="st0" transform="translate(6.4 21.8)"><tspan x="0" y="0">TP</tspan></text>
+  <path class="st1" d="M26.3,6.9s1.6-2.4,1.6-2.4h0c-.3-.1-.9,0-.9,0,0-.2.5-.9.5-.9h-.7c0-.1-.1.2-.1.2l-.5,1.2h.9c0,0-.8,1.9-.8,1.9Z"/>
+</svg>

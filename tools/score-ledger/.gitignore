@@ -1,0 +1,8 @@
+# Local-only trusted history - never committed to the public site repo.
+data/
+reports/
+__pycache__/
+*.pyc
+
+# Local secret overrides (API keys) - never commit.
+config.local.yml

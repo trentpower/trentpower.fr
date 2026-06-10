@@ -1,0 +1,29 @@
+{
+  "schema": "trentpower.public-release.v1",
+  "purpose": "declared facts about the public-repository posture; read by tools/quality/validate_public_readiness.py",
+  "repo": "trentpower/trentpower.fr",
+  "font_policy": "untracked",
+  "required_root_files": [
+    "LICENSE",
+    "LICENSE-CONTENT.md",
+    "NOTICE.md",
+    "THIRD_PARTY_NOTICES.md",
+    "SECURITY.md",
+    "PRIVACY.md",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md",
+    ".gitattributes",
+    ".gitleaks.toml"
+  ],
+  "forbidden_readme_phrases": ["Private. Not open source"],
+  "untracked_font_globs": [
+    "public/fonts/*.woff2",
+    "public/fonts/subsets/*.woff2",
+    "docs/pdf/fonts/*.woff2"
+  ],
+  "untracked_internal_records": [
+    "reports/git-authorship-metadata-audit.txt",
+    "reports/historical-commit-attribution-report.txt"
+  ],
+  "secret_scan_max_age_days": 7
+}

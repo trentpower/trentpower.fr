@@ -1,0 +1,308 @@
+<!doctype html>
+<!--
+  trentpower.fr
+  static, self-managed, privacy-first
+  service worker recovery page (local cache reset only).
+  no analytics, no cookies, no external assets.
+  this page is network-only — never served from the local cache,
+  so a stale service worker cannot stop a visitor from reaching it.
+-->
+<html lang="en" dir="ltr">
+<head>
+  <!-- head · 01 · foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- head · 02 · appearance bootstrap -->
+  <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch(_){}})();</script>
+
+  <!-- head · 03 · document identity -->
+  <title>Service Worker Reset — Trent Power</title>
+  <meta name="description"
+        content="Local recovery utility. Clears the offline cache for trentpower.fr on this device only.">
+  <meta name="document-edition" content="2026-05-17">
+  <link rel="canonical" href="https://trentpower.fr/sw-reset/">
+
+  <!-- head · 04 · indexing and discovery -->
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- head · 05 · authorship and identity -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/attribution.txt">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+
+  <!-- head · 06 · provenance, rights and reuse -->
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+
+  <!-- head · 07 · social and sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="Service Worker Reset · Trent Power">
+  <meta property="og:description" content="Local recovery utility. Clears the offline cache for trentpower.fr on this device only.">
+  <meta property="og:url" content="https://trentpower.fr/sw-reset/">
+  <meta property="og:image" content="https://trentpower.fr/images/og/default-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Service Worker Reset · Trent Power">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Service Worker Reset · Trent Power">
+  <meta name="twitter:description" content="Local recovery utility. Clears the offline cache for trentpower.fr on this device only.">
+  <meta name="twitter:image" content="https://trentpower.fr/images/og/default-og.png">
+  <meta name="twitter:image:alt" content="Service Worker Reset · Trent Power">
+  <meta name="twitter:site"    content="@trentpower">
+  <meta name="twitter:creator" content="@trentpower">
+
+  <!-- head · 08 · application surface -->
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+
+  <!-- head · 09 · rendering and assets -->
+  <link rel="stylesheet" href="/styles.css?v=2026-05-17.8329810a" integrity="sha384-qkf5XVFpsimID4fZ9+57RDSZhBQueHlhyBhZ7mcCdAk3O+bUy2RoXtUp66H+/9R9">
+  <link rel="stylesheet" href="/print.css?v=2026-05-17.8329810a" media="print">
+
+  <!-- head · 10 · structured data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://trentpower.fr/sw-reset/#webpage",
+  "url": "https://trentpower.fr/sw-reset/",
+  "name": "Service Worker Reset · Trent Power",
+  "description": "Local recovery utility. Clears the offline cache for trentpower.fr on this device only.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@id": "https://trentpower.fr/#website"
+  },
+  "about": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://trentpower.fr/images/og/default-og.png",
+    "width": 1200,
+    "height": 630
+  },
+  "dateModified": "2026-05-20T00:00:00+00:00"
+}
+  </script>
+</head>
+<body data-page="sw-reset" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-05-17" data-source-sha256-short="--------">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark" href="/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="site sw-reset-page" id="main" tabindex="-1">
+  <div class="page">
+    <p class="page-kicker">{{ sw_reset.local_marker }}</p>
+    <h1 class="page-title">{{ sw_reset.page_title }}</h1>
+    <div class="page-body">
+      <p class="page-lede">{{ sw_reset.lede }}</p>
+
+      <p>{{ sw_reset.secondary }}</p>
+
+      <section class="verify-card" aria-labelledby="sw-reset-status-label">
+        <div class="verify-card__header">
+          <p class="eyebrow">{{ sw_reset.status_label }}</p>
+          <h2 id="sw-reset-status-label">{{ sw_reset.card_state }}</h2>
+          <p class="verify-status">{{ sw_reset.local_marker }}</p>
+        </div>
+        <dl class="record-grid" role="status" aria-live="polite" id="sw-reset-status">
+          <div class="record-grid__row">
+            <dt>{{ sw_reset.detected_label }}</dt>
+            <dd id="sw-reset-status-detail">{{ sw_reset.status_initial }}</dd>
+          </div>
+        </dl>
+        <div class="record-actions sw-reset-actions">
+          <button type="button" id="sw-reset-btn" class="sw-reset-btn">{{ sw_reset.button }}</button>
+          <a href="/" class="action sw-reset-link">{{ sw_reset.link_home }}</a>
+          <a href="/sw-reset/" id="sw-reset-reload" class="action sw-reset-link">{{ sw_reset.link_reload }}</a>
+        </div>
+      </section>
+
+      <section class="edition-panel" aria-labelledby="sw-reset-scope-label">
+        <h2 id="sw-reset-scope-label">{{ sw_reset.scope_heading }}</h2>
+        <dl class="record-grid record-grid--quiet">
+          <div class="record-grid__row">
+            <dt>{{ sw_reset.clears_heading }}</dt>
+            <dd>
+              <code>{{ sw_reset.clear_sw }}</code> ·
+              <code>{{ sw_reset.clear_caches }}</code> ·
+              <code>{{ sw_reset.clear_pref }}</code>
+            </dd>
+          </div>
+          <div class="record-grid__row">
+            <dt>{{ sw_reset.preserves_heading }}</dt>
+            <dd>
+              <span>{{ sw_reset.preserve_history }}</span> ·
+              <span>{{ sw_reset.preserve_downloads }}</span> ·
+              <span>{{ sw_reset.preserve_others }}</span> ·
+              <span>{{ sw_reset.preserve_server }}</span>
+            </dd>
+          </div>
+          <div class="record-grid__row">
+            <dt>{{ sw_reset.api_label }}</dt>
+            <dd>{{ sw_reset.footnote }}</dd>
+          </div>
+        </dl>
+      </section>
+    </div>
+  </div>
+
+</main>
+
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">{{ linkdesc.home }}</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>{{ footer.location }}</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/privacy/" rel="privacy-policy" aria-describedby="desc-privacy">{{ footer.privacy }}</a>
+        <span class="visually-hidden" id="desc-privacy">{{ linkdesc.privacy }}</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">{{ footer.verify }}</button>
+        <span class="visually-hidden" id="desc-cite">{{ linkdesc.cite }}</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><button type="button" data-lang="en" aria-pressed="true"  aria-describedby="desc-lang-en" lang="en">English</button> <span class="visually-hidden" id="desc-lang-en">{{ linkdesc.lang_en }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-lang="fr" aria-pressed="false" aria-describedby="desc-lang-fr" lang="fr">Français</button> <span class="visually-hidden" id="desc-lang-fr">{{ linkdesc.lang_fr }}</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break" aria-hidden="true">
+
+    <!-- bottom stratum · colophon · theme -->
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="{{ footer.proof.aria_label }}">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="{{ footer.proof.manifest_link_href }}" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">{{ footer.proof.edition }}</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          {{ html:footer.proof.colophon_note_html }}
+          <span class="visually-hidden" id="desc-integrity">{{ linkdesc.integrity }}</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">{{ footer.theme.light }}</button> <span class="visually-hidden" id="desc-theme-light">{{ linkdesc.theme_light }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">{{ footer.theme.auto }}</button> <span class="visually-hidden" id="desc-theme-auto">{{ linkdesc.theme_auto }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">{{ footer.theme.dark }}</button> <span class="visually-hidden" id="desc-theme-dark">{{ linkdesc.theme_dark }}</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+<!-- translated dynamic-status strings. application/json is data, not
+     executable; csp script-src does not enforce against it. the inline
+     reset script reads templates from here and re-renders when the
+     <html lang> attribute changes (footer language switcher). -->
+<script type="application/json" id="sw-reset-i18n">{
+  "en": {"not_supported":"Service Workers not supported","resetting":"Resetting…","complete":"Local offline cache cleared","warning":"Reset finished with a warning: {msg}","sw_count":"{n} service worker(s)","caches_count":"{n} local cache(s)","pref_stored":"language preference stored","pref_none":"no language preference stored","edition":"cached edition {e}","edition_none":"no cached edition detected"},
+  "fr": {"not_supported":"Service Workers non pris en charge","resetting":"Réinitialisation en cours…","complete":"Cache hors-ligne local effacé","warning":"Réinitialisation terminée avec un avertissement : {msg}","sw_count":"{n} Service Worker(s)","caches_count":"{n} cache(s) local(aux)","pref_stored":"préférence de langue enregistrée","pref_none":"aucune préférence de langue enregistrée","edition":"édition en cache {e}","edition_none":"aucune édition en cache détectée"},
+  "it": {"not_supported":"Service Worker non supportati","resetting":"Reimpostazione in corso…","complete":"Cache offline locale svuotata","warning":"Reimpostazione completata con un avviso: {msg}","sw_count":"{n} Service Worker","caches_count":"{n} cache locali","pref_stored":"preferenza di lingua salvata","pref_none":"nessuna preferenza di lingua salvata","edition":"edizione in cache {e}","edition_none":"nessuna edizione in cache rilevata"},
+  "es": {"not_supported":"Service Workers no soportados","resetting":"Reiniciando…","complete":"Caché sin conexión local borrada","warning":"Reinicio finalizado con una advertencia: {msg}","sw_count":"{n} Service Worker(s)","caches_count":"{n} caché(s) local(es)","pref_stored":"preferencia de idioma guardada","pref_none":"sin preferencia de idioma guardada","edition":"edición en caché {e}","edition_none":"no se detectó edición en caché"},
+  "de": {"not_supported":"Service Worker nicht unterstützt","resetting":"Wird zurückgesetzt…","complete":"Lokaler Offline-Cache geleert","warning":"Zurücksetzung mit Warnung beendet: {msg}","sw_count":"{n} Service-Worker","caches_count":"{n} lokale Caches","pref_stored":"Spracheinstellung gespeichert","pref_none":"keine Spracheinstellung gespeichert","edition":"zwischengespeicherte Ausgabe {e}","edition_none":"keine zwischengespeicherte Ausgabe erkannt"}
+}</script>
+
+<script>(function(){var sd=document.getElementById('sw-reset-status-detail');var b=document.getElementById('sw-reset-btn');var I18N={};try{var raw=document.getElementById('sw-reset-i18n');if(raw)I18N=JSON.parse(raw.textContent||'{}');}catch(_){I18N={};}function L(k,p){var lang=(document.documentElement.lang||'en').toLowerCase();var t=(I18N[lang]&&I18N[lang][k])||(I18N.en&&I18N.en[k])||k;if(p){Object.keys(p).forEach(function(x){t=t.replace('{'+x+'}',p[x]);});}return t;}function setDetail(m){if(sd)sd.textContent=m;}var swSupported='serviceWorker'in navigator;var cachesSupported='caches'in window;var lastState=null;function readEditionFromCache(){if(!cachesSupported)return Promise.resolve(null);return caches.keys().then(function(ns){if(!ns||!ns.length)return null;var m=String(ns[0]).match(/(\d{4}-\d{2}-\d{2})/);return m?m[1]:null;}).catch(function(){return null;});}function render(){if(!lastState){return;}var sw=lastState.sw,cn=lastState.cn,ed=lastState.ed;var parts=[L('sw_count',{n:sw}),L('caches_count',{n:cn}),ed?L('edition',{e:ed}):L('edition_none')];setDetail(parts.join(' · '));}function refreshState(){if(!swSupported){setDetail(L('not_supported'));if(b)b.disabled=true;return;}var jobs=[];jobs.push(navigator.serviceWorker.getRegistrations().then(function(rs){return(rs||[]).length;}).catch(function(){return 0;}));jobs.push(cachesSupported?caches.keys().then(function(ns){return(ns||[]).length;}).catch(function(){return 0;}):Promise.resolve(0));jobs.push(readEditionFromCache());Promise.all(jobs).then(function(r){lastState={sw:r[0],cn:r[1],ed:r[2]};render();});}refreshState();var mo=new MutationObserver(function(){render();});mo.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});if(b){b.addEventListener('click',function(){b.disabled=true;setDetail(L('resetting'));var jobs=[];jobs.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all((rs||[]).map(function(r){return r.unregister();}));}).catch(function(){return null;}));if(cachesSupported){jobs.push(caches.keys().then(function(ns){return Promise.all((ns||[]).map(function(n){return caches.delete(n);}));}).catch(function(){return null;}));}try{localStorage.removeItem('tp-lang');}catch(_){}Promise.all(jobs).then(function(){setDetail(L('complete'));}).catch(function(e){setDetail(L('warning',{msg:(e&&e.message)||'unknown'}));});});}})();</script>
+
+<!-- scripts · progressive enhancement, no telemetry -->
+
+
+<script src="/js/theme.js?v=2026-05-17.8329810a" defer></script>
+<script src="/sw-register.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/reveal.js?v=2026-05-17.8329810a" defer></script>
+
+<script src="/js/overlay.js?v=2026-05-17.8329810a" defer></script>
+
+<script src="/js/copy.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/edition.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/micro-interactions.js" defer></script>
+<script src="/js/verify-modal.js" defer></script>
+<script src="/js/fonts.js?v=2026-05-17.8329810a" defer></script>
+
+
+<!-- print-only utility sheet -->
+<div class="print-utility-sheet print-only" data-print-sheet="sw-reset" hidden>
+  <header class="print-utility-header">
+    <p class="print-utility-kicker">{{ sw_reset.print.kicker }}</p>
+    <p class="print-utility-title">{{ sw_reset.print.title }}</p>
+    <p class="print-utility-lede">{{ sw_reset.print.lede }}</p>
+    <p class="print-utility-meta">{{ sw_reset.print.meta }}</p>
+  </header>
+
+  <div class="print-utility-grid">
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">01</span> <span>{{ sw_reset.print.card.01.title }}</span></p>
+          <p>{{ sw_reset.print.card.01.body }}</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">02</span> <span>{{ sw_reset.print.card.02.title }}</span></p>
+          <p>{{ sw_reset.print.card.02.body }}</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">03</span> <span>{{ sw_reset.print.card.03.title }}</span></p>
+          <p>{{ sw_reset.print.card.03.body }}</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">04</span> <span>{{ sw_reset.print.card.04.title }}</span></p>
+          <p>{{ sw_reset.print.card.04.body }}</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">05</span> <span>{{ sw_reset.print.card.05.title }}</span></p>
+          <p>{{ sw_reset.print.card.05.body }}</p>
+        </div>
+        <div class="print-utility-card">
+          <p class="print-utility-label"><span class="num">06</span> <span>{{ sw_reset.print.card.06.title }}</span></p>
+          <p>{{ sw_reset.print.card.06.body }}</p>
+        </div>
+  </div>
+
+  <footer class="print-utility-footer">
+    <div class="print-utility-footer-text">
+      <p class="print-proof">{{ sw_reset.print.footer.proof }}</p>
+      <p>{{ sw_reset.print.footer.edition }}</p>
+    </div>
+    <div class="print-qr-block" aria-hidden="true">
+      <img class="print-qr-image" src="/images/qr/qr-sw-reset.svg" width="144" height="144" loading="lazy" decoding="async" alt="">
+      <p class="print-qr-url">trentpower.fr/sw-reset/</p>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>

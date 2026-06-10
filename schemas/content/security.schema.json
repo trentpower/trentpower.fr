@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trentpower.fr/schemas/content/security.schema.json",
+  "title": "Security page content (includes acknowledgments)",
+  "allOf": [{ "$ref": "https://trentpower.fr/schemas/content/page-base.schema.json" }],
+  "type": "object",
+  "properties": {
+    "meta": { "type": "object", "required": ["security", "acknowledgments"] },
+    "security": { "type": "object" },
+    "acknowledgments": { "type": "object" }
+  },
+  "additionalProperties": true
+}

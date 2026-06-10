@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trentpower.fr/schemas/content/privacy.schema.json",
+  "title": "Privacy page content",
+  "allOf": [{ "$ref": "https://trentpower.fr/schemas/content/page-base.schema.json" }],
+  "type": "object",
+  "properties": {
+    "meta": { "type": "object", "required": ["privacy"] },
+    "privacy": { "type": "object" }
+  },
+  "additionalProperties": true
+}

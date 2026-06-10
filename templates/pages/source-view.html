@@ -1,0 +1,191 @@
+<!doctype html>
+<!--
+  trentpower.fr · /source/view/
+  dynamic source code reader. one static shell; ?file= param selects
+  a file from the source mirror. source-view.js fetches /source/*.txt
+  and renders with line numbers and restrained syntax colouring.
+  no runtime server logic. no external dependencies.
+-->
+<html lang="en" dir="ltr">
+<head>
+  <!-- head · 01 · foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- head · 02 · appearance bootstrap -->
+  <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch(_){}})();</script>
+
+  <!-- head · 03 · document identity -->
+  <title>Source reader · Trent Power</title>
+  <meta name="description" content="Inspect the public source mirror of trentpower.fr with line numbers and syntax highlighting.">
+  <link rel="canonical" href="https://trentpower.fr/source/view/">
+
+  <!-- head · 04 · indexing and discovery -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- head · 05 · authorship and identity -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/attribution.txt">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+
+  <!-- head · 06 · provenance, rights and reuse -->
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+
+  <!-- head · 07 · social and sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="Source reader · Trent Power">
+  <meta property="og:description" content="Inspect the public source mirror of trentpower.fr with line numbers and syntax highlighting.">
+  <meta property="og:url" content="https://trentpower.fr/source/view/">
+  <meta property="og:image" content="https://trentpower.fr/images/og/source-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Source reader · Trent Power">
+
+  <!-- head · 08 · application surface -->
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+
+  <!-- head · 09 · rendering and assets -->
+  <link rel="stylesheet" href="/styles.css?v=2026-05-17.8329810a" integrity="sha384-qkf5XVFpsimID4fZ9+57RDSZhBQueHlhyBhZ7mcCdAk3O+bUy2RoXtUp66H+/9R9">
+  <link rel="stylesheet" href="/print.css?v=2026-05-17.8329810a" media="print">
+
+  <!-- head · 10 · structured data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "url": "https://trentpower.fr/source/view/",
+  "name": "Source reader · Trent Power",
+  "description": "Dynamic source code reader for the trentpower.fr public source mirror.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@id": "https://trentpower.fr/#website"
+  },
+  "about": {
+    "@id": "https://trentpower.fr/#trent-power"
+  }
+}
+  </script>
+</head>
+<body data-page="source-reader" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-05-17" data-source-sha256-short="--------">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark" href="/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="site source-reader-page" id="main" tabindex="-1">
+  <div class="page">
+    <section class="source-reader">
+      <div id="source-view-root">
+        <noscript>
+          <p class="page-lede">{{ html:source_reader.nojs_html }}</p>
+        </noscript>
+      </div>
+      <div id="source-toolbar" class="source-toolbar" role="region" aria-label="Selection actions">
+        <span class="source-toolbar__count" aria-live="polite">{{ source_reader.action.count_line_one }}</span>
+        <span class="source-toolbar__sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="source-toolbar__btn" data-action="copy">{{ source_reader.action.copy }}</button>
+        <span class="source-toolbar__sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="source-toolbar__btn" data-action="copy-link">{{ source_reader.action.copy_link }}</button>
+        <span class="source-toolbar__sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="source-toolbar__btn" data-action="clear" aria-keyshortcuts="Escape">{{ source_reader.action.clear }}</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div id="source-announcer" class="source-announcer" aria-live="polite" role="status"></div>
+
+<!-- cssom · #source-toolbar position rules, written at runtime -->
+<style id="sv-dyn"></style>
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">{{ linkdesc.home }}</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>{{ footer.location }}</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/privacy/" rel="privacy-policy" aria-describedby="desc-privacy">{{ footer.privacy }}</a>
+        <span class="visually-hidden" id="desc-privacy">{{ linkdesc.privacy }}</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">{{ footer.verify }}</button>
+        <span class="visually-hidden" id="desc-cite">{{ linkdesc.cite }}</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><button type="button" data-lang="en" aria-pressed="true"  aria-describedby="desc-lang-en" lang="en">English</button> <span class="visually-hidden" id="desc-lang-en">{{ linkdesc.lang_en }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-lang="fr" aria-pressed="false" aria-describedby="desc-lang-fr" lang="fr">Français</button> <span class="visually-hidden" id="desc-lang-fr">{{ linkdesc.lang_fr }}</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break" aria-hidden="true">
+
+    <!-- bottom stratum · colophon · theme -->
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="{{ footer.proof.aria_label }}">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="{{ footer.proof.manifest_link_href }}" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">{{ footer.proof.edition }}</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          {{ html:footer.proof.colophon_note_html }}
+          <span class="visually-hidden" id="desc-integrity">{{ linkdesc.integrity }}</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">{{ footer.theme.light }}</button> <span class="visually-hidden" id="desc-theme-light">{{ linkdesc.theme_light }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">{{ footer.theme.auto }}</button> <span class="visually-hidden" id="desc-theme-auto">{{ linkdesc.theme_auto }}</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">{{ footer.theme.dark }}</button> <span class="visually-hidden" id="desc-theme-dark">{{ linkdesc.theme_dark }}</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+
+  <!-- source reader data + renderer (loaded before site scripts so manifest is available) -->
+  <script src="/source/view/source-view-manifest.js?v=2026-05-17.8329810a" integrity="sha384-0bYjv5cVREMOb1HVFUHrYVfmchVykw1mH7vG7kq+obNDG1/EFwKTRczfefH/Xnb2" defer></script>
+  <script src="/source/view/source-view.js?v=2026-05-17.8329810a" integrity="sha384-CHF4Tdh6q/iLNeb8f5VBttc+4c6Tf0dwAQtNJ8rbgxttCF5CRplVgMPp+MlubMxp" defer></script>
+  <!-- scripts · progressive enhancement, no telemetry -->
+  <script src="/js/theme.js?v=2026-05-17.8329810a" defer></script>
+  <script src="/sw-register.js?v=2026-05-17.8329810a" defer></script>
+  <script src="/js/reveal.js?v=2026-05-17.8329810a" defer></script>
+  <script src="/js/overlay.js?v=2026-05-17.8329810a" defer></script>
+  <script src="/js/copy.js?v=2026-05-17.8329810a" defer></script>
+  <script src="/js/edition.js?v=2026-05-17.8329810a" defer></script>
+<script src="/js/micro-interactions.js" defer></script>
+  <script src="/js/verify-modal.js" defer></script>
+  <script src="/js/fonts.js?v=2026-05-17.8329810a" defer></script>
+</body>
+</html>

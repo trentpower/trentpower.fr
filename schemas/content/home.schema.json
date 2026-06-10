@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trentpower.fr/schemas/content/home.schema.json",
+  "title": "Home page content",
+  "allOf": [{ "$ref": "https://trentpower.fr/schemas/content/page-base.schema.json" }],
+  "type": "object",
+  "properties": {
+    "meta": { "type": "object", "required": ["home"] },
+    "hero": { "type": "object" },
+    "approach": { "type": "object" },
+    "trajectory": { "type": "object" },
+    "projects": { "type": "object" },
+    "credentials": { "type": "object" },
+    "contact": { "type": "object" },
+    "home": { "type": "object" },
+    "print": { "type": "object" }
+  },
+  "additionalProperties": true
+}

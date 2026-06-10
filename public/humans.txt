@@ -1,0 +1,81 @@
+/* team */
+author: trent power
+role: sole author and maintainer
+contaxt: trent [at] trentpower.fr
+location: paris, france
+pgp fingerprint: a729 591b 450d 3f59 3694 98bd 8299 1f25 04ae 0263
+
+all content and code are reviewed manually before publication.
+selective language model assistance may be used for drafting or
+structuring, but no automated publishing occurs.
+
+
+/* site */
+personal site, finite and editorial.
+canonical domain: https://trentpower.fr
+source repository: https://github.com/trentpower/trentpower.fr
+stack: static html, css, vanilla javascript.
+hosting: apache (gandi, paris).
+no external runtime dependencies. generation scripts run locally
+before publication.
+publication: manual, finite releases. no continuous deployment.
+
+
+/* trust */
+the public site is static, signed and inspectable.
+
+privacy:           /privacy/
+security:          /security/
+integrity:         /integrity/
+verify:            /verify/
+source mirrors:    /source/
+archived editions: /integrity/releases/
+
+public signing key:  /.well-known/pgp-key.asc
+signed manifest:     /integrity.json
+detached signature:  /integrity.json.sig
+publication policy:  /.well-known/publication.json
+
+
+/* privacy */
+no tracking, analytics, cookies or third-party requests.
+no localstorage or sessionstorage at runtime.
+no behavioural profiling or visitor inference.
+
+if contact occurs by email, information is used solely to respond
+and is not retained beyond resolution.
+
+
+/* accessibility */
+semantic html.
+logical heading structure.
+keyboard-first navigation; focus visibility preserved.
+reduced motion respected.
+no content requires javascript to read.
+
+
+/* governance */
+authorship statement: /.well-known/attribution.txt
+security policy:      /.well-known/security.txt
+acknowledgements:     /security/acknowledgments/
+last reviewed: 2026-06-10
+
+
+/* thanks */
+inspiration: open web standards, privacy-first builders, minimal systems.
+with thanks to kris sowersby and klim type foundry for signifier,
+söhne and söhne mono.
+
+
+/* colophon */
+irc. geocities. since 1997.
+a/s/l? · brb · g2g
+visitor counters · guestbooks · "under construction".
+animated gifs and midi files that played whether you wanted them
+to or not.
+
+we did not know what we were building.
+we just knew we could.
+
+the web was a library you could open the spine of.
+it still is, here.

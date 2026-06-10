@@ -1,0 +1,167 @@
+<!doctype html>
+<!--
+  trentpower.fr · /source/view/
+  dynamic source code reader. one static shell; ?file= param selects
+  a file from the source mirror. source-view.js fetches /source/*.txt
+  and renders with line numbers and restrained syntax colouring.
+  no runtime server logic. no external dependencies.
+-->
+<html lang="en" dir="ltr">
+<head>
+  <!-- foundations -->
+  <meta charset="utf-8">
+  <script>(()=>{const e=document.documentElement;const n=(navigator.languages&&navigator.languages[0])||navigator.language||'en';e.lang=/^fr\b/i.test(n)?'fr':'en';e.classList.add("js");try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch{}})();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- document -->
+  <title>Source reader · Trent Power</title>
+  <meta name="description" content="Inspect the public source mirror of trentpower.fr with line numbers and syntax highlighting.">
+  <link rel="canonical" href="https://trentpower.fr/source/view/">
+
+  <!-- identity -->
+  <meta name="author" content="Trent Power">
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="author" href="/.well-known/attribution.txt">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+
+  <!-- discovery -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- social preview (generic source OG) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="Source reader · Trent Power">
+  <meta property="og:description" content="Inspect the public source mirror of trentpower.fr with line numbers and syntax highlighting.">
+  <meta property="og:url" content="https://trentpower.fr/source/view/">
+  <meta property="og:image" content="https://trentpower.fr/images/og/source-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Source reader · Trent Power">
+
+  <!-- icons -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+
+  <!-- assets -->
+  <link rel="stylesheet" href="/styles.css?v=2026-06-10" integrity="sha384-G2EI/5PcxnoeoGAeVPHgpg7kTvWKsox1BqU3BamYJoaX8KqB6bj7j8nIrUibMqLC">
+  <link rel="stylesheet" href="/print.css?v=2026-06-10" media="print">
+
+  <!-- structured data -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","url":"https://trentpower.fr/source/view/","name":"Source reader · Trent Power","description":"Dynamic source code reader for the trentpower.fr public source mirror.","inLanguage":"en","isPartOf":{"@id":"https://trentpower.fr/#website"},"about":{"@id":"https://trentpower.fr/#trent-power"}}</script>
+
+</head>
+<body data-page="source-reader" data-layout="masthead" data-surface="record" data-masthead="brand-only">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark" href="/en-au/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="site source-reader-page" id="main" tabindex="-1">
+  <div class="page">
+    <section class="source-reader">
+      <div id="source-view-root">
+        <noscript>
+          <p class="page-lede">JavaScript is required to render the source reader. The raw source mirror is available at <a href="/source/">Source</a>.</p>
+        </noscript>
+      </div>
+      <div id="source-toolbar" class="source-toolbar" role="region" aria-label="Selection actions">
+        <span class="source-toolbar__count" aria-live="polite">1 line</span>
+        <span class="source-toolbar__sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="source-toolbar__btn" data-action="copy">Copy</button>
+        <span class="source-toolbar__sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="source-toolbar__btn" data-action="copy-link">Copy link</button>
+        <span class="source-toolbar__sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="source-toolbar__btn" data-action="clear" aria-keyshortcuts="Escape">Clear</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div id="source-announcer" class="source-announcer" aria-live="polite" role="status"></div>
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <!-- top stratum · identity · nav · language -->
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <time datetime="2026">2026</time></span>
+        <a class="wm" href="/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">Return to the homepage</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>Paris, France</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/en-au/privacy/" rel="privacy-policy" aria-describedby="desc-privacy">Privacy</a>
+        <span class="visually-hidden" id="desc-privacy">Read how this site avoids analytics, cookies, profiling, tracking, and third-party assets</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite"
+               >Verify</button>
+        <span class="visually-hidden" id="desc-cite">Open citation and verification details for this page</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><button type="button" data-lang="en" aria-pressed="true"  aria-describedby="desc-lang-en" lang="en">English</button> <span class="visually-hidden" id="desc-lang-en">Read this site in English</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-lang="fr" aria-pressed="false" aria-describedby="desc-lang-fr" lang="fr">Français</button> <span class="visually-hidden" id="desc-lang-fr">Lire ce site en français</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break" aria-hidden="true">
+
+    <!-- bottom stratum · theme switch only.
+         the source reader is its own shell — it does not carry the
+         publication's edition / SHA / verified colophon (no per-page
+         provenance to display in a shared reader). the live editions
+         show their colophon in their own footers, linked from the
+         source reader's masthead. -->
+    <div class="site-footer__bottom">
+
+      <p class="site-footer__provenance" lang="fr">Traduit automatiquement de l’original anglais.</p>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">Light</button> <span class="visually-hidden" id="desc-theme-light">Switch to the light appearance</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">Auto</button> <span class="visually-hidden" id="desc-theme-auto" >Match the system appearance setting</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">Dark</button> <span class="visually-hidden" id="desc-theme-dark" >Switch to the dark appearance</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+
+  <!-- source reader data + renderer (loaded before site scripts so manifest is available) -->
+  <script src="/source/view/source-view-manifest.js?v=2026-06-10" integrity="sha384-UiD7WMMsXuivl9etvWSeDuMjTec3RbLS3GuqwhJHRzzV1pkkUpyyDtpNnqGm3mGQ" defer></script>
+  <script src="/source/view/source-view.js?v=2026-06-10" integrity="sha384-pgPUFvvJ4Lsj/gybUWMiRySEHFds+dCkdDE8eQVmU9Igz8h/Sjwe472Y2gsxQZZj" defer></script>
+  <!-- scripts · progressive enhancement, no telemetry -->
+  <script src="/js/theme.js?v=2026-06-10" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+  <script src="/sw-register.js?v=2026-06-10" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+  <script src="/js/reveal.js?v=2026-06-10" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+  <script src="/js/overlay.js?v=2026-06-10" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+  <script src="/js/copy.js?v=2026-06-10" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+  <script src="/js/verify-modal.js?v=2026-06-10" integrity="sha384-6soCAm6ZECBoqkgQuoQ0A7eBj3SD+nLOgHlfffbxBlhJGCxHOO+CPermVfmvYXu0" defer></script>
+  <script src="/js/fonts.js?v=2026-06-10" integrity="sha384-kRel595dQiUN7pFngNGyqiBEOQ0yxQKPCtfFmv4gRqmnR/RcUqVurl6+G6h/FJqx" defer></script>
+</body>
+</html>

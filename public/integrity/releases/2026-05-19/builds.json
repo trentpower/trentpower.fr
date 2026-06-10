@@ -1,0 +1,31 @@
+{
+  "schema": "trentpower.edition-builds.v1",
+  "edition": "2026-05-19",
+  "canonical": {
+    "build_date": "2026-05-19",
+    "zip_sha256": "sha256-duBHBOxPNwvRBXTN+j6EDQSZyqvGDvG5EFJ9rhoyBWo=",
+    "tar_gz_sha256": "sha256-h1onEPg36OR5M7d4J+/MH8GIDh0khrY4iS8NkinR2k4="
+  },
+  "rebuilds": [
+    {
+      "build_date": "2026-05-20",
+      "zip_sha256": "sha256-9wkSKlV69lZJ7XjQrdn8U/zy9VvD4jRs5UC8vJoXf/c=",
+      "tar_gz_sha256": "sha256-UCmU0mjOo4Nnaw4q/D7YCPQdMvt//nw/5y2UI3ZeWLs="
+    },
+    {
+      "build_date": "2026-05-21",
+      "zip_sha256": "sha256-n65HeRS5Ka87dekrR7UWJS6gAF+0XtuCXn9HaxFiByQ=",
+      "tar_gz_sha256": "sha256-hqI1+MAqB5mWHT1SPS3JsIf7aANbJAITIYL5E5ZADPA="
+    },
+    {
+      "build_date": "2026-05-22",
+      "zip_sha256": "sha256-K6346phdoQXsjBW4clLAdkmwOb7weg7m3fKU5dBvgiA=",
+      "tar_gz_sha256": "sha256-K6/Uf85Wkk7MdpRpscq+J55zBnhNKCZMSiPgt/phemo="
+    },
+    {
+      "build_date": "2026-05-23",
+      "zip_sha256": "sha256-l1SleHc+34VuMO+KPzaLBxgj9FSYOnz9PlIV3Z0qxok=",
+      "tar_gz_sha256": "sha256-iC5doS2grvoCsKLOmR/UiUhY9SH8QUX9qiggv+QDNaM="
+    }
+  ]
+}

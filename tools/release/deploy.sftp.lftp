@@ -1,0 +1,91 @@
+# trentpower.fr — public Gandi Simple Hosting SFTP deploy
+#
+# Manual lftp recipe — staged put-by-put, kept for diagnostic and
+# emergency-deploy use. The everyday deploy paths are:
+#   • local:  /tmp/lftp_deploy.sh      (mirror with --no-perms, parallel)
+#   • CI:     .github/workflows/deploy.yml  (manual workflow_dispatch)
+#
+# Run from /home/trentpower/Desktop/trentpower.fr/public/:
+#     lftp -f ../tools/release/deploy.sftp.lftp
+#
+# lftp will prompt for the SFTP password interactively (not stored, not
+# echoed to shell history). To use a different user, edit the `open` line
+# below or override with `lftp -u USER sftp://HOST -f ../tools/release/deploy.sftp.lftp`.
+#
+# Order matters: assets must land before HTML that references ?v=<new>
+# so Varnish does not cache 404s for the new query strings, and the SRI
+# hashes in the new HTML resolve to the new file bytes immediately.
+
+set sftp:auto-confirm yes
+set net:timeout 60
+set net:max-retries 2
+set net:reconnect-interval-base 5
+
+open -u "ab4cf384-0600-11f1-9712-00163e816020" sftp://sftp.sd3.gpaas.net
+
+# ── Stage 1: Assets ──
+# every file listed in ASSET_BUNDLE (tools/build/generate_site.py) must
+# land here. missing one means the html on the host references a
+# `?v=<new>` query string whose bytes are stale, OR a versioned
+# filename that 404s. canonical bundle:
+#   app.js · app-enhance.js · verify-modal.js · fonts-full.css ·
+#   i18n-core.js · i18n/de.js · i18n/es.js · i18n/it.js ·
+#   print.css · styles.css · verify/verify.js
+# plus versioned aliases (app-enhance.<edition>.<sha>.js,
+# fonts-full.<edition>.<sha>.css, verify/verification-data.<edition>.<sha>.js)
+# and sw-cache-manifest.json. mput catches matching versioned files.
+put -O / styles.css
+put -O / print.css
+put -O / fonts-full.css
+mput -O / fonts-full.2026-*.css
+put -O / app.js
+put -O / app-enhance.js
+mput -O / app-enhance.2026-*.js
+put -O / verify-modal.js
+put -O / i18n-core.js
+put -O /i18n/ i18n/it.js
+put -O /i18n/ i18n/es.js
+put -O /i18n/ i18n/de.js
+put -O /verify/ verify/verify.js
+
+# ── Stage 2: Service worker + precache manifest ──
+put -O / sw.js
+put -O / sw-cache-manifest.json
+
+# ── Stage 3: HTML ──
+put -O / index.html
+put -O / 403.html
+put -O / 404.html
+put -O / 500.html
+put -O / maintenance.html
+put -O /privacy/ privacy/index.html
+put -O /security/ security/index.html
+put -O /security/acknowledgments/ security/acknowledgments/index.html
+put -O /integrity/ integrity/index.html
+put -O /integrity/releases/ integrity/releases/index.html
+put -O /source/ source/index.html
+put -O /sw-reset/ sw-reset/index.html
+put -O /verify/ verify/index.html
+
+# ── Stage 4: Generated data ──
+put -O /verify/ verify/verification-data.js
+mput -O /verify/ verify/verification-data.2026-*.js
+put -O / site-metadata.json
+put -O / humans.txt
+put -O / llms.txt
+put -O / sitemap.xml
+put -O / sitemap.xml.sha256
+put -O / changelog.txt
+
+# ── Stage 5: Source mirrors (must mirror the now-stable originals) ──
+mput -O /source/ source/*.txt
+put -O /source/ source/source-manifest.json
+
+# ── Stage 6: .htaccess (CSP hashes refreshed by generate_site.py) ──
+put -O / .htaccess
+
+# ── Stage 7: Integrity manifest + signature, LAST ──
+put -O / integrity.json
+put -O / integrity.json.sig
+
+bye

@@ -1,0 +1,234 @@
+/*
+ * micro-interactions.js — editorial attention layer.
+ *
+ * a small set of attentive details that read as "the publication
+ * noticed you" without announcing themselves. each behaviour is
+ * <800ms; most are 200ms or less. all respect prefers-reduced-motion
+ * (collapsing to instant final state) and bfcache (no replay on
+ * swipe-back). loaded on every page-shell template so behaviour is
+ * consistent across the publication.
+ *
+ * Brief item map:
+ *   #2  · .tp-rule           — opacity fades 0.12 → 0.20 on viewport entry
+ *   #4  · .tp-tick           — numeric values count up from zero
+ *   #6  · .section-label     — number first, label 120ms after
+ *   #7  · footer typewriter  — types [data-edition-age] once per page per session
+ *   #8  · .tp-progress       — 1px oxblood line, scroll progress
+ *   #10 · .tp-citation flash — listens for 'tp:citation-copied' event
+ *
+ * No DOM mutations the html doesn't expect; classes added on existing
+ * elements or via .tp-progress / .tp-copy-pill-free injection. No
+ * external dependencies. Fails silently if anything is missing.
+ */
+(function () {
+  'use strict';
+
+  var REDUCED = window.matchMedia &&
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // bfcache guard · once persisted is observed, init() short-circuits.
+  // the state is already correct in the cached snapshot — animations
+  // played on the original visit and don't need to replay.
+  var bfcacheRestored = false;
+  window.addEventListener('pageshow', function (ev) {
+    if (ev.persisted) bfcacheRestored = true;
+  });
+
+  /* ─── shared IntersectionObserver ─────────────────────────────
+     one instance dispatches per-element based on class match.
+     reduces overhead vs one observer per behaviour. threshold 0.4
+     so the element is visibly entering, not just at the edge. */
+  var io = null;
+  function getObserver() {
+    if (io) return io;
+    if (typeof IntersectionObserver !== 'function') return null;
+    io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        if (el.classList.contains('tp-rule')) {
+          el.classList.add('is-settled');
+        } else if (el.classList.contains('section-label')) {
+          el.classList.add('is-revealed');
+        } else if (el.classList.contains('tp-tick')) {
+          tickNumber(el);
+        }
+        io.unobserve(el);
+      });
+    }, { threshold: 0.4 });
+    return io;
+  }
+
+  /* ─── #4 · tick a number from 0 to its target ─────────────────
+     reads the target from the element's `value` attribute (every
+     <data> element already carries this). suffix is whatever
+     follows the digits in textContent (" min", " stops", " KB").
+     decimals are inferred from the textContent. cubic ease-out
+     over 600ms. reduced-motion paints the final value without
+     animation. */
+  function tickNumber(el) {
+    var raw = el.getAttribute('value');
+    var target = parseFloat(raw);
+    if (isNaN(target)) return;
+    var text = el.textContent;
+    var suffix = text.replace(/^[\d.,\s]+/, '');
+    var dotMatch = text.match(/\.(\d+)/);
+    var decimals = dotMatch ? dotMatch[1].length : 0;
+    var finalText = target.toFixed(decimals) + suffix;
+
+    if (REDUCED) {
+      el.textContent = finalText;
+      return;
+    }
+
+    var duration = 600;
+    var start = performance.now();
+    function frame(now) {
+      var t = Math.min(1, (now - start) / duration);
+      var eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = (target * eased).toFixed(decimals) + suffix;
+      if (t < 1) requestAnimationFrame(frame);
+      else el.textContent = finalText;
+    }
+    el.textContent = (0).toFixed(decimals) + suffix;
+    requestAnimationFrame(frame);
+  }
+
+  /* ─── #8 · reading progress hairline ──────────────────────────
+     1px oxblood bar at the top of the viewport. injected as the
+     first child of <body> so it's above everything. only shown
+     after scrollY exceeds the first viewport (no point tracking
+     progress before the reader has started reading). only injected
+     on pages where the document is more than 2 viewports tall —
+     short pages don't need a progress indicator. */
+  function setupReadingProgress() {
+    if (REDUCED) return;
+    if (document.documentElement.scrollHeight <= window.innerHeight * 2) return;
+
+    var bar = document.createElement('div');
+    bar.className = 'tp-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    document.body.insertBefore(bar, document.body.firstChild);
+
+    // phase 96 · the per-frame `bar.style.width = pct + '%'` mutation
+    // was a csp style-src-attr violation. the bar now advances via
+    // css `animation-timeline: scroll(root)` (styles.src.css); the
+    // visibility toggle (.is-visible) stays in js. browsers without
+    // animation-timeline support render no bar — a quiet ux nicety
+    // lost on legacy edge cases in exchange for zero csp violations
+    // site-wide.
+    var firstViewport = window.innerHeight;
+    function update() {
+      if (window.scrollY > firstViewport) bar.classList.add('is-visible');
+      else bar.classList.remove('is-visible');
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', function () {
+      firstViewport = window.innerHeight;
+      update();
+    }, { passive: true });
+    update();
+  }
+
+  /* ─── #7 · footer typewriter ──────────────────────────────────
+     types the dynamic [data-edition-age] string character-by-
+     character. coordinates with edition.js: edition.js writes the
+     final localised string ("Published yesterday" / "Publiée hier")
+     synchronously at DOMContentLoaded; this listener fires 1500ms
+     later so the read-back is guaranteed to see the final text.
+     gates: once-per-session-per-pathname (sessionStorage), bfcache
+     restore skipped, reduced-motion skipped (text stays as-is). */
+  function setupFooterTypewriter() {
+    if (REDUCED) return;
+    var key = 'tp-typed-' + location.pathname;
+    try { if (sessionStorage.getItem(key)) return; } catch (_) {}
+    try { sessionStorage.setItem(key, '1'); } catch (_) {}
+
+    var el = document.querySelector('[data-edition-age]');
+    if (!el) return;
+
+    setTimeout(function () {
+      // read the final string at fire time (edition.js may have
+      // updated it after module load).
+      var text = el.textContent;
+      if (!text) return;
+      var duration = 800;
+      var charDelay = Math.max(20, Math.floor(duration / text.length));
+      el.textContent = '';
+      var i = 0;
+      function tick() {
+        if (i > text.length) return;
+        el.textContent = text.slice(0, i);
+        i++;
+        if (i <= text.length) setTimeout(tick, charDelay);
+      }
+      tick();
+    }, 1500);
+  }
+
+  /* ─── #10 · citation italic flash ─────────────────────────────
+     copy.js dispatches 'tp:citation-copied' after its in-place
+     "Cited · Edition …" label fires. flip the citation source
+     italic→roman for 200ms via the .is-acknowledging class.
+     reduced-motion skips the flip; the in-place label still does
+     the confirmation. */
+  function setupCitationFlash() {
+    document.addEventListener('tp:citation-copied', function () {
+      if (REDUCED) return;
+      var cite = document.querySelector('.tp-citation');
+      if (!cite) return;
+      cite.classList.add('is-acknowledging');
+      setTimeout(function () {
+        cite.classList.remove('is-acknowledging');
+      }, 200);
+    });
+  }
+
+  /* ─── init ────────────────────────────────────────────────────
+     observe everything observable; wire the always-on listeners
+     (citation flash, progress) and the once-per-page typewriter.
+     bfcache-restored paths exit early — animations already played
+     on the original visit. */
+  function init() {
+    if (bfcacheRestored) {
+      // citation flash still wires (it's event-driven, not auto-firing)
+      setupCitationFlash();
+      return;
+    }
+
+    // reduced motion · skip observers entirely; flip all elements to
+    // their final state at frame one. citation flash listener stays
+    // wired but is gated by REDUCED internally. progress + typewriter
+    // both early-exit when REDUCED.
+    if (REDUCED) {
+      document.querySelectorAll('.tp-rule')
+        .forEach(function (el) { el.classList.add('is-settled'); });
+      document.querySelectorAll('.section-label')
+        .forEach(function (el) { el.classList.add('is-revealed'); });
+      setupCitationFlash();
+      return;
+    }
+
+    var observer = getObserver();
+    if (observer) {
+      document.querySelectorAll('.tp-rule, .section-label, .tp-tick')
+        .forEach(function (el) { observer.observe(el); });
+    } else {
+      // no IntersectionObserver — show final states immediately
+      document.querySelectorAll('.tp-rule')
+        .forEach(function (el) { el.classList.add('is-settled'); });
+      document.querySelectorAll('.section-label')
+        .forEach(function (el) { el.classList.add('is-revealed'); });
+    }
+
+    setupReadingProgress();
+    setupFooterTypewriter();
+    setupCitationFlash();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

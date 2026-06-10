@@ -1,0 +1,15 @@
+{
+  "subject": "acct:trent@trentpower.fr",
+  "links": [
+    {
+      "rel": "self",
+      "type": "application/ld+json",
+      "href": "https://trentpower.fr/.well-known/person.json"
+    },
+    {
+      "rel": "http://webfinger.net/rel/profile-page",
+      "type": "text/html",
+      "href": "https://trentpower.fr/"
+    }
+  ]
+}

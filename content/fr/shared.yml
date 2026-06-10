@@ -1,0 +1,197 @@
+site:
+  name: trentpower.fr
+  location: Paris, France
+  proof_line: Privé · Statique · Signé · Sans suivi
+  edition_label: Édition
+construction_rail:
+  # ruban global "en construction" · rendu par render_pages.py juste
+  # avant </body> sur chaque page publique. la casse majuscule est
+  # appliquée par .construction-rail__label (text-transform: uppercase).
+  # la formule "en construction" perpétue la convention de traduction
+  # déjà établie par le vestibule linguistique.
+  label: En Construction
+verification:
+  manifest: Manifeste signé
+  signature: Signature détachée
+  public_key: Clé publique
+  source_mirror: Miroir source
+  page_fingerprint: Empreinte de page
+  canonical_url: URL canonique
+actions:
+  copy: Copier
+  copied: Copié
+  close: Fermer
+  view_source: Voir le code source
+  verify_page: Vérifier cette page
+  print_profile: Imprimer le profil
+linkdesc:
+  home: Retour à l’accueil
+  privacy: |-
+    Découvrir comment ce site évite les analytiques, cookies, profilage, traceurs et
+    services tiers
+  cite: Ouvrir les détails de citation et de vérification de cette page
+  integrity: Ouvrir le dossier de vérification de cette édition — citation, miroir source, empreinte et archive signée
+  linkedin: |-
+    Ouvrir le profil LinkedIn de Trent Power dans un nouvel onglet, sans transmettre l’URL
+    d’origine
+  github: |-
+    Ouvrir le dépôt source public de ce site sur GitHub dans un nouvel onglet, sans
+    transmettre l’URL d’origine
+  email: Contacter Trent Power par e-mail
+  source: Consulter le miroir source public du site, annoté et numéroté
+  verify: Vérifier la page courante contre le registre d’intégrité publié
+  now: Lire ce sur quoi Trent Power se concentre actuellement
+  theme_light: Passer à l’apparence claire
+  theme_auto: Suivre les réglages d’apparence du système
+  theme_dark: Passer à l’apparence sombre
+  lang_en: Read this site in English
+  lang_fr: Lire ce site en français
+  verify_locally: Lire les instructions pour vérifier la publication localement en ligne de commande
+  manifest: Télécharger le manifeste d’intégrité signé (JSON listant chaque fichier public et son SHA-256)
+  signature: Télécharger la signature PGP détachée du manifeste d’intégrité
+  checksums: Télécharger les empreintes SHA-256 des archives de publication signées
+  public_key: Télécharger la clé PGP publique utilisée pour signer les publications
+  zip: Télécharger l’archive source au format ZIP
+  targz: Télécharger l’archive source au format TAR.GZ
+  security_threat_model: Lire le modèle de sécurité et l’analyse de menace de ce site
+  security_contact: Lire la politique de divulgation security.txt de ce site
+footer:
+  privacy: Confidentialité
+  lang_toggle: EN
+  location: Paris, France
+  verify: Vérifier
+  theme:
+    light: Clair
+    auto: Auto
+    dark: Sombre
+  proof:
+    edition: Édition
+    signed: Signée
+    manifest_link: Manifeste d'intégrité
+    # phase 93 · refonte de la hiérarchie de confiance. le lien d'édition
+    # du colophon est le point de confiance principal du pied de page sur
+    # chaque page ; il mène désormais au hub /verifier/ destiné au lecteur
+    # plutôt qu'à l'archive technique /integrite/ (qui reste accessible
+    # comme référence secondaire depuis le panneau "fiches liées" de
+    # /verifier/).
+    manifest_link_href: /fr/verifier/
+    sha_label: SHA-256
+    published_today: Publiée aujourd'hui
+    # phase 94 · le rendu fr porte une divulgation de traduction
+    # automatique (italique serif) au-dessus de la ligne d'édition.
+    # phase 94b · la divulgation est un signal de première visite :
+    # les deux éléments sont rendus côté serveur dans le html, mais
+    # edition.js consulte localStorage['tp-fr-disclosure-seen'] et
+    # bascule la visibilité — première visite : disclosure visible,
+    # date masquée ; visites suivantes : disclosure retirée, ligne
+    # "publiée aujourd'hui / hier / il y a n jours" rétablie.
+    # sans javascript, la disclosure reste visible à chaque visite —
+    # erreur du bon côté (divulgation par défaut).
+    colophon_note_html: '<em class="site-footer__translation-inline" data-translation-disclosure>Ceci est un rendu machine. <a href="/en-au/">L''édition de l''auteur est en anglais</a>.</em><span class="site-footer__colophon-note" data-edition-age hidden>Publiée aujourd''hui</span>'
+    aria_label: Vérification de la publication
+    last_verified: Vérifié
+    sha_title: Ouvrir le dossier de vérification de cette édition
+    machine_note: Vérifié par rapport à la version publiée
+    machine_note_href: /fr/verifier/
+    relative:
+      today: aujourd'hui
+      yesterday: hier
+      days: il y a {n} jours
+      months: il y a {n} mois
+      years: il y a {n} ans
+  provenance:
+    line: Traduction automatique de l’édition anglaise originale.
+modal:
+  title: Un projet personnel.
+  lede: What’s On in Paris est tenu privé tant qu’il est en cours d’élaboration.
+  note: Si vous souhaitez le voir, je serais heureux de vous en donner l’accès.
+  cta_subject: What's On in Paris Demande d'acces
+  cta_aria: Demander l’accès par e-mail
+  close: Fermer
+cite:
+  hover: Copier la citation
+  copied: Copié
+  site_label: Site personnel
+  edition_label: Édition
+  label:
+    action: Citer et vérifier
+  overlay:
+    # seules les clés `cite.overlay.*` conservées après le refactor du
+    # verify-modal sont les titres courts page_title.* (encore lus par
+    # le nouveau modal pour le sous-titre centré) et les deux chaînes
+    # héritées encore utilisées par le bouton de copie de la page
+    # /verifier/ (cite.overlay.action.copy_citation,
+    # cite.overlay.toast.citation_copied). toutes les autres clés ont
+    # été déplacées vers `verify_modal:` ci-dessous.
+    action:
+      copy_citation: Copier la citation
+    toast:
+      citation_copied: Citation copiée
+    page_title:
+      home: Stratégie client et systèmes de croissance
+      privacy: Notice de confidentialité
+      security: Posture de sécurité
+      integrity: Notice d’intégrité
+      verify: Page de vérification
+      source: Lecteur de code source
+      source-reader: Lecteur de code source
+      acknowledgments: Remerciements de sécurité
+      integrity-verify-locally: Vérifier localement
+      releases: Archive des versions
+      release-archive: Archive des versions · 2026-05-09
+      forbidden: Accès non disponible
+      not-found: Page introuvable
+      server-error: Erreur serveur temporaire
+      maintenance: Maintenance en cours
+      sw-reset: Réinitialisation du service worker
+verify_modal:
+  title: Vérifier, citer ou lire la source.
+  menu_label: Actions de vérification de la page
+  close: Fermer
+  # phase 93 · la ligne intégrité a été retirée dans le refactor de la
+  # hiérarchie de confiance (verify devient le hub destiné au lecteur ;
+  # intégrité reste accessible depuis le panneau "fiches liées" de
+  # /verifier/). l'ordre des clés ci-dessous correspond au dictionnaire
+  # LABELS de verify-modal.template.js : page (principal) → source →
+  # copy → print.
+  row:
+    page_verb: Vérifier cette page
+    page_meta: Dossier de publication · vérification
+    source_verb: Voir la source de cette page
+    source_meta: Cmd + U
+    source_meta_touch: Miroir source · édition HTML
+    copy_verb: Copier la citation
+    copy_copied: Copié dans le presse-papiers
+    print_verb: Imprimer cette page
+    print_meta: Cmd + P
+    print_meta_touch: Imprimer ou exporter en PDF
+copy:
+  command: Copier la commande
+  copied: Copié
+  failed: Échec de copie
+trust_routes:
+  heading: Routes de confiance
+  privacy_label: Confidentialité
+  privacy_desc: Ce que ce site ne collecte pas
+  security_label: Sécurité
+  security_desc: Comment le site est protégé
+  integrity_label: Intégrité
+  integrity_desc: Comment les éditions sont signées
+  verify_label: Vérifier
+  verify_desc: Comment une page peut être contrôlée
+  source_label: Source
+  source_desc: Miroirs lisibles des fichiers publics
+  releases_label: Éditions
+  releases_desc: Instantanés signés et figés
+# phase 94 · colophon d'imprimerie de la page d'accueil. verso de
+# livre imprimé, affiché au-dessus du pied de page sur la page
+# d'accueil uniquement ; l'attribut data-article-imprint sert de
+# crochet pour les futurs articles longs (≥ 1500 mots) qui pourront
+# réutiliser le même bloc. en + fr divergent ci-dessous ; le glyphe
+# astérisme et le bloc de copyright sont partagés.
+imprint:
+  aria_label: Imprimerie de la publication
+  edition_mark_aria: Marque d'édition
+  line_html: 'Composée en <i>Signifier</i>, <i>Söhne</i> et <i>Söhne Mono</i>.<br>Mise en page à Paris. Première édition publiée le <time datetime="2026-05-23">23 mai 2026</time>.'
+  stamp_edition: '№ 06 · Édition 2026-06-10'
+  stamp_copyright_html: '&copy; <span class="since">1997&ndash;</span>2026 Trent Power'

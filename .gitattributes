@@ -1,0 +1,25 @@
+# text normalisation — the tree is already LF-only; this keeps it so on
+# every platform without rewriting any committed byte.
+* text=auto eol=lf
+
+# binary kinds (never normalised, never diffed as text)
+*.woff2 binary
+*.woff binary
+*.ttf binary
+*.otf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.docx binary
+
+# public/ is generated output (the deployed web root, tracked as part of
+# the trust story). marking it generated keeps it out of language stats
+# and collapses it in diffs; the sources under content/, templates/,
+# styles/ and tools/ are the review surface.
+public/** linguist-generated
+package-lock.json linguist-generated

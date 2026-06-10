@@ -1,0 +1,6 @@
+# trentpower.fr Score Ledger - runtime dependencies
+# All are already present on the Raspberry Pi; pinned loosely for portability.
+requests>=2.31
+PyYAML>=6.0
+beautifulsoup4>=4.12
+lxml>=5.0

@@ -1,0 +1,406 @@
+<!doctype html>
+<!--
+  trentpower.fr
+  static, self-managed, privacy-first
+  local device console — read-only inspection surface for the offline
+  publication cache, the service worker, and the local reader
+  preferences. nothing on this page is transmitted; outbound
+  validators are linked only, never contacted until the reader opens
+  one. network-only — never served from the local cache, so a stale
+  service worker cannot stop a visitor from reaching it.
+-->
+<html lang="en-AU" dir="ltr">
+<head>
+  <!-- head · 01 · foundations -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <!-- head · 02 · appearance bootstrap -->
+  <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch(_){}})();</script>
+
+  <!-- head · 03 · document identity -->
+  <title>Local Device Console · Trent Power</title>
+  <meta name="description"
+        content="Inspect and control this device's local publication state. Offline cache, service worker state and reader preferences remain local and are never transmitted.">
+  <meta name="document-edition" content="2026-06-10">
+  <link rel="canonical" href="https://trentpower.fr/local/">
+
+  <!-- head · 04 · indexing and discovery -->
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- head · 05 · authorship and identity -->
+  <meta name="author" content="Trent Power">
+  <link rel="author" href="/.well-known/attribution.txt">
+  <link rel="alternate" type="application/ld+json" href="/.well-known/person.json">
+
+  <!-- head · 06 · provenance, rights and reuse -->
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+
+  <!-- head · 07 · social and sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Trent Power">
+  <meta property="og:title" content="Local Device Console · Trent Power">
+  <meta property="og:description" content="Inspect and control this device's local publication state. Offline cache, service worker state and reader preferences remain local and are never transmitted.">
+  <meta property="og:url" content="https://trentpower.fr/local/">
+  <meta property="og:image" content="https://trentpower.fr/images/og/default-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Local Device Console · Trent Power">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Local Device Console · Trent Power">
+  <meta name="twitter:description" content="Inspect and control this device's local publication state. Offline cache, service worker state and reader preferences remain local and are never transmitted.">
+  <meta name="twitter:image" content="https://trentpower.fr/images/og/default-og.png">
+  <meta name="twitter:image:alt" content="Local Device Console · Trent Power">
+  <meta name="twitter:site"    content="@trentpower">
+  <meta name="twitter:creator" content="@trentpower">
+
+  <!-- head · 08 · application surface -->
+  <meta name="application-name" content="Trent Power">
+  <meta name="apple-mobile-web-app-title" content="Trent Power">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
+
+  <!-- head · 09 · rendering and assets -->
+  <link rel="stylesheet" href="/styles.css?v=2026-06-10.d9e8cb64" integrity="sha384-G2EI/5PcxnoeoGAeVPHgpg7kTvWKsox1BqU3BamYJoaX8KqB6bj7j8nIrUibMqLC">
+  <link rel="stylesheet" href="/print.css?v=2026-06-10.d9e8cb64" media="print">
+
+  <!-- head · 10 · structured data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://trentpower.fr/local/#webpage",
+  "url": "https://trentpower.fr/local/",
+  "name": "Local Device Console · Trent Power",
+  "description": "Inspect and control this device's local publication state. Offline cache, service worker state and reader preferences remain local and are never transmitted.",
+  "inLanguage": "en-AU",
+  "isPartOf": {
+    "@id": "https://trentpower.fr/#website"
+  },
+  "about": {
+    "@id": "https://trentpower.fr/#trent-power"
+  },
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://trentpower.fr/images/og/default-og.png",
+    "width": 1200,
+    "height": 630
+  },
+  "dateModified": "2026-06-10T00:00:00+00:00"
+}
+  </script>
+</head>
+<body data-page="local" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-10" data-source-sha256-short="496b42c7">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark" href="/en-au/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="site local-console-page" id="main" tabindex="-1">
+
+  <!-- primary · 01 · hero -->
+  <header class="hero local-hero">
+    <p class="hero-kicker">Local Device Only</p>
+    <h1 class="hero-title"><span class="line">Local Device Console</span></h1>
+    <p class="hero-lede">This is the state of your local copy of the publication — the edition this device has stored, its service worker, offline cache and reader preferences. It reads what already lives in this browser — an inspection of this device, not the configuration of any software.</p>
+    <p class="hero-lede local-hero__lede-quiet">Offline cache, service worker state and reader preferences remain local and are never
+    transmitted.</p>
+  </header>
+
+  <!-- primary · 02 · status strip · single-line mono summary -->
+  <dl class="local-strip" aria-label="Device summary">
+    <div class="local-strip__item">
+      <dt class="local-strip__key">Current edition</dt>
+      <dd class="local-strip__value" data-local-field="strip.edition">Edition —</dd>
+    </div>
+    <div class="local-strip__item">
+      <dt class="local-strip__key">Service worker</dt>
+      <dd class="local-strip__value" data-local-field="strip.sw">—</dd>
+    </div>
+    <div class="local-strip__item">
+      <dt class="local-strip__key">Local storage</dt>
+      <dd class="local-strip__value" data-local-field="strip.prefs">—</dd>
+    </div>
+    <div class="local-strip__item">
+      <dt class="local-strip__key">Cache</dt>
+      <dd class="local-strip__value" data-local-field="strip.cache">—</dd>
+    </div>
+  </dl>
+
+  <!-- primary · 03 · publication state · sw + cache + verify (collapsed by default) -->
+  <article class="record local-record" aria-labelledby="local-pub-title">
+    <header class="record-header">
+      <div class="left">
+        <p class="kicker">This device</p>
+        <h2 class="date" id="local-pub-title">Publication state</h2>
+        <p class="title" data-local-field="pub.summary">Reading local state…</p>
+      </div>
+      <div class="right">
+        <span class="tag" data-local-field="pub.tag">Installed</span>
+      </div>
+    </header>
+
+    <div class="local-record__sections">
+
+      <details class="local-disclosure" data-local-disclosure="sw">
+        <summary class="local-disclosure__summary">
+          <span class="local-disclosure__label">Service worker</span>
+          <span class="local-disclosure__hint" data-local-field="sw.summary">—</span>
+        </summary>
+        <div class="local-disclosure__body">
+          <dl class="record-grid" data-local-grid="sw">
+            <div class="record-grid__row"><dt>Status</dt><dd data-local-field="sw.status">—</dd></div>
+            <div class="record-grid__row"><dt>Scope</dt><dd data-local-field="sw.scope"><code>—</code></dd></div>
+            <div class="record-grid__row"><dt>Installed</dt><dd data-local-field="sw.installed_at">Not recorded for this installation</dd></div>
+            <div class="record-grid__row"><dt>Activated</dt><dd data-local-field="sw.activated_at">Not recorded for this installation</dd></div>
+            <div class="record-grid__row"><dt>Version</dt><dd data-local-field="sw.version"><code>—</code></dd></div>
+            <div class="record-grid__row"><dt>Edition</dt><dd data-local-field="sw.cached_edition"><code>—</code></dd></div>
+            <div class="record-grid__row"><dt>Caches</dt><dd data-local-field="sw.cache_count">—</dd></div>
+            <div class="record-grid__row"><dt>Storage</dt><dd data-local-field="sw.storage_estimate">—</dd></div>
+          </dl>
+          <div class="local-disclosure__actions">
+            <button type="button" class="local-action" data-local-action="check-update">Check for update</button>
+            <button type="button" class="local-action" data-local-action="reload">Reload edition</button>
+            <button type="button" class="local-action" data-local-action="skip-waiting" hidden>Skip waiting and reload</button>
+          </div>
+        </div>
+      </details>
+
+      <details class="local-disclosure" data-local-disclosure="caches">
+        <summary class="local-disclosure__summary">
+          <span class="local-disclosure__label">Offline cache</span>
+          <span class="local-disclosure__hint" data-local-field="caches.summary">—</span>
+        </summary>
+        <div class="local-disclosure__body">
+          <dl class="record-grid" data-local-grid="caches">
+            <div class="record-grid__row"><dt>Entries</dt><dd data-local-field="caches.entries">—</dd></div>
+            <div class="record-grid__row"><dt>Size</dt><dd data-local-field="caches.size">—</dd></div>
+            <div class="record-grid__row"><dt>Edition</dt><dd data-local-field="caches.edition"><code>—</code></dd></div>
+            <div class="record-grid__row"><dt>Cached pages</dt><dd data-local-field="caches.cached_pages">—</dd></div>
+          </dl>
+          <details class="local-disclosure local-disclosure--nested" data-local-disclosure="caches-inventory">
+            <summary class="local-disclosure__summary">
+              <span class="local-disclosure__label">View inventory</span>
+              <span class="local-disclosure__hint">Per-entry headers</span>
+            </summary>
+            <div class="local-disclosure__body" data-local-field="caches.list">
+              <p class="local-empty">This card uses your browser’s runtime APIs. With JavaScript disabled the editorial scaffolding remains; live values populate when JS runs locally.</p>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details class="local-disclosure" data-local-disclosure="verify">
+        <summary class="local-disclosure__summary">
+          <span class="local-disclosure__label">Verification</span>
+          <span class="local-disclosure__hint" data-local-field="verify.summary">—</span>
+        </summary>
+        <div class="local-disclosure__body">
+          <dl class="record-grid" data-local-grid="verify">
+            <div class="record-grid__row"><dt>Current page</dt><dd><a href="https://trentpower.fr/local/" rel="bookmark">trentpower.fr/local/</a></dd></div>
+            <div class="record-grid__row"><dt>Canonical</dt><dd><a href="https://trentpower.fr/local/" rel="bookmark">https://trentpower.fr/local/</a></dd></div>
+            <div class="record-grid__row"><dt>Fingerprint</dt><dd data-local-field="verify.fingerprint"><code>—</code></dd></div>
+            <div class="record-grid__row"><dt>Integrity manifest</dt><dd><a href="/integrity.json" rel="bookmark">/integrity.json</a></dd></div>
+            <div class="record-grid__row"><dt>Detached signature</dt><dd><a href="/integrity.json.sig" rel="bookmark">/integrity.json.sig</a></dd></div>
+            <div class="record-grid__row"><dt>Public key</dt><dd><a href="/.well-known/pgp-key.asc" rel="bookmark">/.well-known/pgp-key.asc</a></dd></div>
+          </dl>
+          <div class="local-disclosure__actions">
+            <button type="button" class="local-action" data-local-action="copy-fingerprint">Copy fingerprint</button>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </article>
+
+  <!-- primary · 04 · local preferences · editable rows + raw storage details -->
+  <article class="record local-record" aria-labelledby="local-prefs-title">
+    <header class="record-header">
+      <div class="left">
+        <p class="kicker">Per device, never transmitted</p>
+        <h2 class="date" id="local-prefs-title">Local preferences</h2>
+      </div>
+    </header>
+
+    <div class="local-prefs">
+
+      <div class="local-pref" data-local-pref="language">
+        <p class="local-pref__label">Language</p>
+        <p class="local-pref__value" data-local-field="pref.language">—</p>
+        <p class="local-pref__tag">Stored locally</p>
+        <div class="local-pref__controls" role="radiogroup" aria-label="Language">
+          <button type="button" class="local-pref__btn" data-local-set-lang="en-au">English</button>
+          <button type="button" class="local-pref__btn" data-local-set-lang="fr">Français</button>
+          <button type="button" class="local-pref__btn local-pref__btn--clear" data-local-set-lang="">Clear</button>
+        </div>
+        <span class="local-prefs-saved" data-local-saved="language" hidden>Saved on this device</span>
+      </div>
+
+      <div class="local-pref" data-local-pref="appearance">
+        <p class="local-pref__label">Appearance</p>
+        <p class="local-pref__value" data-local-field="pref.appearance">—</p>
+        <p class="local-pref__tag">Stored locally</p>
+        <div class="local-pref__controls" role="radiogroup" aria-label="Appearance">
+          <button type="button" class="local-pref__btn" data-local-set-theme="light">Light</button>
+          <button type="button" class="local-pref__btn" data-local-set-theme="">Auto</button>
+          <button type="button" class="local-pref__btn" data-local-set-theme="dark">Dark</button>
+          <button type="button" class="local-pref__btn local-pref__btn--clear" data-local-set-theme="">Clear</button>
+        </div>
+        <span class="local-prefs-saved" data-local-saved="appearance" hidden>Saved on this device</span>
+      </div>
+
+      <div class="local-pref local-pref--readonly" data-local-pref="first_visit">
+        <p class="local-pref__label">First visit</p>
+        <p class="local-pref__value" data-local-field="pref.first_visit">—</p>
+        <p class="local-pref__tag">Read only</p>
+      </div>
+
+      <div class="local-pref local-pref--readonly" data-local-pref="last_update">
+        <p class="local-pref__label">Last update</p>
+        <p class="local-pref__value" data-local-field="pref.last_update">—</p>
+        <p class="local-pref__tag">Read only</p>
+      </div>
+
+      <details class="local-disclosure local-disclosure--raw" data-local-disclosure="raw">
+        <summary class="local-disclosure__summary">
+          <span class="local-disclosure__label">View raw storage</span>
+          <span class="local-disclosure__hint">localStorage · sessionStorage · cache metadata</span>
+        </summary>
+        <div class="local-disclosure__body">
+          <pre class="local-raw" data-local-field="raw.json"><code>This card uses your browser’s runtime APIs. With JavaScript disabled the editorial scaffolding remains; live values populate when JS runs locally.</code></pre>
+          <div class="local-disclosure__actions">
+            <button type="button" class="local-action" data-local-action="copy-json">Copy JSON</button>
+            <button type="button" class="local-action" data-local-action="export-json">Export diagnostics as JSON</button>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </article>
+
+  <!-- primary · 05 · actions · destructive controls (oxblood only after first tap) -->
+  <article class="record local-record local-record--actions" aria-labelledby="local-actions-title">
+    <header class="record-header">
+      <div class="left">
+        <p class="kicker">Local only · never affects history, downloads or other sites</p>
+        <h2 class="date" id="local-actions-title">Actions</h2>
+      </div>
+    </header>
+
+    <div class="local-actions">
+      <div class="local-action-row">
+        <button type="button" class="local-action-row__btn" data-local-action="reset-cache" data-confirm-required data-confirm-label="Tap again to confirm">Reset offline cache</button>
+        <p class="local-action-row__hint">Remove downloaded publication files from this device.</p>
+      </div>
+      <div class="local-action-row">
+        <button type="button" class="local-action-row__btn" data-local-action="clear-preferences" data-confirm-required data-confirm-label="Tap again to confirm">Clear local preferences</button>
+        <p class="local-action-row__hint">Restore appearance and language defaults.</p>
+      </div>
+      <div class="local-action-row local-action-row--final">
+        <button type="button" class="local-action-row__btn" data-local-action="full-reset" data-confirm-required data-confirm-label="Tap again to confirm">Full local reset</button>
+        <p class="local-action-row__hint">Remove service worker, cache and preferences, then return to the homepage.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- primary · 06 · closing line · privacy reaffirmation -->
+  <p class="local-disclaimer">Local diagnostics are read entirely from this browser. Nothing on this page is
+  transmitted.</p>
+
+</main>
+
+<!-- body · footer -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+
+    <div class="site-footer__top">
+
+      <p class="site-footer__identity">
+        <span class="year">&copy; <span class="since">1997 &ndash;</span> <time datetime="2026">2026</time></span>
+        <a class="wm" href="/en-au/" rel="home" aria-describedby="desc-home-footer"><bdi>Trent Power</bdi></a>
+        <span class="visually-hidden" id="desc-home-footer">Return to the homepage</span>
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <span>Paris, France</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <a class="site-footer__action" href="/en-au/privacy/" rel="privacy-policy" aria-describedby="desc-privacy">Privacy</a>
+        <span class="visually-hidden" id="desc-privacy">Read how this site avoids analytics, cookies, profiling, tracking, and third-party assets</span>
+        <span class="sep" aria-hidden="true">&middot;</span>
+        <button type="button" class="site-footer__action"
+                data-cite-open aria-haspopup="dialog"
+                aria-describedby="desc-cite">Verify</button>
+        <span class="visually-hidden" id="desc-cite">Open citation and verification details for this page</span>
+      </nav>
+
+      <ul class="site-footer__language" aria-label="Language">
+        <li><button type="button" data-lang="en" aria-pressed="true"  aria-describedby="desc-lang-en" lang="en">English</button> <span class="visually-hidden" id="desc-lang-en">Read this site in English</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-lang="fr" aria-pressed="false" aria-describedby="desc-lang-fr" lang="fr">Français</button> <span class="visually-hidden" id="desc-lang-fr">Lire ce site en français</span></li>
+      </ul>
+
+    </div>
+
+    <hr class="site-footer__break" aria-hidden="true">
+
+    <div class="site-footer__bottom">
+
+      <ul class="site-footer__colophon" id="footerImprint" aria-label="Publication verification">
+        <li class="site-footer__colophon-row">
+          <a class="site-footer__colophon-link" href="/en-au/verify/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Edition</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
+          <span class="site-footer__colophon-note" data-edition-age>Published today</span>
+          <span class="visually-hidden" id="desc-integrity">Open the verification record for this edition — citation, source mirror, fingerprint, signed release</span>
+        </li>
+      </ul>
+
+      <ul class="site-footer__theme" aria-label="Appearance">
+        <li><button type="button" data-theme="light"  aria-pressed="false" aria-describedby="desc-theme-light">Light</button> <span class="visually-hidden" id="desc-theme-light">Switch to the light appearance</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="system" aria-pressed="true"  aria-describedby="desc-theme-auto">Auto</button> <span class="visually-hidden" id="desc-theme-auto">Match the system appearance setting</span></li>
+        <li aria-hidden="true"><span class="sep">&middot;</span></li>
+        <li><button type="button" data-theme="dark"   aria-pressed="false" aria-describedby="desc-theme-dark">Dark</button> <span class="visually-hidden" id="desc-theme-dark">Switch to the dark appearance</span></li>
+      </ul>
+
+    </div>
+
+  </div>
+</footer>
+
+<!-- scripts · progressive enhancement, no telemetry. -->
+<script src="/js/theme.js?v=2026-06-10.d9e8cb64" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/sw-register.js?v=2026-06-10.d9e8cb64" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+<script src="/js/reveal.js?v=2026-06-10.d9e8cb64" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+<script src="/js/overlay.js?v=2026-06-10.d9e8cb64" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+<script src="/js/copy.js?v=2026-06-10.d9e8cb64" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/edition.js?v=2026-06-10.d9e8cb64" integrity="sha384-kIhbudFAbfEtCHFdw/AF3cOioeMYPukKzX1c6/gj16bEkO8fm9N7re1FDimxaMaC" defer></script>
+<script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
+<script src="/js/verify-modal.js?v=2026-06-10.d9e8cb64" integrity="sha384-6soCAm6ZECBoqkgQuoQ0A7eBj3SD+nLOgHlfffbxBlhJGCxHOO+CPermVfmvYXu0" defer></script>
+<script src="/js/fonts.js?v=2026-06-10.d9e8cb64" integrity="sha384-kRel595dQiUN7pFngNGyqiBEOQ0yxQKPCtfFmv4gRqmnR/RcUqVurl6+G6h/FJqx" defer></script>
+<script src="/js/local.js" integrity="sha384-KumhTmdCzQu/nE1fcO7Mjx3tRFnPR5o+LPeDvj42q50KuqUyGoX5qA7sXrUjY78L" defer></script>
+
+
+<!-- body · construction rail -->
+<div class="construction-rail" data-construction-rail aria-hidden="true">
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+  <span class="construction-rail__label">
+    <span class="construction-rail__dot" aria-hidden="true"></span>
+    Under Construction
+  </span>
+  <span class="construction-rail__stripe" aria-hidden="true"></span>
+</div>
+</body>
+</html>

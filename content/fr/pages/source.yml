@@ -1,0 +1,337 @@
+translation:
+  source_page: source
+  source_hash: sha256-372295cb56ce9ecb1876fdf44acddef0321b7993ac39831cafb63f1a74222654
+  status: machine-assisted
+  updated: '2026-05-20'
+meta:
+  source:
+    title: Miroirs source · Trent Power
+    description: Miroirs publics lisibles d’une sélection de fichiers du site
+source:
+  print:
+    kicker: Source
+    title: Vue source publique
+    lede: Des fichiers publics sélectionnés sont copiés en texte brut afin que le site puisse être inspecté depuis n’importe quel lecteur, y compris mobile.
+    meta: Édition 2026-05-17 · trentpower.fr/source/
+    doc_title: Trent Power - Vue source publique
+    card:
+      '01':
+        label: 01 Ce qui est inclus
+        title: Ce qui est inclus
+        body: Miroirs HTML. CSS. JavaScript. Fichiers manifeste. Miroir .htaccess.
+      '02':
+        label: 02 Ce qui est exclu
+        title: Ce qui est exclu
+        body: Identifiants. Notes privées. Factures. Sauvegardes. Internes du générateur, sauf publication explicite.
+      '03':
+        label: 03 Organisation
+        title: Organisation
+        body: Trié par type de fichier, puis par nom. Miroirs en texte brut. Empreintes SHA-256. Tailles de fichier.
+      '04':
+        label: 04 Vérification
+        title: Vérification
+        body: source-manifest.json · /integrity.json · signature détachée · clé publique.
+      '05':
+        label: 05 Fichiers notables
+        title: Fichiers notables
+        body: styles.css.txt · app.js.txt · print.css.txt · htaccess.txt · source-manifest.json
+      '06':
+        label: 06 Principe
+        title: Principe
+        body: Lecteurs humains d’abord. Les fichiers lisibles par machine préservent identité, auteur et contexte.
+    footer:
+      proof: Privé · Statique · Signé · Sans suivi
+      edition: Édition 2026-05-17 · trentpower.fr/source/
+    qr:
+      label: trentpower.fr/source/
+  page_kicker: Code source
+  contents_label: Sommaire
+  heading: <span class="hero-line">Chaque octet public,</span><span class="hero-line">en texte clair.</span>
+  intro_lede: |-
+    Fichiers publics sélectionnés, publiés sous forme lisible. Pour inspection,
+    conservation et lecture machine. C’est le miroir lisible du site, et non l’autorité
+    cryptographique — celle-ci est Intégrité.
+  curation_note: |-
+    Cet index présente les principaux miroirs publics. D’autres fichiers miroirs peuvent
+    rester accessibles par URL directe lorsqu’ils soutiennent la vérification, la
+    récupération ou l’intégrité des versions publiées.
+  download_lede: Télécharger l’archive source publique de l’édition courante
+  download_targz: TAR.GZ
+  download_zip: ZIP
+  download_checksums: Sommes de contrôle
+  group:
+    published-pages: Pages publiées
+    trust-records: Fiches de confiance
+    scripts: Scripts
+    metadata: Métadonnées
+  col:
+    validated: Vérifié
+  group_gloss:
+    published-pages: |-
+      Miroirs lisibles des principales pages publiques, servis en texte brut afin que les
+      octets puissent être inspectés sans exécution.
+    trust-records: |-
+      Engagements publics et surfaces d'identité. Qui publie le site, ce qui est promis, où
+      passent les signalements.
+    scripts: |-
+      Feuilles de style et JavaScript écrits à la source que la page envoie au navigateur.
+      Miroirs de la source, non des octets minifiés déployés.
+    metadata: |-
+      Configuration serveur et fiches lisibles par machine décrivant le site aux robots
+      d'indexation et aux modèles de langage.
+  editions:
+    eyebrow: Éditions
+    title: Lignée des éditions
+    note:
+      current: Édition signée en cours
+      earlier: Édition signée antérieure
+  files:
+    403_html_txt:
+      description: Page interdite.
+    404_html_txt:
+      description: Page introuvable.
+    500_html_txt:
+      description: Page d'erreur serveur.
+    ai_usage_txt_txt:
+      description: Déclaration sur l'usage de l'IA et politique pour le site.
+    app_enhance_js_txt:
+      description: Couche d'amélioration progressive. Interactions non essentielles, gracieusement optionnelles.
+    app_js_txt:
+      description: |-
+        Script d'exécution écrit à la source. Navigation, changement de langue, câblage du
+        tiroir de citation.
+    assertion_txt_txt:
+      description: Affirmation d'auteur. Déclaration d'auteur et d'intention d'intégrité.
+    attestations_json_txt:
+      description: Attestations publiques. Revendications vérifiables sur le site.
+    changelog_txt_txt:
+      description: Journal des éditions. Révisions notables du site public.
+    cite_js_txt:
+      description: |-
+        Tiroir de citation et vérification. Expose l'URL canonique, l'empreinte de la page et
+        la signature.
+    copy_js_txt:
+      description: Comportement partagé de copie vers le presse-papiers, piloté par les attributs data-copy.
+    edition_js_txt:
+      description: |-
+        Localisation de l'ancienneté de l'édition en pied de page. Lit body[data-edition] et
+        réécrit [data-edition-age] dans la langue du document.
+    fonts_js_txt:
+      description: Mise à niveau des polices complètes après le rendu. Remplace les polices en sous-ensemble par le jeu complet.
+    fonts_full_css_txt:
+      description: Déclarations de polices web. Sous-ensembles, formats et fallbacks.
+    htaccess_txt:
+      description: Configuration Apache. Vérifiée contre toute fuite avant publication.
+    humans_txt_txt:
+      description: Crédits et notes pour les personnes derrière le site.
+    i18n_core_js_txt:
+      description: Source éditoriale des traductions. Les cinq langues réunies dans un JSON unique.
+    i18n_de_js_txt:
+      description: Traductions allemandes.
+    i18n_es_js_txt:
+      description: Traductions espagnoles.
+    i18n_it_js_txt:
+      description: Traductions italiennes. Octets compacts déployés.
+    index_html_txt:
+      description: Page d'accueil. Le point d'entrée éditorial.
+    integrity_index_html_txt:
+      description: Vue d'ensemble de l'intégrité. Le manifeste signé, la clé et l'autorité de publication.
+    integrity_releases_2026_05_09_index_html_txt:
+      description: Fiche figée de la page pour l'édition 2026-05-09.
+    integrity_releases_archive_css_txt:
+      description: |-
+        Feuille de style utilisée dans les archives d'éditions figées. Conservée auprès de ses
+        fiches d'édition.
+    integrity_releases_index_html_txt:
+      description: Index des éditions. La liste des éditions signées.
+    llms_txt_txt:
+      description: Indications lisibles par machine pour les modèles de langage et systèmes d'IA.
+    maintenance_html_txt:
+      description: Avis de maintenance. Utilisé lors d'une interruption planifiée.
+    manifest_webmanifest_txt:
+      description: Manifeste d'application web. Métadonnées de la surface installable.
+    overlay_js_txt:
+      description: Cycle de vie partagé des surfaces superposées — piège de focus, blocage du défilement, modales de citation et de projet.
+    pgp_txt_txt:
+      description: Déclaration PGP. Empreinte de la clé de signature et son usage.
+    print_css_txt:
+      description: Feuille de style d'impression. Règles de mise en page pour le rendu papier.
+    privacy_index_html_txt:
+      description: Déclaration de confidentialité. Ce qui est collecté, conservé et partagé.
+    readme_txt:
+      description: |-
+        Note d'orientation pour l'arborescence source. Même texte livré à la racine de chaque
+        archive d'édition.
+    reveal_js_txt:
+      description: Révélation au défilement — fait apparaître les sections en fondu à leur entrée dans la fenêtre d'affichage.
+    robots_txt_txt:
+      description: Politique d'accès des robots et intention d'indexation publique.
+    security_acknowledgments_index_html_txt:
+      description: Remerciements pour les signalements de sécurité publics.
+    security_index_html_txt:
+      description: Posture de sécurité. Architecture, en-têtes et voie de signalement.
+    site_metadata_json_txt:
+      description: Métadonnées du site. Édition, compilation, version des ressources.
+    sitemap_xml_sha256_txt:
+      description: Miroir source de la somme de contrôle SHA-256 pour sitemap.xml.
+    sitemap_xml_txt:
+      description: Plan du site public. Inventaire d'URL pour les robots d'indexation.
+    source_manifest_json_txt:
+      description: Manifeste de l'arborescence /source/ elle-même. Chaque fichier miroir avec son empreinte.
+    statement_txt_txt:
+      description: Déclaration éditoriale. Les principes d'écriture du site.
+    styles_css_txt:
+      description: Feuille de style écrite à la source. Miroir de la source, non des octets minifiés déployés.
+    sw_cache_manifest_json_txt:
+      description: Manifeste de cache du service worker. Fichiers épinglés pour usage hors ligne.
+    sw_js_txt:
+      description: Service worker. Cache hors ligne du site public.
+    sw_register_js_txt:
+      description: Enregistrement du service worker et politique Trusted Types tp-app.
+    sw_reset_index_html_txt:
+      description: Réinitialisation du service worker. Vide le cache hors ligne.
+    theme_js_txt:
+      description: Bascule de thème et indicateurs d'amélioration html.js / html.enhanced.
+    verify_index_html_txt:
+      description: Interface de vérification. Contrôles d'empreinte au niveau de la page.
+    verify_modal_js_txt:
+      description: Menu d'actions de vérification. Superposition à cinq lignes redirigeant vers source, citation, intégrité, vérification et impression.
+    verify_verify_js_txt:
+      description: Logique de vérification. Rend une fiche de page à partir de la carte de vérification.
+    well_known_attribution_txt_txt:
+      description: Attribution d'auteur. Nomme la partie responsable du site public.
+    well_known_build_json_txt:
+      description: Fiche de compilation. Données de reproductibilité de l'édition courante.
+    well_known_person_json_txt:
+      description: |-
+        Identité lisible par machine en JSON-LD. La référence utilisée par la découverte, la
+        fédération et la vérification.
+      role: Fiche d'identité canonique
+    well_known_pgp_key_asc_txt:
+      description: Clé publique de signature en ASCII-armor. L'identité de signature de l'auteur.
+    well_known_publication_json_txt:
+      description: Fiche de publication. Décrit le site comme un ouvrage éditorial auto-géré.
+    well_known_security_txt_txt:
+      description: Politique de divulgation coordonnée. Contact et périmètre standard /.well-known/security.txt.
+      role: Surface de confiance publique
+    well_known_webfinger_txt:
+      description: Surface de découverte WebFinger. Résout l'identité à travers les protocoles fédérés.
+      role: Découverte d'identité
+source_reader:
+  title: Lecteur source
+  loading: Chargement du source…
+  nojs_html: 'JavaScript est nécessaire pour afficher le lecteur source. Le miroir source brut reste disponible dans les <a href="/source/">miroirs source</a>.'
+  action:
+    canonical: Canonique
+    verify: Vérifier
+    plain_text: Brut
+    copy_code: Copier le code
+    wrap_lines: Retour à la ligne
+    unwrap_lines: Sans retour à la ligne
+    back_to_top: Haut
+    copied: Copié
+    view_source: Source
+    view_annotated: Annoté
+    view_rendered_page: Voir la page rendue
+    reading_mode: Mode de lecture
+    top: Haut
+    copy: Copier
+    copy_link: Copier le lien
+    clear: Effacer
+    count_line_one: 1 ligne
+    count_lines_many: '{n} lignes'
+    line_selected: Ligne {n} sélectionnée
+    range_selected: Lignes {start} à {end} sélectionnées
+    selection_cleared: Sélection effacée
+    lines_copied: '{n} lignes copiées'
+    link_copied: Lien copié
+    link_copied_normalised: Lien copié — normalisé aux lignes {start} à {end}
+    copy_failed: Copie indisponible
+  meta:
+    validated: Vérifié
+    part_of: 'Systèmes liés :'
+    document_map: Plan du document
+    end_of_source: Fin du miroir source
+    intent: |-
+      Ce lecteur présente les miroirs publics du code source, avec annotations structurelles
+      et références de publication signées.
+  integrity:
+    canonical: Fichier canonique
+    edition: Édition
+    sha256: SHA-256
+    signed_release: Publication signée
+  map_label:
+    head: Tête
+    identity: Identité
+    discovery: Découvrabilité
+    social_preview: Aperçu social
+    assets: Ressources
+    structured_data: Données structurées
+    header: En-tête
+    main: Contenu principal
+    footer: Pied de page
+    tokens: Jetons
+    fonts: Polices
+    base: Base
+    layout: Mise en page
+    components: Composants
+    responsive: Responsive
+    print: Impression
+    state: État
+    i18n: i18n
+    events: Événements
+    modals: Modales
+    copy: Copie
+    verification: Vérification
+    init: Initialisation
+    policy: Politique
+    records: Enregistrements
+  mode:
+    label: Mode de lecture
+    source: Source
+    annotated: Annoté
+    raw: Brut
+  end:
+    title: Fin du miroir source
+    edition: Édition
+    sha256: SHA-256
+    signed_release: Publication signée
+  kind:
+    html: Langage de balisage hypertexte
+    css: Feuilles de style en cascade
+    js: JavaScript
+    json: Notation d'objet JavaScript
+    xml: Langage de balisage extensible
+    text: Texte brut
+    apache: Configuration Apache
+    sig: Signature PGP détachée
+    asc: Clé PGP en ASCII-armor
+  gloss:
+    foundations: encodage des caractères, fenêtre d'affichage, palette.
+    head: en-tête du document — métadonnées, aucun contenu rendu.
+    identity: auteur, nom de l'application, liens d'attribution.
+    document: titre de la page, description, URL canonique.
+    discovery: politique d'indexation et de référent.
+    social: métadonnées open graph et twitter card.
+    assets: feuilles de style, scripts, icônes, manifeste.
+    icons: icônes de plateforme et illustration d'écran d'accueil.
+    structured: schéma json-ld, identité lisible par machine.
+    header: en-tête du site — sigle et navigation principale.
+    footer: colophon, sélecteur de langue, actions de pied de page.
+    script: logique applicative du site.
+    tokens: jetons de design — couleurs, typographie, espacements.
+    fonts: déclarations @font-face et fichiers de police.
+    base: réinitialisation et typographie des éléments de base.
+    layout: grammaire de mise en page au niveau de la page.
+    components: styles de composants réutilisables.
+    responsive: ajustements selon la fenêtre d'affichage.
+    print: règles de feuille de style pour l'impression.
+    state: état applicatif et variables d'exécution.
+    i18n: résolution des traductions et changement de langue.
+    events: écouteurs d'événements et câblage des interactions.
+    modals: surfaces superposées, dialogues, pièges de focus.
+    copy: interactions avec le presse-papiers.
+    verification: manifeste signé et références cryptographiques.
+    records: fiches éditoriales.
+    init: séquence de démarrage — exécutée une fois au chargement.
+    policy: politiques déclarées du site.

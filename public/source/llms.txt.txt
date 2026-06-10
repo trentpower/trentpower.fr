@@ -1,0 +1,63 @@
+# llms.txt — trentpower.fr
+# machine-readable identity summary for language models.
+# canonical source: https://trentpower.fr/
+
+Principle:
+this site is designed first for human readers. machine-readable
+files exist to preserve identity, authorship and context.
+
+Site:
+Name:               trent power
+Domain:             trentpower.fr
+Role:               group director, client development & client relations at lvmh
+Location:           paris, fr
+Description:        client strategy, growth systems and cultural adoption at global scale
+Description (fr): stratégie client, systèmes de croissance et adoption culturelle à l'échelle mondiale
+Summary:            trent power is a paris-based leader in client strategy and client development in the luxury industry.
+
+Primary Topics:
+- clienteling systems
+- organisational adoption
+- governance and operating models
+- ai supporting human relationships
+Primary Topics (fr):
+- stratégie client
+- développement client
+- clienteling
+- crm
+- retail de luxe
+- adoption culturelle
+- gestion du changement organisationnel
+- ia dans les relations clients
+- systèmes de gouvernance
+
+Records:
+Site Metadata:       https://trentpower.fr/site-metadata.json
+Structured Identity: https://trentpower.fr/.well-known/person.json
+Publication Policy:  https://trentpower.fr/.well-known/publication.json
+Attestations:        https://trentpower.fr/attestations.json
+Security Policy:     https://trentpower.fr/.well-known/security.txt
+
+Integrity:
+Manifest:            https://trentpower.fr/integrity.json
+Signature:           https://trentpower.fr/integrity.json.sig
+Public Key:          https://trentpower.fr/.well-known/pgp-key.asc
+Checksums:           https://trentpower.fr/SHA256SUMS
+
+Identity Verification:
+- portrait (wikimedia commons): https://commons.wikimedia.org/wiki/File:Trent_Power_portrait.jpg
+- linkedin: https://www.linkedin.com/in/trentpower/
+- source repository (github): https://github.com/trentpower/trentpower.fr
+- orcid: https://orcid.org/0009-0002-2652-7188
+- crunchbase: https://www.crunchbase.com/person/trent-power-3f52
+
+Verify Pages:
+- public verification route: https://trentpower.fr/verify/
+- per-page verification: https://trentpower.fr/verify/?path=/<route>/
+
+License:
+content:  all rights reserved
+portrait: https://creativecommons.org/licenses/by-sa/4.0/
+
+Citation:
+trent power. personal site. paris, france. edition 2026-06-10. trentpower.fr
