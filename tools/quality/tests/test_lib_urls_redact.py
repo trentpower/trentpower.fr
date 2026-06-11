@@ -34,21 +34,21 @@ class HostMatches(unittest.TestCase):
 class MaskSecret(unittest.TestCase):
     # fake values are assembled at runtime so the repo's own secret
     # scanners never see a pattern-shaped literal in this source file.
-    def test_never_contains_full_value(self):
+    def test_never_contains_any_of_value(self):
         value = "ghp" + "_" + "abcdefghijklmnopqrstuvwxyz0123456789"
-        self.assertNotIn(value, mask_secret(value))
+        masked = mask_secret(value)
+        self.assertNotIn(value, masked)
+        # no prefix of the value either — only length + fingerprint.
+        self.assertFalse(masked.startswith(value[:3]))
 
     def test_stable_fingerprint(self):
         value = "AKIA" + "IOSFODNN7" + "EXAMPLE"
         self.assertEqual(mask_secret(value), mask_secret(value))
 
-    def test_keep_prefix(self):
-        masked = mask_secret("tok" + "_" + "secretvalue", keep=4)
-        self.assertTrue(masked.startswith("tok_"))
+    def test_shape_is_metadata_only(self):
+        masked = mask_secret("tok" + "_" + "secretvalue")
         self.assertIn("chars, sha256:", masked)
-
-    def test_short_value_has_no_prefix(self):
-        self.assertFalse(mask_secret("abc", keep=4).startswith("abc"))
+        self.assertTrue(masked.startswith("["))
 
 
 if __name__ == "__main__":

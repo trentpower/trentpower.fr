@@ -7,7 +7,6 @@ so reconstruction from gaps + block slices must reproduce the input.
 """
 
 import pathlib
-import re
 import sys
 import unittest
 
@@ -29,8 +28,17 @@ DOC = (
     "</body></html>\n"
 )
 
-# the regex shape this module replaced — used for parity pinning.
-_OLD_RE = re.compile(r"<script\b[^>]*>.*?</script>", re.S | re.I)
+# DOC with every script element removed — exactly what the regexes this
+# module replaced would have produced. pinned as a literal so this test
+# file carries no html-filtering regex of its own.
+DOC_STRIPPED = (
+    "<!doctype html>\n"
+    "<html><head>\n"
+    "\n\n\n\n"
+    "</head><body>\n"
+    "<p>27 KB of prose &amp; entities</p>\n"
+    "</body></html>\n"
+)
 
 
 class Offsets(unittest.TestCase):
@@ -88,7 +96,7 @@ class Classification(unittest.TestCase):
 
 class Strip(unittest.TestCase):
     def test_strip_parity_with_old_regex(self):
-        self.assertEqual(strip_script_blocks(DOC), _OLD_RE.sub("", DOC))
+        self.assertEqual(strip_script_blocks(DOC), DOC_STRIPPED)
 
     def test_strip_replacement(self):
         doc = "a<script>x</script>b"
