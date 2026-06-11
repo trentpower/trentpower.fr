@@ -41,6 +41,7 @@ sys.path.insert(
     ),
 )
 from paths import PUBLIC_DIR as ROOT
+from script_blocks import strip_script_blocks
 from sizes import humanise_bytes
 
 # ── helpers ─────────────────────────────────────────────────────
@@ -246,14 +247,13 @@ _BYTE_LITERAL_RE = re.compile(r"\b\d+(?:[.,]\d+)?\s?(?:KB|MB|Ko|Mo)\b")
 
 # strip <script> blocks and html comments so editorial prose is the
 # only surface scanned.
-_SCRIPT_BLOCK_RE = re.compile(r"<script\b[^>]*>.*?</script>", re.S | re.I)
 _HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
 
 
 def _scan_html_for_literals(text: str):
     """yield (line_number, match_text) for every byte-literal in
     visible content. drops script blocks and comments first."""
-    cleaned = _SCRIPT_BLOCK_RE.sub("", text)
+    cleaned = strip_script_blocks(text)
     cleaned = _HTML_COMMENT_RE.sub("", cleaned)
     # also drop nbsp so "5 kb" reads as "5 kb" before the regex.
     cleaned = cleaned.replace(" ", " ")

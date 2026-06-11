@@ -78,25 +78,8 @@ localStorage.setItem(DISCLOSURE_KEY, today);
 } catch (_) {}
 }
 }
-function reconcileImprint() {
-var imprint = document.querySelector('[data-imprint-once]');
-if (!imprint) return;
-var docLang = (document.documentElement.lang || '').toLowerCase();
-var lang = docLang.indexOf('fr') === 0 ? 'fr' : 'en-au';
-var key = 'tp-imprint-seen:' + lang;
-var seen = null;
-try { seen = localStorage.getItem(key); } catch (_) {}
-if (seen) {
-imprint.hidden = true;
-} else {
-try {
-localStorage.setItem(key, new Date().toISOString().slice(0, 10));
-} catch (_) {}
-}
-}
 function boot() {
 reconcileDisclosure();
-reconcileImprint();
 run();
 }
 if (document.readyState === 'loading') {

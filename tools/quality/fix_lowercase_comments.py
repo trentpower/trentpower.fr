@@ -42,6 +42,19 @@ import pathlib
 import re
 import sys
 
+sys.path.insert(
+    0,
+    str(
+        next(
+            _a
+            for _a in __import__("pathlib").Path(__file__).resolve().parents
+            if _a.name == "tools"
+        )
+        / "lib"
+    ),
+)
+from script_blocks import iter_script_blocks  # noqa: E402
+
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 
 # files to process. authored sources only. order doesn't matter; each
@@ -190,26 +203,25 @@ def _lower_prose(s: str, *, python: bool = False) -> str:
 # html: <!-- ... --> comments. inline <script> blocks (no src= attribute)
 # are sliced out and reassembled untouched so csp hashes don't drift.
 _HTML_COMMENT_RE = re.compile(r"<!--([\s\S]*?)-->")
-_HTML_SCRIPT_RE = re.compile(r"<script\b([^>]*)>([\s\S]*?)</script>", re.IGNORECASE)
 
 
 def _process_html(text: str) -> tuple[str, int]:
     # carve out inline <script>...</script> bodies (those without src=)
     # so their contents are not touched. external <script src=...></script>
-    # has empty body anyway.
+    # has empty body anyway. blocks come from the shared parser and are
+    # emitted as verbatim slices of the original text — never rebuilt.
     chunks: list[tuple[bool, str]] = []  # (process?, text)
     pos = 0
-    for m in _HTML_SCRIPT_RE.finditer(text):
-        attrs = m.group(1)
-        if " src=" in attrs or " src ='" in attrs or 'src="' in attrs:
+    for blk in iter_script_blocks(text):
+        if blk.src is not None:
             # external script — body is empty, treat as normal content
-            chunks.append((True, text[pos : m.end()]))
+            chunks.append((True, text[pos : blk.end]))
         else:
             # inline script — body must stay byte-stable (csp hashes)
-            if m.start() > pos:
-                chunks.append((True, text[pos : m.start()]))
-            chunks.append((False, text[m.start() : m.end()]))
-        pos = m.end()
+            if blk.start > pos:
+                chunks.append((True, text[pos : blk.start]))
+            chunks.append((False, text[blk.start : blk.end]))
+        pos = blk.end
     if pos < len(text):
         chunks.append((True, text[pos:]))
 

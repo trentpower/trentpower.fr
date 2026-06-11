@@ -3,8 +3,14 @@
   "edition": "2026-06-10",
   "canonical": {
     "build_date": "2026-06-10",
-    "zip_sha256": "sha256-g7lmWz5rCQArG6vDCXlEtbjp54kuZDVWlKRad6WvG80=",
-    "tar_gz_sha256": "sha256-uYHqTBruz548il6JNwkmNlEBw+kWB1YUOatN9T8rzXg="
+    "zip_sha256": "sha256-9jt/o6n7GwQ3P0RwfLqc4GNuWRwW83t9t9T+dAbwCyU=",
+    "tar_gz_sha256": "sha256-D4n4mXm9ftm6jErSD2t9dohWVXDC/fEGVKBT/NqoD0c="
   },
-  "rebuilds": []
+  "rebuilds": [
+    {
+      "build_date": "2026-06-11",
+      "zip_sha256": "sha256-9jt/o6n7GwQ3P0RwfLqc4GNuWRwW83t9t9T+dAbwCyU=",
+      "tar_gz_sha256": "sha256-D4n4mXm9ftm6jErSD2t9dohWVXDC/fEGVKBT/NqoD0c="
+    }
+  ]
 }

@@ -23,9 +23,9 @@ privacy:
     nécessaire pour assurer la sécurité et le bon fonctionnement du site. Les liens
     externes sont de simples références et n’effectuent aucune requête externe avant
     d’être ouverts. <a class="invite-link" href="/local/">Le stockage navigateur est
-    local à votre appareil</a> ; il couvre les préférences (langue, apparence), les
-    marqueurs de première visite qui retirent l’imprimerie de la page d’accueil et la
-    mention de traduction automatique une fois vues, et les horodatages d’installation
+    local à votre appareil</a> ; il couvre les préférences (langue, apparence), le
+    marqueur de première visite qui retire la mention de traduction automatique une
+    fois vue, et les horodatages d’installation
     du service worker indiquant uniquement quand le cache hors-ligne a été rafraîchi.
     Ce stockage local n’est jamais envoyé ailleurs.
   body_records: Les registres d’inspection publique et de vérification sont publiés séparément. Vous pouvez consulter le <a href="/security/" aria-describedby="desc-security-threat-model">Modèle de sécurité et de menaces</a> pour la posture complète.

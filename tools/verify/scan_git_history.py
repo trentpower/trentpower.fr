@@ -51,6 +51,7 @@ sys.path.insert(
         / "quality"
     ),
 )
+from redact import mask_secret  # noqa: E402
 from validate_repository_hygiene import SECRET_PATTERNS  # noqa: E402
 
 # local-path / private-artefact tells that should never enter public history.
@@ -127,8 +128,12 @@ def scan_added_content(max_lines: int, include_ips: bool = False) -> list[str]:
             continue
         body = line[1:]
         for pat, label in SECRET_PATTERNS:
-            if pat.search(body):
-                findings.append(f"{commit} {path}: {label}")
+            m = pat.search(body)
+            if m:
+                # masked value, never the secret itself: a short prefix +
+                # sha-256 fingerprint to correlate the same value across
+                # commits without re-leaking it into the terminal or ci log.
+                findings.append(f"{commit} {path}: {label} [{mask_secret(m.group(0))}]")
         for pat, label in path_patterns:
             if pat.search(body):
                 findings.append(f"{commit} {path}: {label}")

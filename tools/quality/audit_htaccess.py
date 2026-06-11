@@ -53,6 +53,7 @@ from generate_htaccess import (
 )
 from hashing import sri_sha256
 from paths import PUBLIC_DIR, TOOLS_DIR
+from script_blocks import iter_script_blocks
 
 HTACCESS = PUBLIC_DIR / ".htaccess"
 MANIFEST = TOOLS_DIR / "config" / "public-exposure.json"
@@ -139,20 +140,7 @@ def _check_generated_freshness(text: str) -> list[str]:
 # type, or with a JavaScript MIME type. data blocks (application/json,
 # application/ld+json, importmap, speculationrules, ...) carry a type
 # the browser does not execute, and therefore do not need a hash.
-_INLINE_SCRIPT_RE = re.compile(
-    r"<script\b(?P<attrs>[^>]*)>(?P<body>.*?)</script>",
-    re.DOTALL | re.IGNORECASE,
-)
-_TYPE_ATTR_RE = re.compile(r"""\btype\s*=\s*(['"])([^'"]+)\1""", re.IGNORECASE)
-_SRC_ATTR_RE = re.compile(r"""\bsrc\s*=\s*['"]""", re.IGNORECASE)
-_EXECUTABLE_TYPES = {
-    "",
-    "text/javascript",
-    "application/javascript",
-    "application/ecmascript",
-    "text/ecmascript",
-    "module",
-}
+# ScriptBlock.is_executable() encodes exactly that rule.
 # pages that ship inline scripts we own. add a path here when adding
 # a new bootstrapped page.
 _INLINE_SCRIPT_PAGES = [
@@ -186,15 +174,10 @@ def _check_csp_hash_freshness() -> tuple[list[str], int]:
         if not fp.is_file():
             continue
         html = fp.read_text(encoding="utf-8", errors="replace")
-        for m in _INLINE_SCRIPT_RE.finditer(html):
-            attrs = m.group("attrs")
-            body = m.group("body")
-            if _SRC_ATTR_RE.search(attrs):
-                continue  # external script — its hash is irrelevant.
-            tm = _TYPE_ATTR_RE.search(attrs)
-            script_type = tm.group(2).strip().lower() if tm else ""
-            if script_type not in _EXECUTABLE_TYPES:
-                continue  # data block — CSP does not govern it.
+        for blk in iter_script_blocks(html):
+            if not blk.is_executable():
+                continue  # external script or data block — CSP hash irrelevant.
+            body = blk.body
             if not body.strip():
                 continue
             h = sri_sha256(body.encode("utf-8"))
