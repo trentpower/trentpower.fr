@@ -1,0 +1,118 @@
+name: PR checks
+
+# Runs on every pull request into preprod or main.
+#
+# The promotion model (feature/* -> preprod -> main) verifies the SAME
+# committed bytes at every hop: `release-gate` runs the full blocking gate
+# via tools/verify/validate_release.py — byte-for-byte identical to what the
+# production deploy verifies — so a PR that passes here cannot fail the
+# deploy-time check. Signing stays local: CI verifies the committed
+# integrity.json signature against the committed public key; the PGP private
+# key never enters GitHub.
+#
+# Notes:
+#   - fetch_licensed_fonts.py needs outbound HTTPS to the live site only
+#     (no secrets). A PR introducing NEW font binaries fails until those
+#     bytes are live — upload them out-of-band first.
+#   - The verification_map_dates check has a 14-day freshness window: a PR
+#     older than two weeks needs a local rebuild + re-sign.
+
+on:
+  pull_request:
+    branches:
+      - preprod
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-gate:
+    # blocking — required status check on preprod and main rulesets.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Install gpg + python + Pillow
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gnupg python3 python3-pil python3-pip
+          # the content_schemas blocking gate needs jsonschema>=4.18 (the
+          # `referencing` split); ubuntu's apt python3-jsonschema is older, so
+          # install via pip. --break-system-packages is required on the
+          # externally-managed runner python. pymupdf (fitz) backs the
+          # `documentation` blocking gate (README.pdf layout + claim audit).
+          python3 -m pip install --break-system-packages --quiet "jsonschema>=4.18" pymupdf
+
+      - name: Restore licensed font binaries (verified against signed manifest)
+        # the klim fonts are deliberately untracked (licence prohibits
+        # redistribution; see metadata/repo-exclusions.json). a fresh
+        # checkout fetches them from the live host and verifies every byte
+        # against the SRI digest in the signed integrity.json — fail-closed.
+        run: python3 tools/build/fetch_licensed_fonts.py
+
+      - name: Full release gate (blocking checks + signature verify)
+        run: python3 tools/verify/validate_release.py
+
+  secret-scan:
+    # blocking — required status check on preprod and main rulesets.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history — the scan walks every commit)
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+
+      - name: Scan git history for secrets (strict)
+        run: python3 tools/verify/scan_git_history.py --strict
+
+      - name: Repository hygiene scan
+        run: python3 tools/quality/validate_repository_hygiene.py
+
+  quality-lint:
+    # advisory quality / editorial lint — surfaced in the run summary,
+    # never blocks the PR (not a required status check).
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - name: Install python + Pillow
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pil
+      - name: Advisory quality lint (non-blocking)
+        run: python3 tools/quality/lint.py --format markdown >> "$GITHUB_STEP_SUMMARY" || true
+
+  source-quality:
+    # advisory source format + correctness lint (ruff/shellcheck/shfmt/eslint/
+    # stylelint/prettier). non-blocking: not a required status check, and
+    # quality.sh runs in QUALITY_ENFORCE=0 mode (exits 0 even on findings).
+    # flip to QUALITY_ENFORCE=1 here once the source is clean
+    # (see docs/GATES-CHECKS-AND-QUALITY.md).
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - name: Install native tools (ruff, shellcheck, shfmt)
+        run: |
+          set -eu
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+          curl -LsSf https://astral.sh/ruff/install.sh | sh
+          curl -fsSL -o "$HOME/.local/bin/shfmt" \
+            https://github.com/mvdan/sh/releases/download/v3.10.0/shfmt_v3.10.0_linux_amd64
+          chmod +x "$HOME/.local/bin/shfmt"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Install Node dev tools
+        run: npm ci
+      - name: Source quality (advisory)
+        env:
+          QUALITY_ENFORCE: '0'
+        run: bash tools/quality/quality.sh --check

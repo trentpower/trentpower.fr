@@ -3,7 +3,13 @@ name: Deploy to Gandi SFTP + smoke test
 # Triggers automatically on every push to main.
 # Can also be triggered manually with the DEPLOY confirmation.
 #
-# Required repo secrets (values are configured in repo settings, never here):
+# The job targets the `production` environment: it waits for the required
+# reviewer's approval before any environment secret is released, and only
+# `main` may deploy to it. PR-level verification lives in pr-checks.yml;
+# this workflow re-verifies the same committed bytes before mirroring.
+#
+# Required secrets, scoped to the `production` environment
+# (values are configured in repo settings, never here):
 #   SFTP_HOST         the SFTP endpoint hostname
 #   SFTP_USERNAME     the SFTP user
 #   SFTP_PASSWORD     the SFTP password
@@ -44,6 +50,9 @@ jobs:
   deploy:
     if: ${{ github.event_name == 'push' || github.event.inputs.confirm == 'DEPLOY' }}
     runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://trentpower.fr
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
@@ -395,43 +404,3 @@ jobs:
 
           [ "$fail" -eq 0 ] || { echo "smoke test failed"; exit 1; }
           echo "OK: deploy + smoke test green"
-
-  lint:
-    # advisory quality / editorial lint — surfaced in the run summary,
-    # never blocks deploy (separate job; deploy has no `needs:` on it).
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
-      - name: Install python + Pillow
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3 python3-pil
-      - name: Advisory quality lint (non-blocking)
-        run: python3 tools/quality/lint.py --format markdown >> "$GITHUB_STEP_SUMMARY" || true
-
-  source-quality:
-    # advisory source format + correctness lint (ruff/shellcheck/shfmt/eslint/
-    # stylelint/prettier). non-blocking: no `needs:` on deploy, and quality.sh
-    # runs in QUALITY_ENFORCE=0 mode (exits 0 even on findings). flip to
-    # QUALITY_ENFORCE=1 here once the source is clean (see docs/GATES-CHECKS-AND-QUALITY.md).
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
-      - name: Install native tools (ruff, shellcheck, shfmt)
-        run: |
-          set -eu
-          sudo apt-get update
-          sudo apt-get install -y shellcheck
-          curl -LsSf https://astral.sh/ruff/install.sh | sh
-          curl -fsSL -o "$HOME/.local/bin/shfmt" \
-            https://github.com/mvdan/sh/releases/download/v3.10.0/shfmt_v3.10.0_linux_amd64
-          chmod +x "$HOME/.local/bin/shfmt"
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-      - name: Install Node dev tools
-        run: npm ci
-      - name: Source quality (advisory)
-        env:
-          QUALITY_ENFORCE: '0'
-        run: bash tools/quality/quality.sh --check

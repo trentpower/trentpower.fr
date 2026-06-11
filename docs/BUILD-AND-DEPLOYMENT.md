@@ -504,6 +504,51 @@ out-of-band (verified the first time from a trusted network) and rotate
 
 ---
 
+## Branch promotion model
+
+Work flows `feature/* → preprod → main`. Three workflows implement it:
+
+- `pr-checks.yml` — on every PR into `preprod` or `main`: the blocking
+  `release-gate` job runs the full gate via
+  `tools/verify/validate_release.py` (byte-identical to deploy-time
+  verification, including the committed-signature check), and the
+  blocking `secret-scan` job runs `scan_git_history.py --strict` plus
+  `validate_repository_hygiene.py` over the full history. Advisory
+  lint jobs ride along without blocking.
+- `preprod-deploy.yml` — on push to `preprod`: re-verifies, then mirrors
+  to the staging host using `SFTP_PREPROD_*` secrets from the
+  `preproduction` environment. Until those secrets exist the deploy
+  steps skip cleanly; verification always runs.
+- `deploy.yml` — on push to `main` (or manual dispatch): targets the
+  `production` environment, which requires the maintainer's approval
+  before environment secrets are released, and only accepts deploys
+  from `main`.
+
+Rulesets protect both branches: PRs required, status checks
+(`release-gate`, `secret-scan`) required, force pushes and deletion
+blocked; `main` additionally requires linear history, so promotions
+merge as squash or rebase. After each promotion, re-align `preprod`
+with `git push origin main:preprod --force-with-lease` (uses the
+logged repository-admin bypass).
+
+Signing stays local in this model: feature work is built and signed on
+the maintainer's machine, the signed bytes are committed, and every CI
+hop only re-verifies them.
+
+### Staging must send noindex
+
+The deployed bytes are production's signed bytes — `robots.txt` and
+`.htaccess` cannot differ per target without breaking the signed
+integrity manifest. The staging vhost itself MUST therefore send
+`X-Robots-Tag: noindex, nofollow` on every response (server
+configuration, e.g. in the staging host's Apache vhost). The staging
+smoke test fails loudly if the header is missing, so an indexable
+staging host cannot pass silently. Ideally also put HTTP basic auth in
+front of staging; staging must never be presented as the canonical
+site.
+
+---
+
 ## Two-pass SFTP mirror, no `--delete`
 
 The deploy mirrors `public/` into the remote web root with a
