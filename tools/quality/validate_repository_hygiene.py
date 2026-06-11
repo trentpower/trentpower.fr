@@ -35,6 +35,7 @@ sys.path.insert(
     ),
 )
 from paths import PUBLIC_DIR
+from redact import mask_secret
 
 # ── directories never walked ────────────────────────────────────────
 #   integrity/releases/ holds frozen historical release bodies; their
@@ -155,8 +156,14 @@ def scan(root: Path) -> list[str]:
                 continue
             for lineno, line in enumerate(text.splitlines(), 1):
                 for pat, label in SECRET_PATTERNS:
-                    if pat.search(line):
-                        fails.append(f"{rel}:{lineno}: possible {label} → {line.strip()[:80]}")
+                    m = pat.search(line)
+                    if m:
+                        # never echo the matched value — that would re-leak
+                        # it into terminals and ci logs. the mask keeps a
+                        # short prefix + fingerprint for identification.
+                        fails.append(
+                            f"{rel}:{lineno}: possible {label} → {mask_secret(m.group(0))}"
+                        )
     return fails
 
 

@@ -61,6 +61,7 @@ sys.path.insert(
     ),
 )
 from paths import IDENTITY_CANONICAL, PUBLIC_DIR  # noqa: E402
+from script_blocks import strip_script_blocks  # noqa: E402
 
 
 # every active .html under public/ — discovered by walk so the
@@ -104,7 +105,7 @@ def _check_no_inline_handlers(fails: list) -> None:
         text = p.read_text(encoding="utf-8")
         # strip <script>...</script> blocks first — js code inside a
         # script element legitimately uses identifiers like onclick.
-        text_no_scripts = re.sub(r"<script\b[^>]*>.*?</script>", "", text, flags=re.S | re.I)
+        text_no_scripts = strip_script_blocks(text)
         m = INLINE_HANDLER_RE.search(text_no_scripts)
         if m:
             ctx_start = max(0, m.start() - 30)

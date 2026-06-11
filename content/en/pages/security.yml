@@ -62,7 +62,7 @@ security:
     Strict <abbr title="Content Security Policy">CSP</abbr> starting from <code>default-src 'none'</code>
     No external resource loading
     No dynamic script execution
-    Local browser storage limited to reader preferences (language, appearance), first-visit markers that retire the homepage imprint and the French machine-translation notice, and service-worker install timestamps used solely to display when the offline cache was last refreshed; readable on the <a href="/local/">Local Device Console</a>; no cookies, no analytics or advertising identifiers, no session tracking or behavioural profiling
+    Local browser storage limited to reader preferences (language, appearance), a first-visit marker that retires the French machine-translation notice, and service-worker install timestamps used solely to display when the offline cache was last refreshed; readable on the <a href="/local/">Local Device Console</a>; no cookies, no analytics or advertising identifiers, no session tracking or behavioural profiling
   s4_monitoring_heading: Monitoring
   s4_monitoring_list: |-
     Structured log analysis

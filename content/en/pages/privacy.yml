@@ -18,8 +18,8 @@ privacy:
     the site secure and functioning. External links are standard references and make no
     external requests until opened. Any <a class="invite-link" href="/local/">browser
     storage is local to your device</a>, covering preferences such as language and
-    appearance, first-visit markers that dismiss the homepage imprint and French
-    translation notice once seen, and service-worker install timestamps used only to
+    appearance, a first-visit marker that dismisses the French translation notice
+    once seen, and service-worker install timestamps used only to
     show when the offline cache was last refreshed. This local storage is never sent anywhere.
   body_records: Public inspection and verification records are published separately. You can read the <a href="/security/" aria-describedby="desc-security-threat-model">Security & threat model</a> for the full posture.
   print:

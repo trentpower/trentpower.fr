@@ -65,5 +65,5 @@
     "security": "https://trentpower.fr/.well-known/security.txt",
     "attestations": "https://trentpower.fr/attestations.json"
   },
-  "asset_version": "2026-06-10.2898894c"
+  "asset_version": "2026-06-10.f9f41383"
 }

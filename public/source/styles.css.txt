@@ -3960,6 +3960,12 @@ html.js.hero-static .hero-line {
   margin-top: 20px;
 }
 
+/* consecutive secondary links (linkedin → github) read as one group:
+   the first keeps the 20px separation, the rest tuck in close. */
+.contact-secondary + .contact-secondary {
+  margin-top: 6px;
+}
+
 .contact-secondary a {
   font-family: var(--mono);
   font-size: 11px;
@@ -4377,9 +4383,9 @@ html:not([lang="fr"]) .site-footer__provenance[lang="fr"]{
 }
 
 /* phase 94 · footer direction a · institutional continuity,
-   fr machine-translation disclosure, homepage imprint block.
-   three additions scoped to existing footer selectors or new
-   classes (.since · .site-footer__translation-inline · .site-imprint).
+   fr machine-translation disclosure.
+   two additions scoped to existing footer selectors or new
+   classes (.since · .site-footer__translation-inline).
    no existing rules modified · no new tokens · no !important. */
 
 /* 1 · institutional-continuity year. © 1997 – 2026 · the "1997 –"
@@ -4413,73 +4419,6 @@ html:not([lang="fr"]) .site-footer__provenance[lang="fr"]{
   outline: 0;
 }
 
-/* 3 · homepage imprint. a multi-line italic-serif paragraph above
-   the footer with a small mono caps stamp beneath — the publication's
-   verso colophon. when present, suppresses the footer's own top
-   border so imprint and footer read as a single closing block. */
-.site-imprint {
-  border-top: 1px solid var(--rule-default);
-  padding: clamp(1.6rem, 3vw, 2.4rem) clamp(24px, 5vw, 80px);
-  max-width: 62rem;
-  margin-inline: auto;
-  text-align: center;
-}
-.site-imprint__glyph {
-  display: block;
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 26px;
-  color: var(--accent-text);
-  margin-bottom: 1.1rem;
-  line-height: 1;
-  opacity: 0.85;
-  font-feature-settings: "onum" 1;
-}
-.site-imprint__line {
-  margin: 0;
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
-  font-size: clamp(15px, 1.55vw, 18px);
-  line-height: 1.7;
-  color: var(--fg2);
-  max-width: 46ch;
-  margin-inline: auto;
-  text-wrap: pretty;
-  font-feature-settings: "onum" 1;
-}
-.site-imprint__stamp {
-  list-style: none;
-  margin: 1.3rem 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.34rem;
-  font-family: var(--mono);
-  font-style: normal;
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--fg3);
-  opacity: 0.78;
-  font-variant-numeric: tabular-nums lining-nums;
-}
-.site-imprint__stamp .since {
-  color: var(--fg3);
-  opacity: 0.55;
-  letter-spacing: 0.06em;
-}
-
-/* drop the footer's own top border when the imprint sits above it —
-   both carry a hairline and we don't want a double rule. the
-   :not([hidden]) guard means a JS-retired imprint (phase 94d
-   first-visit logic) lets the footer's own border return — so the
-   footer never floats edgeless on repeat visits. */
-.site-imprint:not([hidden]) + .site-footer {
-  border-top: 0;
-}
-
 /* mobile · the fr colophon row otherwise wraps mid-sentence between
    the mono date and the italic note. stack vertically. */
 @media (max-width: 640px) {
@@ -4499,11 +4438,10 @@ html:not([lang="fr"]) .site-footer__provenance[lang="fr"]{
   }
 }
 
-/* print · the imprint and translation note are screen furniture,
-   not part of the printed page. the existing .site-footer__colophon
-   is already suppressed in print; add these to that posture. */
+/* print · the translation note is screen furniture, not part of the
+   printed page. the existing .site-footer__colophon is already
+   suppressed in print; add this to that posture. */
 @media print {
-  .site-imprint,
   .site-footer__translation-inline {
     display: none;
   }

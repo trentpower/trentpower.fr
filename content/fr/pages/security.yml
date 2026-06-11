@@ -67,7 +67,7 @@ security:
     <abbr title="Content Security Policy">CSP</abbr> stricte démarrant par <code>default-src 'none'</code>
     Aucun chargement de ressource externe
     Aucune exécution de script dynamique
-    Stockage navigateur local limité aux préférences du lecteur (langue, apparence), aux marqueurs de première visite qui retirent l’imprimerie de la page d’accueil et la mention de traduction automatique, et aux horodatages d’installation du service worker indiquant uniquement quand le cache hors-ligne a été rafraîchi ; consultable sur la <a href="/local/">console de l’appareil local</a> ; aucun cookie, aucun identifiant d’analyse ou de publicité, aucun suivi de session ni profilage comportemental
+    Stockage navigateur local limité aux préférences du lecteur (langue, apparence), au marqueur de première visite qui retire la mention de traduction automatique, et aux horodatages d’installation du service worker indiquant uniquement quand le cache hors-ligne a été rafraîchi ; consultable sur la <a href="/local/">console de l’appareil local</a> ; aucun cookie, aucun identifiant d’analyse ou de publicité, aucun suivi de session ni profilage comportemental
   s4_monitoring_heading: Surveillance
   s4_monitoring_list: |-
     Analyse structurée des journaux

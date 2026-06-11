@@ -1,5 +1,14 @@
 # trentpower.fr
 
+[![Static Site](https://img.shields.io/badge/Static-HTML%20%7C%20CSS%20%7C%20JS-orange?logo=html5&logoColor=white&style=flat-square)](https://trentpower.fr)
+[![PGP Signed](https://img.shields.io/badge/Signed-PGP%20Verified-blue?logo=gnuprivacyguard&logoColor=white&style=flat-square)](https://trentpower.fr/en-au/verify/)
+[![SHA-256 Manifest](https://img.shields.io/badge/Integrity-SHA--256%20Manifest-success?style=flat-square)](https://trentpower.fr/integrity.json)
+[![Bilingual](https://img.shields.io/badge/Bilingual-EN--AU%20%7C%20FR-lightblue?style=flat-square)](https://trentpower.fr)
+[![No Tracking](https://img.shields.io/badge/Privacy-No%20Tracking-blueviolet?logo=adguard&logoColor=white&style=flat-square)](https://trentpower.fr/en-au/privacy/)
+[![Code: MIT](https://img.shields.io/badge/Code-MIT-yellow?logo=opensourceinitiative&logoColor=white&style=flat-square)](LICENSE)
+[![Content: CC BY-SA 4.0](https://img.shields.io/badge/Content-CC%20BY--SA%204.0-lightgrey?logo=creativecommons&logoColor=white&style=flat-square)](CONTENT-RIGHTS.md)
+[![Deploy](https://img.shields.io/badge/Deploy-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white&style=flat-square)](.github/workflows/)
+
 `trentpower.fr` is a static, bilingual, source-verifiable personal publication.
 
 It is generated from local source, published as static files, and accompanied

@@ -133,35 +133,8 @@
     }
   }
 
-  // phase 94e · homepage imprint as a per-language first-visit signal.
-  // the `<aside data-imprint-once>` block sits above the footer on the
-  // homepage of each language tree. localStorage['tp-imprint-seen:<lang>']
-  // is stamped on first visit and consulted on every subsequent visit
-  // to hide the block. each language has its own marker — first visit
-  // to /en-au/ surfaces the en imprint; first visit to /fr/ surfaces
-  // the fr imprint (which carries the same information, translated).
-  // the css rule `.site-imprint:not([hidden]) + .site-footer` lets
-  // the footer's own top hairline return once the imprint is retired.
-  function reconcileImprint() {
-    var imprint = document.querySelector('[data-imprint-once]');
-    if (!imprint) return;
-    var docLang = (document.documentElement.lang || '').toLowerCase();
-    var lang = docLang.indexOf('fr') === 0 ? 'fr' : 'en-au';
-    var key = 'tp-imprint-seen:' + lang;
-    var seen = null;
-    try { seen = localStorage.getItem(key); } catch (_) {}
-    if (seen) {
-      imprint.hidden = true;
-    } else {
-      try {
-        localStorage.setItem(key, new Date().toISOString().slice(0, 10));
-      } catch (_) {}
-    }
-  }
-
   function boot() {
     reconcileDisclosure();
-    reconcileImprint();
     run();
   }
 

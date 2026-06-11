@@ -40,12 +40,12 @@
   "integrity/releases/2026-05-23/trentpower-fr-2026-05-23.tar.gz.sha256": "sha256-o+J/QQMZCXLI0HOZ0grQIQOsb6Ih7qkfxWkpRGIchcQ=",
   "integrity/releases/2026-05-23/trentpower-fr-2026-05-23.zip": "sha256-kUTLJh8DmOXdYUWe2YwF9FPVBISH4YJZwdEeqp6NnA0=",
   "integrity/releases/2026-05-23/trentpower-fr-2026-05-23.zip.sha256": "sha256-8oDe1wPV3aDuddKF/TeavJJb7x/iDrQRgSfoiuab8Jo=",
-  "integrity/releases/2026-06-10/EXCLUDED_FILES.json": "sha256-BSMaAY+pggsfmEgO0LHQ89LCcaMltclBkOrTAWbDhNo=",
+  "integrity/releases/2026-06-10/EXCLUDED_FILES.json": "sha256-O2zKCKkV0iX93kmEFnD8Te36/jX3jyDof/zYgp5cdx8=",
   "integrity/releases/2026-06-10/EXCLUDED_FILES.txt": "sha256-RWbuYmi9o5CKP64Eg+n9SwcDNCsOjDPB/a1RGf1RlUo=",
-  "integrity/releases/2026-06-10/integrity-redistributable.json": "sha256-BznIVPblrp4Itb3ysGx2B1q8jYjL09uQ0I7gpWLE2DE=",
-  "integrity/releases/2026-06-10/release.json": "sha256-4fbTTCtJnXgkU7ydGWyqc/uKEEQRNiJGLin0tnSogyY=",
-  "integrity/releases/2026-06-10/trentpower-fr-2026-06-10.tar.gz": "sha256-uYHqTBruz548il6JNwkmNlEBw+kWB1YUOatN9T8rzXg=",
-  "integrity/releases/2026-06-10/trentpower-fr-2026-06-10.tar.gz.sha256": "sha256-5vcvg5LcRuaQuOqUh3qNKXkLn35EiDwqqZyTIhdsJxA=",
-  "integrity/releases/2026-06-10/trentpower-fr-2026-06-10.zip": "sha256-g7lmWz5rCQArG6vDCXlEtbjp54kuZDVWlKRad6WvG80=",
-  "integrity/releases/2026-06-10/trentpower-fr-2026-06-10.zip.sha256": "sha256-BmkjL2eVuQNuJBiShvJHQax0WQYMX/7u62HYtTuISOs="
+  "integrity/releases/2026-06-10/integrity-redistributable.json": "sha256-mmV4wfPDS7LYYjNW5fmAGDJuCBXrFDArZAsjEI1NdRA=",
+  "integrity/releases/2026-06-10/release.json": "sha256-0/paaEHHMhCgUtGhszD15PM2FOfHezAJ/6d2zCoBLt0=",
+  "integrity/releases/2026-06-10/trentpower-fr-2026-06-10.tar.gz": "sha256-D4n4mXm9ftm6jErSD2t9dohWVXDC/fEGVKBT/NqoD0c=",
+  "integrity/releases/2026-06-10/trentpower-fr-2026-06-10.tar.gz.sha256": "sha256-+cKh/6mFmH+Lhus9zcXS/qpy9KtsMknOUMZSWI0uy94=",
+  "integrity/releases/2026-06-10/trentpower-fr-2026-06-10.zip": "sha256-9jt/o6n7GwQ3P0RwfLqc4GNuWRwW83t9t9T+dAbwCyU=",
+  "integrity/releases/2026-06-10/trentpower-fr-2026-06-10.zip.sha256": "sha256-A6VrKCLGIEeww5GIZWLvurO49VFvQwW3OaC/uVoYsSU="
 }
