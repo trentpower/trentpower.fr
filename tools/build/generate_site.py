@@ -69,6 +69,7 @@ from paths import (
 from paths import (
     TOOLS_DIR as _PATHS_TOOLS_DIR,
 )
+from urls import host_matches  # noqa: E402
 
 _TOOLS_DIR = str(_PATHS_TOOLS_DIR)
 _REPO_ROOT = str(_PATHS_REPO_ROOT)
@@ -868,8 +869,8 @@ def main() -> int:
     edition_label = f"{_MONTH_LABELS[int(_ed_month) - 1]} {_ed_year}"
 
     orcid_url = f"https://orcid.org/{orcid}" if orcid else None
-    linkedin_url = next((s for s in canon["sameAs"] if "linkedin.com" in s), None)
-    github_url = next((s for s in canon["sameAs"] if "github.com" in s), None)
+    linkedin_url = next((s for s in canon["sameAs"] if host_matches(s, "linkedin.com")), None)
+    github_url = next((s for s in canon["sameAs"] if host_matches(s, "github.com")), None)
     author_same_as = [u for u in (orcid_url, linkedin_url, github_url) if u]
 
     site_metadata = {
@@ -1185,17 +1186,17 @@ def main() -> int:
     # build identity verification from all sameas + fixed endpoints
     identity_lines = []
     for sa in canon["sameAs"]:
-        if "linkedin.com" in sa:
+        if host_matches(sa, "linkedin.com"):
             identity_lines.append(f"- linkedin: {sa}")
-        elif "github.com" in sa:
+        elif host_matches(sa, "github.com"):
             identity_lines.append(f"- source repository (github): {sa}")
-        elif "orcid.org" in sa:
+        elif host_matches(sa, "orcid.org"):
             identity_lines.append(f"- orcid: {sa}")
-        elif "wikidata.org" in sa:
+        elif host_matches(sa, "wikidata.org"):
             identity_lines.append(f"- wikidata: {sa}")
-        elif "commons.wikimedia.org" in sa:
+        elif host_matches(sa, "commons.wikimedia.org"):
             identity_lines.append(f"- portrait (wikimedia commons): {sa}")
-        elif "crunchbase.com" in sa:
+        elif host_matches(sa, "crunchbase.com"):
             identity_lines.append(f"- crunchbase: {sa}")
         else:
             identity_lines.append(f"- {sa}")

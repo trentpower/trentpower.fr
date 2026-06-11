@@ -172,14 +172,3 @@ trust_routes:
   source_desc: Readable mirrors of public files
   releases_label: Releases
   releases_desc: Frozen signed snapshots
-# phase 94 · homepage imprint. printed-book verso colophon shown above
-# the site footer on the homepage only; the data-article-imprint hook
-# is a placeholder so future long articles (≥ 1500 words) can reuse
-# the same block. en + fr copy diverge below; the asterism glyph and
-# the copyright stamp are shared.
-imprint:
-  aria_label: Publication imprint
-  edition_mark_aria: Edition mark
-  line_html: 'Set in <i>Signifier</i>, <i>Söhne</i> and <i>Söhne Mono</i>.<br>Composed in Paris. First edition published <time datetime="2026-05-23">23 May 2026</time>.'
-  stamp_edition: '№ 06 · Edition 2026-06-10'
-  stamp_copyright_html: '&copy; <span class="since">1997&ndash;</span>2026 Trent Power'

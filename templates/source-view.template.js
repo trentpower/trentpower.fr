@@ -458,10 +458,12 @@
       .replace(/^\/\/+\s?/, '')
       .replace(/^#\s?/, '')
       .replace(/^\/\*+\s?/, '')
-      .replace(/\*\/$/, '')
-      .replace(/^<!--\s?/, '')
-      .replace(/-->$/, '')
-      .trim();
+      .replace(/\*\/$/, '');
+    // html comment markers stripped by position, not regex — the tier
+    // is a classification of comment prose, never an html sanitiser.
+    if (bare.indexOf('<!--') === 0) bare = bare.slice(4);
+    if (bare.length >= 3 && bare.slice(-3) === '-->') bare = bare.slice(0, -3);
+    bare = bare.trim();
     var lower = bare.toLowerCase();
     if (!bare) return '';
     if (/^(generated|auto-generated|source:\s*generated|build:|checksum:|hash:|integrity:)/.test(lower)) return 'generated';

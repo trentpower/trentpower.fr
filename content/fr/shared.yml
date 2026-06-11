@@ -183,15 +183,3 @@ trust_routes:
   source_desc: Miroirs lisibles des fichiers publics
   releases_label: Éditions
   releases_desc: Instantanés signés et figés
-# phase 94 · colophon d'imprimerie de la page d'accueil. verso de
-# livre imprimé, affiché au-dessus du pied de page sur la page
-# d'accueil uniquement ; l'attribut data-article-imprint sert de
-# crochet pour les futurs articles longs (≥ 1500 mots) qui pourront
-# réutiliser le même bloc. en + fr divergent ci-dessous ; le glyphe
-# astérisme et le bloc de copyright sont partagés.
-imprint:
-  aria_label: Imprimerie de la publication
-  edition_mark_aria: Marque d'édition
-  line_html: 'Composée en <i>Signifier</i>, <i>Söhne</i> et <i>Söhne Mono</i>.<br>Mise en page à Paris. Première édition publiée le <time datetime="2026-05-23">23 mai 2026</time>.'
-  stamp_edition: '№ 06 · Édition 2026-06-10'
-  stamp_copyright_html: '&copy; <span class="since">1997&ndash;</span>2026 Trent Power'

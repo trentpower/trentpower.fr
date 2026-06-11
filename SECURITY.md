@@ -1,5 +1,10 @@
 # Security
 
+[![PGP Signed](https://img.shields.io/badge/Signed-PGP%20Verified-blue?logo=gnuprivacyguard&logoColor=white&style=flat-square)](https://trentpower.fr/en-au/verify/)
+[![SHA-256 Manifest](https://img.shields.io/badge/Integrity-SHA--256%20Manifest-success?style=flat-square)](https://trentpower.fr/integrity.json)
+[![security.txt](https://img.shields.io/badge/security.txt-RFC%209116-informational?style=flat-square)](https://trentpower.fr/.well-known/security.txt)
+[![Responsible Disclosure](https://img.shields.io/badge/Disclosure-Responsible-orange?style=flat-square)](#reporting)
+
 ## Reporting
 
 Report security issues to the contact published in

@@ -32,6 +32,19 @@ import pathlib
 import re
 import sys
 
+sys.path.insert(
+    0,
+    str(
+        next(
+            _a
+            for _a in __import__("pathlib").Path(__file__).resolve().parents
+            if _a.name == "tools"
+        )
+        / "lib"
+    ),
+)
+from script_blocks import iter_script_blocks  # noqa: E402
+
 ROOT = pathlib.Path(__file__).resolve().parents[2] / "public"
 
 PATTERNS: list[tuple[str, re.Pattern[str]]] = [
@@ -78,17 +91,14 @@ def scan_text(text: str) -> list[tuple[int, str, str]]:
     return findings
 
 
-_SCRIPT_RE = re.compile(r"<script\b[^>]*>(.*?)</script>", re.DOTALL | re.IGNORECASE)
-
-
 def scan_html(path: pathlib.Path) -> list[tuple[int, str, str]]:
     text = path.read_text(encoding="utf-8", errors="replace")
     findings: list[tuple[int, str, str]] = []
-    for m in _SCRIPT_RE.finditer(text):
-        body = m.group(1)
+    for blk in iter_script_blocks(text):
+        body = blk.body
         if not body.strip():
             continue
-        block_line = text.count("\n", 0, m.start()) + 1
+        block_line = text.count("\n", 0, blk.body_start) + 1
         for sub_line, label, snippet in scan_text(body):
             findings.append((block_line + sub_line - 1, label, snippet))
     return findings

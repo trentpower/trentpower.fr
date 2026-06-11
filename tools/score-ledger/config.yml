@@ -83,11 +83,11 @@ phase3:
     required_never_cache_prefix: ["/.well-known/"]
   runtime_privacy:
     # approved browser-storage keys (mirrors public/js/local.js LOCAL_KEYS).
-    # Per-edition keys use prefixes (the runtime writes tp-imprint-seen:en-au,
+    # Per-edition keys use prefixes (the runtime writes
     # tp-last-read:/en-au/, etc.), so prefixes are the faithful allowlist.
     storage_keys: [tp-theme, tp-last-edition, tp-fr-disclosure-seen,
                    tp-sw-meta, tp-skip-hero-anim, tp-show-gate]
-    storage_key_prefixes: ["tp-welcomed:", "tp-typed-", "tp-last-read:", "tp-imprint-seen:"]
+    storage_key_prefixes: ["tp-welcomed:", "tp-typed-", "tp-last-read:"]
 
 storage:
   sqlite_path: data/score-ledger.sqlite
