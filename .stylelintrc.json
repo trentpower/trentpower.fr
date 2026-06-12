@@ -1,5 +1,7 @@
 {
-  "extends": ["stylelint-config-standard"],
+  "extends": [
+    "stylelint-config-standard"
+  ],
   "rules": {
     "selector-class-pattern": null,
     "custom-property-pattern": null,
@@ -16,7 +18,14 @@
     "value-keyword-case": null,
     "font-family-name-quotes": null,
     "media-feature-range-notation": null,
-    "at-rule-no-unknown": [true, { "ignoreAtRules": ["layer"] }],
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": [
+          "layer"
+        ]
+      }
+    ],
     "no-invalid-position-at-import-rule": null,
     "declaration-block-single-line-max-declarations": null,
     "custom-property-empty-line-before": null,
@@ -24,6 +33,10 @@
     "selector-no-vendor-prefix": null,
     "value-no-vendor-prefix": null,
     "color-hex-length": null,
-    "length-zero-no-unit": null
+    "length-zero-no-unit": null,
+    "color-function-alias-notation": null,
+    "property-no-deprecated": null,
+    "declaration-property-value-keyword-no-deprecated": null,
+    "no-invalid-position-declaration": null
   }
 }

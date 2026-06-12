@@ -77,20 +77,20 @@ Top-level fields: `schema_version`, `generated_from`, `note`, `languages`
 
 Each route entry carries:
 
-| Field                 | Meaning                                                                    |
-| --------------------- | -------------------------------------------------------------------------- |
-| `id`                  | unique route id, e.g. `home.en-au`, `privacy.fr`                           |
-| `route_key`           | logical page key shared across languages, e.g. `home`                      |
-| `path`                | published URL path, e.g. `/en-au/`, `/fr/confidentialite/`                 |
-| `language` / `locale` | `en-AU` / `en_AU`, or `fr` / `fr_FR`                                       |
-| `template`            | page template id                                                           |
-| `content`             | YAML source path, e.g. `content/fr/pages/home.yml`                         |
+| Field                 | Meaning                                                                     |
+| --------------------- | --------------------------------------------------------------------------- |
+| `id`                  | unique route id, e.g. `home.en-au`, `privacy.fr`                            |
+| `route_key`           | logical page key shared across languages, e.g. `home`                       |
+| `path`                | published URL path, e.g. `/en-au/`, `/fr/confidentialite/`                  |
+| `language` / `locale` | `en-AU` / `en_AU`, or `fr` / `fr_FR`                                        |
+| `template`            | page template id                                                            |
+| `content`             | YAML source path, e.g. `content/fr/pages/home.yml`                          |
 | `schema`              | JSON Schema validating the content, e.g. `schemas/content/home.schema.json` |
-| `canonical`           | self-canonical URL                                                         |
-| `alternate`           | hreflang alternates (the other edition + `x-default` → `/`)                |
-| `editable`            | content is hand-editable YAML (vs generated)                               |
-| `preview`             | route can be rendered standalone for preview                               |
-| `trust_surface`       | route is a trust/governance surface (integrity, verify, source, security)  |
+| `canonical`           | self-canonical URL                                                          |
+| `alternate`           | hreflang alternates (the other edition + `x-default` → `/`)                 |
+| `editable`            | content is hand-editable YAML (vs generated)                                |
+| `preview`             | route can be rendered standalone for preview                                |
+| `trust_surface`       | route is a trust/governance surface (integrity, verify, source, security)   |
 
 There are 20 routes (each logical page in both `en-AU` and `fr`). French
 paths use localized slugs (`/fr/confidentialite/`, `/fr/securite/`,

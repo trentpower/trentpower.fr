@@ -13,12 +13,14 @@ import pathlib
 import re
 import sys
 import unittest
+
 # parses only SVG produced in-process by colophon_svg — never untrusted
 # input — so the stdlib parser's XXE surface is not reachable here.
 import xml.etree.ElementTree as ET
 from datetime import date
 
-from hypothesis import given, settings, strategies as st
+from hypothesis import given, settings
+from hypothesis import strategies as st
 
 _TOOLS = pathlib.Path(__file__).resolve().parents[2]
 for _sub in ("lib", "build", "quality", "verify", "release", "badges"):
@@ -84,8 +86,10 @@ class SlugProperties(unittest.TestCase):
 
 
 class DateProperties(unittest.TestCase):
-    @given(st.dates(min_value=date(1, 1, 1), max_value=date(9999, 12, 31)),
-           st.sampled_from(["en", "fr"]))
+    @given(
+        st.dates(min_value=date(1, 1, 1), max_value=date(9999, 12, 31)),
+        st.sampled_from(["en", "fr"]),
+    )
     def test_canonical_string_round_trip(self, d, lang):
         rendered = human_date(d.isoformat(), lang=lang)
         self.assertIn(str(d.year), rendered)

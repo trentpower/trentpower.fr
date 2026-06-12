@@ -18,12 +18,12 @@ adversarial inputs and shrinks failures to minimal counterexamples.
 `tools/quality/tests/test_fuzz_properties.py` drives arbitrary inputs
 through four surfaces and asserts the invariant each one promises:
 
-| Surface | Invariant |
-| --- | --- |
-| `{{ }}` token engine (`tools/build/render_pages.py`) | escaping is total in text and attribute contexts; arbitrary templates fail only with the declared `RenderError`, never anything else |
-| i18n slugs (`tools/lib/slugs.py`) | idempotent; lowercased alphanumerics joined by single underscores, edges trimmed |
-| locale dates (`tools/lib/dates.py`) | canonical `YYYY-MM-DD` strings render with the right day and year in both locales |
-| badge SVG generator (`tools/badges/generate_badges.py`) | `esc()` neutralises markup; generated SVG is always well-formed XML |
+| Surface                                                 | Invariant                                                                                                                            |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `{{ }}` token engine (`tools/build/render_pages.py`)    | escaping is total in text and attribute contexts; arbitrary templates fail only with the declared `RenderError`, never anything else |
+| i18n slugs (`tools/lib/slugs.py`)                       | idempotent; lowercased alphanumerics joined by single underscores, edges trimmed                                                     |
+| locale dates (`tools/lib/dates.py`)                     | canonical `YYYY-MM-DD` strings render with the right day and year in both locales                                                    |
+| badge SVG generator (`tools/badges/generate_badges.py`) | `esc()` neutralises markup; generated SVG is always well-formed XML                                                                  |
 
 The suite runs in the `source-quality` job of `pr-checks.yml` on every
 pull request, alongside the existing example-based unit tests.
