@@ -1,0 +1,5 @@
+# ci deps for the release gate: jsonschema>=4.18 backs the content_schemas
+# blocking gate (referencing split), pymupdf backs the documentation gate.
+# regenerate: pip-compile --generate-hashes --strip-extras --allow-unsafe -o release-gate.txt release-gate.in
+jsonschema>=4.18
+pymupdf

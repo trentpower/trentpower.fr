@@ -1,0 +1,7 @@
+# ci deps for build.sh --check: the release-gate set plus the render stage
+# (pyyaml copy source, fonttools subsetting, segno qr drift gate).
+# regenerate: pip-compile --generate-hashes --strip-extras --allow-unsafe -o build-check.txt build-check.in
+-r release-gate.in
+pyyaml
+fonttools
+segno

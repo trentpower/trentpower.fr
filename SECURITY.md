@@ -28,3 +28,10 @@ handling is documented in
 
 Every release is gated by blocking security checks before deploy; see
 [docs/GATES-CHECKS-AND-QUALITY.md](docs/GATES-CHECKS-AND-QUALITY.md).
+
+OpenSSF Scorecard runs weekly as an automated repository security
+posture check ([scorecard.yml](.github/workflows/scorecard.yml)). It
+helps surface risky supply-chain practices in the public repository and
+workflow configuration. It is advisory evidence, not cryptographic
+proof — the site's proof chain remains the signed manifest, source
+mirrors and release archives ([docs/github-releases.md](docs/github-releases.md)).

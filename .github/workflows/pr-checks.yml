@@ -47,7 +47,8 @@ jobs:
           # install via pip. --break-system-packages is required on the
           # externally-managed runner python. pymupdf (fitz) backs the
           # `documentation` blocking gate (README.pdf layout + claim audit).
-          python3 -m pip install --break-system-packages --quiet "jsonschema>=4.18" pymupdf
+          # hash-pinned via .github/requirements/ (dependabot regenerates).
+          python3 -m pip install --break-system-packages --quiet --require-hashes -r .github/requirements/release-gate.txt
 
       - name: Restore licensed font binaries (verified against signed manifest)
         # the klim fonts are deliberately untracked (licence prohibits
@@ -105,13 +106,20 @@ jobs:
           set -eu
           sudo apt-get update
           sudo apt-get install -y shellcheck
-          curl -LsSf https://astral.sh/ruff/install.sh | sh
+          # ruff arrives hash-pinned via pip (replaces the unpinned
+          # astral.sh curl|sh installer); hypothesis backs the fuzz tests.
+          python3 -m pip install --break-system-packages --quiet --require-hashes -r .github/requirements/source-quality.txt
+          mkdir -p "$HOME/.local/bin"
           curl -fsSL -o "$HOME/.local/bin/shfmt" \
             https://github.com/mvdan/sh/releases/download/v3.10.0/shfmt_v3.10.0_linux_amd64
+          # checksum from the v3.10.0 release sha256sums.txt — fail closed.
+          echo "1f57a384d59542f8fac5f503da1f3ea44242f46dff969569e80b524d64b71dbc  $HOME/.local/bin/shfmt" | sha256sum -c -
           chmod +x "$HOME/.local/bin/shfmt"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Install Node dev tools
         run: npm ci
+      - name: Unit + property-based tests (hypothesis fuzz)
+        run: python3 -m unittest discover -s tools/quality/tests -p 'test_*.py' -v
       - name: Source quality (advisory)
         env:
           QUALITY_ENFORCE: '0'

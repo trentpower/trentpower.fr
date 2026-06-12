@@ -177,6 +177,10 @@ Tick every box before making the repository public:
 - [ ] Retained generated files and historical archives are _intentional_ — not
       accidental leftovers.
 - [ ] Score-ledger data and reports are not committed (local-only tooling).
+- [ ] Security automation reviewed: Dependabot alerts and update PRs triaged,
+      CodeQL has no unresolved high/critical alerts, latest OpenSSF Scorecard
+      run reviewed in the Security tab (accepted low readings are documented
+      in `github-rulesets.md`).
 - [ ] Deployment secrets are _documented but not exposed_ — `DEPLOYMENT.md`
       describes the SFTP/GPG/CI secret model; the secret values themselves live
       only in CI/host config.
