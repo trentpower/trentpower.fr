@@ -20,7 +20,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Client Strategy & Growth Systems · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "profile",
@@ -28,7 +28,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-fYfa4yjZQXloiqq9PEWZL2RDsZkHei4fLkb/B1VYGR4=",
+        "sha256": "sha256-AIElCx6fy1PVHfGM3tFOWFM3aV2XYAlvXEd+Qh3qpYI=",
         "current": true
       },
       {
@@ -60,7 +60,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Stratégie Client & Systèmes de Croissance · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "profile",
@@ -68,7 +68,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-40JAr3KWWZucKpnzZaaJJ3dktfJdpM8rnLtzON/9GeU=",
+        "sha256": "sha256-8+16ojA9bZUtrB+i9v/Mu0KvqcyOH98JBA/KtwN3hO8=",
         "current": true
       },
       {
@@ -105,7 +105,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Privacy & Trust · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/privacy/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "trust-sheet",
@@ -113,7 +113,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-/wITsLSE3rui3p2sIPv2NIy+FngpWoYpLkF/Qnu6Ze0=",
+        "sha256": "sha256-l3tgHjx8kwHni2Si15tpFRdadTcZhmagdijC2RWlHKs=",
         "current": true
       },
       {
@@ -145,7 +145,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Confidentialité & confiance · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/confidentialite/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "trust-sheet",
@@ -153,7 +153,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-X7ivgK/esy9R5i8FLZ4ttaeeAGCKUxIDYkWiI+eINu0=",
+        "sha256": "sha256-49s1v8ZoqAL+/ekcTHIZasatUvSSdVehPj4iGfbopqg=",
         "current": true
       },
       {
@@ -190,7 +190,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Security & Threat Model · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/security/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "trust-sheet",
@@ -198,7 +198,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-ro5PwIr/ZPJJxCtn392P/8h8lSSZ2Fwyw+uS0MlZEjM=",
+        "sha256": "sha256-NeS9JTyeKxVJOlPqUCWZphG6ZKqsNx/Oad/pyyyGiLA=",
         "current": true
       },
       {
@@ -230,7 +230,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Sécurité & modèle de menace · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/securite/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "trust-sheet",
@@ -238,7 +238,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-YAQDf5SGtlN5ji+qpfC4yh/rxj2UgVipfYZ0gGmyY7U=",
+        "sha256": "sha256-pILDM5usDI2xCgO1wzj9vrh3lfTJHUD8SZGDBQtXKs0=",
         "current": true
       },
       {
@@ -275,14 +275,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Security acknowledgements · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/security/acknowledgments/",
     "release": "/integrity/releases/2026-06-10/",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-JadpxYI+y1rOnU61iJHqa3y5L58uPD0hdzs4bd5lZIY=",
+        "sha256": "sha256-vSbSms2TsGRxOneqdPcKjV92I/xinB6Pn6a9QFJTAkQ=",
         "current": true
       },
       {
@@ -314,14 +314,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Remerciements de sécurité · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/securite/remerciements/",
     "release": "/integrity/releases/2026-06-10/",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-0IqiW3JnzDepX9VWi9QSfnGvEvAIWCdrZ49YCe7PN9k=",
+        "sha256": "sha256-wSk3llEcCfyPFn9efKlC/OHS5z6RiogeJub2fVxq6VQ=",
         "current": true
       },
       {
@@ -358,7 +358,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Integrity · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/integrity/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "trust-sheet",
@@ -366,7 +366,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-5EkBmZjkRLBdw35JPW6XZ3BttoXdb/i7vcOyO6+NTm8=",
+        "sha256": "sha256-peil4bnZnE9Jfei8H06nt5qWMI/LkFR4rOJQr5CW1es=",
         "current": true
       },
       {
@@ -398,7 +398,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Intégrité · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/integrite/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "trust-sheet",
@@ -406,7 +406,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-FzPXjL36NSnYCW3QIs7sDpqekdk2E8AN9w/3YtT6MFQ=",
+        "sha256": "sha256-BtbpIPAJLDzcm0NnU6pFRCYtmCscDOCFtaDFsWqsA9w=",
         "current": true
       },
       {
@@ -443,7 +443,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Releases · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/integrity/releases/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "utility-sheet",
@@ -451,7 +451,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-lZ2L9JKkmlHtzqcmyEV4Wrt1nNxQhnXUEXXsNxn67t0=",
+        "sha256": "sha256-Z7dSUce/06VX2RCrh0G8sHF2RJDb24np8yap/Ltiu8g=",
         "current": true
       },
       {
@@ -483,7 +483,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Éditions · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/integrite/archives/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "utility-sheet",
@@ -491,7 +491,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-KU7L+e7bAyEDvKo6tZ1erj0LWXEUoYTbjNZ4Sl6QGAQ=",
+        "sha256": "sha256-ZE7TEAJd94AcqFbNVNrTtQMGWz9341wQgJTmpqlyWfI=",
         "current": true
       },
       {
@@ -528,7 +528,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Verify locally · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/integrity/verify-locally/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "utility-sheet",
@@ -536,7 +536,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-bShBSsE4tfb62QJI+jGI75RARuMFmwGJC94AJs0cMxA=",
+        "sha256": "sha256-JnmeUDycRrjgG0xYxqhr/s/bGW8aBNUWiYSqmsh1Qis=",
         "current": true
       },
       {
@@ -568,7 +568,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Vérifier localement · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/integrite/verifier-localement/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "utility-sheet",
@@ -576,7 +576,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-orqeAzG0dX//Jos9cuLGijiUctquxxmRObFRqil6nik=",
+        "sha256": "sha256-af+Ks2upHyq7+maRh9i/ya90oOO+y2ODFR67yWBlfjI=",
         "current": true
       },
       {
@@ -613,7 +613,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Verify this page · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/verify/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "utility-sheet",
@@ -621,7 +621,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-ClN0+nKnlx5uG7FcvDGsNDJobs5BAMSXGrtNuNPV3r0=",
+        "sha256": "sha256-xRgP8aZygNL3dHYk/CChfIt0jTRnqw1IjTlsChyYUZM=",
         "current": true
       },
       {
@@ -653,7 +653,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Vérifier cette page · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/verifier/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "utility-sheet",
@@ -661,7 +661,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-tnGsBJoTdDdLFlMGdO9B6c00w6Oyhwqkt6n/MjAndT8=",
+        "sha256": "sha256-LXvxbp6S7AmM4YAInL3jBlrv00LUvO59eDzBoGRleyI=",
         "current": true
       },
       {
@@ -698,7 +698,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Source mirrors · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/source/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "utility-sheet",
@@ -706,7 +706,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-AxdaxgnhNXleIuFy/3DfnnLm91T5YB0LpKTw1AEcq+A=",
+        "sha256": "sha256-fOOiZ7gpPdJuc7zJExmZAzcgu2dM7VAyK+bhd5yEe2Q=",
         "current": true
       },
       {
@@ -738,7 +738,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Miroirs source · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/source/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "utility-sheet",
@@ -746,7 +746,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-GlMJZjQ3eJ9KJX8Zpzz8ER/oItmlJ/Xo+ommRxr6T24=",
+        "sha256": "sha256-Z4i+jQbmHCohoR2SrevHcDzURGOwkFEEt15xlo4HH8E=",
         "current": true
       },
       {
@@ -773,7 +773,7 @@ window.TP_VERIFICATION_MAP = {
     "reader": "/en-au/source/view/?path=%2Fen-au%2Fsource%2Fview%2F",
     "source_manifest": "/source/source-manifest.json",
     "source_sha256": null,
-    "sha256": "sha256-IOD2FEdZpfSQ/PGnKT1dhgcXWGruNvnsctNwasf3aQw=",
+    "sha256": "sha256-u0Hqjmy/j+tM2Ch9iexsbQ3cy6teeuIGlg5DfVEbvRY=",
     "size_bytes": 12030,
     "size_label": "11.7 KB",
     "manifest": "/integrity.json",
@@ -783,7 +783,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Source mirrors · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/source/view/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "utility-sheet",
@@ -791,7 +791,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-KQ7mAX5/yweUxNXkv2vn1RiQqIz3i0V1Ws7B+0RxRvk=",
+        "sha256": "sha256-IOD2FEdZpfSQ/PGnKT1dhgcXWGruNvnsctNwasf3aQw=",
         "current": true
       },
       {
@@ -813,7 +813,7 @@ window.TP_VERIFICATION_MAP = {
     "reader": "/fr/source/voir/?path=%2Ffr%2Fsource%2Fvoir%2F",
     "source_manifest": "/source/source-manifest.json",
     "source_sha256": null,
-    "sha256": "sha256-JZwmc2HoP+0lyOjtmtHta7dgH6pp8ccNeYYxcZJ3vpo=",
+    "sha256": "sha256-VDxokNo/RYZVtY5pfiot5Nbyyqa6pQh2w5590lGnXtM=",
     "size_bytes": 12320,
     "size_label": "12.0 KB",
     "manifest": "/integrity.json",
@@ -823,7 +823,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Miroirs source · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/source/voir/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "utility-sheet",
@@ -831,7 +831,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-H/vyyfyG7+jW1TdVmIa2CHZ58o8Wvz1idMdzXmduWpU=",
+        "sha256": "sha256-JZwmc2HoP+0lyOjtmtHta7dgH6pp8ccNeYYxcZJ3vpo=",
         "current": true
       },
       {
@@ -868,14 +868,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Forbidden · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/403.html",
     "print_type": "utility-sheet",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-oMdYQWMmS/h3U3Ra+emh+q9+yY+uEmUBY5S3dTTTr6c=",
+        "sha256": "sha256-SuIAsdqioPSxWE3LVng/kRGbFLwpbCWWN0USagHYe0E=",
         "current": true
       },
       {
@@ -907,14 +907,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Page not found · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/404.html",
     "print_type": "utility-sheet",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-nSWp52R8YkjjX9jfMdm5tvJ8Mr/E0e6/9iL+aPqwNzU=",
+        "sha256": "sha256-EDKVNdxlMx5gPafDGHcQPkGTtlVTVlYixt0SsJ7bBOA=",
         "current": true
       },
       {
@@ -946,14 +946,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Something went wrong · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/500.html",
     "print_type": "utility-sheet",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-9EYzNpvkRYts6SKNp6/wE6B18YFtxCYP3Pipk2DWLqc=",
+        "sha256": "sha256-R2mF8VGTSg2OFD6JWF+gv4ckz9qhA1AW/8XoL0ksy24=",
         "current": true
       },
       {
@@ -985,14 +985,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Down for maintenance · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/en-au/maintenance.html",
     "print_type": "utility-sheet",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-7sJ+bYjNQF9+gPD+UPRA/EYXDNzCE2VdqMEyN3coY2g=",
+        "sha256": "sha256-ISabN5bxRliqmKlO/zBi5ADPzDphepHmTFqG9TqOe2U=",
         "current": true
       },
       {
@@ -1024,14 +1024,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Accès refusé · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/403.html",
     "print_type": "utility-sheet",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-y+enWEs1ZWEKM0NaONkh87dM2tLb79BsPZL3i+EMbuw=",
+        "sha256": "sha256-nL9rWWMuoTpTuAW5UvxIybWU/bVjvLCY0yLYUbscssI=",
         "current": true
       },
       {
@@ -1068,14 +1068,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Page introuvable · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/404.html",
     "print_type": "utility-sheet",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-mXb91wDtsMa/OaPBMI8kapuDeh9kvHZVuuDHqYnT+SQ=",
+        "sha256": "sha256-5ZthKAI0mNncxWYEtEibD6QsWbYOFSc43z0U6ej3AWE=",
         "current": true
       },
       {
@@ -1112,14 +1112,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Une erreur est survenue · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/500.html",
     "print_type": "utility-sheet",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-SWiUAP+0OPTi93TiBf/wUrqAIFBS4vrazKl5O5/Pn2I=",
+        "sha256": "sha256-kNMM8bLYmE3bJdxuUsBh2bQiJLNfghxmwv/cLfnGBwo=",
         "current": true
       },
       {
@@ -1156,14 +1156,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. En maintenance · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/fr/maintenance.html",
     "print_type": "utility-sheet",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-Xc/7u4zrSazo0TgXdVyCqGt+eGvBEMPYN2gwa/e+nPw=",
+        "sha256": "sha256-arodAzPhiQ7XupPXsCqfq6LFxeImT7maM7EkkvhLmfE=",
         "current": true
       },
       {
@@ -1200,14 +1200,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Forbidden · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/403.html",
     "print_type": "utility-sheet",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-mqQicH3OOEHmTdHEy3Cvh2uo9YRhkN3kFr/oUjUusEo=",
+        "sha256": "sha256-/HKWSiqSGyGaFi8W56L1/N0zhLbdphR5C/J/oTjl+TI=",
         "current": true
       },
       {
@@ -1254,14 +1254,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Page not found · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/404.html",
     "print_type": "utility-sheet",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-4bpDwvA+LENIhGI76MEIu5VNnOXiM7tY7NFJWS9flXo=",
+        "sha256": "sha256-LRLZ1Z0IIryMoyqvtCO0H+EEq6fpqzVyRVFLk1b9uTo=",
         "current": true
       },
       {
@@ -1308,14 +1308,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Something went wrong · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/500.html",
     "print_type": "utility-sheet",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-dng1XK3dlrUr61VS2frb4nRKHtfvTX0rgULEGEf4dHU=",
+        "sha256": "sha256-VRtNMP1+yr6Z5eKgbVMh1XgxVrgDBQd9vEkdyc/UDXM=",
         "current": true
       },
       {
@@ -1362,14 +1362,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Down for maintenance · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/maintenance.html",
     "print_type": "utility-sheet",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-hZpZdMb6DrSRa0+wCB1RlxQ9PV8vJ6NYTmS1QBB6kQA=",
+        "sha256": "sha256-d87JWq7NDsXmYfgMuWOw29EYUfY/8lLmME/YvqOyQxA=",
         "current": true
       },
       {
@@ -1416,14 +1416,14 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Local Device Console · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/local/",
     "print_type": "utility-sheet",
     "history": [
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-kSPn+GOOdcThrMdvgXA+a4FEP349PC9sV2igyrHOaYw=",
+        "sha256": "sha256-BD4pnNtdptWEL367aaRxBP38SZ5FUQ3MlSDoaq8O7Ts=",
         "current": true
       }
     ],
@@ -1450,7 +1450,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Test Results · 10 June 2026 · Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr/tests/",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "utility-sheet",
@@ -1458,7 +1458,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-IwJzfQ2j93ugOaQLfyXkxFnGGReBVIOx8vF434Fdq5c=",
+        "sha256": "sha256-GWj7jflouqcH5CVv6rzWiM9JpsjIkyeQni+qucwwGUs=",
         "current": true
       }
     ],
@@ -1485,7 +1485,7 @@ window.TP_VERIFICATION_MAP = {
     "public_key": "/.well-known/pgp-key.asc",
     "edition": "2026-06-10",
     "asset_version": "2026-06-10.f9f41383",
-    "validated": "2026-06-11",
+    "validated": "2026-06-12",
     "citation": "Trent Power. Personal Site. Edition 2026-06-10. trentpower.fr",
     "release": "/integrity/releases/2026-06-10/",
     "print_type": "profile",
@@ -1493,7 +1493,7 @@ window.TP_VERIFICATION_MAP = {
       {
         "edition_date": "2026-06-10",
         "release_path": "/integrity/releases/2026-06-10/",
-        "sha256": "sha256-Pj8kk5CMR3hBbFmQpicJc3bFSV0lTdto3/0xhaM3KTE=",
+        "sha256": "sha256-SfPeKhwAN850FDRA2+/V4AssXKZRENP/6eh8KQn2h68=",
         "current": true
       },
       {

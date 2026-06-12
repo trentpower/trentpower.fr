@@ -1,0 +1,36 @@
+# CODEOWNERS — trust-surface ownership record.
+#
+# Single-maintainer repository: this file is a routing and audit record
+# marking the critical trust surfaces, not an approval mechanism.
+# Required code-owner review is deliberately not enabled (see
+# docs/github-rulesets.md).
+
+*                                   @trentpower
+
+# Deployment and verification automation
+/.github/                           @trentpower
+/.github/workflows/                 @trentpower
+/.github/dependabot.yml             @trentpower
+
+# Signed public record
+/public/integrity.json              @trentpower
+/public/integrity.json.sig          @trentpower
+/public/.well-known/pgp-key.asc     @trentpower
+/public/.well-known/build.json      @trentpower
+/public/site-metadata.json          @trentpower
+/public/file-metadata.json          @trentpower
+/public/source/                     @trentpower
+/public/integrity/releases/         @trentpower
+
+# Release, verification and gate tooling
+/tools/release/                     @trentpower
+/tools/verify/                      @trentpower
+/tools/quality/                     @trentpower
+/tools/config/                      @trentpower
+
+# Publication record documents
+/docs/pdf/                          @trentpower
+/README.md                          @trentpower
+/README.pdf                         @trentpower
+/SECURITY.md                        @trentpower
+/CITATION.cff                       @trentpower

@@ -113,6 +113,20 @@ def _find_release_dir() -> pathlib.Path | None:
     return None
 
 
+def _current_exclusion_manifest(rel_dir: pathlib.Path) -> pathlib.Path | None:
+    """Return the exclusion manifest that describes the CURRENT live
+    bytes: the newest build-dated rebuild (EXCLUDED_FILES-<date>.json)
+    when across-day drift has occurred, else the canonical
+    EXCLUDED_FILES.json. every variant is emitted with its own detached
+    signature, so preferring the newest keeps the tamper cross-check
+    intact while letting the canonical edition stay byte-stable."""
+    dated = sorted(rel_dir.glob("EXCLUDED_FILES-????-??-??.json"), reverse=True)
+    if dated:
+        return dated[0]
+    canonical = rel_dir / "EXCLUDED_FILES.json"
+    return canonical if canonical.is_file() else None
+
+
 def check_redistributable_manifest() -> int:
     rel_dir = _find_release_dir()
     if rel_dir is None:
@@ -295,16 +309,16 @@ def check_exclusion_manifest_signature() -> int:
     if rel_dir is None:
         print("  OK: no release directory — nothing to verify")
         return 0
-    excl_path = rel_dir / "EXCLUDED_FILES.json"
-    excl_sig = rel_dir / "EXCLUDED_FILES.json.sig"
-    if not excl_path.is_file():
+    excl_path = _current_exclusion_manifest(rel_dir)
+    if excl_path is None:
         print("  OK: EXCLUDED_FILES.json not present — release predates phase 1 exclusion manifest")
         return 0
+    excl_sig = excl_path.with_suffix(".json.sig")
     ok, err = _verify_detached_sig(excl_path, excl_sig)
     if not ok:
-        print(f"  FAIL: EXCLUDED_FILES.json.sig does not verify ({err})")
+        print(f"  FAIL: {excl_sig.name} does not verify ({err})")
         return 1
-    print("  OK: EXCLUDED_FILES.json.sig verifies against published key")
+    print(f"  OK: {excl_sig.name} verifies against published key")
     return 0
 
 
@@ -317,9 +331,9 @@ def check_exclusion_live_sha256_cross() -> int:
     if rel_dir is None:
         print("  OK: no release directory — nothing to verify")
         return 0
-    excl_path = rel_dir / "EXCLUDED_FILES.json"
+    excl_path = _current_exclusion_manifest(rel_dir)
     integ_path = ROOT / "integrity.json"
-    if not (excl_path.is_file() and integ_path.is_file()):
+    if not (excl_path is not None and integ_path.is_file()):
         print(
             "  OK: exclusion manifest or live integrity manifest missing — nothing to cross-check"
         )

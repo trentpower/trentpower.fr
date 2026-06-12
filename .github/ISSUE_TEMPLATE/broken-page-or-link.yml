@@ -1,0 +1,38 @@
+name: Broken page or link
+description: A page fails to load, renders broken, or a link points nowhere.
+title: "[broken] "
+labels: ["broken-page"]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: URL
+      placeholder: "https://trentpower.fr/..."
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and device
+      placeholder: "e.g. Safari 19 on iPhone 16, Firefox 140 on Linux"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: What loads instead — error page, blank screen, broken layout.
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Console or network output
+      description: Anything relevant from the browser developer tools.
+      render: text

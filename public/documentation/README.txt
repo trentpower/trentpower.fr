@@ -9,6 +9,10 @@
 [![Content: CC BY-SA 4.0](https://img.shields.io/badge/Content-CC%20BY--SA%204.0-lightgrey?logo=creativecommons&logoColor=white&style=flat-square)](CONTENT-RIGHTS.md)
 [![Deploy](https://img.shields.io/badge/Deploy-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white&style=flat-square)](.github/workflows/)
 
+[![PR checks](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml)
+[![Publication check](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml)
+[![Deploy](https://github.com/trentpower/trentpower.fr/actions/workflows/deploy.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/deploy.yml)
+
 `trentpower.fr` is a static, bilingual, source-verifiable personal publication.
 
 It is generated from local source, published as static files, and accompanied
@@ -79,10 +83,11 @@ tools/                The pipeline, split into responsibility pillars:
   ├── config/         Declared facts (identity, public-exposure, overrides)
   ├── lib/            Shared across pillars (paths.py, checks.py)
   ├── score-ledger/   Local-only live-site audit tool (not a deploy gate)
+  ├── visual/         Repo-presentation + visual QA proofing (not a deploy gate)
   └── _retired/       Superseded one-offs, out of the release path
 public/               Generated public output, the live web root (tracked)
 docs/                 Project documentation
-.github/workflows/    Deployment workflow
+.github/              Workflows (deploy, PR + publication checks), issue forms, ownership
 ```
 
 `public/` is intentionally tracked: the deployed bytes are part of the trust
@@ -248,6 +253,8 @@ Full documentation lives in [`docs/`](docs/README.md):
 - [INCIDENT-RESPONSE.md](docs/INCIDENT-RESPONSE.md)
 - [SCORE-LEDGER.md](docs/SCORE-LEDGER.md)
 - [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md)
+- [github-environments.md](docs/github-environments.md)
+- [github-rulesets.md](docs/github-rulesets.md)
 
 ## What is intentionally not included
 
@@ -277,6 +284,14 @@ Full documentation lives in [`docs/`](docs/README.md):
 
 Content and code are reviewed manually before publication; no automated
 publishing occurs. Full statement: [docs/authorship-statement.md](docs/authorship-statement.md).
+
+## Citing
+
+The repository is citable as a publication system via
+[`CITATION.cff`](CITATION.cff) — GitHub's "Cite this repository" button
+reads it directly. Versions are edition dates (currently `2026-06-10`),
+matching the `edition` field of the signed `integrity.json`. Code falls
+under MIT, content under CC BY-SA 4.0; see Licensing below.
 
 ## Licensing
 

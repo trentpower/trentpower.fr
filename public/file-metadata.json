@@ -2,7 +2,7 @@
   "schema_version": 1,
   "site": "https://trentpower.fr",
   "edition": "2026-06-10",
-  "generated_at": "2026-06-11",
+  "generated_at": "2026-06-12",
   "algorithm": "SHA-256",
   "files": {
     ".well-known/attribution.sig": {
@@ -25,9 +25,9 @@
       "bytes": 1170,
       "size_human_en": "1.1 KB",
       "size_human_fr": "1,1 Ko",
-      "sha256": "sha256-L94ikWpicGiCuN5DdUVxChuFcl4ifcBh5s25koZLRmw=",
-      "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206670
+      "sha256": "sha256-PW5jFtWzbi3llHIcZyPcBJYtEPteoqcCe8s+mIinEAc=",
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251414
     },
     ".well-known/person.json": {
       "bytes": 3206,
@@ -35,7 +35,7 @@
       "size_human_fr": "3,1 Ko",
       "sha256": "sha256-QP9osH6OVwaIKRYyEQqrina0EDA1s/2K4reSkfBPq7M=",
       "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206666
+      "modified_mtime": 1781251410
     },
     ".well-known/pgp-key.asc": {
       "bytes": 3147,
@@ -75,7 +75,7 @@
       "size_human_fr": "13,6 Ko",
       "sha256": "sha256-/HKWSiqSGyGaFi8W56L1/N0zhLbdphR5C/J/oTjl+TI=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "404.html": {
       "bytes": 13805,
@@ -83,7 +83,7 @@
       "size_human_fr": "13,5 Ko",
       "sha256": "sha256-LRLZ1Z0IIryMoyqvtCO0H+EEq6fpqzVyRVFLk1b9uTo=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "500.html": {
       "bytes": 13951,
@@ -91,7 +91,7 @@
       "size_human_fr": "13,6 Ko",
       "sha256": "sha256-VRtNMP1+yr6Z5eKgbVMh1XgxVrgDBQd9vEkdyc/UDXM=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "ai-usage.txt": {
       "bytes": 974,
@@ -139,15 +139,15 @@
       "size_human_fr": "5,6 Mo",
       "sha256": "sha256-YNWqyK6EeZTUAup+r7y1AI+K6QFJ8y7+yl0zgmZxcGE=",
       "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206668
+      "modified_mtime": 1781251411
     },
     "documentation/README.txt": {
-      "bytes": 14263,
-      "size_human_en": "13.9 KB",
-      "size_human_fr": "13,9 Ko",
-      "sha256": "sha256-nrLINoSstdFKgZFbJZQBd9RcEw7f90TcMkP4nB9wfXc=",
-      "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206668
+      "bytes": 15399,
+      "size_human_en": "15.0 KB",
+      "size_human_fr": "15,0 Ko",
+      "sha256": "sha256-M7yXguxHPijnGTuWjxGo+/xL0wcUgef5ESPj7yYpaqs=",
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251411
     },
     "documentation/index.html": {
       "bytes": 13597,
@@ -155,7 +155,7 @@
       "size_human_fr": "13,3 Ko",
       "sha256": "sha256-c7D30CY8wyhAHfM/1zgT6NNJD+BahzMJ1/s8oAAgJGI=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206668
+      "modified_mtime": 1781251412
     },
     "editorial/copy-review.docx": {
       "bytes": 35239,
@@ -195,7 +195,7 @@
       "size_human_fr": "13,5 Ko",
       "sha256": "sha256-SuIAsdqioPSxWE3LVng/kRGbFLwpbCWWN0USagHYe0E=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "en-au/404.html": {
       "bytes": 13742,
@@ -203,7 +203,7 @@
       "size_human_fr": "13,4 Ko",
       "sha256": "sha256-EDKVNdxlMx5gPafDGHcQPkGTtlVTVlYixt0SsJ7bBOA=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "en-au/500.html": {
       "bytes": 13888,
@@ -211,7 +211,7 @@
       "size_human_fr": "13,6 Ko",
       "sha256": "sha256-R2mF8VGTSg2OFD6JWF+gv4ckz9qhA1AW/8XoL0ksy24=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "en-au/index.html": {
       "bytes": 36369,
@@ -219,7 +219,7 @@
       "size_human_fr": "35,5 Ko",
       "sha256": "sha256-AIElCx6fy1PVHfGM3tFOWFM3aV2XYAlvXEd+Qh3qpYI=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "en-au/integrity/index.html": {
       "bytes": 20733,
@@ -227,7 +227,7 @@
       "size_human_fr": "20,2 Ko",
       "sha256": "sha256-peil4bnZnE9Jfei8H06nt5qWMI/LkFR4rOJQr5CW1es=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "en-au/integrity/releases/index.html": {
       "bytes": 20644,
@@ -235,7 +235,7 @@
       "size_human_fr": "20,2 Ko",
       "sha256": "sha256-Z7dSUce/06VX2RCrh0G8sHF2RJDb24np8yap/Ltiu8g=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "en-au/integrity/verify-locally/index.html": {
       "bytes": 15984,
@@ -243,7 +243,7 @@
       "size_human_fr": "15,6 Ko",
       "sha256": "sha256-JnmeUDycRrjgG0xYxqhr/s/bGW8aBNUWiYSqmsh1Qis=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "en-au/maintenance.html": {
       "bytes": 14268,
@@ -251,7 +251,7 @@
       "size_human_fr": "13,9 Ko",
       "sha256": "sha256-ISabN5bxRliqmKlO/zBi5ADPzDphepHmTFqG9TqOe2U=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "en-au/privacy/index.html": {
       "bytes": 16214,
@@ -259,7 +259,7 @@
       "size_human_fr": "15,8 Ko",
       "sha256": "sha256-l3tgHjx8kwHni2Si15tpFRdadTcZhmagdijC2RWlHKs=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "en-au/security/acknowledgments/index.html": {
       "bytes": 15210,
@@ -267,7 +267,7 @@
       "size_human_fr": "14,9 Ko",
       "sha256": "sha256-vSbSms2TsGRxOneqdPcKjV92I/xinB6Pn6a9QFJTAkQ=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "en-au/security/index.html": {
       "bytes": 30025,
@@ -275,7 +275,7 @@
       "size_human_fr": "29,3 Ko",
       "sha256": "sha256-NeS9JTyeKxVJOlPqUCWZphG6ZKqsNx/Oad/pyyyGiLA=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "en-au/source/index.html": {
       "bytes": 50180,
@@ -283,15 +283,15 @@
       "size_human_fr": "49,0 Ko",
       "sha256": "sha256-fOOiZ7gpPdJuc7zJExmZAzcgu2dM7VAyK+bhd5yEe2Q=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "en-au/source/view/index.html": {
       "bytes": 12030,
       "size_human_en": "11.7 KB",
       "size_human_fr": "11,7 Ko",
-      "sha256": "sha256-IOD2FEdZpfSQ/PGnKT1dhgcXWGruNvnsctNwasf3aQw=",
-      "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "sha256": "sha256-u0Hqjmy/j+tM2Ch9iexsbQ3cy6teeuIGlg5DfVEbvRY=",
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251416
     },
     "en-au/verify/index.html": {
       "bytes": 16053,
@@ -299,7 +299,7 @@
       "size_human_fr": "15,7 Ko",
       "sha256": "sha256-xRgP8aZygNL3dHYk/CChfIt0jTRnqw1IjTlsChyYUZM=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "favicon.ico": {
       "bytes": 1036,
@@ -323,7 +323,7 @@
       "size_human_fr": "2,2 Ko",
       "sha256": "sha256-eE9WqnVQrYYq6dEh0oxfDbbCe3GF6ecrByHrgw/2yGs=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206666
+      "modified_mtime": 1781251411
     },
     "fonts/signifier-light-italic.woff2": {
       "bytes": 34167,
@@ -395,7 +395,7 @@
       "size_human_fr": "16,0 Ko",
       "sha256": "sha256-SpP8KnJBCvp/WSRlPaaxKqvug71Zirte+V2Kl2xhvEw=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206666
+      "modified_mtime": 1781251410
     },
     "fonts/subsets/soehne-kraftig-nav.woff2": {
       "bytes": 5502,
@@ -403,7 +403,7 @@
       "size_human_fr": "5,4 Ko",
       "sha256": "sha256-v82I7eTB1pKMB6T36d+F3zoi9KCUnzO+VgtEZI5fYAU=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206666
+      "modified_mtime": 1781251410
     },
     "fonts/subsets/soehne-mono-buch-labels.woff2": {
       "bytes": 5448,
@@ -411,7 +411,7 @@
       "size_human_fr": "5,3 Ko",
       "sha256": "sha256-wP6dgf0KiC8v/hs64w5V3Hcl7xNGkkp/lXRoymogK/E=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206666
+      "modified_mtime": 1781251410
     },
     "fr/403.html": {
       "bytes": 14288,
@@ -419,7 +419,7 @@
       "size_human_fr": "14,0 Ko",
       "sha256": "sha256-nL9rWWMuoTpTuAW5UvxIybWU/bVjvLCY0yLYUbscssI=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "fr/404.html": {
       "bytes": 14046,
@@ -427,7 +427,7 @@
       "size_human_fr": "13,7 Ko",
       "sha256": "sha256-5ZthKAI0mNncxWYEtEibD6QsWbYOFSc43z0U6ej3AWE=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "fr/500.html": {
       "bytes": 14298,
@@ -435,7 +435,7 @@
       "size_human_fr": "14,0 Ko",
       "sha256": "sha256-kNMM8bLYmE3bJdxuUsBh2bQiJLNfghxmwv/cLfnGBwo=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "fr/confidentialite/index.html": {
       "bytes": 16936,
@@ -443,7 +443,7 @@
       "size_human_fr": "16,5 Ko",
       "sha256": "sha256-49s1v8ZoqAL+/ekcTHIZasatUvSSdVehPj4iGfbopqg=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "fr/index.html": {
       "bytes": 37672,
@@ -451,7 +451,7 @@
       "size_human_fr": "36,8 Ko",
       "sha256": "sha256-8+16ojA9bZUtrB+i9v/Mu0KvqcyOH98JBA/KtwN3hO8=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "fr/integrite/archives/index.html": {
       "bytes": 21203,
@@ -459,7 +459,7 @@
       "size_human_fr": "20,7 Ko",
       "sha256": "sha256-ZE7TEAJd94AcqFbNVNrTtQMGWz9341wQgJTmpqlyWfI=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "fr/integrite/index.html": {
       "bytes": 21245,
@@ -467,7 +467,7 @@
       "size_human_fr": "20,7 Ko",
       "sha256": "sha256-BtbpIPAJLDzcm0NnU6pFRCYtmCscDOCFtaDFsWqsA9w=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "fr/integrite/verifier-localement/index.html": {
       "bytes": 16470,
@@ -475,7 +475,7 @@
       "size_human_fr": "16,1 Ko",
       "sha256": "sha256-af+Ks2upHyq7+maRh9i/ya90oOO+y2ODFR67yWBlfjI=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "fr/maintenance.html": {
       "bytes": 14663,
@@ -483,7 +483,7 @@
       "size_human_fr": "14,3 Ko",
       "sha256": "sha256-arodAzPhiQ7XupPXsCqfq6LFxeImT7maM7EkkvhLmfE=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "fr/securite/index.html": {
       "bytes": 31797,
@@ -491,7 +491,7 @@
       "size_human_fr": "31,1 Ko",
       "sha256": "sha256-pILDM5usDI2xCgO1wzj9vrh3lfTJHUD8SZGDBQtXKs0=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "fr/securite/remerciements/index.html": {
       "bytes": 15673,
@@ -499,7 +499,7 @@
       "size_human_fr": "15,3 Ko",
       "sha256": "sha256-wSk3llEcCfyPFn9efKlC/OHS5z6RiogeJub2fVxq6VQ=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "fr/source/index.html": {
       "bytes": 51135,
@@ -507,15 +507,15 @@
       "size_human_fr": "49,9 Ko",
       "sha256": "sha256-Z4i+jQbmHCohoR2SrevHcDzURGOwkFEEt15xlo4HH8E=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "fr/source/voir/index.html": {
       "bytes": 12320,
       "size_human_en": "12.0 KB",
       "size_human_fr": "12,0 Ko",
-      "sha256": "sha256-JZwmc2HoP+0lyOjtmtHta7dgH6pp8ccNeYYxcZJ3vpo=",
-      "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "sha256": "sha256-VDxokNo/RYZVtY5pfiot5Nbyyqa6pQh2w5590lGnXtM=",
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251416
     },
     "fr/verifier/index.html": {
       "bytes": 16467,
@@ -523,7 +523,7 @@
       "size_human_fr": "16,1 Ko",
       "sha256": "sha256-LXvxbp6S7AmM4YAInL3jBlrv00LUvO59eDzBoGRleyI=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "humans.txt": {
       "bytes": 2334,
@@ -891,7 +891,7 @@
       "size_human_fr": "11,4 Ko",
       "sha256": "sha256-SfPeKhwAN850FDRA2+/V4AssXKZRENP/6eh8KQn2h68=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206669
+      "modified_mtime": 1781251413
     },
     "integrity/releases/2026-02/assets/fonts/ibm-plex-mono-300.woff2": {
       "bytes": 14748,
@@ -1043,7 +1043,7 @@
       "size_human_fr": "7,3 Ko",
       "sha256": "sha256-HghlVmQ+0bpwbKWpQRg6B5Zbm0mKH15sbqrcU58V7n0=",
       "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206667
+      "modified_mtime": 1781251411
     },
     "integrity/releases/archive.css": {
       "bytes": 1012,
@@ -1059,7 +1059,7 @@
       "size_human_fr": "4,6 Ko",
       "sha256": "sha256-E+Y62FwL487J2dHohmYNywcZl29WPNS3otlh3AI9SCs=",
       "modified_iso": "2026-05-24",
-      "modified_mtime": 1781206666
+      "modified_mtime": 1781251411
     },
     "js/edition.js": {
       "bytes": 7058,
@@ -1067,7 +1067,7 @@
       "size_human_fr": "6,9 Ko",
       "sha256": "sha256-cOh3o8jn2yKStc+NR9zoOEOWz3cwR5hsRIPmUUiripc=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206666
+      "modified_mtime": 1781251411
     },
     "js/fonts.js": {
       "bytes": 1269,
@@ -1075,7 +1075,7 @@
       "size_human_fr": "1,2 Ko",
       "sha256": "sha256-k4hzR4ovDftlqu0JnZ2fnhM0Cs+I8zjnqHecGRGaO2E=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206667
+      "modified_mtime": 1781251411
     },
     "js/language-gate.js": {
       "bytes": 7731,
@@ -1083,7 +1083,7 @@
       "size_human_fr": "7,5 Ko",
       "sha256": "sha256-ANlilP665txzAyjYmtvSPmsTV8amKYWYgvV7QP+silo=",
       "modified_iso": "2026-06-09",
-      "modified_mtime": 1781206664
+      "modified_mtime": 1781251409
     },
     "js/local.js": {
       "bytes": 20694,
@@ -1091,7 +1091,7 @@
       "size_human_fr": "20,2 Ko",
       "sha256": "sha256-xm/N/Ea8/9p36gLrTRFlSuFI1dhFj65Jn7wOu0H/q/Y=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206666
+      "modified_mtime": 1781251411
     },
     "js/micro-interactions.js": {
       "bytes": 4185,
@@ -1099,7 +1099,7 @@
       "size_human_fr": "4,1 Ko",
       "sha256": "sha256-Df1FYby9yfTUw8/R4cSRO8SKLmxFLUkfk0iuT13+V78=",
       "modified_iso": "2026-05-31",
-      "modified_mtime": 1781206666
+      "modified_mtime": 1781251411
     },
     "js/overlay.js": {
       "bytes": 3583,
@@ -1107,7 +1107,7 @@
       "size_human_fr": "3,5 Ko",
       "sha256": "sha256-/bDQyjv8E3/0oghZhRNN1I198S7PFvxlTXEluZVi3TA=",
       "modified_iso": "2026-05-24",
-      "modified_mtime": 1781206666
+      "modified_mtime": 1781251411
     },
     "js/reveal.js": {
       "bytes": 1565,
@@ -1115,7 +1115,7 @@
       "size_human_fr": "1,5 Ko",
       "sha256": "sha256-9hHG82hDWn4UOZJYPpZo+wSXYjdHlF/mQLbDkEdF/PQ=",
       "modified_iso": "2026-05-24",
-      "modified_mtime": 1781206667
+      "modified_mtime": 1781251411
     },
     "js/theme.js": {
       "bytes": 1540,
@@ -1123,7 +1123,7 @@
       "size_human_fr": "1,5 Ko",
       "sha256": "sha256-Qxxaa9f6Az5047yRAQf4JLG/+OhHnrJaD7MLIJ4/GF0=",
       "modified_iso": "2026-05-21",
-      "modified_mtime": 1781206667
+      "modified_mtime": 1781251411
     },
     "js/verify-modal.js": {
       "bytes": 13417,
@@ -1131,7 +1131,7 @@
       "size_human_fr": "13,1 Ko",
       "sha256": "sha256-3owKqbXMkueEl6txa4U/dlSSgKoweWlCt9ZoIJfGUvU=",
       "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206666
+      "modified_mtime": 1781251411
     },
     "llms.txt": {
       "bytes": 2407,
@@ -1139,7 +1139,7 @@
       "size_human_fr": "2,4 Ko",
       "sha256": "sha256-tTKFqWYK/0FzJRknPZTSkJl/v/zln3DRRQwES1ZNji8=",
       "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206667
+      "modified_mtime": 1781251411
     },
     "local/index.html": {
       "bytes": 23967,
@@ -1147,7 +1147,7 @@
       "size_human_fr": "23,4 Ko",
       "sha256": "sha256-BD4pnNtdptWEL367aaRxBP38SZ5FUQ3MlSDoaq8O7Ts=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "maintenance.html": {
       "bytes": 14331,
@@ -1155,7 +1155,7 @@
       "size_human_fr": "14,0 Ko",
       "sha256": "sha256-d87JWq7NDsXmYfgMuWOw29EYUfY/8lLmME/YvqOyQxA=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "modified_mtime": 1781251416
     },
     "manifest.webmanifest": {
       "bytes": 708,
@@ -1179,7 +1179,7 @@
       "size_human_fr": "27,5 Ko",
       "sha256": "sha256-UzUUgZNtbcJHCc2OxY0XC0sGNSvPhN8auxg344aZMrw=",
       "modified_iso": "2026-06-09",
-      "modified_mtime": 1781206666
+      "modified_mtime": 1781251410
     },
     "robots.txt": {
       "bytes": 493,
@@ -1195,7 +1195,7 @@
       "size_human_fr": "4,8 Ko",
       "sha256": "sha256-fK2x64ygpzGDjMOo1HyzK6xYYl+j4gjmGOJ2+K6wK4U=",
       "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206669
+      "modified_mtime": 1781251413
     },
     "source/.well-known/attribution.txt.txt": {
       "bytes": 390,
@@ -1203,15 +1203,15 @@
       "size_human_fr": "390 octets",
       "sha256": "sha256-oSzaz8vXgK+BYMC0hEVCSPo0lPp4rwBKwgLRMEBL6Rg=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/.well-known/build.json.txt": {
       "bytes": 1170,
       "size_human_en": "1.1 KB",
       "size_human_fr": "1,1 Ko",
-      "sha256": "sha256-L94ikWpicGiCuN5DdUVxChuFcl4ifcBh5s25koZLRmw=",
-      "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206670
+      "sha256": "sha256-PW5jFtWzbi3llHIcZyPcBJYtEPteoqcCe8s+mIinEAc=",
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/.well-known/person.json.txt": {
       "bytes": 3206,
@@ -1219,7 +1219,7 @@
       "size_human_fr": "3,1 Ko",
       "sha256": "sha256-QP9osH6OVwaIKRYyEQqrina0EDA1s/2K4reSkfBPq7M=",
       "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/.well-known/pgp-key.asc.txt": {
       "bytes": 3147,
@@ -1227,7 +1227,7 @@
       "size_human_fr": "3,1 Ko",
       "sha256": "sha256-rvgu/o1MmjSAvnF3b6Fws3ik3fao6Ioz33hKhNW+Deg=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/.well-known/publication.json.txt": {
       "bytes": 4843,
@@ -1235,7 +1235,7 @@
       "size_human_fr": "4,7 Ko",
       "sha256": "sha256-Wip1js65oeW+vPx3fW0aavmmA/dXDIEIuMoklI5/rTU=",
       "modified_iso": "2026-05-18",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/.well-known/security.txt.txt": {
       "bytes": 1523,
@@ -1243,7 +1243,7 @@
       "size_human_fr": "1,5 Ko",
       "sha256": "sha256-OeE0g7hequv/sN9tRxdrCETU670FKNmHJyf5x6Zy2lI=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/.well-known/webfinger.txt": {
       "bytes": 327,
@@ -1251,31 +1251,31 @@
       "size_human_fr": "327 octets",
       "sha256": "sha256-i5Q+f35Z9HNRAM3xAxYcrQA+ly/ZBu1V6oONAmFTF5k=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/403.html.txt": {
       "bytes": 13931,
       "size_human_en": "13.6 KB",
       "size_human_fr": "13,6 Ko",
       "sha256": "sha256-9SCD/b2/c01fMeKehifcEtcw8ILXLShxcXD4+ZjfjE0=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/404.html.txt": {
       "bytes": 13805,
       "size_human_en": "13.5 KB",
       "size_human_fr": "13,5 Ko",
       "sha256": "sha256-ZqvqhBLuGCbreRHCDRhzS2s6QOQ1eg7DIeOCQ4h7cGE=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/500.html.txt": {
       "bytes": 13951,
       "size_human_en": "13.6 KB",
       "size_human_fr": "13,6 Ko",
       "sha256": "sha256-cnrmebi/r/Mo8nvVOHLEt2uKzW2oD8lf9fsVT81qQx4=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/README.txt": {
       "bytes": 1194,
@@ -1283,7 +1283,7 @@
       "size_human_fr": "1,2 Ko",
       "sha256": "sha256-XcPW1Cs/NMqmmUgf4akGsugCfA+7SRo/zUP4ZVcDI2E=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/ai-usage.txt.txt": {
       "bytes": 974,
@@ -1291,7 +1291,7 @@
       "size_human_fr": "974 octets",
       "sha256": "sha256-KCGgNuPPWi8tmdrtleJwI0EuGgMrWeAkZUaYHNDvinY=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/apple-touch-icon.png.base64.txt": {
       "bytes": 2620,
@@ -1299,7 +1299,7 @@
       "size_human_fr": "2,6 Ko",
       "sha256": "sha256-cGOhlpNzCYeWfj6jY+1vTno8d/SjsKd6V/gMsuNVFsk=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/assertion.txt.txt": {
       "bytes": 1259,
@@ -1307,7 +1307,7 @@
       "size_human_fr": "1,2 Ko",
       "sha256": "sha256-e1vqC6De55Z1+k+CHmSei5Q3ur3sG+59vc58jQlF8wk=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/attestations.json.txt": {
       "bytes": 454,
@@ -1315,7 +1315,7 @@
       "size_human_fr": "454 octets",
       "sha256": "sha256-gHJWdZKY0esHE3i6NI/NkuoDIb8bNYur/6XRMCBwcIE=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/changelog.txt.txt": {
       "bytes": 160304,
@@ -1323,7 +1323,7 @@
       "size_human_fr": "156,5 Ko",
       "sha256": "sha256-56AfPJvGTeUAuLA69NwDM3Ii+HghftSieHaiUrqrRcY=",
       "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/copy.js.txt": {
       "bytes": 10379,
@@ -1331,119 +1331,119 @@
       "size_human_fr": "10,1 Ko",
       "sha256": "sha256-pel8k9PVYI7OwQKQFL+tu6yk7L02XPbHvHqOWNm/1KQ=",
       "modified_iso": "2026-05-24",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/documentation/index.html.txt": {
       "bytes": 13597,
       "size_human_en": "13.3 KB",
       "size_human_fr": "13,3 Ko",
       "sha256": "sha256-c7D30CY8wyhAHfM/1zgT6NNJD+BahzMJ1/s8oAAgJGI=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/edition.js.txt": {
       "bytes": 11986,
       "size_human_en": "11.7 KB",
       "size_human_fr": "11,7 Ko",
       "sha256": "sha256-dgqWbYKn/TI84xSTdL7/UQZnqPV/zoIQPyRBNPOh6Vo=",
-      "modified_iso": "2026-06-09",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/en-au/403.html.txt": {
       "bytes": 13868,
       "size_human_en": "13.5 KB",
       "size_human_fr": "13,5 Ko",
       "sha256": "sha256-15QqlSL3CsY+nnbJkko92QKde4gd9T8GKQHeCdeKMe0=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/en-au/404.html.txt": {
       "bytes": 13742,
       "size_human_en": "13.4 KB",
       "size_human_fr": "13,4 Ko",
       "sha256": "sha256-qMXdQFaWshnur3qZsRbuIbP3fdrLbmoWB0PHYtsWaCg=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/en-au/500.html.txt": {
       "bytes": 13888,
       "size_human_en": "13.6 KB",
       "size_human_fr": "13,6 Ko",
       "sha256": "sha256-y7GD3vw50Nt52dLvNHZxzDvprdDByARGtUpidR/+96M=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/en-au/index.html.txt": {
       "bytes": 36369,
       "size_human_en": "35.5 KB",
       "size_human_fr": "35,5 Ko",
       "sha256": "sha256-DDhHIWKErhUdgmm9bXAomx8pCDRzXw3UZGHbxi9GRHI=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251414
     },
     "source/en-au/integrity/index.html.txt": {
       "bytes": 20733,
       "size_human_en": "20.2 KB",
       "size_human_fr": "20,2 Ko",
       "sha256": "sha256-WvCJJ2fu6CHkDPn5UajQfA1gtlMbDc3fwd4zOeFO5Mw=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/en-au/integrity/releases/index.html.txt": {
       "bytes": 20644,
       "size_human_en": "20.2 KB",
       "size_human_fr": "20,2 Ko",
       "sha256": "sha256-2tVfigLNrRnDEnm56abJYcFnX1vyyxiiOl3v8/lI/iQ=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/en-au/integrity/verify-locally/index.html.txt": {
       "bytes": 15984,
       "size_human_en": "15.6 KB",
       "size_human_fr": "15,6 Ko",
       "sha256": "sha256-/1KESZjXRfELrpwaKsWgnP7IvRpJuBMVEovJ2m5X3t4=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/en-au/maintenance.html.txt": {
       "bytes": 14268,
       "size_human_en": "13.9 KB",
       "size_human_fr": "13,9 Ko",
       "sha256": "sha256-Gr9cdnCXNWUadgCKRBiVA9NfaP7CqYaSTxzffCYiI/c=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/en-au/privacy/index.html.txt": {
       "bytes": 16214,
       "size_human_en": "15.8 KB",
       "size_human_fr": "15,8 Ko",
       "sha256": "sha256-r+7IFEubRJyre/55gWFX6N2TCwGEsBEgoMA2KjTgml4=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251414
     },
     "source/en-au/security/acknowledgments/index.html.txt": {
       "bytes": 15210,
       "size_human_en": "14.9 KB",
       "size_human_fr": "14,9 Ko",
       "sha256": "sha256-uVG94+njXbw2ag43TXXQoa7jnWSFJ+t/LQZo+WmLIV0=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/en-au/security/index.html.txt": {
       "bytes": 30025,
       "size_human_en": "29.3 KB",
       "size_human_fr": "29,3 Ko",
       "sha256": "sha256-efGcezhTo+eD2I+x9vttoyzK02BFyuU//pHIig4jjt0=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/en-au/verify/index.html.txt": {
       "bytes": 16053,
       "size_human_en": "15.7 KB",
       "size_human_fr": "15,7 Ko",
       "sha256": "sha256-6jafOFWGlzQqDljr1aoWzboAa0O1pXSe7rqvIHB351E=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/favicon.ico.base64.txt": {
       "bytes": 1536,
@@ -1451,7 +1451,7 @@
       "size_human_fr": "1,5 Ko",
       "sha256": "sha256-wSruO5MWJZCtQDdEeMMkvGoF9LnQl1Ml8RcGp4Msue8=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/favicon.svg.txt": {
       "bytes": 677,
@@ -1459,7 +1459,7 @@
       "size_human_fr": "677 octets",
       "sha256": "sha256-MLGU2VDrhrVOpbIyXdV0vUSbubm2IuStgz9wu4g21QI=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/fonts-full.css.txt": {
       "bytes": 2794,
@@ -1467,7 +1467,7 @@
       "size_human_fr": "2,7 Ko",
       "sha256": "sha256-HBF++3sP6IyQjPsjNi5pD0qPEzlIr96THKYCt7dLksQ=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/fonts.js.txt": {
       "bytes": 2952,
@@ -1475,103 +1475,103 @@
       "size_human_fr": "2,9 Ko",
       "sha256": "sha256-Hj9VDtkTiD7h06erDd17opRRPBWyZDr3vstJ2h90x9g=",
       "modified_iso": "2026-05-23",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/fr/403.html.txt": {
       "bytes": 14288,
       "size_human_en": "14.0 KB",
       "size_human_fr": "14,0 Ko",
       "sha256": "sha256-r57T82Dsg9Lv2BEMWjthh9EUYckQGTAAR4IpLklWmgo=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/fr/404.html.txt": {
       "bytes": 14046,
       "size_human_en": "13.7 KB",
       "size_human_fr": "13,7 Ko",
       "sha256": "sha256-KABRgChPC3aLau9u7AhgX+HuJYUzVqXt9U2pwZiwFTs=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/fr/500.html.txt": {
       "bytes": 14298,
       "size_human_en": "14.0 KB",
       "size_human_fr": "14,0 Ko",
       "sha256": "sha256-OZe/K5usjENtnh5wy4qR66QFt0jhoUTre7J32T9NeGM=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/fr/confidentialite/index.html.txt": {
       "bytes": 16936,
       "size_human_en": "16.5 KB",
       "size_human_fr": "16,5 Ko",
       "sha256": "sha256-WNcSbBEim1WUuRhng3hwJa6mJJAlK2TjMNCyNY6aJoE=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/fr/index.html.txt": {
       "bytes": 37672,
       "size_human_en": "36.8 KB",
       "size_human_fr": "36,8 Ko",
       "sha256": "sha256-UhOkKwlgJqFJNmZj+nCNacK/2Y0iCLpSyIde7GdWnFI=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251414
     },
     "source/fr/integrite/archives/index.html.txt": {
       "bytes": 21203,
       "size_human_en": "20.7 KB",
       "size_human_fr": "20,7 Ko",
       "sha256": "sha256-PqS08aRZd1Bsx5Hz+k8CgtqavrYucGSMIA0MKyMpTkQ=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/fr/integrite/index.html.txt": {
       "bytes": 21245,
       "size_human_en": "20.7 KB",
       "size_human_fr": "20,7 Ko",
       "sha256": "sha256-C2CxOLW9d7iZ0a7HpLhI7rDs6qXDeSLC/UO+wcCVKAs=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/fr/integrite/verifier-localement/index.html.txt": {
       "bytes": 16470,
       "size_human_en": "16.1 KB",
       "size_human_fr": "16,1 Ko",
       "sha256": "sha256-O4fjWDHnQbN2pT8HXYS9ukW0IzW4Jk+j+kPuKAxrnBc=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/fr/maintenance.html.txt": {
       "bytes": 14663,
       "size_human_en": "14.3 KB",
       "size_human_fr": "14,3 Ko",
       "sha256": "sha256-7H9G7i1WH9Wafpjd7FEmEIdKTcRe7eJL/K9C2Gz7Fxs=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/fr/securite/index.html.txt": {
       "bytes": 31797,
       "size_human_en": "31.1 KB",
       "size_human_fr": "31,1 Ko",
       "sha256": "sha256-Wc1mmMnV4ZBVPv+WnEsR6EjKJiBBQzXt6ZloJqpKFP0=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/fr/securite/remerciements/index.html.txt": {
       "bytes": 15673,
       "size_human_en": "15.3 KB",
       "size_human_fr": "15,3 Ko",
       "sha256": "sha256-PnyT5npHrUt4qIxMElQ7Zb0HncxwJVY9fE0DJ+MNQhQ=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/fr/verifier/index.html.txt": {
       "bytes": 16467,
       "size_human_en": "16.1 KB",
       "size_human_fr": "16,1 Ko",
       "sha256": "sha256-KPZKqIuY80Fdlz0Jp2IOq5eR9TSZsPkJiaoLrZg3Qok=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/htaccess.txt": {
       "bytes": 25514,
@@ -1579,7 +1579,7 @@
       "size_human_fr": "24,9 Ko",
       "sha256": "sha256-9xSoUmaec/7U5/lnJfJPg9NaVQPtUrKY8vaJfHWs0yo=",
       "modified_iso": "2026-06-07",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/humans.txt.txt": {
       "bytes": 2334,
@@ -1587,7 +1587,7 @@
       "size_human_fr": "2,3 Ko",
       "sha256": "sha256-AnP6/S4dIbllCer8+PFJC9kz+HRo/LoYM/GBHYk7HFU=",
       "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/icon-192.png.base64.txt": {
       "bytes": 2814,
@@ -1595,7 +1595,7 @@
       "size_human_fr": "2,7 Ko",
       "sha256": "sha256-wJuoVcsJ5xt+P+ZO6Jtp7Y7d2nSUhhr1TAFFs1/a+/s=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/icon-512.png.base64.txt": {
       "bytes": 7256,
@@ -1603,7 +1603,7 @@
       "size_human_fr": "7,1 Ko",
       "sha256": "sha256-wPRNKkXVF7lXx/+boclJsYmSyOHnmkZCEf5hzKgBTbs=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/architecture/architecture-mobile.en.svg.txt": {
       "bytes": 4590,
@@ -1611,7 +1611,7 @@
       "size_human_fr": "4,5 Ko",
       "sha256": "sha256-9Rghc0nQzMuOGHyVMQKT9CcTcVtO/jAoi5QVN2Qb9k4=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/architecture/architecture-mobile.fr.svg.txt": {
       "bytes": 4705,
@@ -1619,7 +1619,7 @@
       "size_human_fr": "4,6 Ko",
       "sha256": "sha256-h072Fsp5j0HuqlSFI5+PGLoSWBefub7BMQXr57M9LQs=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/architecture/architecture-mobile.svg.txt": {
       "bytes": 4590,
@@ -1627,7 +1627,7 @@
       "size_human_fr": "4,5 Ko",
       "sha256": "sha256-9Rghc0nQzMuOGHyVMQKT9CcTcVtO/jAoi5QVN2Qb9k4=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/architecture/architecture.en.svg.txt": {
       "bytes": 6522,
@@ -1635,7 +1635,7 @@
       "size_human_fr": "6,4 Ko",
       "sha256": "sha256-UA6uZvbLaG/kWTThEz0+jSUWC0giGPp+Vnsd3E/+jek=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/architecture/architecture.fr.svg.txt": {
       "bytes": 6684,
@@ -1643,7 +1643,7 @@
       "size_human_fr": "6,5 Ko",
       "sha256": "sha256-2SSmbUaqJbrnM+BAtmz3cvaCT/V1hS/O+mToVbvVVzA=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/architecture/architecture.svg.txt": {
       "bytes": 6522,
@@ -1651,7 +1651,7 @@
       "size_human_fr": "6,4 Ko",
       "sha256": "sha256-UA6uZvbLaG/kWTThEz0+jSUWC0giGPp+Vnsd3E/+jek=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/icons/apple-touch-icon.png.base64.txt": {
       "bytes": 2633,
@@ -1659,7 +1659,7 @@
       "size_human_fr": "2,6 Ko",
       "sha256": "sha256-Nx7tME75/8Jm73lqeh8OJcLR3fNKSKT1QAZk+dl7E2k=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/icons/favicon.ico.base64.txt": {
       "bytes": 1549,
@@ -1667,7 +1667,7 @@
       "size_human_fr": "1,5 Ko",
       "sha256": "sha256-tpDvubUaP37s7GFwWPbNpMM0VNBHHl6gYak4mrpJuUs=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/icons/favicon.svg.txt": {
       "bytes": 677,
@@ -1675,7 +1675,7 @@
       "size_human_fr": "677 octets",
       "sha256": "sha256-MLGU2VDrhrVOpbIyXdV0vUSbubm2IuStgz9wu4g21QI=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/icons/icon-192.png.base64.txt": {
       "bytes": 2827,
@@ -1683,7 +1683,7 @@
       "size_human_fr": "2,8 Ko",
       "sha256": "sha256-63VIgNAMhnxPWeGDfzDsPvxkkLZpAP0j3AaZKv0CGWY=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/icons/icon-512.png.base64.txt": {
       "bytes": 7269,
@@ -1691,7 +1691,7 @@
       "size_human_fr": "7,1 Ko",
       "sha256": "sha256-j28iWLolEsITbCWVsMH1UVMScgU1+xp6Am5iLGovtb0=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/og/404-og.png.base64.txt": {
       "bytes": 22993,
@@ -1699,7 +1699,7 @@
       "size_human_fr": "22,5 Ko",
       "sha256": "sha256-dhg0D8/LXbL1yl2Khv53g9qrBanCdC0zXyeW4nXtEKw=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/og/500-og.png.base64.txt": {
       "bytes": 25603,
@@ -1707,7 +1707,7 @@
       "size_human_fr": "25,0 Ko",
       "sha256": "sha256-v5ib9seR4aJ/PFhLWtXHsT3jznedTwjjbyV40KNzzIA=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/og/default-og.png.base64.txt": {
       "bytes": 14945,
@@ -1715,7 +1715,7 @@
       "size_human_fr": "14,6 Ko",
       "sha256": "sha256-whIjpl1vjtLXW6tIqSc7pX1mciDSLzuSlrPkB/IgqDk=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/og/home-og.png.base64.txt": {
       "bytes": 47407,
@@ -1723,7 +1723,7 @@
       "size_human_fr": "46,3 Ko",
       "sha256": "sha256-TZiKcsR6W6892hYPDwNUTSQkMgirqjqCy6bHIyo0jSw=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/og/integrity-og.png.base64.txt": {
       "bytes": 24134,
@@ -1731,7 +1731,7 @@
       "size_human_fr": "23,6 Ko",
       "sha256": "sha256-WfxD8yle/DgBvDEXF4s2276Raz3CZvYkAMVdKPPHWPw=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/og/maintenance-og.png.base64.txt": {
       "bytes": 80062,
@@ -1739,7 +1739,7 @@
       "size_human_fr": "78,2 Ko",
       "sha256": "sha256-vQ0ey5YcLmRQFtMMf62LWmwns3cSfCnMrG5IG39QXgA=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/og/privacy-og.png.base64.txt": {
       "bytes": 28375,
@@ -1747,7 +1747,7 @@
       "size_human_fr": "27,7 Ko",
       "sha256": "sha256-MTe3SmrBZ8b9T6oJnUGxF7llMu5Kw2iZSejwEvvjBr8=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/og/releases-og.png.base64.txt": {
       "bytes": 24161,
@@ -1755,7 +1755,7 @@
       "size_human_fr": "23,6 Ko",
       "sha256": "sha256-Ms8Rc+ezFKIIw96DDT0BkPEWqnmIz+px1lBNb1RJ6QU=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/og/security-acknowledgments-og.png.base64.txt": {
       "bytes": 41616,
@@ -1763,7 +1763,7 @@
       "size_human_fr": "40,6 Ko",
       "sha256": "sha256-2myiWj7qtQG7mtF42m9SBVRuQXNDgOvvUSqbqGjN7Yk=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/og/security-og.png.base64.txt": {
       "bytes": 39886,
@@ -1771,7 +1771,7 @@
       "size_human_fr": "39,0 Ko",
       "sha256": "sha256-s5rymJfPfRmo5f6JZ09y+pK4+19mVAJX0k4A6vk6C3w=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/og/source-og.png.base64.txt": {
       "bytes": 27766,
@@ -1779,7 +1779,7 @@
       "size_human_fr": "27,1 Ko",
       "sha256": "sha256-sB1bm6hJmD7Qx5fbO8AD1zQEu9pTl7vSUFKkLGhaH9I=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/og/verify-og.png.base64.txt": {
       "bytes": 30530,
@@ -1787,7 +1787,7 @@
       "size_human_fr": "29,8 Ko",
       "sha256": "sha256-zFqSXw6HqsFNJ+CsJJhzwgJexBCTZ96Hh1PmOPL1N1o=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/portraits/trent-power-og.jpg.base64.txt": {
       "bytes": 113719,
@@ -1795,7 +1795,7 @@
       "size_human_fr": "111,1 Ko",
       "sha256": "sha256-YrkcJu54HdGxkgPD1XgyZv7vU9ENOCgrczO9aXSg4/k=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/portraits/trent-power.jpg.base64.txt": {
       "bytes": 121477,
@@ -1803,7 +1803,7 @@
       "size_human_fr": "118,6 Ko",
       "sha256": "sha256-DsOdIuM2RYOjeh6yD/I6PiOSLQd2Wcz9X6bEUexK6tw=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/print-qr-trentpower.svg.txt": {
       "bytes": 931,
@@ -1811,7 +1811,7 @@
       "size_human_fr": "931 octets",
       "sha256": "sha256-nftZ1vgouqMkiw5FJTVBF5EfHVhIntVZB6E0iPM4UJ8=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/qr-acknowledgments.svg.txt": {
       "bytes": 1597,
@@ -1819,7 +1819,7 @@
       "size_human_fr": "1,6 Ko",
       "sha256": "sha256-sVjhJzTbIFh2kjfrXPJcrxGiCYxaSABL1wU0oAmrs3w=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/qr-home.svg.txt": {
       "bytes": 931,
@@ -1827,7 +1827,7 @@
       "size_human_fr": "931 octets",
       "sha256": "sha256-nftZ1vgouqMkiw5FJTVBF5EfHVhIntVZB6E0iPM4UJ8=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/qr-integrity.svg.txt": {
       "bytes": 1237,
@@ -1835,7 +1835,7 @@
       "size_human_fr": "1,2 Ko",
       "sha256": "sha256-+LrC8aXjYSDXBwXjrRW0PxFnIMqgQdOKH2s3cohPSVo=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/qr-maintenance.svg.txt": {
       "bytes": 1570,
@@ -1843,7 +1843,7 @@
       "size_human_fr": "1,5 Ko",
       "sha256": "sha256-SvgluZMzjrJe0ZabyL202t3Qj05BerNKJnoSgtRXPOQ=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/qr-privacy.svg.txt": {
       "bytes": 1199,
@@ -1851,7 +1851,7 @@
       "size_human_fr": "1,2 Ko",
       "sha256": "sha256-zSYG1BYSQvwdv9xFkbln+MPS0DM+kF+Xv/BHwPjbDu8=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/qr-release-2026-05-09.svg.txt": {
       "bytes": 1957,
@@ -1859,7 +1859,7 @@
       "size_human_fr": "1,9 Ko",
       "sha256": "sha256-Q2HVi8SgEzVfvaHk8S013fyUiBXuZ8XzASVsUXMobDo=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/qr-release-2026-05-17.svg.txt": {
       "bytes": 1939,
@@ -1867,7 +1867,7 @@
       "size_human_fr": "1,9 Ko",
       "sha256": "sha256-Z3nGDsR66YO06+sAp/u089bNSzulzR8HEzdWOnrJqRg=",
       "modified_iso": "2026-05-19",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/qr-releases.svg.txt": {
       "bytes": 1566,
@@ -1875,7 +1875,7 @@
       "size_human_fr": "1,5 Ko",
       "sha256": "sha256-JtSUYtsqx3UPvJWJ0sD7p/XnsgMP5iNbEuorpkw2YrY=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/qr-security.svg.txt": {
       "bytes": 1243,
@@ -1883,7 +1883,7 @@
       "size_human_fr": "1,2 Ko",
       "sha256": "sha256-wdH1ITkUUJzfnrEAEwAJuOuRISQv7hLafRZisIJEkZE=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/qr-source.svg.txt": {
       "bytes": 1222,
@@ -1891,7 +1891,7 @@
       "size_human_fr": "1,2 Ko",
       "sha256": "sha256-qVXGn2o5OfQPI4qBYq2LZz1JpxXuYeR+Iou0tenAQ+I=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/qr-sw-reset.svg.txt": {
       "bytes": 1201,
@@ -1899,7 +1899,7 @@
       "size_human_fr": "1,2 Ko",
       "sha256": "sha256-AlYgsXLWF5qiiaSRwJBBKre1/RpJARnBP2aIxGlGbWo=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/qr-verify-locally.svg.txt": {
       "bytes": 1650,
@@ -1907,7 +1907,7 @@
       "size_human_fr": "1,6 Ko",
       "sha256": "sha256-uAeWA4T5ojuVT7BNd9oHMXYwWrBMSOJ33KT4fEaA6bw=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/qr/qr-verify.svg.txt": {
       "bytes": 1240,
@@ -1915,7 +1915,7 @@
       "size_human_fr": "1,2 Ko",
       "sha256": "sha256-RqqtMAmm19nuzCvwP18KFO6O4h3LVS19aZAT6kmd8fs=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/textures/paper-noise.svg.txt": {
       "bytes": 592,
@@ -1923,7 +1923,7 @@
       "size_human_fr": "592 octets",
       "sha256": "sha256-yjfensiBNTeavEdjE5Q3p9PV0y7+PwSujR9uyeeu4nk=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/textures/slip-deckle.svg.txt": {
       "bytes": 454,
@@ -1931,7 +1931,7 @@
       "size_human_fr": "454 octets",
       "sha256": "sha256-JZ23EwJwpzpezYkSoUjb0e56BoWe1O2pPRrfzS8M4B4=",
       "modified_iso": "2026-05-23",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/images/textures/torn-edge-top.svg.txt": {
       "bytes": 225,
@@ -1939,23 +1939,23 @@
       "size_human_fr": "225 octets",
       "sha256": "sha256-UacyPwQuGObQlDPhVnTgJsCTWIYrtYJgxDJHZQ8RYH8=",
       "modified_iso": "2026-05-24",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/index.html": {
       "bytes": 48281,
       "size_human_en": "47.1 KB",
       "size_human_fr": "47,1 Ko",
-      "sha256": "sha256-EP4hYr8Ypmd9ltxzY6uBlEg1VXDADLtddTMEdlN7Qlk=",
-      "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "sha256": "sha256-GJ7fGNdDGqPfqWoRJhRFdNludZnAo7g/CnAs92xHxxM=",
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/index.html.txt": {
       "bytes": 11657,
       "size_human_en": "11.4 KB",
       "size_human_fr": "11,4 Ko",
       "sha256": "sha256-SfPeKhwAN850FDRA2+/V4AssXKZRENP/6eh8KQn2h68=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251414
     },
     "source/integrity/releases/2026-05-09/index.html.txt": {
       "bytes": 15463,
@@ -1963,7 +1963,7 @@
       "size_human_fr": "15,1 Ko",
       "sha256": "sha256-kW83Cz/3Y2MDNuqRttDtCvnFDD7XPR51MEM+MZmdF2o=",
       "modified_iso": "2026-05-18",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/integrity/releases/2026-05-17/index.html.txt": {
       "bytes": 14974,
@@ -1971,7 +1971,7 @@
       "size_human_fr": "14,6 Ko",
       "sha256": "sha256-Qg8ZX4icWspy91ivuKfunaLZ3SzlxJPg+yDf5MZJpW4=",
       "modified_iso": "2026-05-19",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/integrity/releases/2026-05-19/index.html.txt": {
       "bytes": 6406,
@@ -1979,7 +1979,7 @@
       "size_human_fr": "6,3 Ko",
       "sha256": "sha256-BGc7eBxQQPEJixddK9404D6ZMwcuIDC2BV6qHGbRgYA=",
       "modified_iso": "2026-05-20",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/integrity/releases/2026-05-23/index.html.txt": {
       "bytes": 7490,
@@ -1987,7 +1987,7 @@
       "size_human_fr": "7,3 Ko",
       "sha256": "sha256-+5cJSuhgA9O2/iM5etzPEeXen2ge84Vbf/t29e0CSgA=",
       "modified_iso": "2026-05-30",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/integrity/releases/2026-06-10/index.html.txt": {
       "bytes": 7495,
@@ -1995,7 +1995,7 @@
       "size_human_fr": "7,3 Ko",
       "sha256": "sha256-HghlVmQ+0bpwbKWpQRg6B5Zbm0mKH15sbqrcU58V7n0=",
       "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/integrity/releases/archive.css.txt": {
       "bytes": 1012,
@@ -2003,7 +2003,7 @@
       "size_human_fr": "1012 octets",
       "sha256": "sha256-mafFEc/8p4+ova0nlmqxOtgrK5b8dgPk7GEThSz7Kus=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/language-gate.js.txt": {
       "bytes": 7731,
@@ -2011,7 +2011,7 @@
       "size_human_fr": "7,5 Ko",
       "sha256": "sha256-ANlilP665txzAyjYmtvSPmsTV8amKYWYgvV7QP+silo=",
       "modified_iso": "2026-06-09",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/llms.txt.txt": {
       "bytes": 2407,
@@ -2019,31 +2019,31 @@
       "size_human_fr": "2,4 Ko",
       "sha256": "sha256-tTKFqWYK/0FzJRknPZTSkJl/v/zln3DRRQwES1ZNji8=",
       "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/local.js.txt": {
       "bytes": 27018,
       "size_human_en": "26.4 KB",
       "size_human_fr": "26,4 Ko",
       "sha256": "sha256-IxSykbp5AGg3FvRVEWASsZEi5VtbCLtAhKB15cizwes=",
-      "modified_iso": "2026-05-30",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/local/index.html.txt": {
       "bytes": 23967,
       "size_human_en": "23.4 KB",
       "size_human_fr": "23,4 Ko",
       "sha256": "sha256-KzoRqMuTzmSfHKeS44Uq+LLPDp1Tr/487xfDsf/DEvw=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/maintenance.html.txt": {
       "bytes": 14331,
       "size_human_en": "14.0 KB",
       "size_human_fr": "14,0 Ko",
       "sha256": "sha256-ArtX3FolwA4F8dfnRUwOjouGOS4OPX5RNozumcXuSTE=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/manifest.webmanifest.txt": {
       "bytes": 708,
@@ -2051,7 +2051,7 @@
       "size_human_fr": "708 octets",
       "sha256": "sha256-gONBLvUDcl5GhstGAvusB03d67dc4dhr1SHTznO2brQ=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/micro-interactions.js.txt": {
       "bytes": 9762,
@@ -2059,7 +2059,7 @@
       "size_human_fr": "9,5 Ko",
       "sha256": "sha256-9oNGKIbFrkN1XiFDHuthNrt57pO3TY1DcJ0jXpgoeUk=",
       "modified_iso": "2026-06-01",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/overlay.js.txt": {
       "bytes": 7646,
@@ -2067,7 +2067,7 @@
       "size_human_fr": "7,5 Ko",
       "sha256": "sha256-zSqbmSDbJE0zpYuRre4gLX2yfcm+rAoylsj//MuW5Ow=",
       "modified_iso": "2026-05-24",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/pgp.txt.txt": {
       "bytes": 3147,
@@ -2075,7 +2075,7 @@
       "size_human_fr": "3,1 Ko",
       "sha256": "sha256-rvgu/o1MmjSAvnF3b6Fws3ik3fao6Ioz33hKhNW+Deg=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/print.css.txt": {
       "bytes": 47813,
@@ -2083,7 +2083,7 @@
       "size_human_fr": "46,7 Ko",
       "sha256": "sha256-UYemyBJEv6ZbwlIhI6Q6e48OTwzIdGK1fDOLGf5Gy1c=",
       "modified_iso": "2026-06-09",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/reveal.js.txt": {
       "bytes": 3502,
@@ -2091,7 +2091,7 @@
       "size_human_fr": "3,4 Ko",
       "sha256": "sha256-BBGu3W+wvBqdmi6rez4OxqV4eG7deryILWIkUZPg8Zs=",
       "modified_iso": "2026-05-24",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/robots.txt.txt": {
       "bytes": 493,
@@ -2099,15 +2099,15 @@
       "size_human_fr": "493 octets",
       "sha256": "sha256-Cn845Rjry/gaw7EkhWF8MmWRalQc6DxO478wdcraLEk=",
       "modified_iso": "2026-05-15",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/site-metadata.json.txt": {
       "bytes": 2177,
       "size_human_en": "2.1 KB",
       "size_human_fr": "2,1 Ko",
       "sha256": "sha256-Tf5M2Qjh1rS61WUyabfhQ9XYtLVmCR5Qfg1yQ52q6C0=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/sitemap.xml.sha256.txt": {
       "bytes": 78,
@@ -2115,31 +2115,31 @@
       "size_human_fr": "78 octets",
       "sha256": "sha256-NQoMNeF7lo5TNcNVHWAmY3adsfRQUQjsVw6QshRXCC4=",
       "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/sitemap.xml.txt": {
       "bytes": 4879,
       "size_human_en": "4.8 KB",
       "size_human_fr": "4,8 Ko",
       "sha256": "sha256-fK2x64ygpzGDjMOo1HyzK6xYYl+j4gjmGOJ2+K6wK4U=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/source-manifest.json": {
       "bytes": 64926,
       "size_human_en": "63.4 KB",
       "size_human_fr": "63,4 Ko",
-      "sha256": "sha256-8qNKaKqE8akXbMGbgdwuRqsafA1fyn29d47C6i21fl8=",
-      "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206670
+      "sha256": "sha256-EW/QdkbCuezU4cHdin4ATsrpMbkOxdkWMgm7q94p56g=",
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/source-manifest.json.txt": {
       "bytes": 64926,
       "size_human_en": "63.4 KB",
       "size_human_fr": "63,4 Ko",
-      "sha256": "sha256-8qNKaKqE8akXbMGbgdwuRqsafA1fyn29d47C6i21fl8=",
-      "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206670
+      "sha256": "sha256-EW/QdkbCuezU4cHdin4ATsrpMbkOxdkWMgm7q94p56g=",
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/statement.txt.txt": {
       "bytes": 1350,
@@ -2147,23 +2147,23 @@
       "size_human_fr": "1,3 Ko",
       "sha256": "sha256-6gPA2f+QHkRwQDeBBixS9MyYQ/xKYBel49DNmGDSZSg=",
       "modified_iso": "2026-05-16",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/styles.css.txt": {
       "bytes": 348544,
       "size_human_en": "340.4 KB",
       "size_human_fr": "340,4 Ko",
       "sha256": "sha256-UTO3nhY47QQJ98COCq/ESykdrcbUybC61ppi6FFgZAg=",
-      "modified_iso": "2026-06-09",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/sw-cache-manifest.json.txt": {
       "bytes": 3152,
       "size_human_en": "3.1 KB",
       "size_human_fr": "3,1 Ko",
       "sha256": "sha256-p8eS7pHWK7lAwlY9gDhb5zzRVlKmEbVc7ywzSsu2jn8=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/sw-register.js.txt": {
       "bytes": 3802,
@@ -2171,23 +2171,23 @@
       "size_human_fr": "3,7 Ko",
       "sha256": "sha256-EzEtESu3W/MokXkP0Gju22/WjWl/SJkamhrLCYS8dyc=",
       "modified_iso": "2026-05-24",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/sw.js.txt": {
       "bytes": 9910,
       "size_human_en": "9.7 KB",
       "size_human_fr": "9,7 Ko",
       "sha256": "sha256-GJCs/D8NRLz1GvnJq/m2Y+xbRrXZGPONsvFmOF0H3yU=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/tests/index.html.txt": {
       "bytes": 24611,
       "size_human_en": "24.0 KB",
       "size_human_fr": "24,0 Ko",
       "sha256": "sha256-GWj7jflouqcH5CVv6rzWiM9JpsjIkyeQni+qucwwGUs=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/theme.js.txt": {
       "bytes": 2849,
@@ -2195,7 +2195,7 @@
       "size_human_fr": "2,8 Ko",
       "sha256": "sha256-hZpsNbdsQHHsvrcldLFkpDep9L9g+69eJJGfR16OUmM=",
       "modified_iso": "2026-05-21",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/verify-modal.js.txt": {
       "bytes": 26077,
@@ -2203,7 +2203,7 @@
       "size_human_fr": "25,5 Ko",
       "sha256": "sha256-Y1kBFkZGsjymebBryO5e16/f9jSeN3k1n0+5p69EwO8=",
       "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/verify/verify.js.txt": {
       "bytes": 22193,
@@ -2211,31 +2211,31 @@
       "size_human_fr": "21,7 Ko",
       "sha256": "sha256-pydvvckk7ELTdjhiRqApG2PRbtcycsQ0tPd3WvrzTkc=",
       "modified_iso": "2026-06-09",
-      "modified_mtime": 1781206670
+      "modified_mtime": 1781251415
     },
     "source/view/index.html": {
       "bytes": 10369,
       "size_human_en": "10.1 KB",
       "size_human_fr": "10,1 Ko",
-      "sha256": "sha256-uTDS1JtOQXnP2OH3M3vdshvqVxCsWJZ7YjEVEKoJ2oM=",
-      "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206670
+      "sha256": "sha256-tOkIkU/+mkCPIR/LjknsvwiH9Si0Yf2VKjVopP9nCFk=",
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/view/source-view-manifest.js": {
       "bytes": 35268,
       "size_human_en": "34.4 KB",
       "size_human_fr": "34,4 Ko",
-      "sha256": "sha256-byWbv1Mvy0fVFjAeOXJP7P6fg7sBZHPfAXsmSg7c1Qw=",
-      "modified_iso": "2026-06-10",
-      "modified_mtime": 1781206670
+      "sha256": "sha256-mm+X+6lT2qqsd9LOtdYk6X6CiA72n8YBQ2wiNHJQ+oI=",
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "source/view/source-view.js": {
       "bytes": 87219,
       "size_human_en": "85.2 KB",
       "size_human_fr": "85,2 Ko",
       "sha256": "sha256-BuDyW0PFs4eSpPZm1WAIlNQuA46amne8GgOL1dgHFUs=",
-      "modified_iso": "2026-06-09",
-      "modified_mtime": 1781206670
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "statement.txt": {
       "bytes": 1350,
@@ -2251,7 +2251,7 @@
       "size_human_fr": "148,7 Ko",
       "sha256": "sha256-d59IbbcMZKozresXEuScz9vb7B8Zx+WqUyH/MlwVia0=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206666
+      "modified_mtime": 1781251410
     },
     "sw-cache-manifest.json": {
       "bytes": 3152,
@@ -2259,7 +2259,7 @@
       "size_human_fr": "3,1 Ko",
       "sha256": "sha256-p8eS7pHWK7lAwlY9gDhb5zzRVlKmEbVc7ywzSsu2jn8=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206668
+      "modified_mtime": 1781251412
     },
     "sw-register.js": {
       "bytes": 1809,
@@ -2267,7 +2267,7 @@
       "size_human_fr": "1,8 Ko",
       "sha256": "sha256-fuxe7ghBaDZrxM7xcmz18ojDG+Axpq8UzjCUpuds9kM=",
       "modified_iso": "2026-05-24",
-      "modified_mtime": 1781206667
+      "modified_mtime": 1781251411
     },
     "sw.js": {
       "bytes": 9910,
@@ -2275,7 +2275,7 @@
       "size_human_fr": "9,7 Ko",
       "sha256": "sha256-GJCs/D8NRLz1GvnJq/m2Y+xbRrXZGPONsvFmOF0H3yU=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206668
+      "modified_mtime": 1781251412
     },
     "tests/index.html": {
       "bytes": 24611,
@@ -2283,15 +2283,15 @@
       "size_human_fr": "24,0 Ko",
       "sha256": "sha256-GWj7jflouqcH5CVv6rzWiM9JpsjIkyeQni+qucwwGUs=",
       "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206669
+      "modified_mtime": 1781251413
     },
     "verify/verification-data.js": {
       "bytes": 60635,
       "size_human_en": "59.2 KB",
       "size_human_fr": "59,2 Ko",
-      "sha256": "sha256-GH6wPHhnygQy3lMsUXqAEOV76exvAN9j/LMG4tBuGkg=",
-      "modified_iso": "2026-06-11",
-      "modified_mtime": 1781206671
+      "sha256": "sha256-UYKf/endJEUs+VP166iK/LE9BKTKBSBbGjmHa446Fr8=",
+      "modified_iso": "2026-06-12",
+      "modified_mtime": 1781251415
     },
     "verify/verify.js": {
       "bytes": 22193,
