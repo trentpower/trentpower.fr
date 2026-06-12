@@ -14,36 +14,45 @@ maintainer, not automation.
 | Rule | Setting |
 | --- | --- |
 | Target | `main` |
-| Require a pull request before merging | On (approvals: 0 — see note below) |
-| Require status checks to pass | On — `release-gate`, `secret-scan` (job names from `pr-checks.yml`) |
+| Require a pull request before merging | On (approvals: 0 — see note below; stale approvals dismissed on push) |
+| Require status checks to pass | On — `release-gate`, `secret-scan`, `release-gate-main`, `build-check`, `signature-verify` |
 | Require signed commits | On |
 | Require linear history | On |
 | Require conversation resolution before merging | On |
 | Block force pushes | On |
 | Restrict deletions | On |
 
-Once `publication-check.yml` has run green on a promotion PR, its
-blocking jobs (`release-gate-main`, `secret-scan`, `build-check`,
-`signature-verify`) can be added to the required checks. **Order
-matters:** merge the workflow to `main` first, make its jobs required
-afterwards — requiring a check that does not exist yet would deadlock
-the very PR that introduces it.
+The `publication-check.yml` blocking jobs (`release-gate-main`,
+`build-check`, `signature-verify`) became required checks once the
+workflow had run green on promotion PRs. **Order matters** when adding
+new required checks: merge the workflow to `main` first, make its jobs
+required afterwards — requiring a check that does not exist yet would
+deadlock the very PR that introduces it.
 
 Required code-owner review stays **off**: this is a single-maintainer
 repository and GitHub does not count self-approval, so enabling it would
 deadlock every PR. [`CODEOWNERS`](../.github/CODEOWNERS) remains in
 place as a routing and audit record of the trust surfaces.
 
+**Required approvals stay at 0, deliberately.** The same single-maintainer
+deadlock applies: requiring one approval would force every merge through
+the admin bypass, which makes the configuration *look* stricter while
+every actual merge skips it — score theatre, not protection. OpenSSF
+Scorecard therefore reports Code-Review as 0 and caps Branch-Protection;
+both are accepted and documented rather than gamed. Revisit if a second
+trusted reviewer ever joins the project.
+
 ## `protect-preprod-as-release-candidate`
 
 | Rule | Setting |
 | --- | --- |
 | Target | `preprod` |
+| Require a pull request before merging | On (approvals: 0) |
 | Require status checks to pass | On — `release-gate`, `secret-scan` |
 | Require signed commits | On |
+| Require conversation resolution before merging | On |
 | Block force pushes | On |
 | Restrict deletions | On |
-| Require a pull request | Optional (recommended once the cadence settles) |
 
 Note: the repository setting "Automatically delete head branches"
 deletes `preprod` after a promotion merge — recreate it from `main`
@@ -106,8 +115,20 @@ The repository's security stack is deliberately small and GitHub-native:
 | CodeQL (default setup) | On | Static analysis on PRs; its check blocks merges on its own |
 | Secret scanning + push protection | On | Blocks committed credentials at push time |
 | Private vulnerability reporting | On (manual setting) | The private channel SECURITY.md and the issue forms point to |
-| Dependabot | On — weekly, npm 3 / pip 3 / actions 2 | Update PRs for review; nothing merges automatically |
+| Dependabot | On — weekly, npm 3 / pip 5 / actions 2 | Update PRs for review; nothing merges automatically. The pip ecosystem also regenerates the hash-pinned CI sets in [`.github/requirements/`](../.github/requirements/README.md) |
 | OpenSSF Scorecard | On — [`scorecard.yml`](../.github/workflows/scorecard.yml) | Repository-posture checks (branch protection, pinned actions, token permissions) published to the Security tab. A check, not a badge |
+
+### Scorecard readings that are accepted, not fixed
+
+Two Scorecard checks read low by structural fact rather than by gap:
+
+- **Maintained: 0** — Scorecard scores any repository younger than 90
+  days as 0 regardless of activity. This repository became public on
+  2026-06-10; the check normalises on its own from September 2026 given
+  the existing weekly cadence (Dependabot, Scorecard cron, editions).
+- **Code-Review: 0** — the check counts approving reviews on merged
+  changesets, and a single maintainer cannot approve their own pull
+  requests. See the approvals note under `protect-main-as-public-record`.
 
 **Later, deliberately:** StepSecurity Harden-Runner — runtime monitoring
 of Actions runners (network egress, file integrity, process activity).

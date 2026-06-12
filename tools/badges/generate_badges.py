@@ -80,6 +80,9 @@ def mono_width(text: str, size: float, letter_spacing: float) -> float:
 
 
 def esc(text: str) -> str:
+    # C0 control characters are invalid in XML 1.0 even when escaped, so
+    # drop them (tab/newline excepted) before entity-escaping the rest.
+    text = "".join(ch for ch in text if ch >= " " or ch in "\t\n")
     return (
         text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
     )

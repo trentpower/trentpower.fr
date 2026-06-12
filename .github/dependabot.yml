@@ -21,13 +21,17 @@ updates:
       include: "scope"
 
   - package-ecosystem: "pip"
-    directory: "/"
+    # "/.github/requirements" holds the hash-pinned CI dependency sets
+    # (pip-compile output; dependabot regenerates hashes from the .in files).
+    directories:
+      - "/"
+      - "/.github/requirements"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "09:30"
       timezone: "Europe/Paris"
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 5
     labels:
       - "dependencies"
       - "python"

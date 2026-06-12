@@ -1,0 +1,5 @@
+# ci deps for the advisory source-quality job: ruff replaces the unpinned
+# astral.sh curl|sh installer; hypothesis backs the property-based fuzz tests.
+# regenerate: pip-compile --generate-hashes --strip-extras --allow-unsafe -o source-quality.txt source-quality.in
+ruff
+hypothesis
