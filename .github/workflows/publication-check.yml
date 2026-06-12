@@ -1,0 +1,142 @@
+name: Publication check
+
+# The full promotion suite: proves a release candidate is ready to move
+# from preprod to main. Runs on pull requests into main (the promotion
+# PR) and on manual dispatch — it never runs a deploy and never holds a
+# secret. The fast per-PR checks live in pr-checks.yml; this workflow
+# adds the build re-check, an explicit signature verification and the
+# visual QA contact sheets on top.
+#
+# Signing stays local: every job here verifies the committed record
+# against the committed public key only.
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publication-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-gate-main:
+    # the same blocking gate the production deploy verifies — byte-for-byte.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Install gpg + python + Pillow
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gnupg python3 python3-pil python3-pip
+          # the content_schemas blocking gate needs jsonschema>=4.18 (the
+          # `referencing` split); ubuntu's apt python3-jsonschema is older, so
+          # install via pip. --break-system-packages is required on the
+          # externally-managed runner python. pymupdf (fitz) backs the
+          # `documentation` blocking gate (README.pdf layout + claim audit).
+          python3 -m pip install --break-system-packages --quiet "jsonschema>=4.18" pymupdf
+
+      - name: Restore licensed font binaries (verified against signed manifest)
+        run: python3 tools/build/fetch_licensed_fonts.py
+
+      - name: Full release gate (blocking checks + signature verify)
+        run: python3 tools/verify/validate_release.py
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history — the scan walks every commit)
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+
+      - name: Scan git history for secrets (strict)
+        run: python3 tools/verify/scan_git_history.py --strict
+
+      - name: Repository hygiene scan
+        run: python3 tools/quality/validate_repository_hygiene.py
+
+  build-check:
+    # re-renders the site and re-runs the seal + verify stages without
+    # signing or deploying, proving the committed public/ bytes are
+    # reproducible from their sources (no hand-edited generated files).
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Install gpg + python + Pillow
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gnupg python3 python3-pil python3-pip
+          # segno backs the QR drift gate in the render stage.
+          python3 -m pip install --break-system-packages --quiet "jsonschema>=4.18" pymupdf pyyaml fonttools segno
+
+      - name: Restore licensed font binaries (verified against signed manifest)
+        run: python3 tools/build/fetch_licensed_fonts.py
+
+      - name: Build check (render + seal + verify, no signing, no deploy)
+        run: bash tools/build/build.sh --check
+
+  signature-verify:
+    # standalone, dependency-light proof that the committed manifest is
+    # signed by the committed public key — the same isolated-keyring
+    # pattern the production deploy uses.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Install gpg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gnupg
+
+      - name: Verify integrity.json signature (isolated keyring)
+        run: |
+          set -eu
+          export GNUPGHOME="$(mktemp -d)"
+          gpg --batch --quiet --import public/.well-known/pgp-key.asc
+          gpg --batch --verify public/integrity.json.sig public/integrity.json
+          echo "OK: integrity.json signature verified against committed public key"
+
+  visual-qa:
+    # publication proofing, never blocking: captures every representative
+    # page (both languages, desktop + mobile, light + dark) and uploads
+    # the contact sheets as a run artefact for human review.
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Install python + Pillow
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pil python3-pip
+
+      - name: Restore licensed font binaries (verified against signed manifest)
+        run: python3 tools/build/fetch_licensed_fonts.py
+
+      - name: Install Playwright chromium (best effort)
+        run: |
+          python3 -m pip install --break-system-packages --quiet playwright \
+            && python3 -m playwright install --with-deps chromium \
+            || echo "::notice::playwright unavailable — visual QA will be skipped"
+
+      - name: Capture contact sheets
+        run: python3 tools/visual/capture_contact_sheet.py
+
+      - name: Upload contact sheets
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: visual-qa-contact-sheets
+          path: reports/visual/
+          if-no-files-found: ignore

@@ -13,6 +13,10 @@ encrypted if you prefer with the published PGP key at
 [`/.well-known/pgp-key.asc`](https://trentpower.fr/.well-known/pgp-key.asc)
 (fingerprint `A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263`).
 
+Suspected vulnerabilities can also be reported privately through GitHub:
+[open a private vulnerability report](https://github.com/trentpower/trentpower.fr/security/advisories/new).
+The report stays between you and the maintainer until a fix is published.
+
 Please do not open a public issue for anything sensitive.
 
 ## Posture

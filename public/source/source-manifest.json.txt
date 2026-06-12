@@ -1,6 +1,6 @@
 {
   "schema": "https://trentpower.fr/source/source-manifest.json",
-  "generated_at": "2026-06-11T00:00:00Z",
+  "generated_at": "2026-06-12T00:00:00Z",
   "principle": "This site is designed first for human readers. The /source/ tree mirrors public files as plain text so the bytes the live site serves can be inspected without any tooling.",
   "files": [
     {
@@ -913,7 +913,7 @@
       "size_human": "78 B",
       "mirror_bytes": 78,
       "mirror_size_human": "78 B",
-      "modified": "2026-06-11",
+      "modified": "2026-06-12",
       "sha256": "NQoMNeF7lo5TNcNVHWAmY3adsfRQUQjsVw6QshRXCC4=",
       "sha256_short": "NQoMNeF7lo5T",
       "description": "Source mirror of the SHA-256 checksum for sitemap.xml."
@@ -943,7 +943,7 @@
       "size_human": "2.1 KB",
       "mirror_bytes": 2177,
       "mirror_size_human": "2.1 KB",
-      "modified": "2026-06-11",
+      "modified": "2026-06-12",
       "sha256": "Tf5M2Qjh1rS61WUyabfhQ9XYtLVmCR5Qfg1yQ52q6C0=",
       "sha256_short": "Tf5M2Qjh1rS6",
       "description": "Site-level metadata. Edition, build, asset version."
@@ -1093,9 +1093,9 @@
       "size_human": "1.1 KB",
       "mirror_bytes": 1170,
       "mirror_size_human": "1.1 KB",
-      "modified": "2026-06-11",
-      "sha256": "L94ikWpicGiCuN5DdUVxChuFcl4ifcBh5s25koZLRmw=",
-      "sha256_short": "L94ikWpicGiC",
+      "modified": "2026-06-12",
+      "sha256": "PW5jFtWzbi3llHIcZyPcBJYtEPteoqcCe8s+mIinEAc=",
+      "sha256_short": "PW5jFtWzbi3l",
       "description": "Build record. Reproducibility data for the current edition."
     },
     {
@@ -1108,7 +1108,7 @@
       "size_human": "24.7 KB",
       "mirror_bytes": 25514,
       "mirror_size_human": "24.9 KB",
-      "modified": "2026-06-11",
+      "modified": "2026-06-12",
       "sha256": "9xSoUmaec/7U5/lnJfJPg9NaVQPtUrKY8vaJfHWs0yo=",
       "sha256_short": "9xSoUmaec/7U",
       "description": "Apache configuration. Public-safety scanned before mirroring."

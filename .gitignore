@@ -102,6 +102,11 @@ reports/*.md
 reports/*.txt
 reports/*.pdf
 
+# Visual QA contact sheets — local/CI-artefact runtime renders. Keep the
+# tracked README that documents the proofing workflow.
+reports/visual/*
+!reports/visual/README.md
+
 # Python type-check / test caches
 .mypy_cache/
 .pytest_cache/

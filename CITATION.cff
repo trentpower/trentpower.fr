@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you cite this repository, please use the metadata below."
+type: software
+title: "trentpower.fr"
+abstract: >-
+  A bilingual personal publication system: static, signed and
+  source-verifiable. Each edition ships with a SHA-256 integrity
+  manifest, a detached PGP signature and frozen release archives.
+authors:
+  - family-names: Power
+    given-names: Trent
+    orcid: "https://orcid.org/0009-0002-2652-7188"
+url: "https://trentpower.fr"
+repository-code: "https://github.com/trentpower/trentpower.fr"
+version: "2026-06-10"
+date-released: 2026-06-10
+license: MIT
+# The licence above covers the code. Editorial content, documentation
+# prose and README.pdf are licensed CC-BY-SA-4.0 — see CONTENT-RIGHTS.md.

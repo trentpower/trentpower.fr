@@ -12,6 +12,7 @@
     "PRIVACY.md",
     "CONTRIBUTING.md",
     "CODE_OF_CONDUCT.md",
+    "CITATION.cff",
     ".gitattributes",
     ".gitleaks.toml"
   ],

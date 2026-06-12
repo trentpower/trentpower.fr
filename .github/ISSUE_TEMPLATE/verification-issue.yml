@@ -1,0 +1,82 @@
+name: Verification issue
+description: A signature, hash or source mirror did not verify as published.
+title: "[verify] "
+labels: ["verification"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for verifying the public record. The verification recipe
+        lives at <https://trentpower.fr/en-au/verify/> and in the README
+        trust-model section. If you suspect a security problem rather than
+        a verification mismatch, use the private reporting channel in
+        SECURITY.md instead of this form.
+  - type: input
+    id: url
+    attributes:
+      label: URL checked
+      placeholder: "https://trentpower.fr/integrity.json"
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command run
+      description: The exact command(s) you executed.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Paste the gpg / shasum / curl output verbatim.
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser or terminal environment
+      placeholder: "e.g. GnuPG 2.4.4 on Debian 13, or Firefox 140 on macOS"
+    validations:
+      required: true
+  - type: input
+    id: network
+    attributes:
+      label: Network used
+      placeholder: "e.g. home fibre, corporate proxy, mobile, VPN"
+    validations:
+      required: true
+  - type: dropdown
+    id: cache
+    attributes:
+      label: Was the cache bypassed?
+      options:
+        - "Yes — hard reload / curl with no cache"
+        - "No"
+        - "Not sure"
+    validations:
+      required: true
+  - type: dropdown
+    id: sig-checked
+    attributes:
+      label: Did you verify integrity.json.sig against the published key?
+      description: Key at /.well-known/pgp-key.asc, fingerprint A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263.
+      options:
+        - "Yes — signature verified"
+        - "Yes — signature FAILED (this is the issue)"
+        - "No"
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshot or terminal output
+      description: Drag and drop images here, or paste additional output.
