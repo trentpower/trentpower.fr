@@ -1,0 +1,48 @@
+name: OpenSSF Scorecard
+
+# Supply-chain posture check. Scorecard evaluates the repository itself
+# (branch protection, pinned dependencies, token permissions, dangerous
+# workflow patterns) and publishes its findings to the Security tab as
+# SARIF. It is a check, not a vanity badge: no badge is added to the
+# README for it. It holds no deploy secret and never deploys.
+
+on:
+  schedule:
+    - cron: '30 8 * * 1'
+  push:
+    branches:
+      - main
+  branch_protection_rule:
+  workflow_dispatch:
+
+permissions: read-all
+
+concurrency:
+  group: scorecard-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analysis:
+    runs-on: ubuntu-latest
+    permissions:
+      # SARIF upload to the Security tab.
+      security-events: write
+      # token signing for publish_results (public results API).
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
+
+      - name: Run Scorecard analysis
+        uses: ossf/scorecard-action@4eaacf0543bb3f2c246792bd56e8cdeffafb205a # v2.4.3
+        with:
+          results_file: scorecard-results.sarif
+          results_format: sarif
+          publish_results: true
+
+      - name: Upload results to the Security tab
+        uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
+        with:
+          sarif_file: scorecard-results.sarif

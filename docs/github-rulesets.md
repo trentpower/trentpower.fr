@@ -97,6 +97,33 @@ Attribution is fixed forward instead:
   account as a **signing key** (Settings → SSH and GPG keys → New SSH
   key → key type "Signing Key") so signed commits display as Verified.
 
+## Security automation
+
+The repository's security stack is deliberately small and GitHub-native:
+
+| Tool | Status | Role |
+| --- | --- | --- |
+| CodeQL (default setup) | On | Static analysis on PRs; its check blocks merges on its own |
+| Secret scanning + push protection | On | Blocks committed credentials at push time |
+| Private vulnerability reporting | On (manual setting) | The private channel SECURITY.md and the issue forms point to |
+| Dependabot | On — weekly, npm 3 / pip 3 / actions 2 | Update PRs for review; nothing merges automatically |
+| OpenSSF Scorecard | On — [`scorecard.yml`](../.github/workflows/scorecard.yml) | Repository-posture checks (branch protection, pinned actions, token permissions) published to the Security tab. A check, not a badge |
+
+**Later, deliberately:** StepSecurity Harden-Runner — runtime monitoring
+of Actions runners (network egress, file integrity, process activity).
+Worth adding because the deploy workflow holds SFTP credentials, but
+only once the deploy workflow is stable, and in **audit mode first**,
+never blocking initially. Preconditions already met: actions SHA-pinned,
+environments scoped, production deploy requires approval, SFTP
+known_hosts pinned.
+
+**Declined, on the record:** Renovate (duplicates Dependabot here),
+stale bots (auto-closing issues has no place in a publication record),
+All Contributors (authored publication, not a community package),
+Mergify (no merge volume; GitHub has a native merge queue if ever
+needed), Codecov (no coverage-worthy test suite), Snyk (another external
+surface; GitHub-native tooling suffices).
+
 ## Manual settings checklist
 
 All of the following live in the GitHub UI and must be applied by hand:
