@@ -1,7 +1,10 @@
 # ci deps for the advisory source-quality job: ruff replaces the unpinned
 # astral.sh curl|sh installer; hypothesis backs the property-based fuzz tests;
-# jsonschema>=4.18 backs the content-contract unit tests.
+# jsonschema>=4.18 backs the content-contract unit tests; pyyaml backs
+# the route registry the tests import (runner images preinstall it, but
+# the job must not depend on that).
 # regenerate: pip-compile --generate-hashes --strip-extras --allow-unsafe -o source-quality.txt source-quality.in
 ruff
 hypothesis
 jsonschema>=4.18
+pyyaml
