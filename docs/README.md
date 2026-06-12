@@ -19,6 +19,8 @@ deeper on each area.
 | [INCIDENT-RESPONSE.md](INCIDENT-RESPONSE.md)               | Incident types, detection, and the response playbook.                                                                                             |
 | [SCORE-LEDGER.md](SCORE-LEDGER.md)                         | The local-only live-site audit tool (observational, not a deploy gate).                                                                           |
 | [PUBLIC-READINESS.md](PUBLIC-READINESS.md)                 | What must never be committed, `.gitignore` policy, the public-release record, and the blocking `public_readiness` gate.                           |
+| [github-environments.md](github-environments.md)           | The GitHub environment model: branches, `production`/`preproduction` secret scoping, the promotion process, and the verify-never-sign boundary.   |
+| [github-rulesets.md](github-rulesets.md)                   | Branch/tag rulesets protecting the public record, GitHub Releases as secondary pointers, commit attribution, and the manual-settings checklist.   |
 
 Licensing for the repository lives at the root: [`LICENSE`](../LICENSE) (code,
 MIT), [`CONTENT-RIGHTS.md`](../CONTENT-RIGHTS.md) (authored content,

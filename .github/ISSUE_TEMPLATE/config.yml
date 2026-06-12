@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private vulnerability report
+    url: https://github.com/trentpower/trentpower.fr/security/advisories/new
+    about: Report a suspected vulnerability privately through the repository security advisory form.
+  - name: Security contact (security.txt)
+    url: https://trentpower.fr/.well-known/security.txt
+    about: Encrypted reporting channel and PGP key for anything sensitive.

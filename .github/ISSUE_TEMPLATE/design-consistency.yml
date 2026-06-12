@@ -1,0 +1,67 @@
+name: Design consistency
+description: A page no longer feels like part of one authored product.
+title: "[design] "
+labels: ["design"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The site is proofed as a single authored product — README.pdf and
+        the visual QA contact sheets (reports/visual/) are the reference
+        for how pages should read. Use this form when something drifts.
+  - type: input
+    id: url
+    attributes:
+      label: Page URL
+      placeholder: "https://trentpower.fr/..."
+    validations:
+      required: true
+  - type: dropdown
+    id: scheme
+    attributes:
+      label: Colour scheme
+      options:
+        - Light
+        - Dark
+        - Both
+    validations:
+      required: true
+  - type: dropdown
+    id: viewport
+    attributes:
+      label: Viewport
+      options:
+        - Desktop
+        - Tablet
+        - Mobile
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options:
+        - English (en-au)
+        - French (fr)
+        - Both
+    validations:
+      required: true
+  - type: textarea
+    id: inconsistency
+    attributes:
+      label: What looks inconsistent
+      description: Typography, spacing, colour, tone — whatever feels off.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: Based on README.pdf or another page that gets it right.
+    validations:
+      required: true
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot
+      description: Drag and drop an image of the page as it renders.
