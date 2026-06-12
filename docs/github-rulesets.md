@@ -37,10 +37,9 @@ place as a routing and audit record of the trust surfaces.
 **Required approvals stay at 0, deliberately.** The same single-maintainer
 deadlock applies: requiring one approval would force every merge through
 the admin bypass, which makes the configuration _look_ stricter while
-every actual merge skips it — score theatre, not protection. OpenSSF
-Scorecard therefore reports Code-Review as 0 and caps Branch-Protection;
-both are accepted and documented rather than gamed. Revisit if a second
-trusted reviewer ever joins the project.
+every actual merge skips it — the appearance of review without the
+substance. The Scorecard readings below follow from this and are
+accepted. Revisit if a second trusted reviewer ever joins the project.
 
 ## `protect-preprod-as-release-candidate`
 
@@ -129,9 +128,10 @@ Three Scorecard checks read low by structural fact rather than by gap:
 - **Code-Review: 0** — the check counts approving reviews on merged
   changesets, and a single maintainer cannot approve their own pull
   requests. See the approvals note under `protect-main-as-public-record`.
-- **Fuzzing: 0** — the check does not recognise Python property-based
-  testing (Hypothesis); see [fuzzing.md](fuzzing.md). The property tests
-  run on every PR regardless.
+- **Fuzzing: 0** — the check recognises property-based testing for
+  several languages but not Python's Hypothesis, which is what this
+  repository uses ([fuzzing.md](fuzzing.md)). The property tests run on
+  every PR regardless.
 
 `protect-main` carries **no bypass actors**: even the repository admin
 goes through the PR flow. Emergencies are handled by editing the ruleset
