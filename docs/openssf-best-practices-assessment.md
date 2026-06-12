@@ -13,17 +13,17 @@ Scorecard, it is not part of the site's cryptographic proof chain.
 
 ## General
 
-| Field | Entry |
-| --- | --- |
-| Name | trentpower.fr |
-| Description | A bilingual (English/French) personal publication, built as a static site whose every published file can be verified against a signed integrity manifest. The repository is the complete, inspectable record of how it is built, checked and released. |
-| Entry language | English (en) |
-| Project URL | https://trentpower.fr |
-| Repository URL | https://github.com/trentpower/trentpower.fr |
-| License | MIT (code; the written content is CC-BY-SA-4.0, noted in CONTENT-RIGHTS.md) |
-| Implementation languages | HTML, CSS, JavaScript, Python, Shell |
-| CPE | — |
-| Other comments | This is a single-author publication system, not a library meant to be installed. Where a criterion assumes a software package, I have answered for the build and verification tooling, which is where the executable code lives. |
+| Field                    | Entry                                                                                                                                                                                                                                                  |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Name                     | trentpower.fr                                                                                                                                                                                                                                          |
+| Description              | A bilingual (English/French) personal publication, built as a static site whose every published file can be verified against a signed integrity manifest. The repository is the complete, inspectable record of how it is built, checked and released. |
+| Entry language           | English (en)                                                                                                                                                                                                                                           |
+| Project URL              | https://trentpower.fr                                                                                                                                                                                                                                  |
+| Repository URL           | https://github.com/trentpower/trentpower.fr                                                                                                                                                                                                            |
+| License                  | MIT (code; the written content is CC-BY-SA-4.0, noted in CONTENT-RIGHTS.md)                                                                                                                                                                            |
+| Implementation languages | HTML, CSS, JavaScript, Python, Shell                                                                                                                                                                                                                   |
+| CPE                      | —                                                                                                                                                                                                                                                      |
+| Other comments           | This is a single-author publication system, not a library meant to be installed. Where a criterion assumes a software package, I have answered for the build and verification tooling, which is where the executable code lives.                       |
 
 ## Basics
 
@@ -288,7 +288,254 @@ SVG — and it was fixed the same day. docs/fuzzing.md tells that story.
 
 ## After the badge
 
-When (and only when) the entry reaches **passing**, badge display
-follows the local-SVG badge policy: no external badge service, secondary
-"repository checks" group, wording `OpenSSF · Best Practices` — tracked
-in issue #18.
+The **passing** badge was achieved on 2026-06-12. Per the local-SVG
+badge policy, it is displayed as a locally generated badge
+(metadata/badges/openssf-best-practices.svg) linking to the project
+entry — no external badge service.
+
+---
+
+# Silver level
+
+The complete answer set for the silver-level questionnaire, in form
+order. Same voice, same rule: nothing claimed that the repository does
+not back.
+
+## Basics (silver)
+
+**achieve_passing — Met.** Passing achieved 2026-06-12.
+
+**contribution_requirements — Met.** (Carried from passing.)
+
+**dco — Unmet.** Every commit is authored and signed by the sole
+copyright holder, so a sign-off ritual would certify a fact already
+established by the signature on each commit. If outside contributions
+were ever accepted, a DCO would come with them.
+
+**governance — Met.** GOVERNANCE.md states the model plainly: the
+maintainer decides, the machinery keeps it honest, and declined
+alternatives are on the record.
+<https://github.com/trentpower/trentpower.fr/blob/main/GOVERNANCE.md>
+
+**code_of_conduct — Met.**
+<https://github.com/trentpower/trentpower.fr/blob/main/CODE_OF_CONDUCT.md>
+
+**roles_responsibilities — Met.** GOVERNANCE.md names the roles and who
+holds them; CODEOWNERS maps the trust-critical surfaces.
+<https://github.com/trentpower/trentpower.fr/blob/main/GOVERNANCE.md>
+
+**access_continuity — Met.** GOVERNANCE.md documents the continuity
+arrangement: credentials and key passphrases in a password manager with
+emergency access for next of kin, redistributable signed archives, and
+licenses (MIT, CC-BY-SA-4.0) that let anyone continue or fork the
+record without permission.
+<https://github.com/trentpower/trentpower.fr/blob/main/GOVERNANCE.md>
+
+**bus_factor — Unmet.** The bus factor is 1 and I say so rather than
+inflate it. GOVERNANCE.md documents what survives me: the verifiable
+record, the archives, and the rights to fork.
+<https://github.com/trentpower/trentpower.fr/blob/main/GOVERNANCE.md>
+
+**documentation_roadmap — Met.** docs/ROADMAP.md covers the next year —
+including, deliberately, what the project will not do.
+<https://github.com/trentpower/trentpower.fr/blob/main/docs/ROADMAP.md>
+
+**documentation_architecture — Met.**
+<https://github.com/trentpower/trentpower.fr/blob/main/docs/ARCHITECTURE.md>
+
+**documentation_security — Met.** What a reader can and cannot expect is
+written down: integrity and authenticity guaranteed and verifiable,
+privacy by absence of tracking, availability explicitly not promised.
+<https://github.com/trentpower/trentpower.fr/blob/main/docs/ASSURANCE-CASE.md>
+
+**documentation_quick_start — Met.** The fastest useful thing a new
+user can do is verify the record; the guide walks it end to end.
+<https://trentpower.fr/en-au/verify/>
+
+**documentation_current — Met.** Keeping docs aligned with the
+architecture is a line item in the public-readiness checklist, and doc
+drift is treated as a defect.
+
+**documentation_achievements — Met.** The README links the badge entry
+via a locally generated badge.
+<https://github.com/trentpower/trentpower.fr#trentpowerfr>
+
+**accessibility_best_practices — Met.** Semantic HTML with landmarks,
+sufficient contrast, and accessibility findings from the live-site
+audits are tracked and resolved; every badge SVG carries title and
+description for assistive tech.
+
+**internationalization — Met.** The site is fully bilingual (EN-AU and
+FR), localized at build time from a curated string set.
+
+**sites_password_security — N/A.** No project site stores passwords;
+there is no authentication anywhere.
+
+## Change Control (silver)
+
+**maintenance_or_update — Met.** Editions are additive: every previous
+edition's frozen archive remains published under /integrity/releases/
+with its own manifest and signature, permanently. Nothing is purged.
+
+## Reporting (silver)
+
+**report_tracker — Met.** GitHub Issues.
+
+**vulnerability_report_credit — N/A.** No vulnerabilities have been
+resolved; reporters will be credited in release notes unless they ask
+otherwise.
+
+**vulnerability_response_process — Met.** SECURITY.md sets the channel
+and the 14-day window; docs/INCIDENT-RESPONSE.md sets what happens
+next.
+<https://github.com/trentpower/trentpower.fr/blob/main/docs/INCIDENT-RESPONSE.md>
+
+## Quality (silver)
+
+**coding_standards — Met.** The style is codified in tool
+configuration — ruff in pyproject.toml, eslint and stylelint configs,
+shfmt — and docs/GATES-CHECKS-AND-QUALITY.md explains the two-tier
+gate that applies them.
+<https://github.com/trentpower/trentpower.fr/blob/main/docs/GATES-CHECKS-AND-QUALITY.md>
+
+**coding_standards_enforced — Met.** The source-quality CI job runs the
+full lint set in enforcing mode (QUALITY_ENFORCE=1): findings fail the
+job.
+
+**build_standard_variables — N/A.** No native binaries are built.
+
+**build_preserve_debug — N/A.** Nothing is compiled or stripped; the
+published files are their own source, mirrored byte-for-byte under
+/source/.
+
+**build_non_recursive — Met.** One top-level build script orchestrates
+ordered stages; there are no recursive sub-builds.
+
+**build_repeatable — Met.** The CI build-check job independently repeats
+the build and compares it against the committed record on every
+promotion.
+
+**installation_common — N/A.** The product is a published website;
+there is nothing to install. Release archives are plain tar/zip.
+
+**installation_standard_variables — N/A.** No installation system.
+
+**installation_development_quick — Met.** git clone, npm ci, pip install
+the hash-pinned requirements, then bash tools/build/build.sh --check —
+documented in docs/BUILD-AND-DEPLOYMENT.md.
+
+**external_dependencies — Met.** package-lock.json and the compiled
+requirements files under .github/requirements/ list every dependency
+with exact versions and hashes, machine-readably.
+<https://github.com/trentpower/trentpower.fr/tree/main/.github/requirements>
+
+**dependency_monitoring — Met.** Weekly Dependabot across npm, pip and
+GitHub Actions, OSV checks, and nothing merges without review.
+
+**updateable_reused_components — Met.** Everything external arrives
+through a lockfile or a hash-pinned requirements file; updating a
+component is a one-line bump that Dependabot usually proposes first.
+
+**interfaces_current — Met.** The enforced linters flag deprecated
+usage, and the stack is deliberately small and current.
+
+**automated_integration_testing — Met.** Every push and pull request
+runs the suite and the gate; results are reported on the commit and the
+run summary.
+
+**regression_tests_added50 — Met.** Every bug fixed since the suite
+existed has a regression property in the test suite (most recently the
+badge escaper defect — see docs/fuzzing.md).
+
+**test_statement_coverage80 — Met.** 80% statement coverage of the
+release-path tooling, measured with coverage.py across the unit suite
+plus a full gated build (the local-only score-ledger audit utility is
+excluded as outside the release path). The measurement procedure is
+recorded in docs/ASSURANCE-CASE.md.
+
+**test_policy_mandated — Met.** The policy is written and binding: the
+pull request template requires tests for new or changed tooling
+behaviour, and the enforced CI job runs them.
+
+**tests_documented_added — Met.** (Carried from passing.)
+
+**warnings_strict — Met.** The lint set now runs in enforcing mode;
+findings block.
+
+## Security (silver)
+
+**implement_secure_design — Met.** The assurance case walks the
+principles — economy of mechanism, fail-closed gates, least privilege,
+open design, complete mediation — and where each is implemented.
+<https://github.com/trentpower/trentpower.fr/blob/main/docs/ASSURANCE-CASE.md>
+
+**crypto_weaknesses — Met.** (Carried from passing.)
+
+**crypto_algorithm_agility — Met.** Digests are algorithm-prefixed in
+the manifests (sha256-…), so migrating to another member of the SHA-2
+family or SHA-3 is a field change in a new edition, not a redesign; the
+PGP layer likewise supports re-keying with a published successor key.
+
+**crypto_credential_agility — Met.** Signing keys live exclusively in
+the local GnuPG and OpenSSH keyrings, entirely outside the repository
+and the deployed site; rotation is a key swap plus a published
+announcement, with no code change.
+
+**crypto_used_network — Met.** Everything is HTTPS/TLS — the site, the
+repository, every fetch the tooling makes. No insecure protocol exists
+to enable.
+
+**crypto_tls12 — Met.** TLS 1.2+ with HSTS on the site; tooling uses
+the platform TLS stack with no downgrade path.
+
+**crypto_certificate_verification — Met.** The tooling uses standard
+clients (python urllib/requests, curl) with default certificate
+verification; nothing disables it anywhere in the repository.
+
+**crypto_verification_private — Met.** Certificate verification happens
+before any request is sent, and no request carries private data in any
+case — there are no cookies or credentials in the system.
+
+**signed_releases — Met.** Every release is PGP-signed (manifest,
+archives, SHA256SUMS), the public key is published at a well-known URL
+with its fingerprint in SECURITY.md, and the verification walk-through
+is public. The private key has never been on any distribution site.
+<https://trentpower.fr/en-au/verify/>
+
+**version_tags_signed — Met.** edition/\* tags are signed and protected
+by a tag ruleset against moving or deletion.
+
+**input_validation — Met.** Allow-lists are the house style: the
+public-exposure manifest decides what the server may serve and refuses
+the rest; the verification-data validators accept only declared paths,
+hash shapes and dates; the template engine rejects unknown tokens
+outright.
+
+**hardening — Met.** Strict CSP, SRI on every linked asset,
+cross-origin isolation headers, HSTS — documented in
+docs/SECURITY-AND-PRIVACY.md.
+
+**assurance_case — Met.** docs/ASSURANCE-CASE.md: threat model, trust
+boundaries, the secure-design argument, countered weaknesses, and the
+residual risks stated rather than hidden.
+<https://github.com/trentpower/trentpower.fr/blob/main/docs/ASSURANCE-CASE.md>
+
+## Analysis (silver)
+
+**static_analysis_common_vulnerabilities — Met.** (Carried from
+passing.)
+
+**dynamic_analysis_unsafe — N/A.** (Carried from passing.)
+
+---
+
+# Gold level — recorded position
+
+Gold is out of reach for a single-author project, by design of its
+criteria, and no wording changes that. Four gold MUSTs require more
+than one person: achieve_silver as prerequisite aside, bus_factor ≥ 2,
+two unassociated significant contributors, and two-person review of
+50% of changes. These are answered Unmet, honestly, and the remaining
+gold criteria that the repository does meet (reproducible build,
+hardened site, security review, 2FA, code-review standards) are
+answered Met so the entry reads true at every level.

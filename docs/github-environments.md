@@ -18,11 +18,11 @@ a secret, not as a variable, not in any branch.
 
 ## Branches
 
-| Branch | Role |
-| --- | --- |
-| `feature/*` | Working branches. Never deployed. |
-| `preprod` | Release candidate. Push triggers verification + optional staging mirror. |
-| `main` | The public production record. Push triggers the production deploy. |
+| Branch      | Role                                                                     |
+| ----------- | ------------------------------------------------------------------------ |
+| `feature/*` | Working branches. Never deployed.                                        |
+| `preprod`   | Release candidate. Push triggers verification + optional staging mirror. |
+| `main`      | The public production record. Push triggers the production deploy.       |
 
 ## Environments
 
@@ -30,12 +30,12 @@ Two GitHub environments, two strictly separated secret sets:
 
 ### `production`
 
-| Setting | Value |
-| --- | --- |
-| Deployment branch | `main` only |
-| Required reviewers | Trent (@trentpower) — approval gates every deploy |
-| Secrets | `SFTP_HOST`, `SFTP_USERNAME`, `SFTP_PASSWORD`, `SFTP_REMOTE_PATH`, `SFTP_KNOWN_HOSTS` |
-| Used by | [`deploy.yml`](../.github/workflows/deploy.yml) |
+| Setting            | Value                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------- |
+| Deployment branch  | `main` only                                                                           |
+| Required reviewers | Trent (@trentpower) — approval gates every deploy                                     |
+| Secrets            | `SFTP_HOST`, `SFTP_USERNAME`, `SFTP_PASSWORD`, `SFTP_REMOTE_PATH`, `SFTP_KNOWN_HOSTS` |
+| Used by            | [`deploy.yml`](../.github/workflows/deploy.yml)                                       |
 
 The job waits for the reviewer's approval before any environment secret
 is released to the runner. Approve pending deployments under
@@ -43,13 +43,13 @@ Actions → the queued run → Review deployments.
 
 ### `preproduction`
 
-| Setting | Value |
-| --- | --- |
-| Deployment branch | `preprod` only |
-| Required reviewers | Optional |
-| Secrets | `SFTP_PREPROD_HOST`, `SFTP_PREPROD_USERNAME`, `SFTP_PREPROD_PASSWORD`, `SFTP_PREPROD_REMOTE_PATH`, `SFTP_PREPROD_KNOWN_HOSTS` |
-| Variables | `PREPROD_BASE_URL` (staging smoke-test base) |
-| Used by | [`preprod-deploy.yml`](../.github/workflows/preprod-deploy.yml) |
+| Setting            | Value                                                                                                                         |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| Deployment branch  | `preprod` only                                                                                                                |
+| Required reviewers | Optional                                                                                                                      |
+| Secrets            | `SFTP_PREPROD_HOST`, `SFTP_PREPROD_USERNAME`, `SFTP_PREPROD_PASSWORD`, `SFTP_PREPROD_REMOTE_PATH`, `SFTP_PREPROD_KNOWN_HOSTS` |
+| Variables          | `PREPROD_BASE_URL` (staging smoke-test base)                                                                                  |
+| Used by            | [`preprod-deploy.yml`](../.github/workflows/preprod-deploy.yml)                                                               |
 
 Until staging credentials exist the preprod workflow verifies only and
 skips the mirror — verification still proves the release candidate.
@@ -87,11 +87,11 @@ feature/* ──pull request──▶ preprod ──deploy──▶ staging (ver
 
 ## What is manual, what is in files
 
-| Concern | Where it lives |
-| --- | --- |
-| Workflow logic, triggers, permissions | `.github/workflows/*.yml` (in the repository) |
+| Concern                                                       | Where it lives                                                                |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Workflow logic, triggers, permissions                         | `.github/workflows/*.yml` (in the repository)                                 |
 | Environment existence, branch restriction, reviewers, secrets | GitHub UI — Settings → Environments (manual; not representable in repo files) |
-| Branch protection | Rulesets — see [github-rulesets.md](github-rulesets.md) (manual) |
+| Branch protection                                             | Rulesets — see [github-rulesets.md](github-rulesets.md) (manual)              |
 
 When recreating the repository, apply the environment settings above by
 hand; the workflows fail closed (no secrets → verification only) until

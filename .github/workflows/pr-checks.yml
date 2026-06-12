@@ -91,13 +91,11 @@ jobs:
         run: python3 tools/quality/lint.py --format markdown >> "$GITHUB_STEP_SUMMARY" || true
 
   source-quality:
-    # advisory source format + correctness lint (ruff/shellcheck/shfmt/eslint/
-    # stylelint/prettier). non-blocking: not a required status check, and
-    # quality.sh runs in QUALITY_ENFORCE=0 mode (exits 0 even on findings).
-    # flip to QUALITY_ENFORCE=1 here once the source is clean
-    # (see docs/GATES-CHECKS-AND-QUALITY.md).
+    # enforced source format + correctness lint (ruff/shellcheck/shfmt/eslint/
+    # stylelint/prettier) plus the unit + property test suite. the source
+    # reached zero findings, so quality.sh now runs in QUALITY_ENFORCE=1
+    # mode and findings fail the job (see docs/GATES-CHECKS-AND-QUALITY.md).
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
@@ -120,7 +118,7 @@ jobs:
         run: npm ci
       - name: Unit + property-based tests (hypothesis fuzz)
         run: python3 -m unittest discover -s tools/quality/tests -p 'test_*.py' -v
-      - name: Source quality (advisory)
+      - name: Source quality (enforced)
         env:
-          QUALITY_ENFORCE: '0'
+          QUALITY_ENFORCE: '1'
         run: bash tools/quality/quality.sh --check

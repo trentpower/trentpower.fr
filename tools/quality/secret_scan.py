@@ -42,8 +42,8 @@ _TOOLS = next(_a for _a in Path(__file__).resolve().parents if _a.name == "tools
 sys.path.insert(0, str(_TOOLS / "lib"))
 sys.path.insert(0, str(_TOOLS / "quality"))
 
-from paths import REPO_ROOT  # noqa: E402
 from check_report import SCHEMA_VERSION, atomic_write_json, utc_now_iso  # noqa: E402
+from paths import REPO_ROOT  # noqa: E402
 from validate_repository_hygiene import (  # noqa: E402
     SECRET_PATTERNS,
     TEXT_SUFFIXES,

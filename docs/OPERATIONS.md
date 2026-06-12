@@ -354,12 +354,12 @@ gh run watch
 Required repo secrets (template placeholders — set once via
 `gh secret set <NAME>` or in repo Settings → Secrets and variables → Actions):
 
-| Secret             | Value                                            |
-| ------------------ | ------------------------------------------------ |
-| `SFTP_HOST`        | `<SFTP_HOST>`                                    |
-| `SFTP_USERNAME`    | `<SFTP_USERNAME>`                                |
-| `SFTP_PASSWORD`    | `<SFTP_PASSWORD>`                                |
-| `SFTP_REMOTE_PATH` | `<SFTP_REMOTE_PATH>`                             |
+| Secret             | Value                                                       |
+| ------------------ | ----------------------------------------------------------- |
+| `SFTP_HOST`        | `<SFTP_HOST>`                                               |
+| `SFTP_USERNAME`    | `<SFTP_USERNAME>`                                           |
+| `SFTP_PASSWORD`    | `<SFTP_PASSWORD>`                                           |
+| `SFTP_REMOTE_PATH` | `<SFTP_REMOTE_PATH>`                                        |
 | `SFTP_KNOWN_HOSTS` | host-key pin (optional; see `docs/BUILD-AND-DEPLOYMENT.md`) |
 
 Intentional limitations: **no `--delete`** on the mirror (files removed from
