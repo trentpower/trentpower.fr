@@ -1,6 +1,9 @@
 # trentpower.fr Score Ledger - runtime dependencies
 # All are already present on the Raspberry Pi; pinned loosely for portability.
-requests>=2.31
+# Floors track the latest security advisories for each package (OSV):
+# requests >=2.33 (GHSA-gc5v-m9x4-r6x2, GHSA-9hjg-9r4m-mvj7, GHSA-9wx4-h78v-vm56),
+# lxml >=6.1 (GHSA-vfmq-68hx-4jfw / PYSEC-2026-87).
+requests>=2.33.0
 PyYAML>=6.0
 beautifulsoup4>=4.12
-lxml>=5.0
+lxml>=6.1.0
