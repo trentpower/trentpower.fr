@@ -19,21 +19,21 @@ The product is a published record. Its security requirements, in order:
    published by its author.
 3. **Privacy** — reading must leak nothing: no trackers, no third-party
    requests, no cookies.
-4. **Availability is explicitly *not* guaranteed** — the record may go
+4. **Availability is explicitly _not_ guaranteed** — the record may go
    offline; it may not be silently altered. Redistributable signed
    archives make the record survivable independent of the site.
 
 ## Threat model
 
-| Threat | Counter |
-| --- | --- |
-| Tampering in transit | TLS + HSTS; beneath that, every file's SHA-256 in a PGP-signed manifest, SRI (SHA-384) on linked assets |
-| Tampering at the host | The host holds no signing key. Any modified byte fails verification against `integrity.json` + `integrity.json.sig`; post-deploy smoke tests check routes, headers and signature after every deploy |
-| Tampering at the repository | Signed commits, protected branches (no force push, no deletion, PR-only main with required checks), signed `edition/*` tags, and the signed record as the final arbiter — if GitHub and the signature disagree, the signature wins |
-| Supply-chain compromise of CI | Actions pinned to full commit SHAs; pip installs hash-pinned (`--require-hashes`); npm via lockfile; workflow permissions least-privilege; GitHub verifies and deploys but **never signs** |
-| Injected content (XSS) | Build-time template engine escapes by context (text, attribute, URL), property-tested to be total; strict CSP (`default-src 'none'` baseline) so even a missed escape has nothing to talk to |
-| Credential leak | Push protection + secret scanning + a blocking full-history scan in CI; signing keys have never existed inside the repository |
-| Malicious or vulnerable dependency | Weekly Dependabot review (nothing auto-merges), OSV checks, hash pins that make substitution detectable |
+| Threat                             | Counter                                                                                                                                                                                                                            |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tampering in transit               | TLS + HSTS; beneath that, every file's SHA-256 in a PGP-signed manifest, SRI (SHA-384) on linked assets                                                                                                                            |
+| Tampering at the host              | The host holds no signing key. Any modified byte fails verification against `integrity.json` + `integrity.json.sig`; post-deploy smoke tests check routes, headers and signature after every deploy                                |
+| Tampering at the repository        | Signed commits, protected branches (no force push, no deletion, PR-only main with required checks), signed `edition/*` tags, and the signed record as the final arbiter — if GitHub and the signature disagree, the signature wins |
+| Supply-chain compromise of CI      | Actions pinned to full commit SHAs; pip installs hash-pinned (`--require-hashes`); npm via lockfile; workflow permissions least-privilege; GitHub verifies and deploys but **never signs**                                         |
+| Injected content (XSS)             | Build-time template engine escapes by context (text, attribute, URL), property-tested to be total; strict CSP (`default-src 'none'` baseline) so even a missed escape has nothing to talk to                                       |
+| Credential leak                    | Push protection + secret scanning + a blocking full-history scan in CI; signing keys have never existed inside the repository                                                                                                      |
+| Malicious or vulnerable dependency | Weekly Dependabot review (nothing auto-merges), OSV checks, hash pins that make substitution detectable                                                                                                                            |
 
 ## Trust boundaries
 

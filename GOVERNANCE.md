@@ -15,10 +15,10 @@ was deliberately declined (see docs/github-rulesets.md).
 
 ## Roles
 
-| Role | Holder | Responsibilities |
-| --- | --- | --- |
-| Maintainer | Trent Power ([@trentpower](https://github.com/trentpower)) | Writes and signs everything: content, tooling, releases. Triages issues, responds to security reports (14-day window, SECURITY.md), approves production deploys, holds the signing keys. |
-| Contributors | Readers | Issues for factual errors, broken verification and documentation problems are welcome. Pull requests are generally declined — CONTRIBUTING.md explains why. |
+| Role         | Holder                                                     | Responsibilities                                                                                                                                                                         |
+| ------------ | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Maintainer   | Trent Power ([@trentpower](https://github.com/trentpower)) | Writes and signs everything: content, tooling, releases. Triages issues, responds to security reports (14-day window, SECURITY.md), approves production deploys, holds the signing keys. |
+| Contributors | Readers                                                    | Issues for factual errors, broken verification and documentation problems are welcome. Pull requests are generally declined — CONTRIBUTING.md explains why.                              |
 
 [CODEOWNERS](.github/CODEOWNERS) records which surfaces are
 trust-critical; it is an audit map, not an approval gate.
