@@ -25,7 +25,7 @@
       "path": "documentation/README.txt",
       "category": "build_input",
       "reason": "repo readme; archive ships its own README.txt with edition-specific contents",
-      "live_sha256": "sha256-M7yXguxHPijnGTuWjxGo+/xL0wcUgef5ESPj7yYpaqs=",
+      "live_sha256": "sha256-hYYcd6wgJ55EHl+GA01fyGW/jnDXEYbaBcxpJwy63OY=",
       "verification_note": "live site at https://trentpower.fr serves this file; the sha256 above is the value signed in /integrity.json."
     },
     {

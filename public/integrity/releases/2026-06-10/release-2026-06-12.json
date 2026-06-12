@@ -13,7 +13,7 @@
     "exclusions": {
       "inline_path": "exclusions/EXCLUDED_FILES.json",
       "live_url": "https://trentpower.fr/integrity/releases/2026-06-10/EXCLUDED_FILES.json",
-      "sha256": "sha256-VwmhBNNCnyy64KjDHtJa83Hn+NS/6/lncFPlK2rcmsM="
+      "sha256": "sha256-AdZ9f3oqx8CM0O0Zoy5WkfeERDWcvBmfW84l3igYN+4="
     },
     "integrity_redistributable": {
       "live_url": "https://trentpower.fr/integrity/releases/2026-06-10/integrity-redistributable.json",

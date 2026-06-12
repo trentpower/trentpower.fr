@@ -1,9 +1,8 @@
 version: 2
 
-# Temporarily paused for the public launch: open-pull-requests-limit 0
-# keeps the schedules defined but opens no PRs (security updates are
-# unaffected). To re-enable after launch, restore the limits below to
-# npm 3 / pip 3 / github-actions 2.
+# Weekly, low-volume, manual review only. Limits are deliberately small
+# so dependency updates inform the maintainer without flooding the
+# repository; nothing merges automatically.
 
 updates:
   - package-ecosystem: "npm"
@@ -13,7 +12,7 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Europe/Paris"
-    open-pull-requests-limit: 0
+    open-pull-requests-limit: 3
     labels:
       - "dependencies"
       - "npm"
@@ -28,7 +27,7 @@ updates:
       day: "monday"
       time: "09:30"
       timezone: "Europe/Paris"
-    open-pull-requests-limit: 0
+    open-pull-requests-limit: 3
     labels:
       - "dependencies"
       - "python"
@@ -43,7 +42,7 @@ updates:
       day: "monday"
       time: "10:00"
       timezone: "Europe/Paris"
-    open-pull-requests-limit: 0
+    open-pull-requests-limit: 2
     labels:
       - "dependencies"
       - "github-actions"

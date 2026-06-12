@@ -1,0 +1,102 @@
+{
+  "schema": "trentpower.fr/badges@1",
+  "purpose": "Source of truth for the locally generated SVG trust marks. Descriptive labels, not cryptographic proof.",
+  "generator": "tools/badges/generate_badges.py",
+  "validator": "tools/badges/validate_badges.py",
+  "marks": [
+    {
+      "id": "static",
+      "filename": "static-html-css-js.svg",
+      "label": "Static",
+      "value": "HTML CSS JS",
+      "scope": "readme",
+      "href": "https://trentpower.fr"
+    },
+    {
+      "id": "signed",
+      "filename": "signed-pgp.svg",
+      "label": "Signed",
+      "value": "PGP",
+      "scope": "readme",
+      "href": "https://trentpower.fr/en-au/verify/"
+    },
+    {
+      "id": "integrity",
+      "filename": "integrity-sha256.svg",
+      "label": "Integrity",
+      "value": "SHA-256",
+      "scope": "readme",
+      "href": "https://trentpower.fr/integrity.json"
+    },
+    {
+      "id": "languages",
+      "filename": "languages-en-au-fr.svg",
+      "label": "Languages",
+      "value": "EN-AU FR",
+      "scope": "readme",
+      "href": "https://trentpower.fr"
+    },
+    {
+      "id": "privacy",
+      "filename": "privacy-no-trackers.svg",
+      "label": "Privacy",
+      "value": "No trackers",
+      "scope": "readme",
+      "href": "https://trentpower.fr/en-au/privacy/"
+    },
+    {
+      "id": "code",
+      "filename": "code-mit.svg",
+      "label": "Code",
+      "value": "MIT",
+      "scope": "readme",
+      "href": "LICENSE"
+    },
+    {
+      "id": "content",
+      "filename": "content-cc-by-sa-4-0.svg",
+      "label": "Content",
+      "value": "CC BY-SA 4.0",
+      "scope": "readme",
+      "href": "CONTENT-RIGHTS.md"
+    },
+    {
+      "id": "security-txt",
+      "filename": "security-txt-rfc-9116.svg",
+      "label": "Security.txt",
+      "value": "RFC 9116",
+      "scope": "docs",
+      "href": "https://trentpower.fr/.well-known/security.txt"
+    },
+    {
+      "id": "pull-requests",
+      "filename": "pull-requests-declined.svg",
+      "label": "Pull requests",
+      "value": "Declined",
+      "scope": "docs",
+      "href": "#contributing"
+    },
+    {
+      "id": "issues",
+      "filename": "issues-welcome.svg",
+      "label": "Issues",
+      "value": "Welcome",
+      "scope": "docs",
+      "href": "https://github.com/trentpower/trentpower.fr/issues"
+    },
+    {
+      "id": "conduct",
+      "filename": "conduct-civil-factual-on-topic.svg",
+      "label": "Conduct",
+      "value": "Civil · Factual · On topic",
+      "scope": "docs",
+      "href": "#code-of-conduct"
+    }
+  ],
+  "proof_strip": {
+    "filename": "proof-strip.svg",
+    "seal_monogram": "TP",
+    "seal_kicker": "TRENTPOWER.FR",
+    "href": "https://trentpower.fr/en-au/verify/"
+  }
+}

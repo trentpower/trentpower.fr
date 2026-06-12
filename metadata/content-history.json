@@ -366,7 +366,7 @@
       "first_seen": "2026-05-15"
     },
     "source/source-manifest.json": {
-      "sha256": "sha256-EW/QdkbCuezU4cHdin4ATsrpMbkOxdkWMgm7q94p56g=",
+      "sha256": "sha256-Dpu3yP6kqetj/hbFXek9AJauZDiTlBvtJO0Omo3g7Fo=",
       "first_seen": "2026-06-12"
     },
     "source/apple-touch-icon.png.base64.txt": {
@@ -418,7 +418,7 @@
       "first_seen": "2026-06-10"
     },
     "source/source-manifest.json.txt": {
-      "sha256": "sha256-EW/QdkbCuezU4cHdin4ATsrpMbkOxdkWMgm7q94p56g=",
+      "sha256": "sha256-Dpu3yP6kqetj/hbFXek9AJauZDiTlBvtJO0Omo3g7Fo=",
       "first_seen": "2026-06-12"
     },
     "source/sitemap.xml.txt": {
@@ -470,7 +470,7 @@
       "first_seen": "2026-06-10"
     },
     "source/.well-known/build.json.txt": {
-      "sha256": "sha256-PW5jFtWzbi3llHIcZyPcBJYtEPteoqcCe8s+mIinEAc=",
+      "sha256": "sha256-cjKQXS6atZgRqTZMikQmN3ccbqB6HJjW66n2oVjL0A8=",
       "first_seen": "2026-06-12"
     },
     "source/.well-known/security.txt.txt": {
@@ -1118,7 +1118,7 @@
       "first_seen": "2026-06-10"
     },
     "documentation/README.txt": {
-      "sha256": "sha256-M7yXguxHPijnGTuWjxGo+/xL0wcUgef5ESPj7yYpaqs=",
+      "sha256": "sha256-hYYcd6wgJ55EHl+GA01fyGW/jnDXEYbaBcxpJwy63OY=",
       "first_seen": "2026-06-12"
     },
     "source/documentation/index.html.txt": {
