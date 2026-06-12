@@ -42,7 +42,7 @@ sys.path.insert(
 from paths import TOOLS_DIR as SCRIPTS  # noqa: E402
 
 # the check registry reaches scripts across every responsibility pillar.
-_PILLARS = ("build", "quality", "verify", "release", "lib")
+_PILLARS = ("build", "quality", "verify", "release", "badges", "lib")
 for _sub in _PILLARS:
     sys.path.insert(0, str(SCRIPTS / _sub))
 import inline_checks as pdc  # noqa: E402  (inline cross-cutting check functions)
@@ -571,6 +571,15 @@ REGISTRY: list[Check] = [
         "published /documentation/ pdf is layout-clean, free of corrected stale "
         "claims, and the landing page advertises its real hash",
         command=_script("validate_documentation.py"),
+    ),
+    Check(
+        "local_badges",
+        "validate_badges.py",
+        _B,
+        _COR,
+        "trust-mark SVGs are fresh against badges.json, self-contained, and no "
+        "governance file references an external badge service",
+        command=_script("validate_badges.py"),
     ),
 ]
 

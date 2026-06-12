@@ -1,13 +1,14 @@
 # trentpower.fr
 
-[![Static Site](https://img.shields.io/badge/Static-HTML%20%7C%20CSS%20%7C%20JS-orange?logo=html5&logoColor=white&style=flat-square)](https://trentpower.fr)
-[![PGP Signed](https://img.shields.io/badge/Signed-PGP%20Verified-blue?logo=gnuprivacyguard&logoColor=white&style=flat-square)](https://trentpower.fr/en-au/verify/)
-[![SHA-256 Manifest](https://img.shields.io/badge/Integrity-SHA--256%20Manifest-success?style=flat-square)](https://trentpower.fr/integrity.json)
-[![Bilingual](https://img.shields.io/badge/Bilingual-EN--AU%20%7C%20FR-lightblue?style=flat-square)](https://trentpower.fr)
-[![No Tracking](https://img.shields.io/badge/Privacy-No%20Tracking-blueviolet?logo=adguard&logoColor=white&style=flat-square)](https://trentpower.fr/en-au/privacy/)
-[![Code: MIT](https://img.shields.io/badge/Code-MIT-yellow?logo=opensourceinitiative&logoColor=white&style=flat-square)](LICENSE)
-[![Content: CC BY-SA 4.0](https://img.shields.io/badge/Content-CC%20BY--SA%204.0-lightgrey?logo=creativecommons&logoColor=white&style=flat-square)](CONTENT-RIGHTS.md)
-[![Deploy](https://img.shields.io/badge/Deploy-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white&style=flat-square)](.github/workflows/)
+[![trentpower.fr trust strip](metadata/badges/proof-strip.svg)](https://trentpower.fr/en-au/verify/)
+
+[![Static: HTML CSS JS](metadata/badges/static-html-css-js.svg)](https://trentpower.fr)
+[![Signed: PGP](metadata/badges/signed-pgp.svg)](https://trentpower.fr/en-au/verify/)
+[![Integrity: SHA-256](metadata/badges/integrity-sha256.svg)](https://trentpower.fr/integrity.json)
+[![Languages: EN-AU FR](metadata/badges/languages-en-au-fr.svg)](https://trentpower.fr)
+[![Privacy: No trackers](metadata/badges/privacy-no-trackers.svg)](https://trentpower.fr/en-au/privacy/)
+[![Code: MIT](metadata/badges/code-mit.svg)](LICENSE)
+[![Content: CC BY-SA 4.0](metadata/badges/content-cc-by-sa-4-0.svg)](CONTENT-RIGHTS.md)
 
 [![PR checks](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml)
 [![Publication check](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml)
