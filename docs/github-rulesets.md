@@ -11,16 +11,16 @@ applying or restoring them. The companion document is
 `main` is the public production record. Nothing rewrites it — not the
 maintainer, not automation.
 
-| Rule | Setting |
-| --- | --- |
-| Target | `main` |
-| Require a pull request before merging | On (approvals: 0 — see note below; stale approvals dismissed on push) |
-| Require status checks to pass | On — `release-gate`, `secret-scan`, `release-gate-main`, `build-check`, `signature-verify` |
-| Require signed commits | On |
-| Require linear history | On |
-| Require conversation resolution before merging | On |
-| Block force pushes | On |
-| Restrict deletions | On |
+| Rule                                           | Setting                                                                                    |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Target                                         | `main`                                                                                     |
+| Require a pull request before merging          | On (approvals: 0 — see note below; stale approvals dismissed on push)                      |
+| Require status checks to pass                  | On — `release-gate`, `secret-scan`, `release-gate-main`, `build-check`, `signature-verify` |
+| Require signed commits                         | On                                                                                         |
+| Require linear history                         | On                                                                                         |
+| Require conversation resolution before merging | On                                                                                         |
+| Block force pushes                             | On                                                                                         |
+| Restrict deletions                             | On                                                                                         |
 
 The `publication-check.yml` blocking jobs (`release-gate-main`,
 `build-check`, `signature-verify`) became required checks once the
@@ -36,23 +36,22 @@ place as a routing and audit record of the trust surfaces.
 
 **Required approvals stay at 0, deliberately.** The same single-maintainer
 deadlock applies: requiring one approval would force every merge through
-the admin bypass, which makes the configuration *look* stricter while
-every actual merge skips it — score theatre, not protection. OpenSSF
-Scorecard therefore reports Code-Review as 0 and caps Branch-Protection;
-both are accepted and documented rather than gamed. Revisit if a second
-trusted reviewer ever joins the project.
+the admin bypass, which makes the configuration _look_ stricter while
+every actual merge skips it — the appearance of review without the
+substance. The Scorecard readings below follow from this and are
+accepted. Revisit if a second trusted reviewer ever joins the project.
 
 ## `protect-preprod-as-release-candidate`
 
-| Rule | Setting |
-| --- | --- |
-| Target | `preprod` |
-| Require a pull request before merging | On (approvals: 0) |
-| Require status checks to pass | On — `release-gate`, `secret-scan` |
-| Require signed commits | On |
-| Require conversation resolution before merging | On |
-| Block force pushes | On |
-| Restrict deletions | On |
+| Rule                                           | Setting                            |
+| ---------------------------------------------- | ---------------------------------- |
+| Target                                         | `preprod`                          |
+| Require a pull request before merging          | On (approvals: 0)                  |
+| Require status checks to pass                  | On — `release-gate`, `secret-scan` |
+| Require signed commits                         | On                                 |
+| Require conversation resolution before merging | On                                 |
+| Block force pushes                             | On                                 |
+| Restrict deletions                             | On                                 |
 
 Note: the repository setting "Automatically delete head branches"
 deletes `preprod` after a promotion merge — recreate it from `main`
@@ -64,12 +63,12 @@ origin preprod`).
 Apply only if edition tags or GitHub Releases enter the publication
 model (they have not yet).
 
-| Rule | Setting |
-| --- | --- |
-| Target | Tags matching `edition/*` |
+| Rule               | Setting                    |
+| ------------------ | -------------------------- |
+| Target             | Tags matching `edition/*`  |
 | Restrict creations | On — repository admin only |
-| Restrict updates | On |
-| Restrict deletions | On |
+| Restrict updates   | On                         |
+| Restrict deletions | On                         |
 
 ## GitHub Releases are secondary pointers
 
@@ -110,17 +109,17 @@ Attribution is fixed forward instead:
 
 The repository's security stack is deliberately small and GitHub-native:
 
-| Tool | Status | Role |
-| --- | --- | --- |
-| CodeQL (default setup) | On | Static analysis on PRs; its check blocks merges on its own |
-| Secret scanning + push protection | On | Blocks committed credentials at push time |
-| Private vulnerability reporting | On (manual setting) | The private channel SECURITY.md and the issue forms point to |
-| Dependabot | On — weekly, npm 3 / pip 5 / actions 2 | Update PRs for review; nothing merges automatically. The pip ecosystem also regenerates the hash-pinned CI sets in [`.github/requirements/`](../.github/requirements/README.md) |
-| OpenSSF Scorecard | On — [`scorecard.yml`](../.github/workflows/scorecard.yml) | Repository-posture checks (branch protection, pinned actions, token permissions) published to the Security tab. A check, not a badge |
+| Tool                              | Status                                                     | Role                                                                                                                                                                            |
+| --------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CodeQL (default setup)            | On                                                         | Static analysis on PRs; its check blocks merges on its own                                                                                                                      |
+| Secret scanning + push protection | On                                                         | Blocks committed credentials at push time                                                                                                                                       |
+| Private vulnerability reporting   | On (manual setting)                                        | The private channel SECURITY.md and the issue forms point to                                                                                                                    |
+| Dependabot                        | On — weekly, npm 3 / pip 5 / actions 2                     | Update PRs for review; nothing merges automatically. The pip ecosystem also regenerates the hash-pinned CI sets in [`.github/requirements/`](../.github/requirements/README.md) |
+| OpenSSF Scorecard                 | On — [`scorecard.yml`](../.github/workflows/scorecard.yml) | Repository-posture checks (branch protection, pinned actions, token permissions) published to the Security tab. A check, not a badge                                            |
 
 ### Scorecard readings that are accepted, not fixed
 
-Two Scorecard checks read low by structural fact rather than by gap:
+Three Scorecard checks read low by structural fact rather than by gap:
 
 - **Maintained: 0** — Scorecard scores any repository younger than 90
   days as 0 regardless of activity. This repository became public on
@@ -129,6 +128,17 @@ Two Scorecard checks read low by structural fact rather than by gap:
 - **Code-Review: 0** — the check counts approving reviews on merged
   changesets, and a single maintainer cannot approve their own pull
   requests. See the approvals note under `protect-main-as-public-record`.
+- **Fuzzing: 0** — the check recognises property-based testing for
+  several languages but not Python's Hypothesis, which is what this
+  repository uses ([fuzzing.md](fuzzing.md)). The property tests run on
+  every PR regardless.
+
+`protect-main` carries **no bypass actors**: even the repository admin
+goes through the PR flow. Emergencies are handled by editing the ruleset
+itself — a deliberate, auditable act rather than a standing exemption.
+The preprod and tag rulesets keep the admin bypass: preprod must be
+recreatable from `main` after each promotion, and `edition/*` tags must
+be creatable by the admin at release time.
 
 **Later, deliberately:** StepSecurity Harden-Runner — runtime monitoring
 of Actions runners (network egress, file integrity, process activity).

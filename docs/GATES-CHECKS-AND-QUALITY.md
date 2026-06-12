@@ -336,12 +336,12 @@ All reports are **local-only runtime artefacts** written under
 
 ### Producers
 
-| Report                                  | Producer                                                         | Command  | Builder              |
-| --------------------------------------- | ---------------------------------------------------------------- | -------- | -------------------- |
-| `reports/checks/last-gate.json`         | `tools/quality/gate.py --json PATH`                              | `gate`   | `build_check_report` |
-| `reports/checks/last-lint.json`         | `tools/quality/lint.py --json PATH`                              | `lint`   | `build_check_report` |
-| `reports/checks/last-audit.json`        | `tools/score-ledger/score_ledger.py report --latest --json PATH` | `audit`  | `build_audit_report` |
-| `reports/checks/last-secret-scan.json`  | `tools/quality/secret_scan.py`                                   | `secret` | (envelope head only) |
+| Report                                 | Producer                                                         | Command  | Builder              |
+| -------------------------------------- | ---------------------------------------------------------------- | -------- | -------------------- |
+| `reports/checks/last-gate.json`        | `tools/quality/gate.py --json PATH`                              | `gate`   | `build_check_report` |
+| `reports/checks/last-lint.json`        | `tools/quality/lint.py --json PATH`                              | `lint`   | `build_check_report` |
+| `reports/checks/last-audit.json`       | `tools/score-ledger/score_ledger.py report --latest --json PATH` | `audit`  | `build_audit_report` |
+| `reports/checks/last-secret-scan.json` | `tools/quality/secret_scan.py`                                   | `secret` | (envelope head only) |
 
 `tools/lib/checks.py` owns checks; `tools/score-ledger/` owns the live audit.
 The envelope belongs to neither, so it lives in the neutral `check_report`

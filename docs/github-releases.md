@@ -31,13 +31,13 @@ admin.
 
 Attach copies of the canonical artefacts — never rebuilt ones:
 
-| Asset | Source |
-| --- | --- |
-| `trentpower.fr-<edition>.tar.gz` | the frozen archive from `public/integrity/releases/<edition>/` |
-| `trentpower.fr-<edition>.tar.gz.sig` | its detached PGP signature from the same directory |
-| `integrity.json` | `public/integrity.json` at the tagged commit |
-| `integrity.json.sig` | `public/integrity.json.sig` at the tagged commit |
-| `VERIFY.md` | short verification instructions pointing at the in-archive `verify.sh` and https://trentpower.fr/en-au/verify/ |
+| Asset                                | Source                                                                                                         |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| `trentpower.fr-<edition>.tar.gz`     | the frozen archive from `public/integrity/releases/<edition>/`                                                 |
+| `trentpower.fr-<edition>.tar.gz.sig` | its detached PGP signature from the same directory                                                             |
+| `integrity.json`                     | `public/integrity.json` at the tagged commit                                                                   |
+| `integrity.json.sig`                 | `public/integrity.json.sig` at the tagged commit                                                               |
+| `VERIFY.md`                          | short verification instructions pointing at the in-archive `verify.sh` and https://trentpower.fr/en-au/verify/ |
 
 ## Release body
 

@@ -125,3 +125,4 @@ docs/pdf/fonts/*.woff2
 # report emitted by tools/quality/pdf/validate-layout.py --review.
 # Generated from README.pdf on every export; never shipped.
 docs/pdf/review/
+.coverage
