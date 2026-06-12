@@ -75,6 +75,7 @@ COLUMNS = {"desktop": 3, "mobile": 5}
 MARGIN = 24
 LABEL_H = 28
 
+
 class _QuietHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *args):
         pass
@@ -104,8 +105,8 @@ def assemble_sheet(Image, ImageDraw, captures, device: str, scheme: str) -> None
         col, row = i % cols, i // cols
         x = MARGIN + col * (cell_w + MARGIN)
         y = MARGIN + row * (cell_h + LABEL_H + MARGIN)
-        thumb = Image.open(io.BytesIO(png_bytes)).convert("RGB").resize(
-            (cell_w, cell_h), Image.LANCZOS
+        thumb = (
+            Image.open(io.BytesIO(png_bytes)).convert("RGB").resize((cell_w, cell_h), Image.LANCZOS)
         )
         sheet.paste(thumb, (x, y))
         d.rectangle([x, y, x + cell_w - 1, y + cell_h - 1], outline=fg, width=1)
@@ -120,7 +121,9 @@ def main() -> int:
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
-        print("playwright not installed — visual QA skipped (pip install playwright; playwright install chromium)")
+        print(
+            "playwright not installed — visual QA skipped (pip install playwright; playwright install chromium)"
+        )
         return 0
     try:
         from PIL import Image, ImageDraw

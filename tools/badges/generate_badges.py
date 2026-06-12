@@ -45,8 +45,8 @@ ACCENT = "#6E1A14"
 SEAL_PAPER = "#F4ECE5"  # 8% oxblood over paper
 
 MONO = (
-    'ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, '
-    '&quot;Liberation Mono&quot;, monospace'
+    "ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, "
+    "&quot;Liberation Mono&quot;, monospace"
 )
 
 # geometry from the brief's sample SVG (96x22 "Signed: PGP").
@@ -163,9 +163,7 @@ def proof_strip_svg(marks: list[dict], seal: dict) -> str:
             )
             x += 1
     w = round(x)
-    title = "trentpower.fr trust strip: " + " · ".join(
-        f"{m['label']} {m['value']}" for m in marks
-    )
+    title = "trentpower.fr trust strip: " + " · ".join(f"{m['label']} {m['value']}" for m in marks)
     head = (
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{PS_H}" '
         f'viewBox="0 0 {w} {PS_H}" role="img" aria-label="{esc(title)}">\n'
