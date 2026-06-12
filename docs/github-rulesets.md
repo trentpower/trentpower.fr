@@ -120,7 +120,7 @@ The repository's security stack is deliberately small and GitHub-native:
 
 ### Scorecard readings that are accepted, not fixed
 
-Two Scorecard checks read low by structural fact rather than by gap:
+Three Scorecard checks read low by structural fact rather than by gap:
 
 - **Maintained: 0** — Scorecard scores any repository younger than 90
   days as 0 regardless of activity. This repository became public on
@@ -129,6 +129,16 @@ Two Scorecard checks read low by structural fact rather than by gap:
 - **Code-Review: 0** — the check counts approving reviews on merged
   changesets, and a single maintainer cannot approve their own pull
   requests. See the approvals note under `protect-main-as-public-record`.
+- **Fuzzing: 0** — the check does not recognise Python property-based
+  testing (Hypothesis); see [fuzzing.md](fuzzing.md). The property tests
+  run on every PR regardless.
+
+`protect-main` carries **no bypass actors**: even the repository admin
+goes through the PR flow. Emergencies are handled by editing the ruleset
+itself — a deliberate, auditable act rather than a standing exemption.
+The preprod and tag rulesets keep the admin bypass: preprod must be
+recreatable from `main` after each promotion, and `edition/*` tags must
+be creatable by the admin at release time.
 
 **Later, deliberately:** StepSecurity Harden-Runner — runtime monitoring
 of Actions runners (network egress, file integrity, process activity).
