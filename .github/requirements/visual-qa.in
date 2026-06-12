@@ -1,0 +1,4 @@
+# ci dep for the visual qa contact sheets. browser binaries come from
+# `python3 -m playwright install`, separately from pip.
+# regenerate: pip-compile --generate-hashes --strip-extras --allow-unsafe -o visual-qa.txt visual-qa.in
+playwright
