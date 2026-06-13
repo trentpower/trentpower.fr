@@ -1,12 +1,11 @@
 # trentpower.fr
 
-[![trentpower.fr trust strip](metadata/badges/proof-strip.svg)](https://trentpower.fr/en-au/verify/)
-
-[![Static: HTML CSS JS](metadata/badges/static-html-css-js.svg)](https://trentpower.fr)
 [![Signed: PGP](metadata/badges/signed-pgp.svg)](https://trentpower.fr/en-au/verify/)
 [![Integrity: SHA-256](metadata/badges/integrity-sha256.svg)](https://trentpower.fr/integrity.json)
-[![Languages: EN-AU FR](metadata/badges/languages-en-au-fr.svg)](https://trentpower.fr)
+[![SLSA: Build L3](metadata/badges/slsa-build-l3.svg)](docs/provenance.md)
+[![Static: HTML CSS JS](metadata/badges/static-html-css-js.svg)](https://trentpower.fr)
 [![Privacy: No trackers](metadata/badges/privacy-no-trackers.svg)](https://trentpower.fr/en-au/privacy/)
+[![Languages: EN-AU FR](metadata/badges/languages-en-au-fr.svg)](https://trentpower.fr)
 [![Code: MIT](metadata/badges/code-mit.svg)](LICENSE)
 [![Content: CC BY-SA 4.0](metadata/badges/content-cc-by-sa-4-0.svg)](CONTENT-RIGHTS.md)
 

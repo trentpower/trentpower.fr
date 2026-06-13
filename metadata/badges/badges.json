@@ -29,6 +29,14 @@
       "href": "https://trentpower.fr/integrity.json"
     },
     {
+      "id": "slsa",
+      "filename": "slsa-build-l3.svg",
+      "label": "SLSA",
+      "value": "Build L3",
+      "scope": "readme",
+      "href": "docs/provenance.md"
+    },
+    {
       "id": "languages",
       "filename": "languages-en-au-fr.svg",
       "label": "Languages",
