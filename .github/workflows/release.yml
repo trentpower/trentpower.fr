@@ -1,24 +1,21 @@
 name: Release provenance
 
-# Attaches a GitHub build-provenance attestation to a published edition and
-# cuts the GitHub Release that points at it.
+# Builds the release archive ON the GitHub Actions platform and attests it, so a
+# consumer can prove which commit and which workflow produced the bytes — SLSA
+# build-track Level 3 provenance.
 #
-# Trust model (see docs/ASSURANCE-CASE.md). Editions are built and PGP-signed
-# locally; GitHub verifies and conveys, it never builds or signs the canonical
-# record. This workflow keeps that boundary: it does NOT rebuild the site. It
-# verifies the committed, already-signed release with the full blocking gate,
-# then asks GitHub to attest the exact artefact bytes that were published.
+# Trust model (see docs/ASSURANCE-CASE.md). The canonical record stays
+# locally built and PGP-signed: public/integrity.json + .sig and the canonical
+# per-edition archive under public/integrity/releases/<edition>/ are the
+# editorial identity anchor, and the signing key never enters CI. This workflow
+# adds a second, complementary anchor: it re-renders the site from source on a
+# clean runner (reproducibility proof), builds a deterministic site archive in
+# the runner, and attests that runner-built archive keyless via Sigstore (GitHub
+# OIDC), recorded in the public Rekor transparency log.
 #
-# What the attestation proves, that PGP alone does not: which commit, and which
-# workflow run, produced these artefact digests. actions/attest-build-provenance
-# signs keyless via Sigstore (GitHub OIDC) and records the attestation in the
-# public Rekor transparency log. A reader verifies it offline-of-our-host with:
-#
-#   gh attestation verify trentpower-fr-<edition>.tar.gz \
+# Verify (no trust in our host required):
+#   gh attestation verify trentpower-fr-<edition>-site.tar.gz \
 #     --repo trentpower/trentpower.fr
-#
-# This is release/publish provenance, not a hermetic in-CI rebuild. Upgrading to
-# a CI rebuild (full SLSA build-track Level 3) is documented in docs/provenance.md.
 #
 # Trigger: pushing a signed tag of the form edition/YYYY-MM-DD.
 #   git tag -s edition/2026-06-10 -m "Edition 2026-06-10" <commit-on-main>
@@ -43,7 +40,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  attest-and-release:
+  build-attest-release:
     if: startsWith(github.ref, 'refs/tags/edition/')
     runs-on: ubuntu-latest
     permissions:
@@ -69,27 +66,55 @@ jobs:
             echo "RELEASE_DIR=$dir"
           } >> "$GITHUB_ENV"
 
-      - name: Install gpg + python + Pillow (for the blocking gate)
+      - name: Install gpg + python + Pillow + build deps
         run: |
           sudo apt-get update
           sudo apt-get install -y gnupg python3 python3-pil python3-pip
-          # mirrors pr-checks.yml: jsonschema>=4.18 + pymupdf back blocking
-          # gates; hash-pinned, dependabot regenerates the set.
-          python3 -m pip install --break-system-packages --quiet --require-hashes -r .github/requirements/release-gate.txt
+          # build-check.txt is the release-gate set plus the render-only deps
+          # (pyyaml, fonttools, segno); hash-pinned, dependabot regenerates it.
+          python3 -m pip install --break-system-packages --quiet --require-hashes -r .github/requirements/build-check.txt
 
       - name: Restore licensed font binaries (verified against signed manifest)
         # klim fonts are untracked (licence); fetched from the live host and
         # verified byte-for-byte against the signed integrity.json. Fail-closed.
         run: python3 tools/build/fetch_licensed_fonts.py
 
-      - name: Full release gate (blocking checks + signature verify)
-        # Only a gate-clean, PGP-signed release is ever attested.
+      - name: Verify the committed, signed edition (blocking gate + signature)
+        # Only a gate-clean, PGP-signed edition is ever built and attested.
         run: python3 tools/verify/validate_release.py
 
-      - name: Attest build provenance for the published artefacts
+      - name: Re-render the site from source in the runner (reproducibility proof)
+        # Proves the committed public/ bytes rebuild from content/ sources on a
+        # clean hosted runner. The drift gate inside --check fails closed on any
+        # hand-edited generated file. This is the "built from source" half of the
+        # SLSA build step; signing stays local, so --check uses --skip-signature.
+        run: bash tools/build/build.sh --check
+
+      - name: Restore the committed, signed bytes
+        # --check may re-stamp date fields; restore the verified committed tree so
+        # the archive we attest carries the signed edition's exact bytes.
+        run: git checkout -- public/
+
+      - name: Build the release archive in the runner (the SLSA build step)
+        run: |
+          set -eu
+          out="trentpower-fr-${EDITION}-site.tar.gz"
+          # Deterministic: sorted names, zeroed owner/group, mtime pinned to the
+          # edition, gzip header without name/mtime. Excludes the nested frozen
+          # release archives and the proprietary (Klim) fonts, mirroring the
+          # canonical archive's redistribution policy.
+          tar --sort=name --owner=0 --group=0 --numeric-owner \
+            --mtime="${EDITION}T00:00:00Z" \
+            --exclude=./integrity/releases --exclude='*.woff2' \
+            -C public -cf - . | gzip -n -9 >"$out"
+          sha256sum "$out" | tee "${out}.sha256"
+          echo "SITE_ARCHIVE=$out" >>"$GITHUB_ENV"
+
+      - name: Attest build provenance (SLSA Build L3 for the runner-built archive)
         uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4.1.0
         with:
           subject-path: |
+            ${{ env.SITE_ARCHIVE }}
             public/integrity.json
             ${{ env.RELEASE_DIR }}/trentpower-fr-${{ env.EDITION }}.tar.gz
             ${{ env.RELEASE_DIR }}/trentpower-fr-${{ env.EDITION }}.zip
@@ -106,22 +131,27 @@ jobs:
           Source commit: ${GITHUB_SHA}
           Release tag: ${GITHUB_REF_NAME}
 
-          The canonical record is the signed integrity manifest on the site and in
-          the repository (public/integrity.json + .sig), verified against the
-          published PGP key. These Release assets are convenience copies.
+          The canonical record is the locally built, PGP-signed integrity manifest
+          on the site and in the repository (public/integrity.json + .sig), verified
+          against the published PGP key.
 
-          A GitHub build-provenance attestation covers the archive, the checksums
-          and the integrity manifest. Verify it independently:
+          trentpower-fr-${EDITION}-site.tar.gz was built in this workflow run from
+          the tagged source on a clean GitHub-hosted runner, and carries a SLSA
+          build-track Level 3 provenance attestation (keyless Sigstore + Rekor).
+          Verify which commit and workflow produced it:
 
-              gh attestation verify trentpower-fr-${EDITION}.tar.gz \\
+              gh attestation verify trentpower-fr-${EDITION}-site.tar.gz \\
                 --repo ${GITHUB_REPOSITORY}
 
           See https://trentpower.fr/en-au/verify/ and docs/provenance.md.
           EOF
           )"
-          # Attach only the canonical edition artefacts that exist at this commit.
+          # Attach the runner-built provenance archive plus the canonical,
+          # locally-signed edition artefacts that exist at this commit.
           files=""
           for f in \
+            "${SITE_ARCHIVE}" \
+            "${SITE_ARCHIVE}.sha256" \
             "${RELEASE_DIR}/trentpower-fr-${EDITION}.tar.gz" \
             "${RELEASE_DIR}/trentpower-fr-${EDITION}.tar.gz.sig" \
             "${RELEASE_DIR}/trentpower-fr-${EDITION}.tar.gz.sha256" \
