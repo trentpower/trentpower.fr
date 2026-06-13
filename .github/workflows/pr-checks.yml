@@ -147,3 +147,16 @@ jobs:
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Scan dependencies for known vulnerabilities (fail-closed)
         run: osv-scanner scan source --recursive --config=osv-scanner.toml .
+
+  reuse:
+    # blocking — REUSE (reuse.software) licensing compliance. Every tracked file
+    # must resolve to a licence + copyright via REUSE.toml + LICENSES/. Fail-closed.
+    # NOT yet a required status check — add it in the ruleset once green.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - name: Install reuse (hash-pinned)
+        run: python3 -m pip install --break-system-packages --quiet --require-hashes -r .github/requirements/reuse.txt
+      - name: REUSE lint
+        run: python3 -m reuse lint

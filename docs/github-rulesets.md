@@ -120,19 +120,32 @@ The repository's security stack is deliberately small and GitHub-native:
 
 ### Scorecard readings that are accepted, not fixed
 
-Three Scorecard checks read low by structural fact rather than by gap:
+The Scorecard badge is a maintenance dashboard, not a medal. Four checks read low
+by structural fact rather than by gap, and the corresponding code-scanning alerts
+are dismissed in the Security tab as "won't fix" citing this section. The score is
+capped at roughly 7-8 for a single-maintainer project; that is expected and honest.
 
-- **Maintained: 0** — Scorecard scores any repository younger than 90
+- **Maintained** — Scorecard scores any repository younger than 90
   days as 0 regardless of activity. This repository became public on
   2026-06-10; the check normalises on its own from September 2026 given
   the existing weekly cadence (Dependabot, Scorecard cron, editions).
-- **Code-Review: 0** — the check counts approving reviews on merged
+- **Code-Review** — the check counts approving reviews on merged
   changesets, and a single maintainer cannot approve their own pull
   requests. See the approvals note under `protect-main-as-public-record`.
-- **Fuzzing: 0** — the check recognises property-based testing for
+- **Branch-Protection** — the check is capped because required approvals
+  are 0 (a single maintainer cannot require a non-author review without
+  deadlocking every merge). The protections that do not need a second
+  human are all on: required status checks, signed commits, linear
+  history, no force-push, no deletion, no bypass actors. Same root cause
+  as Code-Review.
+- **Fuzzing** — the check recognises property-based testing for
   several languages but not Python's Hypothesis, which is what this
   repository uses ([fuzzing.md](fuzzing.md)). The property tests run on
   every PR regardless.
+
+Code-Review and Branch-Protection both lift the day a second trusted reviewer
+joins and required reviews are turned on — the same change that would satisfy
+Baseline `OSPS-QA-07.01` and the Gold two-person-review criteria.
 
 `protect-main` carries **no bypass actors**: even the repository admin
 goes through the PR flow. Emergencies are handled by editing the ruleset
