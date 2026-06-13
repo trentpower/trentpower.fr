@@ -16,6 +16,10 @@ Suspected vulnerabilities can also be reported privately through GitHub:
 [open a private vulnerability report](https://github.com/trentpower/trentpower.fr/security/advisories/new).
 The report stays between you and the maintainer until a fix is published.
 
+Expect an initial response within 14 days. Confirmed issues are triaged, fixed
+in the next edition, and disclosed coordinately once the fix is published; this
+is the coordinated vulnerability disclosure window the project commits to.
+
 Please do not open a public issue for anything sensitive.
 
 ## Posture

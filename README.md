@@ -10,10 +10,12 @@
 [![Code: MIT](metadata/badges/code-mit.svg)](LICENSE)
 [![Content: CC BY-SA 4.0](metadata/badges/content-cc-by-sa-4-0.svg)](CONTENT-RIGHTS.md)
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13182/badge)](https://www.bestpractices.dev/projects/13182)
+[![OpenSSF Baseline](https://www.bestpractices.dev/projects/13182/baseline)](https://www.bestpractices.dev/projects/13182)
+
 [![PR checks](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml)
 [![Publication check](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml)
 [![Deploy](https://github.com/trentpower/trentpower.fr/actions/workflows/deploy.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/deploy.yml)
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13182/badge)](https://www.bestpractices.dev/projects/13182)
 
 `trentpower.fr` is a static, bilingual, source-verifiable personal publication.
 
@@ -257,6 +259,23 @@ Full documentation lives in [`docs/`](docs/README.md):
 - [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md)
 - [github-environments.md](docs/github-environments.md)
 - [github-rulesets.md](docs/github-rulesets.md)
+- [provenance.md](docs/provenance.md)
+- [SECRETS-AND-KEY-MANAGEMENT.md](docs/SECRETS-AND-KEY-MANAGEMENT.md)
+- [CODE-REVIEW.md](docs/CODE-REVIEW.md)
+
+## Support
+
+The current edition is the supported one. Each new edition supersedes the
+previous one; it never rewrites it. Earlier editions remain published as frozen,
+redistributable archives under
+[`public/integrity/releases/`](public/integrity/releases/), kept so the record
+stays verifiable, not maintained.
+
+Security updates follow the same lifecycle: only the latest edition receives
+fixes. Once an edition is superseded it is immutable and is not patched. A
+security-relevant correction ships as a new edition and is noted in the
+[changelog](https://trentpower.fr/changelog.txt); see [SECURITY.md](SECURITY.md)
+for how to report an issue and the response timeframe.
 
 ## What is intentionally not included
 

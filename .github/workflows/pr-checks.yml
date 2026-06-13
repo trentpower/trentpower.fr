@@ -122,3 +122,28 @@ jobs:
         env:
           QUALITY_ENFORCE: '1'
         run: bash tools/quality/quality.sh --check
+
+  sca:
+    # blocking — dependency vulnerability scan (osv-scanner, OSV.dev) over the
+    # pinned Python and Node manifests. Fail-closed. Honours osv-scanner.toml,
+    # whose suppressions are tied to security/openvex.json (no silent ignores).
+    # NOT yet a required status check — add it in the ruleset once green on a
+    # promotion PR (see docs/github-rulesets.md, same merge-first-then-require
+    # order as the existing checks).
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - name: Install osv-scanner (pinned binary, checksum-verified)
+        run: |
+          set -eu
+          ver="2.3.8"
+          mkdir -p "$HOME/.local/bin"
+          curl -fsSL -o "$HOME/.local/bin/osv-scanner" \
+            "https://github.com/google/osv-scanner/releases/download/v${ver}/osv-scanner_linux_amd64"
+          # checksum from the v2.3.8 release osv-scanner_SHA256SUMS — fail closed.
+          echo "bc98e15319ed0d515e3f9235287ba53cdc5535d576d24fd573978ecfe9ab92dc  $HOME/.local/bin/osv-scanner" | sha256sum -c -
+          chmod +x "$HOME/.local/bin/osv-scanner"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Scan dependencies for known vulnerabilities (fail-closed)
+        run: osv-scanner scan source --recursive --config=osv-scanner.toml .

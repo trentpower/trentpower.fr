@@ -197,6 +197,38 @@ git push
 
 ---
 
+## Dependency security (SCA)
+
+Dependencies are scanned for known vulnerabilities on every pull request by the
+`sca` job ([pr-checks.yml](../.github/workflows/pr-checks.yml)), which runs
+osv-scanner against the Node lockfile and the Python requirement files, failing
+closed. The hash-pinned CI requirement sets in `.github/requirements/` are
+additionally tracked by Dependabot.
+
+Remediation thresholds:
+
+- **High or critical** dependency vulnerabilities are fixed before the next
+  edition is published. No edition ships with an unresolved high or critical
+  finding unless it is explicitly declared non-exploitable in the VEX
+  ([../security/openvex.json](../security/openvex.json)) with a recorded reason.
+- **Lower severities** are triaged: fixed opportunistically, or recorded in the
+  VEX when they cannot affect a static publication with no runtime.
+
+Suppression is never silent: every ignored finding has a matching VEX statement
+explaining why it does not affect the published bytes.
+
+---
+
+## Static analysis (SAST)
+
+CodeQL (GitHub default setup) runs static analysis on every pull request and its
+check blocks the merge. Remediation threshold: a **high-severity** CodeQL finding
+blocks the release until it is fixed or dismissed with a recorded rationale; lower
+severities are triaged. The build tooling is additionally linted by ruff,
+shellcheck and the quality gate on every PR and every local `--check` build.
+
+---
+
 ## Local secret-handling rules
 
 - No real secrets, hostnames, usernames, or server paths belong in the

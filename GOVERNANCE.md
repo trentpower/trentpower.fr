@@ -20,6 +20,10 @@ was deliberately declined (see docs/github-rulesets.md).
 | Maintainer   | Trent Power ([@trentpower](https://github.com/trentpower)) | Writes and signs everything: content, tooling, releases. Triages issues, responds to security reports (14-day window, SECURITY.md), approves production deploys, holds the signing keys. |
 | Contributors | Readers                                                    | Issues for factual errors, broken verification and documentation problems are welcome. Pull requests are generally declined — CONTRIBUTING.md explains why.                              |
 
+Any future collaborator is granted access only after review by the maintainer,
+starting from the lowest privilege necessary and escalated only as a specific
+need is demonstrated.
+
 [CODEOWNERS](.github/CODEOWNERS) records which surfaces are
 trust-critical; it is an audit map, not an approval gate.
 

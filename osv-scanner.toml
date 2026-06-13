@@ -1,0 +1,11 @@
+# osv-scanner configuration.
+#
+# Suppress a flagged vulnerability ONLY with a matching OpenVEX statement in
+# security/openvex.json that records why it does not affect the published bytes.
+# No silent ignores: every entry below points at a VEX statement.
+#
+# Template (uncomment and fill when a non-affecting finding must be suppressed):
+#
+# [[IgnoredVulns]]
+# id = "CVE-YYYY-NNNNN"
+# reason = "not_affected; build-time tool, absent from the static published site. See security/openvex.json."
