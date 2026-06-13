@@ -4,7 +4,7 @@
 [![Integrity: SHA-256](metadata/badges/integrity-sha256.svg)](https://trentpower.fr/integrity.json)
 [![SLSA: Build L3](metadata/badges/slsa-build-l3.svg)](docs/provenance.md)
 [![OpenSSF: Best Practices · Silver](metadata/badges/openssf-best-practices.svg)](https://www.bestpractices.dev/projects/13182)
-[![OpenSSF Baseline: v2026.02.19 · L2](metadata/badges/openssf-baseline.svg)](https://www.bestpractices.dev/projects/13182)
+[![OpenSSF Baseline: v2026.02.19 · L2](metadata/badges/openssf-baseline.svg)](https://www.bestpractices.dev/en/projects/13182/baseline-2)
 [![REUSE: Compliant](metadata/badges/reuse-compliant.svg)](https://api.reuse.software/info/github.com/trentpower/trentpower.fr)
 
 `trentpower.fr` is a static, bilingual, source-verifiable personal publication.
