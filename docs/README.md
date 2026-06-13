@@ -22,6 +22,7 @@ deeper on each area.
 | [github-environments.md](github-environments.md)               | The GitHub environment model: branches, `production`/`preproduction` secret scoping, the promotion process, and the verify-never-sign boundary.   |
 | [github-rulesets.md](github-rulesets.md)                       | Branch/tag rulesets protecting the public record, GitHub Releases as secondary pointers, commit attribution, and the manual-settings checklist.   |
 | [provenance.md](provenance.md)                                 | Release provenance: the GitHub build-provenance attestation cut on edition tags, Sigstore/Rekor, and how a third party verifies it.               |
+| [REPRODUCIBILITY.md](REPRODUCIBILITY.md)                       | How to rebuild an edition from source, what is byte-deterministic, and the deliberate non-determinism (PGP salt, licensed fonts).                 |
 | [SECRETS-AND-KEY-MANAGEMENT.md](SECRETS-AND-KEY-MANAGEMENT.md) | Where the few secrets and keys live, who can access them, and the rotation, revocation and re-keying policy.                                      |
 | [CODE-REVIEW.md](CODE-REVIEW.md)                               | What every change is checked against before it reaches the public record; the maintainer self-review checklist.                                   |
 

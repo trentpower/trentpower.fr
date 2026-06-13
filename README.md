@@ -3,20 +3,8 @@
 [![Signed: PGP](metadata/badges/signed-pgp.svg)](https://trentpower.fr/en-au/verify/)
 [![Integrity: SHA-256](metadata/badges/integrity-sha256.svg)](https://trentpower.fr/integrity.json)
 [![SLSA: Build L3](metadata/badges/slsa-build-l3.svg)](docs/provenance.md)
-[![Static: HTML CSS JS](metadata/badges/static-html-css-js.svg)](https://trentpower.fr)
-[![Privacy: No trackers](metadata/badges/privacy-no-trackers.svg)](https://trentpower.fr/en-au/privacy/)
-[![Languages: EN-AU FR](metadata/badges/languages-en-au-fr.svg)](https://trentpower.fr)
-[![Code: MIT](metadata/badges/code-mit.svg)](LICENSE)
-[![Content: CC BY-SA 4.0](metadata/badges/content-cc-by-sa-4-0.svg)](CONTENT-RIGHTS.md)
-
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13182/badge)](https://www.bestpractices.dev/projects/13182)
-[![OpenSSF Baseline](https://www.bestpractices.dev/projects/13182/baseline)](https://www.bestpractices.dev/projects/13182)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/trentpower/trentpower.fr/badge)](https://scorecard.dev/viewer/?uri=github.com/trentpower/trentpower.fr)
 [![REUSE status](https://api.reuse.software/badge/github.com/trentpower/trentpower.fr)](https://api.reuse.software/info/github.com/trentpower/trentpower.fr)
-
-[![PR checks](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml)
-[![Publication check](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml)
-[![Deploy](https://github.com/trentpower/trentpower.fr/actions/workflows/deploy.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/deploy.yml)
 
 `trentpower.fr` is a static, bilingual, source-verifiable personal publication.
 
@@ -36,6 +24,35 @@ that each edition can be independently checked.
 > **Reading the docs:** a print-ready editorial edition of the whole
 > documentation, readable by technical and non-technical readers alike, is at
 > [`README.pdf`](README.pdf). Its source lives in [`docs/pdf/`](docs/pdf/).
+
+---
+
+## Publication record
+
+Every claim below is something you can check yourself, not a badge to take on faith.
+
+| What                   | Status                                            | Verify                                                                                                                  |
+| ---------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Integrity manifest     | every published file hashed (SHA-256), PGP-signed | [`/integrity.json`](https://trentpower.fr/integrity.json) + `.sig`; [docs](docs/TRUST-AND-VERIFICATION.md)              |
+| Build provenance       | SLSA build-track Level 3 (Sigstore + Rekor)       | `gh attestation verify trentpower-fr-<edition>-site.tar.gz --repo trentpower/trentpower.fr`; [docs](docs/provenance.md) |
+| Signed releases        | signed `edition/*` tags + GitHub Releases         | [Releases](https://github.com/trentpower/trentpower.fr/releases); [docs](docs/provenance.md)                            |
+| SBOM                   | CycloneDX, build toolchain, per release           | Release assets; [docs](docs/REPRODUCIBILITY.md)                                                                         |
+| Reproducible build     | byte-deterministic archives                       | [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md)                                                                      |
+| Licensing              | REUSE 3.3; MIT (code) + CC-BY-SA-4.0 (content)    | [`REUSE.toml`](REUSE.toml), [`LICENSES/`](LICENSES/), [NOTICE.md](NOTICE.md)                                            |
+| Best practices         | OpenSSF Baseline (Silver)                         | [bestpractices.dev/projects/13182](https://www.bestpractices.dev/projects/13182)                                        |
+| Supply-chain posture   | OpenSSF Scorecard (a dashboard, not a medal)      | [scorecard.dev](https://scorecard.dev/viewer/?uri=github.com/trentpower/trentpower.fr)                                  |
+| Security policy        | coordinated disclosure, 14-day response           | [SECURITY.md](SECURITY.md)                                                                                              |
+| Privacy                | no analytics, cookies, or third-party assets      | [docs/SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md)                                                            |
+| Continuous integration | PR checks · publication check · deploy            | [Actions](https://github.com/trentpower/trentpower.fr/actions)                                                          |
+
+The fastest single check — confirm the live site is signed by the published key:
+
+```sh
+curl -fsS https://trentpower.fr/integrity.json      -o integrity.json
+curl -fsS https://trentpower.fr/integrity.json.sig  -o integrity.json.sig
+curl -fsS https://trentpower.fr/.well-known/pgp-key.asc | gpg --import
+gpg --verify integrity.json.sig integrity.json      # expect: Good signature
+```
 
 ---
 

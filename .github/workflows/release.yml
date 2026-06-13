@@ -110,11 +110,26 @@ jobs:
           sha256sum "$out" | tee "${out}.sha256"
           echo "SITE_ARCHIVE=$out" >>"$GITHUB_ENV"
 
+      - name: Generate the build-toolchain SBOM (CycloneDX)
+        run: |
+          set -eu
+          # The static site ships no runtime dependencies; this SBOM records the
+          # Python toolchain that renders and seals the site (the hash-pinned
+          # build-check set). --output-reproducible drops the timestamp/serial so
+          # the document is byte-deterministic and attestable.
+          python3 -m pip install --break-system-packages --quiet --require-hashes -r .github/requirements/sbom.txt
+          sbom="trentpower-fr-${EDITION}-sbom.cdx.json"
+          python3 -m cyclonedx_py requirements .github/requirements/build-check.txt \
+            --output-reproducible --of JSON -o "$sbom"
+          sha256sum "$sbom" | tee "${sbom}.sha256"
+          echo "SBOM=$sbom" >>"$GITHUB_ENV"
+
       - name: Attest build provenance (SLSA Build L3 for the runner-built archive)
         uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4.1.0
         with:
           subject-path: |
             ${{ env.SITE_ARCHIVE }}
+            ${{ env.SBOM }}
             public/integrity.json
             ${{ env.RELEASE_DIR }}/trentpower-fr-${{ env.EDITION }}.tar.gz
             ${{ env.RELEASE_DIR }}/trentpower-fr-${{ env.EDITION }}.zip
@@ -143,6 +158,9 @@ jobs:
               gh attestation verify trentpower-fr-${EDITION}-site.tar.gz \\
                 --repo ${GITHUB_REPOSITORY}
 
+          trentpower-fr-${EDITION}-sbom.cdx.json is a CycloneDX SBOM of the build
+          toolchain (the site itself ships no runtime dependencies).
+
           See https://trentpower.fr/en-au/verify/ and docs/provenance.md.
           EOF
           )"
@@ -152,6 +170,8 @@ jobs:
           for f in \
             "${SITE_ARCHIVE}" \
             "${SITE_ARCHIVE}.sha256" \
+            "${SBOM}" \
+            "${SBOM}.sha256" \
             "${RELEASE_DIR}/trentpower-fr-${EDITION}.tar.gz" \
             "${RELEASE_DIR}/trentpower-fr-${EDITION}.tar.gz.sig" \
             "${RELEASE_DIR}/trentpower-fr-${EDITION}.tar.gz.sha256" \
