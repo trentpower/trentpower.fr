@@ -12,6 +12,13 @@ This document merges the former `gate-architecture.md`, `check-registry.md` and
 
 ## 1. The two-tier gate
 
+**When the gate and tests run.** The full blocking gate and the unit +
+property-based test suite run on every pull request to `preprod` and `main`
+(see [pr-checks.yml](../.github/workflows/pr-checks.yml)), and on every local
+build: `gate.py --skip-signature` then `lint.py` at stage 05, and the full
+`gate.py` at stage 08 after signing. `build.sh --check` runs the same gate and
+the quality lint without signing or deploying, so the inner loop matches CI.
+
 As of 2026-05-30 the single mixed gate was split into two tiers driven by one
 registry. **Same guarantees, explicit severity:** security and correctness block
 a deploy; editorial/SEO quality is reported but never blocks shipping a content
