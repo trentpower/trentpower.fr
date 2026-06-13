@@ -22,6 +22,15 @@ is the coordinated vulnerability disclosure window the project commits to.
 
 Please do not open a public issue for anything sensitive.
 
+## Disclosure
+
+Confirmed vulnerabilities are published as GitHub Security Advisories (GHSA) on
+this repository once a fix has shipped, with a CVE requested where applicable, so
+there is a public record of what was found and corrected. None have been reported
+to date. Dependency vulnerabilities that do not affect the published static site
+are recorded, with their reason, in the VEX
+([security/openvex.json](security/openvex.json)).
+
 ## Posture
 
 The site's security and privacy posture — CSP, cross-origin isolation, HSTS,
