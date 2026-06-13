@@ -3,8 +3,9 @@
 [![Signed: PGP](metadata/badges/signed-pgp.svg)](https://trentpower.fr/en-au/verify/)
 [![Integrity: SHA-256](metadata/badges/integrity-sha256.svg)](https://trentpower.fr/integrity.json)
 [![SLSA: Build L3](metadata/badges/slsa-build-l3.svg)](docs/provenance.md)
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13182/badge)](https://www.bestpractices.dev/projects/13182)
-[![REUSE status](https://api.reuse.software/badge/github.com/trentpower/trentpower.fr)](https://api.reuse.software/info/github.com/trentpower/trentpower.fr)
+[![OpenSSF: Best Practices · Silver](metadata/badges/openssf-best-practices.svg)](https://www.bestpractices.dev/projects/13182)
+[![OpenSSF Baseline: v2026.02.19 · L2](metadata/badges/openssf-baseline.svg)](https://www.bestpractices.dev/projects/13182)
+[![REUSE: Compliant](metadata/badges/reuse-compliant.svg)](https://api.reuse.software/info/github.com/trentpower/trentpower.fr)
 
 `trentpower.fr` is a static, bilingual, source-verifiable personal publication.
 
