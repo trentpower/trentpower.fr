@@ -69,6 +69,30 @@
       "href": "CONTENT-RIGHTS.md"
     },
     {
+      "id": "best-practices",
+      "filename": "openssf-best-practices.svg",
+      "label": "OpenSSF",
+      "value": "Best Practices · Silver",
+      "scope": "readme",
+      "href": "https://www.bestpractices.dev/projects/13182"
+    },
+    {
+      "id": "baseline",
+      "filename": "openssf-baseline.svg",
+      "label": "OpenSSF Baseline",
+      "value": "v2026.02.19 · L2",
+      "scope": "readme",
+      "href": "https://www.bestpractices.dev/projects/13182"
+    },
+    {
+      "id": "reuse",
+      "filename": "reuse-compliant.svg",
+      "label": "REUSE",
+      "value": "Compliant",
+      "scope": "readme",
+      "href": "https://api.reuse.software/info/github.com/trentpower/trentpower.fr"
+    },
+    {
       "id": "security-txt",
       "filename": "security-txt-rfc-9116.svg",
       "label": "Security.txt",

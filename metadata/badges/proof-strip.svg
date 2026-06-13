@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="611" height="34" viewBox="0 0 611 34" role="img" aria-label="trentpower.fr trust strip: Static HTML CSS JS · Signed PGP · Integrity SHA-256 · SLSA Build L3 · Languages EN-AU FR · Privacy No trackers · Code MIT · Content CC BY-SA 4.0">
-  <title>trentpower.fr trust strip: Static HTML CSS JS · Signed PGP · Integrity SHA-256 · SLSA Build L3 · Languages EN-AU FR · Privacy No trackers · Code MIT · Content CC BY-SA 4.0</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="954" height="34" viewBox="0 0 954 34" role="img" aria-label="trentpower.fr trust strip: Static HTML CSS JS · Signed PGP · Integrity SHA-256 · SLSA Build L3 · Languages EN-AU FR · Privacy No trackers · Code MIT · Content CC BY-SA 4.0 · OpenSSF Best Practices · Silver · OpenSSF Baseline v2026.02.19 · L2 · REUSE Compliant">
+  <title>trentpower.fr trust strip: Static HTML CSS JS · Signed PGP · Integrity SHA-256 · SLSA Build L3 · Languages EN-AU FR · Privacy No trackers · Code MIT · Content CC BY-SA 4.0 · OpenSSF Best Practices · Silver · OpenSSF Baseline v2026.02.19 · L2 · REUSE Compliant</title>
   <desc>Descriptive trust label generated locally from repository metadata. Not cryptographic proof: proof remains in the signed integrity manifest, source mirrors and release archives.</desc>
-  <rect x=".5" y=".5" width="610" height="33" rx="3" fill="#FAF7F0" stroke="#CFC7B8"/>
+  <rect x=".5" y=".5" width="953" height="33" rx="3" fill="#FAF7F0" stroke="#CFC7B8"/>
   <rect x=".5" y=".5" width="44" height="33" fill="#F4ECE5"/>
   <text x="22.0" y="17" fill="#6E1A14" text-anchor="middle" font-family="serif" font-size="14">TP</text>
   <text x="22.0" y="27" fill="#5F5A53" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;, monospace" font-size="4.6" letter-spacing=".6">TRENTPOWER.FR</text>
@@ -29,4 +29,13 @@
   <rect x="519" y="6" width="1" height="22" fill="#CFC7B8"/>
   <text x="532" y="13" fill="#5F5A53" font-family="ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;, monospace" font-size="6.5" letter-spacing="0.85">CONTENT</text>
   <text x="532" y="25" fill="#211F1C" font-family="ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;, monospace" font-size="9" letter-spacing="0.2">CC BY-SA 4.0</text>
+  <rect x="611" y="6" width="1" height="22" fill="#CFC7B8"/>
+  <text x="624" y="13" fill="#5F5A53" font-family="ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;, monospace" font-size="6.5" letter-spacing="0.85">OPENSSF</text>
+  <text x="624" y="25" fill="#211F1C" font-family="ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;, monospace" font-size="9" letter-spacing="0.2">Best Practices · Silver</text>
+  <rect x="765" y="6" width="1" height="22" fill="#CFC7B8"/>
+  <text x="778" y="13" fill="#5F5A53" font-family="ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;, monospace" font-size="6.5" letter-spacing="0.85">OPENSSF BASELINE</text>
+  <text x="778" y="25" fill="#211F1C" font-family="ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;, monospace" font-size="9" letter-spacing="0.2">v2026.02.19 · L2</text>
+  <rect x="879" y="6" width="1" height="22" fill="#CFC7B8"/>
+  <text x="892" y="13" fill="#5F5A53" font-family="ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;, monospace" font-size="6.5" letter-spacing="0.85">REUSE</text>
+  <text x="892" y="25" fill="#211F1C" font-family="ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;, monospace" font-size="9" letter-spacing="0.2">Compliant</text>
 </svg>
