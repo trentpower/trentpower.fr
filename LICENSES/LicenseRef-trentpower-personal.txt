@@ -1,0 +1,13 @@
+LicenseRef-trentpower-personal
+
+The author's identity, likeness, photographic portraits and signature artwork
+are not released under an open licence. All rights reserved by Trent Power.
+
+These files are present in the repository only so that the published site can be
+built and independently verified byte-for-byte. No permission is granted to copy,
+redistribute, or reuse the author's likeness or identity assets, with or without
+modification, beyond what is necessary to reproduce and verify this publication.
+
+This is a custom licence reference under the REUSE Specification, used to make the
+"no licence applies" status of these assets machine-readable. It is not an
+OSI-approved or FSF-free licence. See NOTICE.md.

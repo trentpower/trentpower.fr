@@ -12,6 +12,8 @@
 
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13182/badge)](https://www.bestpractices.dev/projects/13182)
 [![OpenSSF Baseline](https://www.bestpractices.dev/projects/13182/baseline)](https://www.bestpractices.dev/projects/13182)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/trentpower/trentpower.fr/badge)](https://scorecard.dev/viewer/?uri=github.com/trentpower/trentpower.fr)
+[![REUSE status](https://api.reuse.software/badge/github.com/trentpower/trentpower.fr)](https://api.reuse.software/info/github.com/trentpower/trentpower.fr)
 
 [![PR checks](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml)
 [![Publication check](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml)

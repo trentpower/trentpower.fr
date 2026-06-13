@@ -50,3 +50,13 @@ citation purposes.
 
 Third-party dependencies retain their own licences; see
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Machine-readable licensing (REUSE)
+
+This map is also machine-readable. The repository follows the
+[REUSE Specification](https://reuse.software): every tracked file resolves to a
+licence and copyright through [`REUSE.toml`](REUSE.toml) (bulk annotations, so
+source files stay clean) and the full licence texts live in
+[`LICENSES/`](LICENSES/). The author likeness/identity assets carry
+`LicenseRef-trentpower-personal` (the "not licensed" status above, made
+explicit). Compliance is checked in CI (`reuse lint`).
