@@ -13,7 +13,7 @@
 [![PR checks](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml)
 [![Publication check](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml)
 [![Deploy](https://github.com/trentpower/trentpower.fr/actions/workflows/deploy.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/deploy.yml)
-[![OpenSSF: Best Practices](metadata/badges/openssf-best-practices.svg)](https://www.bestpractices.dev/projects/13182)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13182/badge)](https://www.bestpractices.dev/projects/13182)
 
 `trentpower.fr` is a static, bilingual, source-verifiable personal publication.
 

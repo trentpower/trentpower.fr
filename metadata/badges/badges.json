@@ -91,14 +91,6 @@
       "value": "Civil · Factual · On topic",
       "scope": "docs",
       "href": "#code-of-conduct"
-    },
-    {
-      "id": "best-practices",
-      "filename": "openssf-best-practices.svg",
-      "label": "OpenSSF",
-      "value": "Best Practices",
-      "scope": "docs",
-      "href": "https://www.bestpractices.dev/projects/13182"
     }
   ],
   "proof_strip": {

@@ -28,14 +28,6 @@ through four surfaces and asserts the invariant each one promises:
 The suite runs in the `source-quality` job of `pr-checks.yml` on every
 pull request, alongside the existing example-based unit tests.
 
-Note on OpenSSF Scorecard: its Fuzzing check recognises property-based
-testing for Erlang, Haskell, Elixir, Gleam, JavaScript and TypeScript —
-not Python/Hypothesis (verified against `checks/raw/fuzzing.go` at
-Scorecard v5.3). The check therefore reads 0 here and that reading is
-accepted; the tests exist for the value they deliver, not the score.
-Adding a JavaScript fast-check harness purely to satisfy the detector
-was considered and declined as score theatre.
-
 ## What it has caught
 
 The first run found that `esc()` in the badge generator passed C0
