@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
   trentpower.fr · /tests/
-  Signed test + verification snapshot · edition 2026-06-10
+  Signed test + verification snapshot · edition 2026-06-14
   Renders the signed TESTRESULTS.txt for this edition. No analytics, no cookies, no external assets.
 -->
 <html lang="en-AU" dir="ltr">
@@ -17,9 +17,9 @@
   <script>(()=>{const e=document.documentElement;e.classList.add('js');try{const m=localStorage.getItem('tp-theme');if(m==='dark'||m==='light')e.dataset.theme=m}catch(_){}})();</script>
 
   <!-- document identity -->
-  <title>Test Results · 10 June 2026 · Trent Power</title>
-  <meta name="description" content="Signed test and verification snapshot for trentpower.fr, 10 June 2026 edition.">
-  <meta name="document-edition" content="2026-06-10">
+  <title>Test Results · 14 June 2026 · Trent Power</title>
+  <meta name="description" content="Signed test and verification snapshot for trentpower.fr, 14 June 2026 edition.">
+  <meta name="document-edition" content="2026-06-14">
   <meta name="robots" content="noindex, follow">
   <meta name="referrer" content="no-referrer">
   <link rel="canonical" href="https://trentpower.fr/tests/">
@@ -39,8 +39,8 @@
   <!-- rendering + assets -->
   <link rel="preload" as="font" type="font/woff2" href="/fonts/soehne-buch.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="/fonts/signifier-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="/styles.css?v=2026-06-10.f9f41383" integrity="sha384-PKmLVxbd/YfbUiIpYTcgq9EPzTLIMmT684A7Y93xg7UV5Iuoli1U99dfwTxs7nDE">
-  <link rel="stylesheet" href="/print.css?v=2026-06-10.f9f41383" media="print">
+  <link rel="stylesheet" href="/styles.css?v=2026-06-14.8eb5797d" integrity="sha384-PKmLVxbd/YfbUiIpYTcgq9EPzTLIMmT684A7Y93xg7UV5Iuoli1U99dfwTxs7nDE">
+  <link rel="stylesheet" href="/print.css?v=2026-06-14.8eb5797d" media="print">
 
   <!-- provenance · page record · generated from the public source repository -->
   <script type="application/json" id="tp-page-record">
@@ -49,12 +49,12 @@
   "sourceRepository": "https://github.com/trentpower/trentpower.fr",
   "sourcePath": "tools/build/generate_tests_page.py",
   "sourceUrl": "https://github.com/trentpower/trentpower.fr/blob/main/tools/build/generate_tests_page.py",
-  "edition": "2026-06-10",
+  "edition": "2026-06-14",
   "generated": true
 }
   </script>
 </head>
-<body data-page="tests" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-10">
+<body data-page="tests" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-14">
 
 <a href="#main" class="skip-link">Skip to content</a>
 
@@ -199,15 +199,15 @@
         <div class="integrity-record-card">
           <p class="integrity-record-kicker">Signed snapshot</p>
           <h3 class="integrity-record-title">TESTRESULTS.txt</h3>
-          <p class="integrity-record-status">Detached PGP signature · Edition 2026-06-10</p>
+          <p class="integrity-record-status">Detached PGP signature · Edition 2026-06-14</p>
           <dl class="integrity-record-dl">
             <div class="integrity-rg integrity-rg--ruled">
               <dt class="integrity-rg-label">File</dt>
-              <dd class="integrity-rg-value"><a class="integrity-rg-link" href="/integrity/releases/2026-06-10/TESTRESULTS.txt">TESTRESULTS.txt</a></dd>
+              <dd class="integrity-rg-value"><a class="integrity-rg-link" href="/integrity/releases/2026-06-14/TESTRESULTS.txt">TESTRESULTS.txt</a></dd>
             </div>
             <div class="integrity-rg">
               <dt class="integrity-rg-label">Signature</dt>
-              <dd class="integrity-rg-value"><a class="integrity-rg-link" href="/integrity/releases/2026-06-10/TESTRESULTS.txt.sig">TESTRESULTS.txt.sig</a></dd>
+              <dd class="integrity-rg-value"><a class="integrity-rg-link" href="/integrity/releases/2026-06-14/TESTRESULTS.txt.sig">TESTRESULTS.txt.sig</a></dd>
               <dd class="integrity-rg-desc">Detached PGP signature</dd>
             </div>
             <div class="integrity-rg">
@@ -220,8 +220,8 @@
         <details class="tests-verify">
           <summary>View verification command</summary>
           <p>Download the snapshot and its signature, then verify against the published public key.</p>
-          <pre class="tests-cmd">curl -O https://trentpower.fr/integrity/releases/2026-06-10/TESTRESULTS.txt <span class="tests-cmd__op">&amp;&amp;</span>
-curl -O https://trentpower.fr/integrity/releases/2026-06-10/TESTRESULTS.txt.sig <span class="tests-cmd__op">&amp;&amp;</span>
+          <pre class="tests-cmd">curl -O https://trentpower.fr/integrity/releases/2026-06-14/TESTRESULTS.txt <span class="tests-cmd__op">&amp;&amp;</span>
+curl -O https://trentpower.fr/integrity/releases/2026-06-14/TESTRESULTS.txt.sig <span class="tests-cmd__op">&amp;&amp;</span>
 gpg --verify TESTRESULTS.txt.sig TESTRESULTS.txt</pre>
         </details>
       </section>
@@ -236,7 +236,7 @@ gpg --verify TESTRESULTS.txt.sig TESTRESULTS.txt</pre>
           <dl class="integrity-record-dl">
             <div class="integrity-rg">
               <dt class="integrity-rg-label">Edition</dt>
-              <dd class="integrity-rg-value">2026-06-10</dd>
+              <dd class="integrity-rg-value">2026-06-14</dd>
             </div>
             <div class="integrity-rg">
               <dt class="integrity-rg-label">Run</dt>
@@ -248,7 +248,7 @@ gpg --verify TESTRESULTS.txt.sig TESTRESULTS.txt</pre>
             </div>
             <div class="integrity-rg">
               <dt class="integrity-rg-label">Generated</dt>
-              <dd class="integrity-rg-value">2026-06-10T18:19:38Z</dd>
+              <dd class="integrity-rg-value">2026-06-14T16:18:24Z</dd>
             </div>
             <div class="integrity-rg">
               <dt class="integrity-rg-label">Git commit</dt>
@@ -286,7 +286,7 @@ gpg --verify TESTRESULTS.txt.sig TESTRESULTS.txt</pre>
             </div>
           </dl>
         </div>
-        <p class="tests-downloads">Open <a href="/integrity/releases/2026-06-10/TESTRESULTS.txt">TESTRESULTS.txt</a>, its <a href="/integrity/releases/2026-06-10/TESTRESULTS.txt.sig">signature</a>, or the full <a href="/integrity/releases/2026-06-10/">release archives</a>.</p>
+        <p class="tests-downloads">Open <a href="/integrity/releases/2026-06-14/TESTRESULTS.txt">TESTRESULTS.txt</a>, its <a href="/integrity/releases/2026-06-14/TESTRESULTS.txt.sig">signature</a>, or the full <a href="/integrity/releases/2026-06-14/">release archives</a>.</p>
       </section>
 
       <!-- validate this site · external validators, open only when chosen -->
@@ -375,7 +375,7 @@ gpg --verify TESTRESULTS.txt.sig TESTRESULTS.txt</pre>
 
       <ul class="site-footer__colophon" id="footerImprint" aria-label="Publication verification">
         <li class="site-footer__colophon-row">
-          <a class="site-footer__colophon-link" href="/en-au/verify/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Edition</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <a class="site-footer__colophon-link" href="/en-au/verify/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Edition</span> <time datetime="2026-06-14">2026-06-14</time></a>
           <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
           <span class="site-footer__colophon-note" data-edition-age>Published today</span>
           <span class="visually-hidden" id="desc-integrity">Open the verification record for this edition — citation, source mirror, fingerprint, signed release</span>
@@ -396,16 +396,16 @@ gpg --verify TESTRESULTS.txt.sig TESTRESULTS.txt</pre>
 </footer>
 
 <!-- scripts · progressive enhancement, no telemetry -->
-<script src="/js/theme.js?v=2026-06-10.f9f41383" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
-<script src="/sw-register.js?v=2026-06-10.f9f41383" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
-<script src="/js/reveal.js?v=2026-06-10.f9f41383" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
-<script src="/js/overlay.js?v=2026-06-10.f9f41383" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
-<script src="/verify/verification-data.js?v=2026-06-10.f9f41383" defer></script>
-<script src="/js/copy.js?v=2026-06-10.f9f41383" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
-<script src="/js/edition.js?v=2026-06-10.f9f41383" integrity="sha384-iO0w8zmiIy+PKCcn52n+bxnD8GxJcyMXMMddSHMJAjxRpRxaYbPG3dD7jRtM7oKC" defer></script>
+<script src="/js/theme.js?v=2026-06-14.8eb5797d" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/sw-register.js?v=2026-06-14.8eb5797d" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+<script src="/js/reveal.js?v=2026-06-14.8eb5797d" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+<script src="/js/overlay.js?v=2026-06-14.8eb5797d" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+<script src="/verify/verification-data.js?v=2026-06-14.8eb5797d" defer></script>
+<script src="/js/copy.js?v=2026-06-14.8eb5797d" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/edition.js?v=2026-06-14.8eb5797d" integrity="sha384-iO0w8zmiIy+PKCcn52n+bxnD8GxJcyMXMMddSHMJAjxRpRxaYbPG3dD7jRtM7oKC" defer></script>
 <script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
-<script src="/js/verify-modal.js?v=2026-06-10.f9f41383" integrity="sha384-Kb8LrSoY27mMZZl+F/0TsiJ4Yc+Z48xVDXCK3mTaMfNYr+kfj/C+P5ss0lMD/NTl" defer></script>
-<script src="/js/fonts.js?v=2026-06-10.f9f41383" integrity="sha384-7umqDK42ooQp+0dNYoFCPbZdWWBCGBi/Hms1KLw0gfXkScV4R1BZUFad7NMFgCze" defer></script>
+<script src="/js/verify-modal.js?v=2026-06-14.8eb5797d" integrity="sha384-cZZ9jdw4bkLl3MiF5cbm4+RTIcTRwOOwy++dCTz6LLIjpny4MF9Xac3mDa441Avy" defer></script>
+<script src="/js/fonts.js?v=2026-06-14.8eb5797d" integrity="sha384-0spuMQXrqwVs8UwbF5T1hlwoR2bc0i6siuoVnFCs+UBg2mhvpDzRoEsLItXwS5Cd" defer></script>
 
 <!-- body · construction rail -->
 <div class="construction-rail" data-construction-rail aria-hidden="true">

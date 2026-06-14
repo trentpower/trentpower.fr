@@ -2,7 +2,7 @@
   "_comment": "Canonical identity file. All generated outputs derive from this. Edit here, then run: python3 generate_site.py",
   "domain": "trentpower.fr",
   "url": "https://trentpower.fr",
-  "edition": "2026-06-10",
+  "edition": "2026-06-14",
   "repository": {
     "url": "https://github.com/trentpower/trentpower.fr",
     "branch": "main"

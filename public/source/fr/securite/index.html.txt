@@ -26,7 +26,7 @@
   <title>Sécurité &amp; modèle de menace · Trent Power</title>
   <meta name="description"
         content="Architecture de sécurité, contrôles opérationnels, surfaces publiques de vérification et risques résiduels">
-  <meta name="document-edition" content="2026-06-10">
+  <meta name="document-edition" content="2026-06-14">
   <link rel="canonical" href="https://trentpower.fr/fr/securite/">
   <link rel="alternate" hreflang="en-AU" href="https://trentpower.fr/en-au/security/">
   <link rel="alternate" hreflang="fr" href="https://trentpower.fr/fr/securite/">
@@ -77,8 +77,8 @@
   <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
 
   <!-- head · 09 · rendering and assets -->
-  <link rel="stylesheet" href="/styles.css?v=2026-06-10.f9f41383" integrity="sha384-PKmLVxbd/YfbUiIpYTcgq9EPzTLIMmT684A7Y93xg7UV5Iuoli1U99dfwTxs7nDE">
-  <link rel="stylesheet" href="/print.css?v=2026-06-10.f9f41383" media="print">
+  <link rel="stylesheet" href="/styles.css?v=2026-06-14.8eb5797d" integrity="sha384-PKmLVxbd/YfbUiIpYTcgq9EPzTLIMmT684A7Y93xg7UV5Iuoli1U99dfwTxs7nDE">
+  <link rel="stylesheet" href="/print.css?v=2026-06-14.8eb5797d" media="print">
 
   <!-- head · 10 · structured data -->
   <script type="application/ld+json">
@@ -109,7 +109,7 @@
     "height": 630
   },
   "datePublished": "2026-02-15T00:00:00+00:00",
-  "dateModified": "2026-06-11T00:00:00+00:00"
+  "dateModified": "2026-06-14T00:00:00+00:00"
 }
   </script>
 
@@ -121,12 +121,12 @@
   "sourcePath": "content/fr/pages/security.yml",
   "templatePath": "templates/pages/security.html",
   "sourceUrl": "https://github.com/trentpower/trentpower.fr/blob/main/content/fr/pages/security.yml",
-  "edition": "2026-06-10",
+  "edition": "2026-06-14",
   "generated": true
 }
   </script>
 </head>
-<body data-page="security" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-10" data-source-sha256-short="--------">
+<body data-page="security" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-14" data-source-sha256-short="--------">
 
 <a href="#main" class="skip-link">Skip to content</a>
 
@@ -255,6 +255,10 @@
           <h3 class="security-subheading" id="security-controls-monitoring">Surveillance</h3>
           <ul class="i18n-list"><li>Analyse structurée des journaux</li><li>Détection de patterns et scoring des anomalies</li><li>Détection de dérive d’intégrité des fichiers par rapport à la base de référence signée</li></ul>
         </section>
+        <section class="security-subsection" aria-labelledby="security-controls-pipeline">
+          <h3 class="security-subheading" id="security-controls-pipeline">Contrôle de source &amp; chaîne d’approvisionnement</h3>
+          <ul class="i18n-list"><li>Branches <code>main</code> et <code>preprod</code> protégées : historique linéaire, commits signés obligatoires, aucun forçage, aucune suppression</li><li>Chaque modification passe par une pull request soumise à des contrôles obligatoires — barrière de publication, analyse de secrets, reconstruction reproductible et vérification de signature</li><li>Le déploiement en production attend une approbation manuelle d’environnement avant que la poussée n’atteigne l’hôte en ligne</li><li>Les archives de version portent une provenance <abbr title="Supply-chain Levels for Software Artifacts">SLSA</abbr> de niveau 3 : construites sur un exécuteur hébergé, attestées sans clé via Sigstore (GitHub <abbr title="OpenID Connect">OIDC</abbr>) et inscrites dans le journal de transparence public Rekor</li><li>Chaque version est accompagnée d’un <abbr title="Software Bill of Materials">SBOM</abbr> CycloneDX de la chaîne d’outils de construction</li><li>La clé de signature n’entre jamais dans la <abbr title="Continuous Integration">CI</abbr> ; le manifeste canonique reste construit localement et signé en <abbr title="Pretty Good Privacy">PGP</abbr></li></ul>
+        </section>
       </section>
 
       <!-- primary · 06 · public verification surface -->
@@ -369,7 +373,7 @@
 
       <ul class="site-footer__colophon" id="footerImprint" aria-label="Vérification de la publication">
         <li class="site-footer__colophon-row">
-          <a class="site-footer__colophon-link" href="/fr/verifier/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Édition</span> <time datetime="2026-06-10">2026-06-10</time></a>
+          <a class="site-footer__colophon-link" href="/fr/verifier/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Édition</span> <time datetime="2026-06-14">2026-06-14</time></a>
           <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
           <em class="site-footer__translation-inline" data-translation-disclosure>Ceci est un rendu machine. <a href="/en-au/">L'édition de l'auteur est en anglais</a>.</em><span class="site-footer__colophon-note" data-edition-age hidden>Publiée aujourd'hui</span>
           <span class="visually-hidden" id="desc-integrity">Ouvrir le dossier de vérification de cette édition — citation, miroir source, empreinte et archive signée</span>
@@ -394,7 +398,7 @@
     <p class="print-trust-kicker">Sécurité &amp; modèle de menace</p>
     <p class="print-trust-title">Statique, auto-géré, axé sur la vérification</p>
     <p class="print-trust-lede">Le site public est composé de HTML, CSS et JavaScript natif, avec des en-têtes stricts, aucune logique serveur à l’exécution, aucune base de données publique et aucun script tiers.</p>
-    <p class="print-trust-meta">Édition 2026-06-10 · trentpower.fr/security/</p>
+    <p class="print-trust-meta">Édition 2026-06-14 · trentpower.fr/security/</p>
   </header>
 
   <figure class="print-trust-diagram" aria-hidden="true">
@@ -431,7 +435,7 @@
   <footer class="print-trust-footer">
     <div class="print-trust-footer-text">
       <p class="print-proof">Privé · Statique · Signé · Sans suivi</p>
-      <p>Édition 2026-06-10 · trentpower.fr/security/</p>
+      <p>Édition 2026-06-14 · trentpower.fr/security/</p>
     </div>
     <div class="print-qr-block" aria-hidden="true">
       <img class="print-qr-image" src="/images/qr/qr-security.svg" width="144" height="144" loading="lazy" decoding="async" alt="">
@@ -441,16 +445,16 @@
 </div>
 
 <!-- scripts · progressive enhancement, no telemetry -->
-<script src="/js/theme.js?v=2026-06-10.f9f41383" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
-<script src="/sw-register.js?v=2026-06-10.f9f41383" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
-<script src="/js/reveal.js?v=2026-06-10.f9f41383" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
-<script src="/js/overlay.js?v=2026-06-10.f9f41383" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
-<script src="/verify/verification-data.js?v=2026-06-10.f9f41383" defer></script>
-<script src="/js/copy.js?v=2026-06-10.f9f41383" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
-<script src="/js/edition.js?v=2026-06-10.f9f41383" integrity="sha384-iO0w8zmiIy+PKCcn52n+bxnD8GxJcyMXMMddSHMJAjxRpRxaYbPG3dD7jRtM7oKC" defer></script>
+<script src="/js/theme.js?v=2026-06-14.8eb5797d" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/sw-register.js?v=2026-06-14.8eb5797d" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+<script src="/js/reveal.js?v=2026-06-14.8eb5797d" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+<script src="/js/overlay.js?v=2026-06-14.8eb5797d" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+<script src="/verify/verification-data.js?v=2026-06-14.8eb5797d" defer></script>
+<script src="/js/copy.js?v=2026-06-14.8eb5797d" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/edition.js?v=2026-06-14.8eb5797d" integrity="sha384-iO0w8zmiIy+PKCcn52n+bxnD8GxJcyMXMMddSHMJAjxRpRxaYbPG3dD7jRtM7oKC" defer></script>
 <script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
-<script src="/js/verify-modal.js?v=2026-06-10.f9f41383" integrity="sha384-Kb8LrSoY27mMZZl+F/0TsiJ4Yc+Z48xVDXCK3mTaMfNYr+kfj/C+P5ss0lMD/NTl" defer></script>
-<script src="/js/fonts.js?v=2026-06-10.f9f41383" integrity="sha384-7umqDK42ooQp+0dNYoFCPbZdWWBCGBi/Hms1KLw0gfXkScV4R1BZUFad7NMFgCze" defer></script>
+<script src="/js/verify-modal.js?v=2026-06-14.8eb5797d" integrity="sha384-cZZ9jdw4bkLl3MiF5cbm4+RTIcTRwOOwy++dCTz6LLIjpny4MF9Xac3mDa441Avy" defer></script>
+<script src="/js/fonts.js?v=2026-06-14.8eb5797d" integrity="sha384-0spuMQXrqwVs8UwbF5T1hlwoR2bc0i6siuoVnFCs+UBg2mhvpDzRoEsLItXwS5Cd" defer></script>
 
 
 <!-- body · construction rail -->

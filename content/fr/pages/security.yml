@@ -73,6 +73,14 @@ security:
     Analyse structurée des journaux
     Détection de patterns et scoring des anomalies
     Détection de dérive d’intégrité des fichiers par rapport à la base de référence signée
+  s4_pipeline_heading: Contrôle de source &amp; chaîne d’approvisionnement
+  s4_pipeline_list: |-
+    Branches <code>main</code> et <code>preprod</code> protégées : historique linéaire, commits signés obligatoires, aucun forçage, aucune suppression
+    Chaque modification passe par une pull request soumise à des contrôles obligatoires — barrière de publication, analyse de secrets, reconstruction reproductible et vérification de signature
+    Le déploiement en production attend une approbation manuelle d’environnement avant que la poussée n’atteigne l’hôte en ligne
+    Les archives de version portent une provenance <abbr title="Supply-chain Levels for Software Artifacts">SLSA</abbr> de niveau 3 : construites sur un exécuteur hébergé, attestées sans clé via Sigstore (GitHub <abbr title="OpenID Connect">OIDC</abbr>) et inscrites dans le journal de transparence public Rekor
+    Chaque version est accompagnée d’un <abbr title="Software Bill of Materials">SBOM</abbr> CycloneDX de la chaîne d’outils de construction
+    La clé de signature n’entre jamais dans la <abbr title="Continuous Integration">CI</abbr> ; le manifeste canonique reste construit localement et signé en <abbr title="Pretty Good Privacy">PGP</abbr>
   s6_summary: 6. Risque résiduel
   s6_protect_summary: |-
     Ce modèle protège le site statique public. Il ne protège pas contre la compromission

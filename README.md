@@ -211,7 +211,7 @@ alike — canonical URL, repository, source path, template and edition:
   "sourceRepository": "https://github.com/trentpower/trentpower.fr",
   "sourcePath": "content/en/pages/security.yml",
   "sourceUrl": "https://github.com/trentpower/trentpower.fr/blob/main/content/en/pages/security.yml",
-  "edition": "2026-06-10",
+  "edition": "2026-06-14",
   "generated": true,
   "templatePath": "templates/pages/security.html"
 }
@@ -328,7 +328,7 @@ publishing occurs. Full statement: [docs/AUTHORSHIP-STATEMENT.md](docs/AUTHORSHI
 
 The repository is citable as a publication system via
 [`CITATION.cff`](CITATION.cff) — GitHub's "Cite this repository" button
-reads it directly. Versions are edition dates (currently `2026-06-10`),
+reads it directly. Versions are edition dates (currently `2026-06-14`),
 matching the `edition` field of the signed `integrity.json`. Code falls
 under MIT, content under CC BY-SA 4.0; see Licensing below.
 

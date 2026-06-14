@@ -24,7 +24,7 @@
 
   <div class="cover__foot">
     <div class="cover__meta">
-      Edition · <b>2026‑06‑13</b><br>
+      Edition · <b>2026‑06‑14</b><br>
       Format · <b>A4 portrait · 210 × 297 mm</b><br>
       Composed in <b>Paris</b>
     </div>
@@ -161,7 +161,7 @@
           <div class="stat"><div class="stat__n accent">0</div><div class="stat__l">Trackers</div><div class="stat__s">no analytics, no pixels</div></div>
           <div class="stat"><div class="stat__n accent">0</div><div class="stat__l">Third‑party requests</div><div class="stat__s">all assets same‑origin</div></div>
         </div>
-        <p class="cap mt2">Measured at the network layer on page load. Source · the site’s own CSP and privacy posture, as of edition 2026‑06‑13.</p>
+        <p class="cap mt2">Measured at the network layer on page load. Source · the site’s own CSP and privacy posture, as of edition 2026‑06‑14.</p>
         <div class="callout callout--why mt3">
           <p class="callout__tag">Why this matters</p>
           <p>A directory of static files has almost nothing to attack and almost nothing to maintain: no server code runs, no database can be queried, and every file a visitor receives is listed in the signed integrity.json manifest.</p>
@@ -279,7 +279,7 @@
           <div class="bar"><span class="bar__l">archives .zip / .gz</span><span class="bar__track"><span class="bar__fill" style="--v:50;--m:162;"></span></span><span class="bar__v">50</span></div>
           <div class="bar"><span class="bar__l">pages .html</span><span class="bar__track"><span class="bar__fill accent" style="--v:45;--m:162;"></span></span><span class="bar__v">45</span></div>
         </div>
-        <p class="cap mt2">Tracked files under <code class="path">public/</code>. <span class="tnum">359</span> of them belong to frozen release archives. Source · <code class="inline">git ls-files public/</code>, edition 2026‑06‑13.</p>
+        <p class="cap mt2">Tracked files under <code class="path">public/</code>. <span class="tnum">359</span> of them belong to frozen release archives. Source · <code class="inline">git ls-files public/</code>, edition 2026‑06‑14.</p>
         <div class="callout callout--why mt3">
           <p class="callout__tag">Why this matters</p>
           <p>The fixed stage order is what lets two runs of the same source produce the same hashes. Hash before the HTML is rewritten and the manifest describes bytes the browser never receives.</p>
@@ -332,7 +332,7 @@
           <div class="bar"><span class="bar__l">Correctness (COR)</span><span class="bar__track"><span class="bar__fill" style="--v:19;--m:19;"></span></span><span class="bar__v">19</span></div>
           <div class="bar"><span class="bar__l">Quality (QUAL)</span><span class="bar__track"><span class="bar__fill" style="--v:12;--m:19;"></span></span><span class="bar__v">12</span></div>
         </div>
-        <p class="cap mt2">By category. Source · <code class="path">tools/lib/checks.py</code> registry, edition 2026‑06‑13.</p>
+        <p class="cap mt2">By category. Source · <code class="path">tools/lib/checks.py</code> registry, edition 2026‑06‑14.</p>
 
         <table class="spectable mt3">
           <thead><tr><th>Check</th><th>Cat</th><th>Tier</th><th>Proves</th></tr></thead>
@@ -750,7 +750,7 @@ gpg --verify integrity.json.sig integrity.json
         <p class="body mt1">Composed in a single authored HTML document (<code class="path">docs/pdf/readme.html</code>) using the project’s print style system, paginated to A4 with <strong>paged.js</strong>, and exported through headless Chromium. The HTML is the source of truth; this PDF is its export. When the system changes, the HTML is updated and the PDF re‑exported, never hand‑patched. After every export the rendered pages are checked for clipped text, overlapping blocks, missing assets and chart proportions before the document ships.</p>
         <div class="callout mt3">
           <p class="callout__tag">Provenance</p>
-          <p>Edition 2026‑06‑13 · A4 portrait · composed in Paris. Charts and figures are generated from repository data (<code class="inline">tools/lib/checks.py</code>, <code class="inline">git ls-files public/</code>) and validated against it at export time, not asserted. The operator‑console capture is a tracked documentation asset, taken from the live build ceremony and set in the publication's own mono face.</p>
+          <p>Edition 2026‑06‑14 · A4 portrait · composed in Paris. Charts and figures are generated from repository data (<code class="inline">tools/lib/checks.py</code>, <code class="inline">git ls-files public/</code>) and validated against it at export time, not asserted. The operator‑console capture is a tracked documentation asset, taken from the live build ceremony and set in the publication's own mono face.</p>
         </div>
         <p class="cap mt3 accent">trentpower.fr · Private · Static · Signed</p>
       </div>

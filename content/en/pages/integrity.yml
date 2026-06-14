@@ -88,9 +88,12 @@ releases:
   archive_heading: Edition archive
   archive_current_kicker: Current edition
   archive_earlier_summary: Earlier editions
+  edition_jun14_date: 14 June 2026
+  edition_jun14_desc: <cite>Repository housekeeping</cite>
+  edition_jun14_meta: Signed snapshot · Current edition
   edition_jun10_date: 10 June 2026
   edition_jun10_desc: <cite>Public opening</cite>
-  edition_jun10_meta: Signed snapshot · Current edition
+  edition_jun10_meta: Signed snapshot · Previous edition
   edition_may23_date: 23 May 2026
   edition_may23_desc: <cite>Composed publication sprint</cite>
   edition_may23_meta: Signed snapshot · Previous edition
@@ -206,7 +209,7 @@ releases:
       aria_actions: Release actions
     earlier:
       label: Earlier editions
-      count: five on file · 2026·02 → 2026·05·23
+      count: six on file · 2026·02 → 2026·06·10
       verb_view: View
       sha_key: SHA-256
       historical_note: Historical record · no archives
