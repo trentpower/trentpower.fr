@@ -58,7 +58,8 @@ EXPECTED_HEADINGS = [
     "Proof anyone can re-run",
     "What the browser is told to enforce",
     "The deploy routine, and recovery",
-    "Going public, stated plainly",
+    "Public by design, kept that way",
+    "Built in the open, checkable to the commit",
 ]
 
 # label → file-extension group for the public-folder chart.

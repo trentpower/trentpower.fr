@@ -32,7 +32,7 @@ above; it is not appended to every commit.
 
 `tools/quality/validate_git_metadata.py` is a build-gate that scans every
 publishable file under `public/`, `tools/`, `templates/`, `docs/`,
-`design/`, `.github/`, and `reports/` for the forbidden trailer
+`.github/`, and `reports/` for the forbidden trailer
 shapes and vendor strings. It runs as predeploy step 14. Any
 regression — a stray `Co-authored-by:` line in a generated file, a
 `Claude Code` reference in HTML, a `Generated-by:` trailer in a

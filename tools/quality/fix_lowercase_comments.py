@@ -384,7 +384,7 @@ def _process_htaccess(text: str) -> tuple[str, int]:
 # identifiers / hex hashes per token, and Title-Case label lines
 # (e.g. `Canonical URL:`, `Preferred Attribution:`, `Site:`) plus
 # bare Title-Case section headers (`Records`, `Integrity`) — the
-# casing matrix in docs/public-artefact-conventions.md authorises
+# casing matrix in docs/PUBLIC-ARTEFACT-CONVENTIONS.md authorises
 # these as machine-facing labels.
 _TXT_LABEL_LINE = re.compile(
     r"^\s*([A-Z][A-Za-z0-9-]*(?:\s+(?:[A-Za-z][A-Za-z0-9-]*|\([a-z]{2}\))){0,3}):(\s|$)"

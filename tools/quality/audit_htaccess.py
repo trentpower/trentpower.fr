@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import difflib
 import json
+import os
 import re
 import sys
 import textwrap
@@ -201,6 +202,18 @@ def _release_completeness() -> tuple[list[str], int]:
     releases = PUBLIC_DIR / "integrity" / "releases"
     if not releases.is_dir():
         return issues, 0
+    # Pre-signature gate (build.sh stage 05): the in-flight edition's archives
+    # are built post-signature (stage 08), so defer that edition's SHA256SUMS/.sig
+    # here. The post-signature gate and CI run without the flag and require them.
+    pre_archive = os.environ.get("GATE_SKIP_SIGNATURE") == "1"
+    current_edition = ""
+    if pre_archive:
+        try:
+            current_edition = json.loads(
+                (PUBLIC_DIR / "integrity.json").read_text(encoding="utf-8")
+            ).get("edition", "")
+        except (OSError, ValueError):
+            current_edition = ""
     edition_count = 0
     for sub in sorted(releases.iterdir()):
         if not sub.is_dir():
@@ -214,7 +227,12 @@ def _release_completeness() -> tuple[list[str], int]:
                 if not (sub / required).is_file():
                     issues.append(f"edition {sub.name} missing {required}")
             continue
-        for required in ("SHA256SUMS", "SHA256SUMS.sig", "index.html"):
+        if pre_archive and sub.name == current_edition:
+            # in-flight edition: index.html exists now; archives come post-signature.
+            required_set = ("index.html",)
+        else:
+            required_set = ("SHA256SUMS", "SHA256SUMS.sig", "index.html")
+        for required in required_set:
             if not (sub / required).is_file():
                 issues.append(f"edition {sub.name} missing {required}")
     return issues, edition_count

@@ -101,6 +101,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.skip_signature:
         skipped = ", ".join(_SIGNATURE_CHECK_IDS)
         print(f"note: --skip-signature -- omitting signature checks ({skipped})")
+        # In the graphical build, release archives are built only AFTER signing
+        # (build.sh stage 08), so a pre-signature pass is also a pre-archive pass.
+        # Export the flag so subprocess validators defer the in-flight edition's
+        # release-archive checks; the post-signature gate (and CI) still enforce them.
+        os.environ["GATE_SKIP_SIGNATURE"] = "1"
 
     if args.json:
         return _run_json(args.json, args.skip_signature)

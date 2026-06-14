@@ -3,7 +3,7 @@
 # Single-maintainer repository: this file is a routing and audit record
 # marking the critical trust surfaces, not an approval mechanism.
 # Required code-owner review is deliberately not enabled (see
-# docs/github-rulesets.md).
+# docs/GITHUB-RULESETS.md).
 
 *                                   @trentpower
 

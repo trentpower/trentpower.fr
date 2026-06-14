@@ -24,7 +24,7 @@
 
   <div class="cover__foot">
     <div class="cover__meta">
-      Edition · <b>2026‑06‑10</b><br>
+      Edition · <b>2026‑06‑14</b><br>
       Format · <b>A4 portrait · 210 × 297 mm</b><br>
       Composed in <b>Paris</b>
     </div>
@@ -48,8 +48,9 @@
     <a class="toc__item" href="#sec-g"><span class="toc__num">G</span><span class="toc__ttl">Security &amp; privacy<small>What the browser is told to enforce</small></span><span class="toc__pg" href="#sec-g"></span></a>
     <a class="toc__item" href="#sec-h"><span class="toc__num">H</span><span class="toc__ttl">Operations &amp; recovery<small>The deploy routine, and what to do when it breaks</small></span><span class="toc__pg" href="#sec-h"></span></a>
     <a class="toc__item" href="#sec-i"><span class="toc__num">I</span><span class="toc__ttl">The score ledger<small>The tool beside the site</small></span><span class="toc__pg" href="#sec-i"></span></a>
-    <a class="toc__item" href="#sec-j"><span class="toc__num">J</span><span class="toc__ttl">Public‑readiness &amp; authorship<small>Going public, stated plainly</small></span><span class="toc__pg" href="#sec-j"></span></a>
-    <a class="toc__item" href="#sec-k"><span class="toc__num">K</span><span class="toc__ttl">Appendix<small>Repository map &amp; principle ordering</small></span><span class="toc__pg" href="#sec-k"></span></a>
+    <a class="toc__item" href="#sec-j"><span class="toc__num">J</span><span class="toc__ttl">Public &amp; authorship<small>Public by design, kept that way</small></span><span class="toc__pg" href="#sec-j"></span></a>
+    <a class="toc__item" href="#sec-k"><span class="toc__num">K</span><span class="toc__ttl">Provenance &amp; releases<small>Built in the open, checkable to the commit</small></span><span class="toc__pg" href="#sec-k"></span></a>
+    <a class="toc__item" href="#sec-l"><span class="toc__num">L</span><span class="toc__ttl">Appendix<small>Repository map &amp; principle ordering</small></span><span class="toc__pg" href="#sec-l"></span></a>
     <a class="toc__item" href="#colophon"><span class="toc__num">·</span><span class="toc__ttl">Colophon<small>Type, licensing, how this was made</small></span><span class="toc__pg" href="#colophon"></span></a>
   </div>
 </section>
@@ -160,7 +161,7 @@
           <div class="stat"><div class="stat__n accent">0</div><div class="stat__l">Trackers</div><div class="stat__s">no analytics, no pixels</div></div>
           <div class="stat"><div class="stat__n accent">0</div><div class="stat__l">Third‑party requests</div><div class="stat__s">all assets same‑origin</div></div>
         </div>
-        <p class="cap mt2">Measured at the network layer on page load. Source · the site’s own CSP and privacy posture, as of edition 2026‑06‑10.</p>
+        <p class="cap mt2">Measured at the network layer on page load. Source · the site’s own CSP and privacy posture, as of edition 2026‑06‑14.</p>
         <div class="callout callout--why mt3">
           <p class="callout__tag">Why this matters</p>
           <p>A directory of static files has almost nothing to attack and almost nothing to maintain: no server code runs, no database can be queried, and every file a visitor receives is listed in the signed integrity.json manifest.</p>
@@ -269,16 +270,16 @@
         <p class="body mt2">Build and deploy are deliberately asymmetric: the <strong>local build signs</strong>; CI does not and never holds the PGP key. The runner only re‑verifies the committed signature and uploads bytes. Deploy is a <strong>non‑deleting</strong> two‑pass SFTP mirror, so an accidental <code class="inline">git rm</code> cannot wipe live files. The CI deploy fires on manual dispatch only, with an explicit <code class="inline">confirm=DEPLOY</code>, so a fork’s pull request can never trigger it. A post‑deploy smoke test probes the expected‑200 routes, the expected‑403/404 denials, and re‑verifies the live signature.</p>
 
         <p class="label mt3"><span class="num">·</span>What the public folder is made of</p>
-        <p class="body mt1">Of <span class="tnum">598</span> published files, most are not “pages” at all. They are the verification scaffolding that makes the site checkable.</p>
+        <p class="body mt1">Of <span class="tnum">624</span> published files, most are not “pages” at all. They are the verification scaffolding that makes the site checkable.</p>
         <div class="bars mt2">
-          <div class="bar"><span class="bar__l">source mirrors .txt</span><span class="bar__track"><span class="bar__fill" style="--v:160;--m:160;"></span></span><span class="bar__v">160</span></div>
-          <div class="bar"><span class="bar__l">signatures .sig</span><span class="bar__track"><span class="bar__fill" style="--v:128;--m:160;"></span></span><span class="bar__v">128</span></div>
-          <div class="bar"><span class="bar__l">data .json</span><span class="bar__track"><span class="bar__fill" style="--v:81;--m:160;"></span></span><span class="bar__v">81</span></div>
-          <div class="bar"><span class="bar__l">checksums .sha256</span><span class="bar__track"><span class="bar__fill" style="--v:47;--m:160;"></span></span><span class="bar__v">47</span></div>
-          <div class="bar"><span class="bar__l">archives .zip / .gz</span><span class="bar__track"><span class="bar__fill" style="--v:46;--m:160;"></span></span><span class="bar__v">46</span></div>
-          <div class="bar"><span class="bar__l">pages .html</span><span class="bar__track"><span class="bar__fill accent" style="--v:45;--m:160;"></span></span><span class="bar__v">45</span></div>
+          <div class="bar"><span class="bar__l">source mirrors .txt</span><span class="bar__track"><span class="bar__fill" style="--v:162;--m:162;"></span></span><span class="bar__v">162</span></div>
+          <div class="bar"><span class="bar__l">signatures .sig</span><span class="bar__track"><span class="bar__fill" style="--v:138;--m:162;"></span></span><span class="bar__v">138</span></div>
+          <div class="bar"><span class="bar__l">data .json</span><span class="bar__track"><span class="bar__fill" style="--v:87;--m:162;"></span></span><span class="bar__v">87</span></div>
+          <div class="bar"><span class="bar__l">checksums .sha256</span><span class="bar__track"><span class="bar__fill" style="--v:51;--m:162;"></span></span><span class="bar__v">51</span></div>
+          <div class="bar"><span class="bar__l">archives .zip / .gz</span><span class="bar__track"><span class="bar__fill" style="--v:50;--m:162;"></span></span><span class="bar__v">50</span></div>
+          <div class="bar"><span class="bar__l">pages .html</span><span class="bar__track"><span class="bar__fill accent" style="--v:45;--m:162;"></span></span><span class="bar__v">45</span></div>
         </div>
-        <p class="cap mt2">Tracked files under <code class="path">public/</code>. <span class="tnum">333</span> of them belong to frozen release archives. Source · <code class="inline">git ls-files public/</code>, edition 2026‑06‑10.</p>
+        <p class="cap mt2">Tracked files under <code class="path">public/</code>. <span class="tnum">359</span> of them belong to frozen release archives. Source · <code class="inline">git ls-files public/</code>, edition 2026‑06‑14.</p>
         <div class="callout callout--why mt3">
           <p class="callout__tag">Why this matters</p>
           <p>The fixed stage order is what lets two runs of the same source produce the same hashes. Hash before the HTML is rewritten and the manifest describes bytes the browser never receives.</p>
@@ -322,16 +323,16 @@
       <div>
         <p class="body">A single registry drives both runners. Every check carries a tier, a category, and a one‑line rationale, in gate order.</p>
         <div class="statband mt2">
-          <div class="stat"><div class="stat__n">49</div><div class="stat__l">Checks total</div><div class="stat__s">one registry, two runners</div></div>
-          <div class="stat"><div class="stat__n accent">37</div><div class="stat__l">Blocking</div><div class="stat__s">fail = deploy stops</div></div>
+          <div class="stat"><div class="stat__n">50</div><div class="stat__l">Checks total</div><div class="stat__s">one registry, two runners</div></div>
+          <div class="stat"><div class="stat__n accent">38</div><div class="stat__l">Blocking</div><div class="stat__s">fail = deploy stops</div></div>
           <div class="stat"><div class="stat__n">12</div><div class="stat__l">Advisory</div><div class="stat__s">warns, never blocks</div></div>
         </div>
         <div class="bars mt3">
           <div class="bar"><span class="bar__l">Security (SEC)</span><span class="bar__track"><span class="bar__fill accent" style="--v:19;--m:19;"></span></span><span class="bar__v">19</span></div>
-          <div class="bar"><span class="bar__l">Correctness (COR)</span><span class="bar__track"><span class="bar__fill" style="--v:18;--m:19;"></span></span><span class="bar__v">18</span></div>
+          <div class="bar"><span class="bar__l">Correctness (COR)</span><span class="bar__track"><span class="bar__fill" style="--v:19;--m:19;"></span></span><span class="bar__v">19</span></div>
           <div class="bar"><span class="bar__l">Quality (QUAL)</span><span class="bar__track"><span class="bar__fill" style="--v:12;--m:19;"></span></span><span class="bar__v">12</span></div>
         </div>
-        <p class="cap mt2">By category. Source · <code class="path">tools/lib/checks.py</code> registry, edition 2026‑06‑10.</p>
+        <p class="cap mt2">By category. Source · <code class="path">tools/lib/checks.py</code> registry, edition 2026‑06‑14.</p>
 
         <table class="spectable mt3">
           <thead><tr><th>Check</th><th>Cat</th><th>Tier</th><th>Proves</th></tr></thead>
@@ -345,6 +346,7 @@
           </tbody>
         </table>
         <p class="cap mt2">A representative slice. Inline cross&#8209;cutting checks are functions in <code class="inline">tools/quality/inline_checks.py</code>; the registry in <code class="inline">tools/lib/checks.py</code> feeds both tiers.</p>
+        <p class="body mt3">Three more gates run in continuous integration, beside the registry rather than inside it. A full‑history <strong>secret scan</strong> walks every commit for keys and local paths. A <strong>dependency scan</strong> (osv-scanner) checks the build toolchain against the OSV database and fails closed; a finding that cannot affect a static site with no runtime is recorded, with its reason, in a machine‑readable VEX at <code class="path">security/openvex.json</code>, so nothing is ever suppressed silently. A <strong>licensing check</strong> (<code class="inline">reuse lint</code>) proves every tracked file resolves to a licence and copyright. All three fail the pull request, not merely warn.</p>
         <div class="callout callout--why mt3">
           <p class="callout__tag">Why this matters</p>
           <p>Splitting the checks by severity means a missing signature or a leaked path stops the deploy, while a comment‑style nit cannot. The two failure modes never trade places under pressure.</p>
@@ -512,14 +514,14 @@ gpg --verify integrity.json.sig integrity.json
     <div class="spec spec--long">
       <div class="spec__rail"><span class="spec__num">H.3</span><span class="spec__label">The detail</span></div>
       <div>
-        <p class="body">Filenames stay stable (<code class="inline">styles.css</code>, <code class="inline">sw-register.js</code>); the version rides in a query string instead, <code class="inline">styles.css?v=2026-06-10.4e425527</code>, where the value is the build's <code class="inline">asset_version</code> (the edition date plus a content hash). A changed build rotates that hash, so the browser fetches fresh bytes rather than a stale cached copy. The service‑worker cache name encodes the same edition and content hashes, <code class="inline">tp-{edition}.{bundle_hash}-{precache_hash}-{release_tag}</code>, so any changed file rotates a hash and the old cache is purged on activate.</p>
+        <p class="body">Filenames stay stable (<code class="inline">styles.css</code>, <code class="inline">sw-register.js</code>); the version rides in a query string instead, <code class="inline">styles.css?v=2026-06-13.4e425527</code>, where the value is the build's <code class="inline">asset_version</code> (the edition date plus a content hash). A changed build rotates that hash, so the browser fetches fresh bytes rather than a stale cached copy. The service‑worker cache name encodes the same edition and content hashes, <code class="inline">tp-{edition}.{bundle_hash}-{precache_hash}-{release_tag}</code>, so any changed file rotates a hash and the old cache is purged on activate.</p>
         <div class="callout callout--caution mt2">
           <p class="callout__tag">The critical operator rule</p>
           <p>Never sign while <code class="inline">GNUPGHOME</code> points at the temporary verification keyring. If a signature fails for no clear reason: <code class="inline">unset GNUPGHOME</code> and restart the gpg agent, then sign again.</p>
         </div>
         <p class="body mt2"><strong>Incident response begins by freezing</strong>: reproduce from a private window, another device, and a mobile network <em>before</em> touching anything, since most “incidents” are a cache blip or a browser extension, not a compromise. If integrity genuinely fails, lock the host account, restore from the known‑good local copy, regenerate, re‑sign, and purge the cache. A temporary stale page or a Lighthouse wobble is explicitly <em>not</em> an incident.</p>
         <figure class="readme-terminal-figure mt3">
-          <img src="assets/terminal.png" alt="The publication build ceremony in the operator's terminal: TRENTPOWER wordmark, publication intent menu, and the current edition panel showing 2026-06-10">
+          <img src="assets/terminal.png" alt="The publication build ceremony in the operator's terminal: TRENTPOWER wordmark, publication intent menu, and the current edition panel showing 2026-06-13">
           <figcaption>The build ceremony at its first checkpoint: no edition is created or rebuilt without a deliberate choice</figcaption>
         </figure>
       </div>
@@ -568,18 +570,18 @@ gpg --verify integrity.json.sig integrity.json
 </section>
 
 <!-- ════════════════════════ J · PUBLIC-READINESS ════════════════════════ -->
-<section class="section" id="sec-j" data-runhead="J · Public‑readiness &amp; authorship">
+<section class="section" id="sec-j" data-runhead="J · Public &amp; authorship">
   <div class="opener">
-    <p class="label"><span class="num">J</span>Public‑readiness &amp; authorship</p>
-    <h1 class="t-h1">Going public,<br>stated plainly</h1>
-    <p class="lede">Preparing to open the repository means a deliberate sweep so no key, secret or local path is ever committed, and a plain statement of how the site is authored.</p>
+    <p class="label"><span class="num">J</span>Public &amp; authorship</p>
+    <h1 class="t-h1">Public by design,<br>kept that way</h1>
+    <p class="lede">The repository has been public since the first signed edition. What keeps it safe is not a one‑time sweep but a standing discipline: no key, secret or local path is ever committed, and how the site is authored is stated plainly in the open.</p>
   </div>
 
   <div class="section__body">
     <div class="spec">
       <div class="spec__rail"><span class="spec__num">J.1</span><span class="spec__label">In plain terms</span></div>
       <div>
-        <p class="body">Before the source can be public, every private thing must be shown absent: keys, passwords, server paths. Separately, the site says plainly how it is made: written and reviewed by a human, with selective AI help for drafting only, and never auto‑published. This is recorded once in public files, not stamped on every commit.</p>
+        <p class="body">The source is public, so every private thing must stay absent: keys, passwords, server paths. The repository also says plainly how it is made: written and reviewed by a human, with selective AI help for drafting only, and never auto‑published. That is recorded once in public files, not stamped on every commit, and re‑checked on every change rather than waved through once.</p>
       </div>
     </div>
 
@@ -597,7 +599,7 @@ gpg --verify integrity.json.sig integrity.json
           <div class="flow__arrow">↓</div>
           <div class="flow__step"><span class="s-l">release archives re‑verify</span><span class="s-n">verify.sh</span></div>
           <div class="flow__arrow">↓</div>
-          <div class="flow__step flow__step--accent"><span class="s-l">tick checklist → flip public</span><span class="s-n">ship</span></div>
+          <div class="flow__step flow__step--accent"><span class="s-l">every change re‑runs the sweep</span><span class="s-n">public</span></div>
         </div>
       </div>
     </div>
@@ -619,17 +621,70 @@ gpg --verify integrity.json.sig integrity.json
   </div>
 </section>
 
-<!-- ════════════════════════ K · APPENDIX ════════════════════════ -->
-<section class="section" id="sec-k" data-runhead="K · Appendix">
+<!-- ════════════════════════ K · PROVENANCE & RELEASES ════════════════════════ -->
+<section class="section" id="sec-k" data-runhead="K · Provenance &amp; releases">
   <div class="opener">
-    <p class="label"><span class="num">K</span>Appendix</p>
+    <p class="label"><span class="num">K</span>Provenance &amp; releases</p>
+    <h1 class="t-h1">Built in the open,<br>checkable to the&nbsp;commit</h1>
+    <p class="lede">The author’s signature proves who published a record. A second, independent proof now rides alongside it: each release is rebuilt on a public machine and carries a tamper‑evident record of exactly which commit and which workflow produced it.</p>
+  </div>
+
+  <div class="section__body">
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">K.1</span><span class="spec__label">In plain terms</span></div>
+      <div>
+        <p class="body">The PGP signature says “the author published this.” The new proof says “a clean build machine, which no one edits by hand, rebuilt this release from the tagged source, and here is the exact commit and workflow that did it.” That statement is written to a public, append‑only transparency log, so anyone can check it and no one, the author included, can forge it after the fact. The two proofs are complementary: identity from the key, build history from the platform.</p>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec__rail"><span class="spec__num">K.2</span><span class="spec__label">The release path</span><span class="hint">a signed tag starts it; the runner does the rest</span></div>
+      <div>
+        <div class="flow" style="max-width:104mm;">
+          <div class="flow__step"><span class="s-l">git tag ‑s edition/YYYY‑MM‑DD</span><span class="s-n">tag</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__step"><span class="s-l">GitHub Actions · clean hosted runner</span><span class="s-n">build</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__step"><span class="s-l">rebuild site · checksums · CycloneDX SBOM</span><span class="s-n">artefacts</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__step flow__step--accent"><span class="s-l">provenance attestation · Sigstore + Rekor</span><span class="s-n">attest</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__step"><span class="s-l">GitHub Release</span><span class="s-n">publish</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">K.3</span><span class="spec__label">The detail</span></div>
+      <div>
+        <p class="body">Pushing a signed <code class="inline">edition/YYYY‑MM‑DD</code> tag triggers a release workflow on a GitHub‑hosted runner. It re‑renders the site from the tagged source (a reproducibility proof that fails closed if the committed bytes do not rebuild), packages a deterministic archive, and asks the platform to attest it. The attestation is signed <strong>keyless</strong> through GitHub’s OpenID Connect identity and Sigstore, and recorded in the public <strong>Rekor</strong> transparency log. This is SLSA build‑track <strong>Level 3</strong>: the build runs on a hosted service and the provenance cannot be falsified by the build steps themselves. The canonical record stays locally built and PGP‑signed; the signing key never enters the runner.</p>
+        <div class="code code--cmd mt2">
+          <div class="code__cap"><span>verify the build provenance of a release archive</span><span>bash</span></div>
+<pre><span class="cmd-prompt">$ </span>gh attestation verify trentpower-fr-2026-06-13-site.tar.gz <span class="tok-com"># commit + workflow</span>
+    --repo trentpower/trentpower.fr</pre>
+        </div>
+        <p class="body mt2">Each release also ships a <strong>CycloneDX SBOM</strong>. The site itself has no runtime dependencies, so the bill of materials records the build toolchain rather than anything shipped to a visitor. Archives are <strong>byte‑deterministic</strong> (sorted entries, pinned timestamps, no host metadata); rebuilding from the same source yields identical bytes, with the deliberate exceptions of the random signature salt and the licensed fonts. The full reproducibility story is in <code class="path">docs/REPRODUCIBILITY.md</code>.</p>
+        <p class="body mt2"><strong>Independently checkable standards.</strong> The same posture is measured by outside parties, not just asserted here: the OpenSSF <strong>Best Practices</strong> badge (passing, at the silver tier) and the OpenSSF <strong>Baseline</strong> criteria; <strong>REUSE</strong> 3.3 compliance, so every tracked file resolves to a licence and copyright by machine; and the OpenSSF <strong>Scorecard</strong>, treated as a maintenance dashboard rather than a medal, and capped by design for a single‑maintainer project that cannot require a second reviewer.</p>
+        <div class="callout callout--why mt3">
+          <p class="callout__tag">Why this matters</p>
+          <p>A signature alone asks you to trust one machine. Provenance built on a public runner and logged to Rekor lets a stranger confirm where a release came from without trusting the author’s laptop, the host, or even GitHub’s word after the fact.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ L · APPENDIX ════════════════════════ -->
+<section class="section" id="sec-l" data-runhead="L · Appendix">
+  <div class="opener">
+    <p class="label"><span class="num">L</span>Appendix</p>
     <h1 class="t-h1">The map, and<br>the principles</h1>
     <p class="lede">The whole repository at a glance, authored source through to signed public bytes, and the order in which its principles win when they conflict.</p>
   </div>
 
   <div class="section__body">
     <div class="spec spec--long">
-      <div class="spec__rail"><span class="spec__num">K.1</span><span class="spec__label">Repository map</span><span class="hint">colour marks each file’s role</span></div>
+      <div class="spec__rail"><span class="spec__num">L.1</span><span class="spec__label">Repository map</span><span class="hint">colour marks each file’s role</span></div>
       <div>
 <pre class="tree"><span class="dir">trentpower.fr/</span>
 <span class="br">├─</span> <span class="t-auth">content/</span>            <span class="cmt">authored copy (YAML) + route registry</span>
@@ -643,8 +698,7 @@ gpg --verify integrity.json.sig integrity.json
 <span class="br">│   ├─</span> <span class="t-tool">release/</span>         <span class="cmt">makes it public (archives, seal, deploy.sh)</span>
 <span class="br">│   ├─</span> <span class="t-tool">config/</span>          <span class="cmt">declared facts (identity, public‑exposure)</span>
 <span class="br">│   ├─</span> <span class="t-tool">lib/</span>             <span class="cmt">shared across pillars (paths.py, checks.py)</span>
-<span class="br">│   ├─</span> <span class="t-local">score-ledger/</span>    <span class="cmt">local live‑site audit</span>
-<span class="br">│   └─</span> <span class="t-local">_retired/</span>        <span class="cmt">superseded one‑offs</span>
+<span class="br">│   └─</span> <span class="t-local">score-ledger/</span>    <span class="cmt">local live‑site audit</span>
 <span class="br">├─</span> <span class="t-gen">public/</span>             <span class="cmt">SIGNED, DEPLOYED bytes; the web root</span>
 <span class="br">│   ├─</span> <span class="t-gen">en-au/  fr/  index.html</span>  <span class="cmt">editions + language gate</span>
 <span class="br">│   ├─</span> <span class="t-verify">integrity.json (+ .sig)</span>
@@ -663,7 +717,7 @@ gpg --verify integrity.json.sig integrity.json
     </div>
 
     <div class="spec spec--long">
-      <div class="spec__rail"><span class="spec__num">K.2</span><span class="spec__label">Principle ordering</span></div>
+      <div class="spec__rail"><span class="spec__num">L.2</span><span class="spec__label">Principle ordering</span></div>
       <div>
         <p class="body">Every choice in this repository answers to a fixed ordering of principles. When two of them pull in different directions, the one earlier in the list wins:</p>
         <div class="code mt2">
@@ -671,7 +725,7 @@ gpg --verify integrity.json.sig integrity.json
 <pre>1 Privacy → 2 Security → 3 Verifiability → 4 Accessibility →
 5 Minimal surface → 6 Determinism → 7 Human‑readable → 8 Finite</pre>
         </div>
-        <p class="body mt2">A companion note, <code class="path">docs/htaccess-future-bilingual.md</code>, holds the rewrite rules for a future routing change, kept out of the live <code class="path">.htaccess</code> on purpose, because the production file should describe what is live, not what may ship later.</p>
+        <p class="body mt2">A companion note, <code class="path">docs/HTACCESS-FUTURE-BILINGUAL.md</code>, holds the rewrite rules for a future routing change, kept out of the live <code class="path">.htaccess</code> on purpose, because the production file should describe what is live, not what may ship later.</p>
       </div>
     </div>
   </div>
@@ -696,7 +750,7 @@ gpg --verify integrity.json.sig integrity.json
         <p class="body mt1">Composed in a single authored HTML document (<code class="path">docs/pdf/readme.html</code>) using the project’s print style system, paginated to A4 with <strong>paged.js</strong>, and exported through headless Chromium. The HTML is the source of truth; this PDF is its export. When the system changes, the HTML is updated and the PDF re‑exported, never hand‑patched. After every export the rendered pages are checked for clipped text, overlapping blocks, missing assets and chart proportions before the document ships.</p>
         <div class="callout mt3">
           <p class="callout__tag">Provenance</p>
-          <p>Edition 2026‑06‑10 · A4 portrait · composed in Paris. Charts and figures are generated from repository data (<code class="inline">tools/lib/checks.py</code>, <code class="inline">git ls-files public/</code>) and validated against it at export time, not asserted. The operator‑console capture is a tracked documentation asset, taken from the live build ceremony and set in the publication's own mono face.</p>
+          <p>Edition 2026‑06‑14 · A4 portrait · composed in Paris. Charts and figures are generated from repository data (<code class="inline">tools/lib/checks.py</code>, <code class="inline">git ls-files public/</code>) and validated against it at export time, not asserted. The operator‑console capture is a tracked documentation asset, taken from the live build ceremony and set in the publication's own mono face.</p>
         </div>
         <p class="cap mt3 accent">trentpower.fr · Private · Static · Signed</p>
       </div>

@@ -19,9 +19,9 @@ deeper on each area.
 | [INCIDENT-RESPONSE.md](INCIDENT-RESPONSE.md)                   | Incident types, detection, and the response playbook.                                                                                             |
 | [SCORE-LEDGER.md](SCORE-LEDGER.md)                             | The local-only live-site audit tool (observational, not a deploy gate).                                                                           |
 | [PUBLIC-READINESS.md](PUBLIC-READINESS.md)                     | What must never be committed, `.gitignore` policy, the public-release record, and the blocking `public_readiness` gate.                           |
-| [github-environments.md](github-environments.md)               | The GitHub environment model: branches, `production`/`preproduction` secret scoping, the promotion process, and the verify-never-sign boundary.   |
-| [github-rulesets.md](github-rulesets.md)                       | Branch/tag rulesets protecting the public record, GitHub Releases as secondary pointers, commit attribution, and the manual-settings checklist.   |
-| [provenance.md](provenance.md)                                 | Release provenance: the GitHub build-provenance attestation cut on edition tags, Sigstore/Rekor, and how a third party verifies it.               |
+| [GITHUB-ENVIRONMENTS.md](GITHUB-ENVIRONMENTS.md)               | The GitHub environment model: branches, `production`/`preproduction` secret scoping, the promotion process, and the verify-never-sign boundary.   |
+| [GITHUB-RULESETS.md](GITHUB-RULESETS.md)                       | Branch/tag rulesets protecting the public record, GitHub Releases as secondary pointers, commit attribution, and the manual-settings checklist.   |
+| [PROVENANCE.md](PROVENANCE.md)                                 | Release provenance: the GitHub build-provenance attestation cut on edition tags, Sigstore/Rekor, and how a third party verifies it.               |
 | [REPRODUCIBILITY.md](REPRODUCIBILITY.md)                       | How to rebuild an edition from source, what is byte-deterministic, and the deliberate non-determinism (PGP salt, licensed fonts).                 |
 | [SECRETS-AND-KEY-MANAGEMENT.md](SECRETS-AND-KEY-MANAGEMENT.md) | Where the few secrets and keys live, who can access them, and the rotation, revocation and re-keying policy.                                      |
 | [CODE-REVIEW.md](CODE-REVIEW.md)                               | What every change is checked against before it reaches the public record; the maintainer self-review checklist.                                   |
@@ -40,6 +40,6 @@ policies they support are in [SECURITY-AND-PRIVACY.md](SECURITY-AND-PRIVACY.md).
 
 | Document                                                         | Why standalone                                                                              |
 | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| [authorship-statement.md](authorship-statement.md)               | AI/tool-usage policy; its path is allow-listed by `tools/quality/validate_git_metadata.py`. |
-| [public-artefact-conventions.md](public-artefact-conventions.md) | Public-artefact schema referenced by site-metadata validators.                              |
-| [htaccess-future-bilingual.md](htaccess-future-bilingual.md)     | Forward-looking `.htaccess` plan (future work, not yet shipped).                            |
+| [AUTHORSHIP-STATEMENT.md](AUTHORSHIP-STATEMENT.md)               | AI/tool-usage policy; its path is allow-listed by `tools/quality/validate_git_metadata.py`. |
+| [PUBLIC-ARTEFACT-CONVENTIONS.md](PUBLIC-ARTEFACT-CONVENTIONS.md) | Public-artefact schema referenced by site-metadata validators.                              |
+| [HTACCESS-FUTURE-BILINGUAL.md](HTACCESS-FUTURE-BILINGUAL.md)     | Forward-looking `.htaccess` plan (future work, not yet shipped).                            |

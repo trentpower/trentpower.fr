@@ -11,7 +11,7 @@ pretence of either. What keeps this honest is that every decision that
 matters is enforced by machinery anyone can inspect: the blocking
 release gate, the branch rulesets, the signed integrity record. The
 repository's documentation records not just what was decided but what
-was deliberately declined (see docs/github-rulesets.md).
+was deliberately declined (see docs/GITHUB-RULESETS.md).
 
 ## Roles
 

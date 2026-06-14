@@ -94,9 +94,12 @@ releases:
   archive_heading: Archives d'édition
   archive_current_kicker: Édition actuelle
   archive_earlier_summary: Éditions antérieures
+  edition_jun14_date: 14 juin 2026
+  edition_jun14_desc: <cite>Entretien du dépôt</cite>
+  edition_jun14_meta: Instantané signé · Édition actuelle
   edition_jun10_date: 10 juin 2026
   edition_jun10_desc: <cite>Ouverture publique</cite>
-  edition_jun10_meta: Instantané signé · Édition actuelle
+  edition_jun10_meta: Instantané signé · Édition précédente
   edition_may23_date: 23 mai 2026
   edition_may23_desc: <cite>Sprint de publication composée</cite>
   edition_may23_meta: Instantané signé · Édition précédente
@@ -212,7 +215,7 @@ releases:
       aria_actions: Actions sur l’édition
     earlier:
       label: Éditions antérieures
-      count: cinq archivées · 2026·02 → 2026·05·23
+      count: six archivées · 2026·02 → 2026·06·10
       verb_view: Consulter
       sha_key: SHA-256
       historical_note: Pièce historique · sans archives

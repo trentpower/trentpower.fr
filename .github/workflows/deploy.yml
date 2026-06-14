@@ -1,9 +1,22 @@
 name: Deploy to Gandi SFTP + smoke test
 
-# Triggers automatically on every push to main.
-# Can also be triggered manually with the DEPLOY confirmation.
+# Triggers on every push to main, but the PUBLIC SITE only changes when a new
+# EDITION is published. Merging to main is unrestricted; the guard below gates
+# the SFTP mirror — the public change — not the merge.
 #
-# The job targets the `production` environment: it waits for the required
+# Edition guard (fail-closed):
+#   - push to main      -> deploy ONLY if the committed canonical edition is
+#                          newer than the edition currently live on the server.
+#                          A non-edition merge (edition unchanged) is stopped
+#                          before any production secret is released: the public
+#                          bytes are not touched. Between-edition changes belong
+#                          on /preprod/ (see preprod-deploy.yml), never here.
+#   - workflow_dispatch -> deliberate override for a genuine hotfix; requires
+#                          the typed DEPLOY confirmation. Bypasses the edition
+#                          check on purpose, with a human in the loop.
+#   - live edition unreadable -> fail-closed (no deploy); re-run via dispatch.
+#
+# The deploy job targets the `production` environment: it waits for the required
 # reviewer's approval before any environment secret is released, and only
 # `main` may deploy to it. PR-level verification lives in pr-checks.yml;
 # this workflow re-verifies the same committed bytes before mirroring.
@@ -47,8 +60,66 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # ── edition guard ──────────────────────────────────────────────────────────
+  # Decides whether the public site may change at all. Runs with no environment
+  # (no secrets), so the production approval prompt only ever appears for a
+  # genuine edition. Fail-closed: anything uncertain resolves to "do not deploy".
+  guard:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy: ${{ steps.decide.outputs.deploy }}
+      committed: ${{ steps.decide.outputs.committed }}
+      live: ${{ steps.decide.outputs.live }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - name: Decide whether this is a new edition
+        id: decide
+        env:
+          # operator-controlled dispatch input — read via env, never inlined.
+          MANUAL_CONFIRM: ${{ github.event.inputs.confirm }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -eu
+          committed="$(python3 -c "import json; print(json.load(open('public/integrity.json'))['edition'])")"
+          echo "committed=$committed" >> "$GITHUB_OUTPUT"
+
+          # workflow_dispatch is the deliberate hotfix path: a human typed DEPLOY.
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            if [ "$MANUAL_CONFIRM" = "DEPLOY" ]; then
+              echo "::notice::manual dispatch confirmed (DEPLOY) — edition guard overridden deliberately for edition $committed"
+              echo "deploy=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "::error::manual dispatch requires the confirm input to be exactly DEPLOY — refusing."
+              echo "deploy=false" >> "$GITHUB_OUTPUT"
+            fi
+            exit 0
+          fi
+
+          # push to main: the public site changes ONLY if the canonical edition
+          # advanced beyond the edition currently live on the server.
+          live="$(curl -fsSL --retry 3 --max-time 30 https://trentpower.fr/integrity.json \
+                  | python3 -c "import json,sys; print(json.load(sys.stdin)['edition'])" 2>/dev/null || true)"
+          echo "live=$live" >> "$GITHUB_OUTPUT"
+
+          if [ -z "$live" ]; then
+            echo "::error::could not read the live edition from https://trentpower.fr/integrity.json — refusing to deploy (fail-closed). Re-run via workflow_dispatch with confirm=DEPLOY to override."
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # ISO YYYY-MM-DD compares lexically == chronologically ([[ ]] = bash).
+          if [[ "$committed" > "$live" ]]; then
+            echo "::notice::new edition $committed supersedes the live edition $live — production deploy permitted."
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::committed edition $committed is not newer than the live edition $live — this push is NOT a new edition, so the public site is left untouched. Between-edition changes belong on /preprod/. For a deliberate hotfix, re-run via workflow_dispatch with confirm=DEPLOY."
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+          fi
+
   deploy:
-    if: ${{ github.event_name == 'push' || github.event.inputs.confirm == 'DEPLOY' }}
+    needs: guard
+    if: ${{ needs.guard.outputs.deploy == 'true' }}
     runs-on: ubuntu-latest
     environment:
       name: production

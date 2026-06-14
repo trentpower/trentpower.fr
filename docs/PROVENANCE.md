@@ -84,7 +84,7 @@ attests is provably source-derived.
    in the tagged commit, so the file must be on `main` before the first tag.
 2. Apply the `protect-release-tags` ruleset: restrict `edition/*` tag creation to
    the repository admin, and restrict updates and deletions. See
-   [github-rulesets.md](github-rulesets.md). This is what makes the tag trigger
+   [GITHUB-RULESETS.md](GITHUB-RULESETS.md). This is what makes the tag trigger
    trustworthy: only the maintainer can mint a release tag.
 
 ## Cutting a release

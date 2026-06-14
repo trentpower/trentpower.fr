@@ -24,7 +24,7 @@ no database and no server-side code that holds a credential.
   and the working tree to enforce this; `.gitignore` is the first line of defence.
 - Deploy credentials live only as GitHub Actions **environment** secrets, scoped to
   the `production` and `preproduction` environments
-  ([github-environments.md](github-environments.md)). They are never repository-level
+  ([GITHUB-ENVIRONMENTS.md](GITHUB-ENVIRONMENTS.md)). They are never repository-level
   secrets and never appear in workflow files.
 - The account recovery material and key passphrases live in a password manager with
   next-of-kin emergency access configured (see [../GOVERNANCE.md](../GOVERNANCE.md),

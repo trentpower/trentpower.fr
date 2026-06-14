@@ -9,7 +9,7 @@ kept as plain text and published with the site:
 It is newest-first, hand-reviewed before publication, and gated: an edition cannot
 ship ahead of its changelog entry (the `changelog_freshness` blocking check). Each
 edition is also cut as a signed [GitHub Release](https://github.com/trentpower/trentpower.fr/releases)
-with a build-provenance attestation (see [docs/provenance.md](docs/provenance.md)).
+with a build-provenance attestation (see [docs/PROVENANCE.md](docs/PROVENANCE.md)).
 
 Security-relevant modifications are noted in that log and, when a vulnerability is
 involved, disclosed through the process in [SECURITY.md](SECURITY.md). This file is

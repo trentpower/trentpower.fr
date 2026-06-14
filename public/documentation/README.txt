@@ -1,18 +1,11 @@
 # trentpower.fr
 
-[![trentpower.fr trust strip](metadata/badges/proof-strip.svg)](https://trentpower.fr/en-au/verify/)
-
-[![Static: HTML CSS JS](metadata/badges/static-html-css-js.svg)](https://trentpower.fr)
 [![Signed: PGP](metadata/badges/signed-pgp.svg)](https://trentpower.fr/en-au/verify/)
 [![Integrity: SHA-256](metadata/badges/integrity-sha256.svg)](https://trentpower.fr/integrity.json)
-[![Languages: EN-AU FR](metadata/badges/languages-en-au-fr.svg)](https://trentpower.fr)
-[![Privacy: No trackers](metadata/badges/privacy-no-trackers.svg)](https://trentpower.fr/en-au/privacy/)
-[![Code: MIT](metadata/badges/code-mit.svg)](LICENSE)
-[![Content: CC BY-SA 4.0](metadata/badges/content-cc-by-sa-4-0.svg)](CONTENT-RIGHTS.md)
-
-[![PR checks](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/pr-checks.yml)
-[![Publication check](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/publication-check.yml)
-[![Deploy](https://github.com/trentpower/trentpower.fr/actions/workflows/deploy.yml/badge.svg)](https://github.com/trentpower/trentpower.fr/actions/workflows/deploy.yml)
+[![SLSA: Build L3](metadata/badges/slsa-build-l3.svg)](docs/PROVENANCE.md)
+[![OpenSSF: Best Practices · Silver](metadata/badges/openssf-best-practices.svg)](https://www.bestpractices.dev/en/projects/13182/gold)
+[![OpenSSF Baseline: v2026.02.19 · L2](metadata/badges/openssf-baseline.svg)](https://www.bestpractices.dev/en/projects/13182/baseline-3)
+[![REUSE: Compliant](metadata/badges/reuse-compliant.svg)](https://api.reuse.software/info/github.com/trentpower/trentpower.fr)
 
 `trentpower.fr` is a static, bilingual, source-verifiable personal publication.
 
@@ -32,6 +25,35 @@ that each edition can be independently checked.
 > **Reading the docs:** a print-ready editorial edition of the whole
 > documentation, readable by technical and non-technical readers alike, is at
 > [`README.pdf`](README.pdf). Its source lives in [`docs/pdf/`](docs/pdf/).
+
+---
+
+## Publication record
+
+Every claim below is something you can check yourself, not a badge to take on faith.
+
+| What                   | Status                                            | Verify                                                                                                                  |
+| ---------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Integrity manifest     | every published file hashed (SHA-256), PGP-signed | [`/integrity.json`](https://trentpower.fr/integrity.json) + `.sig`; [docs](docs/TRUST-AND-VERIFICATION.md)              |
+| Build provenance       | SLSA build-track Level 3 (Sigstore + Rekor)       | `gh attestation verify trentpower-fr-<edition>-site.tar.gz --repo trentpower/trentpower.fr`; [docs](docs/PROVENANCE.md) |
+| Signed releases        | signed `edition/*` tags + GitHub Releases         | [Releases](https://github.com/trentpower/trentpower.fr/releases); [docs](docs/PROVENANCE.md)                            |
+| SBOM                   | CycloneDX, build toolchain, per release           | Release assets; [docs](docs/REPRODUCIBILITY.md)                                                                         |
+| Reproducible build     | byte-deterministic archives                       | [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md)                                                                      |
+| Licensing              | REUSE 3.3; MIT (code) + CC-BY-SA-4.0 (content)    | [`REUSE.toml`](REUSE.toml), [`LICENSES/`](LICENSES/), [NOTICE.md](NOTICE.md)                                            |
+| Best practices         | OpenSSF Baseline (Silver)                         | [bestpractices.dev/projects/13182](https://www.bestpractices.dev/projects/13182)                                        |
+| Supply-chain posture   | OpenSSF Scorecard (a dashboard, not a medal)      | [scorecard.dev](https://scorecard.dev/viewer/?uri=github.com/trentpower/trentpower.fr)                                  |
+| Security policy        | coordinated disclosure, 14-day response           | [SECURITY.md](SECURITY.md)                                                                                              |
+| Privacy                | no analytics, cookies, or third-party assets      | [docs/SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md)                                                            |
+| Continuous integration | PR checks · publication check · deploy            | [Actions](https://github.com/trentpower/trentpower.fr/actions)                                                          |
+
+The fastest single check — confirm the live site is signed by the published key:
+
+```sh
+curl -fsS https://trentpower.fr/integrity.json      -o integrity.json
+curl -fsS https://trentpower.fr/integrity.json.sig  -o integrity.json.sig
+curl -fsS https://trentpower.fr/.well-known/pgp-key.asc | gpg --import
+gpg --verify integrity.json.sig integrity.json      # expect: Good signature
+```
 
 ---
 
@@ -84,8 +106,7 @@ tools/                The pipeline, split into responsibility pillars:
   ├── config/         Declared facts (identity, public-exposure, overrides)
   ├── lib/            Shared across pillars (paths.py, checks.py)
   ├── score-ledger/   Local-only live-site audit tool (not a deploy gate)
-  ├── visual/         Repo-presentation + visual QA proofing (not a deploy gate)
-  └── _retired/       Superseded one-offs, out of the release path
+  └── visual/         Repo-presentation + visual QA proofing (not a deploy gate)
 public/               Generated public output, the live web root (tracked)
 docs/                 Project documentation
 .github/              Workflows (deploy, PR + publication checks), issue forms, ownership
@@ -190,7 +211,7 @@ alike — canonical URL, repository, source path, template and edition:
   "sourceRepository": "https://github.com/trentpower/trentpower.fr",
   "sourcePath": "content/en/pages/security.yml",
   "sourceUrl": "https://github.com/trentpower/trentpower.fr/blob/main/content/en/pages/security.yml",
-  "edition": "2026-06-10",
+  "edition": "2026-06-14",
   "generated": true,
   "templatePath": "templates/pages/security.html"
 }
@@ -254,8 +275,25 @@ Full documentation lives in [`docs/`](docs/README.md):
 - [INCIDENT-RESPONSE.md](docs/INCIDENT-RESPONSE.md)
 - [SCORE-LEDGER.md](docs/SCORE-LEDGER.md)
 - [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md)
-- [github-environments.md](docs/github-environments.md)
-- [github-rulesets.md](docs/github-rulesets.md)
+- [GITHUB-ENVIRONMENTS.md](docs/GITHUB-ENVIRONMENTS.md)
+- [GITHUB-RULESETS.md](docs/GITHUB-RULESETS.md)
+- [PROVENANCE.md](docs/PROVENANCE.md)
+- [SECRETS-AND-KEY-MANAGEMENT.md](docs/SECRETS-AND-KEY-MANAGEMENT.md)
+- [CODE-REVIEW.md](docs/CODE-REVIEW.md)
+
+## Support
+
+The current edition is the supported one. Each new edition supersedes the
+previous one; it never rewrites it. Earlier editions remain published as frozen,
+redistributable archives under
+[`public/integrity/releases/`](public/integrity/releases/), kept so the record
+stays verifiable, not maintained.
+
+Security updates follow the same lifecycle: only the latest edition receives
+fixes. Once an edition is superseded it is immutable and is not patched. A
+security-relevant correction ships as a new edition and is noted in the
+[changelog](https://trentpower.fr/changelog.txt); see [SECURITY.md](SECURITY.md)
+for how to report an issue and the response timeframe.
 
 ## What is intentionally not included
 
@@ -284,13 +322,13 @@ Full documentation lives in [`docs/`](docs/README.md):
 ## Authorship
 
 Content and code are reviewed manually before publication; no automated
-publishing occurs. Full statement: [docs/authorship-statement.md](docs/authorship-statement.md).
+publishing occurs. Full statement: [docs/AUTHORSHIP-STATEMENT.md](docs/AUTHORSHIP-STATEMENT.md).
 
 ## Citing
 
 The repository is citable as a publication system via
 [`CITATION.cff`](CITATION.cff) — GitHub's "Cite this repository" button
-reads it directly. Versions are edition dates (currently `2026-06-10`),
+reads it directly. Versions are edition dates (currently `2026-06-14`),
 matching the `edition` field of the signed `integrity.json`. Code falls
 under MIT, content under CC BY-SA 4.0; see Licensing below.
 

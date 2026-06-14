@@ -20,7 +20,7 @@ This is exercised continuously: the `build-check` job
 ([publication-check.yml](../.github/workflows/publication-check.yml)) re-renders on a
 clean GitHub-hosted runner for every promotion PR, and the release workflow
 ([release.yml](../.github/workflows/release.yml)) re-renders again before it builds
-and attests the release archive (SLSA Build L3 — see [provenance.md](provenance.md)).
+and attests the release archive (SLSA Build L3 — see [PROVENANCE.md](PROVENANCE.md)).
 
 ## What is deterministic
 
@@ -60,7 +60,7 @@ groundwork for it.
 
 ## See also
 
-- [provenance.md](provenance.md) — SLSA Build L3 attestation of the runner-built archive.
+- [PROVENANCE.md](PROVENANCE.md) — SLSA Build L3 attestation of the runner-built archive.
 - [TRUST-AND-VERIFICATION.md](TRUST-AND-VERIFICATION.md) — the signed manifest, source
   mirrors, and frozen per-edition archives.
 - Each edition archive also ships an inline `REPRODUCIBILITY.txt` with the same facts.

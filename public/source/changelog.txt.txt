@@ -3,6 +3,25 @@
 # Canonical source: https://trentpower.fr/changelog.txt
 
 
+2026-06-14 — Repository housekeeping; the record stays the record (Edition 2026-06-14)
+---------------------------------------------------------------------------------
+A consolidation edition. The pages a visitor reads are unchanged; the
+work is in the repository that backs them, kept legible as one audited
+surface.
+
+  • Documentation filenames settle on a single convention, and two
+    superseded scratch areas leave the tree, so every directory answers
+    one question.
+  • The project status badges now link through to their live progress
+    pages.
+  • The publication gate now admits a brand-new edition date: the
+    pre-signature pass defers the in-flight edition's release archives —
+    built only after signing — instead of demanding them before they can
+    exist. The post-signature gate still requires them in full.
+  • The release-provenance workflow attests exactly the committed edition
+    bytes, dropping anything the hosted runner generates in passing.
+
+
 2026-06-10 — Public opening; the repository becomes the record (Edition 2026-06-10)
 ---------------------------------------------------------------------------------
 The source repository at github.com/trentpower/trentpower.fr opens to

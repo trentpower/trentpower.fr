@@ -1,7 +1,7 @@
 # GitHub Releases
 
 Operational guide for cutting a GitHub Release. The trust model is
-defined in [github-rulesets.md](github-rulesets.md) § "GitHub Releases
+defined in [GITHUB-RULESETS.md](GITHUB-RULESETS.md) § "GitHub Releases
 are secondary pointers" and is not repeated here beyond its one rule:
 **a Release points to the signed record; it is never the record.**
 
@@ -23,7 +23,7 @@ git tag -s edition/<YYYY-MM-DD> -m "Edition <YYYY-MM-DD>" <merge-commit>
 git push origin edition/<YYYY-MM-DD>
 ```
 
-The `protect-release-tags` ruleset (see github-rulesets.md) restricts
+The `protect-release-tags` ruleset (see GITHUB-RULESETS.md) restricts
 creation, update and deletion of `edition/*` tags to the repository
 admin.
 

@@ -1,6 +1,6 @@
 {
   "schema": "https://trentpower.fr/source/source-manifest.json",
-  "generated_at": "2026-06-12T00:00:00Z",
+  "generated_at": "2026-06-14T00:00:00Z",
   "principle": "This site is designed first for human readers. The /source/ tree mirrors public files as plain text so the bytes the live site serves can be inspected without any tooling.",
   "files": [
     {
@@ -13,9 +13,9 @@
       "size_human": "11.4 KB",
       "mirror_bytes": 11657,
       "mirror_size_human": "11.4 KB",
-      "modified": "2026-06-11",
-      "sha256": "SfPeKhwAN850FDRA2+/V4AssXKZRENP/6eh8KQn2h68=",
-      "sha256_short": "SfPeKhwAN850",
+      "modified": "2026-06-14",
+      "sha256": "/QfN/QJXjAi9T2q76rVi6K0qHDq9EHEa59cW+RSXilg=",
+      "sha256_short": "/QfN/QJXjAi9",
       "description": "Home page. The editorial entry point."
     },
     {
@@ -28,9 +28,9 @@
       "size_human": "35.5 KB",
       "mirror_bytes": 36369,
       "mirror_size_human": "35.5 KB",
-      "modified": "2026-06-11",
-      "sha256": "DDhHIWKErhUdgmm9bXAomx8pCDRzXw3UZGHbxi9GRHI=",
-      "sha256_short": "DDhHIWKErhUd"
+      "modified": "2026-06-14",
+      "sha256": "PCbW7LsxEVYLPjsUNON1SZe52Vy6UasgSQqaPWAx/xI=",
+      "sha256_short": "PCbW7LsxEVYL"
     },
     {
       "live_path": "/fr/index.html",
@@ -42,9 +42,9 @@
       "size_human": "36.8 KB",
       "mirror_bytes": 37672,
       "mirror_size_human": "36.8 KB",
-      "modified": "2026-06-11",
-      "sha256": "UhOkKwlgJqFJNmZj+nCNacK/2Y0iCLpSyIde7GdWnFI=",
-      "sha256_short": "UhOkKwlgJqFJ"
+      "modified": "2026-06-14",
+      "sha256": "75HBcjTzpc2JPJpwwbnHj2ZZs8Gyhy9EUdLxgTPMacY=",
+      "sha256_short": "75HBcjTzpc2J"
     },
     {
       "live_path": "/en-au/privacy/index.html",
@@ -56,9 +56,9 @@
       "size_human": "15.8 KB",
       "mirror_bytes": 16214,
       "mirror_size_human": "15.8 KB",
-      "modified": "2026-06-11",
-      "sha256": "r+7IFEubRJyre/55gWFX6N2TCwGEsBEgoMA2KjTgml4=",
-      "sha256_short": "r+7IFEubRJyr"
+      "modified": "2026-06-14",
+      "sha256": "8G3ilCqhLq45b6r8B2Iz7vyNkJIVQKxXRudtGbtK460=",
+      "sha256_short": "8G3ilCqhLq45"
     },
     {
       "live_path": "/fr/confidentialite/index.html",
@@ -70,9 +70,9 @@
       "size_human": "16.5 KB",
       "mirror_bytes": 16936,
       "mirror_size_human": "16.5 KB",
-      "modified": "2026-06-11",
-      "sha256": "WNcSbBEim1WUuRhng3hwJa6mJJAlK2TjMNCyNY6aJoE=",
-      "sha256_short": "WNcSbBEim1WU"
+      "modified": "2026-06-14",
+      "sha256": "m/aS+Qh7jKqsdrIi5NjOv9Sy/oKdFSa+drrpVRhfQxk=",
+      "sha256_short": "m/aS+Qh7jKqs"
     },
     {
       "live_path": "/en-au/security/index.html",
@@ -80,13 +80,13 @@
       "name": "en-au/security/index.html.txt",
       "display_name": "en-au/security/index.html",
       "kind": "html",
-      "size": 30025,
-      "size_human": "29.3 KB",
-      "mirror_bytes": 30025,
-      "mirror_size_human": "29.3 KB",
-      "modified": "2026-06-11",
-      "sha256": "efGcezhTo+eD2I+x9vttoyzK02BFyuU//pHIig4jjt0=",
-      "sha256_short": "efGcezhTo+eD"
+      "size": 31275,
+      "size_human": "30.5 KB",
+      "mirror_bytes": 31275,
+      "mirror_size_human": "30.5 KB",
+      "modified": "2026-06-14",
+      "sha256": "Qg8sIRM8VLF8mBdlVmjh2sxaWuiUC5hu2DfKk4rw3EQ=",
+      "sha256_short": "Qg8sIRM8VLF8"
     },
     {
       "live_path": "/fr/securite/index.html",
@@ -94,13 +94,13 @@
       "name": "fr/securite/index.html.txt",
       "display_name": "fr/securite/index.html",
       "kind": "html",
-      "size": 31797,
-      "size_human": "31.1 KB",
-      "mirror_bytes": 31797,
-      "mirror_size_human": "31.1 KB",
-      "modified": "2026-06-11",
-      "sha256": "Wc1mmMnV4ZBVPv+WnEsR6EjKJiBBQzXt6ZloJqpKFP0=",
-      "sha256_short": "Wc1mmMnV4ZBV"
+      "size": 33268,
+      "size_human": "32.5 KB",
+      "mirror_bytes": 33268,
+      "mirror_size_human": "32.5 KB",
+      "modified": "2026-06-14",
+      "sha256": "6GGG7k8POxGnkPA4dfQH9fqEO7+5xe12yQ9BBgu4avE=",
+      "sha256_short": "6GGG7k8POxGn"
     },
     {
       "live_path": "/en-au/security/acknowledgments/index.html",
@@ -112,9 +112,9 @@
       "size_human": "14.9 KB",
       "mirror_bytes": 15210,
       "mirror_size_human": "14.9 KB",
-      "modified": "2026-06-11",
-      "sha256": "uVG94+njXbw2ag43TXXQoa7jnWSFJ+t/LQZo+WmLIV0=",
-      "sha256_short": "uVG94+njXbw2"
+      "modified": "2026-06-14",
+      "sha256": "1iZ2Tm2zD6TDzqEi8/d/Yx5PnII20tNHD9MNfq6xBGk=",
+      "sha256_short": "1iZ2Tm2zD6TD"
     },
     {
       "live_path": "/fr/securite/remerciements/index.html",
@@ -126,9 +126,9 @@
       "size_human": "15.3 KB",
       "mirror_bytes": 15673,
       "mirror_size_human": "15.3 KB",
-      "modified": "2026-06-11",
-      "sha256": "PnyT5npHrUt4qIxMElQ7Zb0HncxwJVY9fE0DJ+MNQhQ=",
-      "sha256_short": "PnyT5npHrUt4"
+      "modified": "2026-06-14",
+      "sha256": "NTW04DanNuwR7HqGwfJ6P9exgT/dZqA9bMOWTdjlaOs=",
+      "sha256_short": "NTW04DanNuwR"
     },
     {
       "live_path": "/en-au/integrity/index.html",
@@ -140,9 +140,9 @@
       "size_human": "20.2 KB",
       "mirror_bytes": 20733,
       "mirror_size_human": "20.2 KB",
-      "modified": "2026-06-11",
-      "sha256": "WvCJJ2fu6CHkDPn5UajQfA1gtlMbDc3fwd4zOeFO5Mw=",
-      "sha256_short": "WvCJJ2fu6CHk"
+      "modified": "2026-06-14",
+      "sha256": "7jSuvUqR7FJ5+wtpXVM1artnLu4uC+5dQAppX3iSud8=",
+      "sha256_short": "7jSuvUqR7FJ5"
     },
     {
       "live_path": "/fr/integrite/index.html",
@@ -154,9 +154,9 @@
       "size_human": "20.7 KB",
       "mirror_bytes": 21245,
       "mirror_size_human": "20.7 KB",
-      "modified": "2026-06-11",
-      "sha256": "C2CxOLW9d7iZ0a7HpLhI7rDs6qXDeSLC/UO+wcCVKAs=",
-      "sha256_short": "C2CxOLW9d7iZ"
+      "modified": "2026-06-14",
+      "sha256": "sWBUL5z2VgutJpwSLvYE1p1AIGdNJk3XZ08SwwOk/qc=",
+      "sha256_short": "sWBUL5z2Vgut"
     },
     {
       "live_path": "/en-au/integrity/releases/index.html",
@@ -164,13 +164,13 @@
       "name": "en-au/integrity/releases/index.html.txt",
       "display_name": "en-au/integrity/releases/index.html",
       "kind": "html",
-      "size": 20644,
-      "size_human": "20.2 KB",
-      "mirror_bytes": 20644,
-      "mirror_size_human": "20.2 KB",
-      "modified": "2026-06-11",
-      "sha256": "2tVfigLNrRnDEnm56abJYcFnX1vyyxiiOl3v8/lI/iQ=",
-      "sha256_short": "2tVfigLNrRnD"
+      "size": 21447,
+      "size_human": "20.9 KB",
+      "mirror_bytes": 21447,
+      "mirror_size_human": "20.9 KB",
+      "modified": "2026-06-14",
+      "sha256": "VzsyWs3X8Q/6rcg4v68sXnUnLSAWl+yK1xc25VlEhEc=",
+      "sha256_short": "VzsyWs3X8Q/6"
     },
     {
       "live_path": "/fr/integrite/archives/index.html",
@@ -178,13 +178,13 @@
       "name": "fr/integrite/archives/index.html.txt",
       "display_name": "fr/integrite/archives/index.html",
       "kind": "html",
-      "size": 21203,
-      "size_human": "20.7 KB",
-      "mirror_bytes": 21203,
-      "mirror_size_human": "20.7 KB",
-      "modified": "2026-06-11",
-      "sha256": "PqS08aRZd1Bsx5Hz+k8CgtqavrYucGSMIA0MKyMpTkQ=",
-      "sha256_short": "PqS08aRZd1Bs"
+      "size": 22008,
+      "size_human": "21.5 KB",
+      "mirror_bytes": 22008,
+      "mirror_size_human": "21.5 KB",
+      "modified": "2026-06-14",
+      "sha256": "mmeweBCvBkGCempll5qEItagF1QMOD6RCWeBAaIpGuE=",
+      "sha256_short": "mmeweBCvBkGC"
     },
     {
       "live_path": "/en-au/integrity/verify-locally/index.html",
@@ -196,9 +196,9 @@
       "size_human": "15.6 KB",
       "mirror_bytes": 15984,
       "mirror_size_human": "15.6 KB",
-      "modified": "2026-06-11",
-      "sha256": "/1KESZjXRfELrpwaKsWgnP7IvRpJuBMVEovJ2m5X3t4=",
-      "sha256_short": "/1KESZjXRfEL"
+      "modified": "2026-06-14",
+      "sha256": "uja1UMFvfoonO9fp3PlbVw02laDP/O4+qNPeNUxTVT4=",
+      "sha256_short": "uja1UMFvfoon"
     },
     {
       "live_path": "/fr/integrite/verifier-localement/index.html",
@@ -210,9 +210,9 @@
       "size_human": "16.1 KB",
       "mirror_bytes": 16470,
       "mirror_size_human": "16.1 KB",
-      "modified": "2026-06-11",
-      "sha256": "O4fjWDHnQbN2pT8HXYS9ukW0IzW4Jk+j+kPuKAxrnBc=",
-      "sha256_short": "O4fjWDHnQbN2"
+      "modified": "2026-06-14",
+      "sha256": "4cbROevfnJW80M5eEB9HiqIkDqfFuP1AHxDidEPUxtY=",
+      "sha256_short": "4cbROevfnJW8"
     },
     {
       "live_path": "/en-au/verify/index.html",
@@ -224,9 +224,9 @@
       "size_human": "15.7 KB",
       "mirror_bytes": 16053,
       "mirror_size_human": "15.7 KB",
-      "modified": "2026-06-11",
-      "sha256": "6jafOFWGlzQqDljr1aoWzboAa0O1pXSe7rqvIHB351E=",
-      "sha256_short": "6jafOFWGlzQq"
+      "modified": "2026-06-14",
+      "sha256": "QUS72r8Rk/OHslL6T/5M7quXhrqMBZqpTM7ZYh2tw3k=",
+      "sha256_short": "QUS72r8Rk/OH"
     },
     {
       "live_path": "/fr/verifier/index.html",
@@ -238,9 +238,9 @@
       "size_human": "16.1 KB",
       "mirror_bytes": 16467,
       "mirror_size_human": "16.1 KB",
-      "modified": "2026-06-11",
-      "sha256": "KPZKqIuY80Fdlz0Jp2IOq5eR9TSZsPkJiaoLrZg3Qok=",
-      "sha256_short": "KPZKqIuY80Fd"
+      "modified": "2026-06-14",
+      "sha256": "TX7nSbcjhFrsqexslJOM70eiDZ/vO3Mrlg6I90tNGtg=",
+      "sha256_short": "TX7nSbcjhFrs"
     },
     {
       "live_path": "/local/index.html",
@@ -252,9 +252,9 @@
       "size_human": "23.4 KB",
       "mirror_bytes": 23967,
       "mirror_size_human": "23.4 KB",
-      "modified": "2026-06-11",
-      "sha256": "KzoRqMuTzmSfHKeS44Uq+LLPDp1Tr/487xfDsf/DEvw=",
-      "sha256_short": "KzoRqMuTzmSf",
+      "modified": "2026-06-14",
+      "sha256": "vup5gpt1Px7O+fsNDxxBQsuelwjYvOc4R1ToSBZsLoI=",
+      "sha256_short": "vup5gpt1Px7O",
       "description": "Local Device Console. Inspect and clear the offline cache and local preferences for this device."
     },
     {
@@ -267,9 +267,9 @@
       "size_human": "24.0 KB",
       "mirror_bytes": 24611,
       "mirror_size_human": "24.0 KB",
-      "modified": "2026-06-11",
-      "sha256": "GWj7jflouqcH5CVv6rzWiM9JpsjIkyeQni+qucwwGUs=",
-      "sha256_short": "GWj7jflouqcH",
+      "modified": "2026-06-14",
+      "sha256": "2VubKh/RbhzX6a6WIJDcZ1DWO8n7XVAmH7Afbx3ak4k=",
+      "sha256_short": "2VubKh/RbhzX",
       "description": "Test results. Signed verification snapshot of the published edition."
     },
     {
@@ -282,9 +282,9 @@
       "size_human": "13.3 KB",
       "mirror_bytes": 13597,
       "mirror_size_human": "13.3 KB",
-      "modified": "2026-06-11",
-      "sha256": "c7D30CY8wyhAHfM/1zgT6NNJD+BahzMJ1/s8oAAgJGI=",
-      "sha256_short": "c7D30CY8wyhA",
+      "modified": "2026-06-14",
+      "sha256": "AdevrxB5zUGMjWO3rOxSk3ZoLjHnR4DDLAypvti3+Wc=",
+      "sha256_short": "AdevrxB5zUGM",
       "description": "Documentation. The signed README.pdf and plain-text README, with the PDF's hash for verification."
     },
     {
@@ -297,9 +297,9 @@
       "size_human": "13.5 KB",
       "mirror_bytes": 13868,
       "mirror_size_human": "13.5 KB",
-      "modified": "2026-06-11",
-      "sha256": "15QqlSL3CsY+nnbJkko92QKde4gd9T8GKQHeCdeKMe0=",
-      "sha256_short": "15QqlSL3CsY+"
+      "modified": "2026-06-14",
+      "sha256": "UBECjVp5Y8S2xVkuSRiE67xQawzG1LlEXirrE5zjXV4=",
+      "sha256_short": "UBECjVp5Y8S2"
     },
     {
       "live_path": "/en-au/404.html",
@@ -311,9 +311,9 @@
       "size_human": "13.4 KB",
       "mirror_bytes": 13742,
       "mirror_size_human": "13.4 KB",
-      "modified": "2026-06-11",
-      "sha256": "qMXdQFaWshnur3qZsRbuIbP3fdrLbmoWB0PHYtsWaCg=",
-      "sha256_short": "qMXdQFaWshnu"
+      "modified": "2026-06-14",
+      "sha256": "8YMt0eOIjdxsNkU2l+HVOMHMsvESu9qNMkTP13aIgO0=",
+      "sha256_short": "8YMt0eOIjdxs"
     },
     {
       "live_path": "/en-au/500.html",
@@ -325,9 +325,9 @@
       "size_human": "13.6 KB",
       "mirror_bytes": 13888,
       "mirror_size_human": "13.6 KB",
-      "modified": "2026-06-11",
-      "sha256": "y7GD3vw50Nt52dLvNHZxzDvprdDByARGtUpidR/+96M=",
-      "sha256_short": "y7GD3vw50Nt5"
+      "modified": "2026-06-14",
+      "sha256": "CD44FzAnORtUY+3tBv/2ZoRfW5fWrIjS0jSh6iJ7zGg=",
+      "sha256_short": "CD44FzAnORtU"
     },
     {
       "live_path": "/en-au/maintenance.html",
@@ -339,9 +339,9 @@
       "size_human": "13.9 KB",
       "mirror_bytes": 14268,
       "mirror_size_human": "13.9 KB",
-      "modified": "2026-06-11",
-      "sha256": "Gr9cdnCXNWUadgCKRBiVA9NfaP7CqYaSTxzffCYiI/c=",
-      "sha256_short": "Gr9cdnCXNWUa"
+      "modified": "2026-06-14",
+      "sha256": "HPN5ZzhU0m6XxfZdBtg55pIo1eAdNg7/zxK6IMi60WY=",
+      "sha256_short": "HPN5ZzhU0m6X"
     },
     {
       "live_path": "/fr/403.html",
@@ -353,9 +353,9 @@
       "size_human": "14.0 KB",
       "mirror_bytes": 14288,
       "mirror_size_human": "14.0 KB",
-      "modified": "2026-06-11",
-      "sha256": "r57T82Dsg9Lv2BEMWjthh9EUYckQGTAAR4IpLklWmgo=",
-      "sha256_short": "r57T82Dsg9Lv"
+      "modified": "2026-06-14",
+      "sha256": "Y3ZBoV4kD3mzCRIhFY+OEePB7vjal/YZJkTxUivgwrc=",
+      "sha256_short": "Y3ZBoV4kD3mz"
     },
     {
       "live_path": "/fr/404.html",
@@ -367,9 +367,9 @@
       "size_human": "13.7 KB",
       "mirror_bytes": 14046,
       "mirror_size_human": "13.7 KB",
-      "modified": "2026-06-11",
-      "sha256": "KABRgChPC3aLau9u7AhgX+HuJYUzVqXt9U2pwZiwFTs=",
-      "sha256_short": "KABRgChPC3aL"
+      "modified": "2026-06-14",
+      "sha256": "vn0r5ADRM9iGz4KurvIVn0Kb0mf7okvTxPG6amLjRNk=",
+      "sha256_short": "vn0r5ADRM9iG"
     },
     {
       "live_path": "/fr/500.html",
@@ -381,9 +381,9 @@
       "size_human": "14.0 KB",
       "mirror_bytes": 14298,
       "mirror_size_human": "14.0 KB",
-      "modified": "2026-06-11",
-      "sha256": "OZe/K5usjENtnh5wy4qR66QFt0jhoUTre7J32T9NeGM=",
-      "sha256_short": "OZe/K5usjENt"
+      "modified": "2026-06-14",
+      "sha256": "jYIAHqQen6dVvvPjZGK04LALXIuxPRkljHd1mL8iMBQ=",
+      "sha256_short": "jYIAHqQen6dV"
     },
     {
       "live_path": "/fr/maintenance.html",
@@ -395,9 +395,9 @@
       "size_human": "14.3 KB",
       "mirror_bytes": 14663,
       "mirror_size_human": "14.3 KB",
-      "modified": "2026-06-11",
-      "sha256": "7H9G7i1WH9Wafpjd7FEmEIdKTcRe7eJL/K9C2Gz7Fxs=",
-      "sha256_short": "7H9G7i1WH9Wa"
+      "modified": "2026-06-14",
+      "sha256": "AvHSmBaGxxOdz5j08rh9OfuARPpKDRujH4NQc6ZxK2k=",
+      "sha256_short": "AvHSmBaGxxOd"
     },
     {
       "live_path": "/403.html",
@@ -409,9 +409,9 @@
       "size_human": "13.6 KB",
       "mirror_bytes": 13931,
       "mirror_size_human": "13.6 KB",
-      "modified": "2026-06-11",
-      "sha256": "9SCD/b2/c01fMeKehifcEtcw8ILXLShxcXD4+ZjfjE0=",
-      "sha256_short": "9SCD/b2/c01f",
+      "modified": "2026-06-14",
+      "sha256": "YQGoDJD8poEqO5pzGI3Z7bVZtQV/ON9F5RQebEXDdpI=",
+      "sha256_short": "YQGoDJD8poEq",
       "description": "Forbidden page."
     },
     {
@@ -424,9 +424,9 @@
       "size_human": "13.5 KB",
       "mirror_bytes": 13805,
       "mirror_size_human": "13.5 KB",
-      "modified": "2026-06-11",
-      "sha256": "ZqvqhBLuGCbreRHCDRhzS2s6QOQ1eg7DIeOCQ4h7cGE=",
-      "sha256_short": "ZqvqhBLuGCbr",
+      "modified": "2026-06-14",
+      "sha256": "yCZjKvyj24PnTH/imEarVVEf4/9KgJfXw3+VMrZsdaU=",
+      "sha256_short": "yCZjKvyj24Pn",
       "description": "Not found page."
     },
     {
@@ -439,9 +439,9 @@
       "size_human": "13.6 KB",
       "mirror_bytes": 13951,
       "mirror_size_human": "13.6 KB",
-      "modified": "2026-06-11",
-      "sha256": "cnrmebi/r/Mo8nvVOHLEt2uKzW2oD8lf9fsVT81qQx4=",
-      "sha256_short": "cnrmebi/r/Mo",
+      "modified": "2026-06-14",
+      "sha256": "BRSsdIBpUseNPM1vJwjazG/WDabNG2aclRdg0oD5Zvw=",
+      "sha256_short": "BRSsdIBpUseN",
       "description": "Server error page."
     },
     {
@@ -454,9 +454,9 @@
       "size_human": "14.0 KB",
       "mirror_bytes": 14331,
       "mirror_size_human": "14.0 KB",
-      "modified": "2026-06-11",
-      "sha256": "ArtX3FolwA4F8dfnRUwOjouGOS4OPX5RNozumcXuSTE=",
-      "sha256_short": "ArtX3FolwA4F",
+      "modified": "2026-06-14",
+      "sha256": "ZIyZIvBaCuTVzSB78NlG5uf5cPPMKoCyYTnZTSjJP8Y=",
+      "sha256_short": "ZIyZIvBaCuTV",
       "description": "Maintenance notice. Used during planned downtime."
     },
     {
@@ -530,6 +530,20 @@
       "modified": "2026-06-10",
       "sha256": "HghlVmQ+0bpwbKWpQRg6B5Zbm0mKH15sbqrcU58V7n0=",
       "sha256_short": "HghlVmQ+0bpw"
+    },
+    {
+      "live_path": "/integrity/releases/2026-06-14/index.html",
+      "source_path": "/source/integrity/releases/2026-06-14/index.html.txt",
+      "name": "integrity/releases/2026-06-14/index.html.txt",
+      "display_name": "integrity/releases/2026-06-14/index.html",
+      "kind": "html",
+      "size": 7495,
+      "size_human": "7.3 KB",
+      "mirror_bytes": 7495,
+      "mirror_size_human": "7.3 KB",
+      "modified": "2026-06-14",
+      "sha256": "U0F941wowbPtwJV+8pxgcid/0XsN8vjejirmhzijxII=",
+      "sha256_short": "U0F941wowbPt"
     },
     {
       "live_path": "/styles.css",
@@ -631,7 +645,7 @@
       "size_human": "13.1 KB",
       "mirror_bytes": 26077,
       "mirror_size_human": "25.5 KB",
-      "modified": "2026-06-10",
+      "modified": "2026-06-14",
       "sha256": "Y1kBFkZGsjymebBryO5e16/f9jSeN3k1n0+5p69EwO8=",
       "sha256_short": "Y1kBFkZGsjym",
       "description": "Verify action menu. Five-row overlay handing off to source, citation, integrity, verify and print."
@@ -691,7 +705,7 @@
       "size_human": "1.2 KB",
       "mirror_bytes": 2952,
       "mirror_size_human": "2.9 KB",
-      "modified": "2026-06-11",
+      "modified": "2026-06-14",
       "sha256": "Hj9VDtkTiD7h06erDd17opRRPBWyZDr3vstJ2h90x9g=",
       "sha256_short": "Hj9VDtkTiD7h",
       "description": "Post-paint full-font upgrade. Swaps the subset fonts for the full set."
@@ -748,9 +762,9 @@
       "size_human": "9.7 KB",
       "mirror_bytes": 9910,
       "mirror_size_human": "9.7 KB",
-      "modified": "2026-06-11",
-      "sha256": "GJCs/D8NRLz1GvnJq/m2Y+xbRrXZGPONsvFmOF0H3yU=",
-      "sha256_short": "GJCs/D8NRLz1",
+      "modified": "2026-06-14",
+      "sha256": "y8kePz0fTvycE8yYtH36lytZkCNBK1TRLqg7os+vuS4=",
+      "sha256_short": "y8kePz0fTvyc",
       "description": "Service worker. Offline cache for the public site."
     },
     {
@@ -778,9 +792,9 @@
       "size_human": "2.3 KB",
       "mirror_bytes": 2334,
       "mirror_size_human": "2.3 KB",
-      "modified": "2026-06-10",
-      "sha256": "AnP6/S4dIbllCer8+PFJC9kz+HRo/LoYM/GBHYk7HFU=",
-      "sha256_short": "AnP6/S4dIbll",
+      "modified": "2026-06-14",
+      "sha256": "Sk4CgVjIpTq9U/j2S1kArzfiueHSw2D2W9w7iO41od8=",
+      "sha256_short": "Sk4CgVjIpTq9",
       "description": "Credits and notes for the people behind the site."
     },
     {
@@ -793,9 +807,9 @@
       "size_human": "2.4 KB",
       "mirror_bytes": 2407,
       "mirror_size_human": "2.4 KB",
-      "modified": "2026-06-10",
-      "sha256": "tTKFqWYK/0FzJRknPZTSkJl/v/zln3DRRQwES1ZNji8=",
-      "sha256_short": "tTKFqWYK/0Fz",
+      "modified": "2026-06-14",
+      "sha256": "0JU2kWIgUmdse9qURjJLei1JYzAd3hwyHryIha08SmA=",
+      "sha256_short": "0JU2kWIgUmds",
       "description": "Machine-readable guidance for language models and AI systems."
     },
     {
@@ -819,13 +833,13 @@
       "name": "changelog.txt.txt",
       "display_name": "changelog.txt",
       "kind": "text",
-      "size": 160304,
-      "size_human": "156.5 KB",
-      "mirror_bytes": 160304,
-      "mirror_size_human": "156.5 KB",
-      "modified": "2026-06-10",
-      "sha256": "56AfPJvGTeUAuLA69NwDM3Ii+HghftSieHaiUrqrRcY=",
-      "sha256_short": "56AfPJvGTeUA",
+      "size": 161297,
+      "size_human": "157.5 KB",
+      "mirror_bytes": 161297,
+      "mirror_size_human": "157.5 KB",
+      "modified": "2026-06-14",
+      "sha256": "2LAU0SiJ0Z7MJFYvS7ScQ4RByXXInmAzKDISTUYJGOA=",
+      "sha256_short": "2LAU0SiJ0Z7M",
       "description": "Edition change log. Notable revisions to the public site."
     },
     {
@@ -898,9 +912,9 @@
       "size_human": "4.8 KB",
       "mirror_bytes": 4879,
       "mirror_size_human": "4.8 KB",
-      "modified": "2026-06-10",
-      "sha256": "fK2x64ygpzGDjMOo1HyzK6xYYl+j4gjmGOJ2+K6wK4U=",
-      "sha256_short": "fK2x64ygpzGD",
+      "modified": "2026-06-14",
+      "sha256": "Y/nfnynj1nayspcRG0nRBmvLkH0LgizUyJ1636oxwIQ=",
+      "sha256_short": "Y/nfnynj1nay",
       "description": "Public sitemap. URL inventory for crawlers."
     },
     {
@@ -913,9 +927,9 @@
       "size_human": "78 B",
       "mirror_bytes": 78,
       "mirror_size_human": "78 B",
-      "modified": "2026-06-12",
-      "sha256": "NQoMNeF7lo5TNcNVHWAmY3adsfRQUQjsVw6QshRXCC4=",
-      "sha256_short": "NQoMNeF7lo5T",
+      "modified": "2026-06-14",
+      "sha256": "esBW36yeIWtUes/n+HS/vhEK1HpuGSQNFagBPn7kVYw=",
+      "sha256_short": "esBW36yeIWtU",
       "description": "Source mirror of the SHA-256 checksum for sitemap.xml."
     },
     {
@@ -943,9 +957,9 @@
       "size_human": "2.1 KB",
       "mirror_bytes": 2177,
       "mirror_size_human": "2.1 KB",
-      "modified": "2026-06-12",
-      "sha256": "Tf5M2Qjh1rS61WUyabfhQ9XYtLVmCR5Qfg1yQ52q6C0=",
-      "sha256_short": "Tf5M2Qjh1rS6",
+      "modified": "2026-06-14",
+      "sha256": "YczU612Gfq1xW+jCMLBERJnAyaxHNOMsbWWKmG2bzHY=",
+      "sha256_short": "YczU612Gfq1x",
       "description": "Site-level metadata. Edition, build, asset version."
     },
     {
@@ -958,9 +972,9 @@
       "size_human": "3.1 KB",
       "mirror_bytes": 3152,
       "mirror_size_human": "3.1 KB",
-      "modified": "2026-06-11",
-      "sha256": "p8eS7pHWK7lAwlY9gDhb5zzRVlKmEbVc7ywzSsu2jn8=",
-      "sha256_short": "p8eS7pHWK7lA",
+      "modified": "2026-06-14",
+      "sha256": "bSrTs2OMxRm9zoCMSWPp7YuG03XJHn78HK1N5YbpC38=",
+      "sha256_short": "bSrTs2OMxRm9",
       "description": "Service worker cache manifest. Files pinned for offline use."
     },
     {
@@ -1093,9 +1107,9 @@
       "size_human": "1.1 KB",
       "mirror_bytes": 1170,
       "mirror_size_human": "1.1 KB",
-      "modified": "2026-06-12",
-      "sha256": "cjKQXS6atZgRqTZMikQmN3ccbqB6HJjW66n2oVjL0A8=",
-      "sha256_short": "cjKQXS6atZgR",
+      "modified": "2026-06-14",
+      "sha256": "gSETEp0Ey/EZZmYCfCQavMbiVOD0AOOjmhKNHzQVvC4=",
+      "sha256_short": "gSETEp0Ey/EZ",
       "description": "Build record. Reproducibility data for the current edition."
     },
     {
@@ -1108,7 +1122,7 @@
       "size_human": "24.7 KB",
       "mirror_bytes": 25514,
       "mirror_size_human": "24.9 KB",
-      "modified": "2026-06-12",
+      "modified": "2026-06-14",
       "sha256": "9xSoUmaec/7U5/lnJfJPg9NaVQPtUrKY8vaJfHWs0yo=",
       "sha256_short": "9xSoUmaec/7U",
       "description": "Apache configuration. Public-safety scanned before mirroring."

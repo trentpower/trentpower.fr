@@ -68,6 +68,14 @@ security:
     Structured log analysis
     Pattern detection and anomaly scoring
     File integrity drift detection against the signed release baseline
+  s4_pipeline_heading: Source control &amp; supply chain
+  s4_pipeline_list: |-
+    Protected <code>main</code> and <code>preprod</code> branches: linear history, signed commits required, no force-push, no deletion
+    Every change ships through a pull request gated by required checks — release gate, secret scan, reproducible build and signature verification
+    Production deployment waits on a manual environment approval before the push reaches the live host
+    Release archives carry <abbr title="Supply-chain Levels for Software Artifacts">SLSA</abbr> build-track Level 3 provenance: built on a hosted runner, attested keyless through Sigstore (GitHub <abbr title="OpenID Connect">OIDC</abbr>) and recorded in the public Rekor transparency log
+    Each release ships a CycloneDX <abbr title="Software Bill of Materials">SBOM</abbr> of the build toolchain
+    The signing key never enters <abbr title="Continuous Integration">CI</abbr>; the canonical manifest stays locally built and <abbr title="Pretty Good Privacy">PGP</abbr>-signed
   s6_summary: 6. Residual risk
   s6_protect_summary: |-
     This model protects the public static site. It does not protect against registrar

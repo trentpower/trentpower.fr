@@ -25,7 +25,7 @@ name: Release provenance
 #   - This workflow must already be on main (tag events run the workflow as it
 #     exists in the tagged commit).
 #   - Apply the protect-release-tags ruleset (admin-only edition/* creation;
-#     no updates, no deletions). See docs/github-rulesets.md.
+#     no updates, no deletions). See docs/GITHUB-RULESETS.md.
 
 on:
   push:
@@ -91,9 +91,14 @@ jobs:
         run: bash tools/build/build.sh --check
 
       - name: Restore the committed, signed bytes
-        # --check may re-stamp date fields; restore the verified committed tree so
-        # the archive we attest carries the signed edition's exact bytes.
-        run: git checkout -- public/
+        # --check may re-stamp date fields and emit untracked parallel-rebuild
+        # artefacts; restore the verified committed tree AND drop any untracked
+        # re-render output (gitignored fonts are kept) so the attested site archive
+        # is byte-for-byte the committed edition and nothing the runner improvised.
+        run: |
+          set -eu
+          git checkout -- public/
+          git clean -fdq public/
 
       - name: Build the release archive in the runner (the SLSA build step)
         run: |
@@ -161,7 +166,7 @@ jobs:
           trentpower-fr-${EDITION}-sbom.cdx.json is a CycloneDX SBOM of the build
           toolchain (the site itself ships no runtime dependencies).
 
-          See https://trentpower.fr/en-au/verify/ and docs/provenance.md.
+          See https://trentpower.fr/en-au/verify/ and docs/PROVENANCE.md.
           EOF
           )"
           # Attach the runner-built provenance archive plus the canonical,

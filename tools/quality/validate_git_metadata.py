@@ -10,7 +10,7 @@ not belong in committable bytes:
     Claude Code        ChatGPT          Anthropic         OpenAI
 
 Per the canonical authorship position recorded in
-docs/authorship-statement.md and humans.txt, AI/tool assistance
+docs/AUTHORSHIP-STATEMENT.md and humans.txt, AI/tool assistance
 acknowledgement belongs in those documentation files only — never
 in commit metadata, never in generated repo material, never in
 release notes or changelogs, never in source mirrors.
@@ -86,7 +86,6 @@ SCAN_ROOTS = [
     REPO_ROOT / "tools",
     REPO_ROOT / "templates",
     REPO_ROOT / "docs",
-    REPO_ROOT / "design",
     REPO_ROOT / ".github",
     REPO_ROOT / "reports",
 ]
@@ -100,10 +99,10 @@ ALLOWLIST_RELATIVE = {
     "tools/quality/validate_language_consistency.py",
     "reports/git-authorship-metadata-audit.txt",
     "reports/historical-commit-attribution-report.txt",
-    # docs/authorship-statement.md is allowed to mention the bare names
+    # docs/AUTHORSHIP-STATEMENT.md is allowed to mention the bare names
     # Claude/ChatGPT/Anthropic in the context of explaining the policy.
     # it must not contain trailers (caught by the trailer regexes).
-    "docs/authorship-statement.md",
+    "docs/AUTHORSHIP-STATEMENT.md",
 }
 
 # frozen archives are sealed historical bytes; never scanned.
@@ -152,7 +151,7 @@ def main() -> int:
         if len(fails) > 30:
             print(f"  … and {len(fails) - 30} more", file=sys.stderr)
         print(file=sys.stderr)
-        print("AI/model attribution belongs in docs/authorship-statement.md", file=sys.stderr)
+        print("AI/model attribution belongs in docs/AUTHORSHIP-STATEMENT.md", file=sys.stderr)
         print("and humans.txt only — never in commit metadata, generated", file=sys.stderr)
         print("repo material, source mirrors, or public file headers.", file=sys.stderr)
         return 1

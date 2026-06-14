@@ -4,7 +4,7 @@ How the branches that carry the public record are protected. Rulesets
 are GitHub UI state (Settings → Rules → Rulesets) — they cannot be
 expressed in repository files, so this document is the reference for
 applying or restoring them. The companion document is
-[github-environments.md](github-environments.md).
+[GITHUB-ENVIRONMENTS.md](GITHUB-ENVIRONMENTS.md).
 
 ## `protect-main-as-public-record`
 
@@ -140,7 +140,7 @@ capped at roughly 7-8 for a single-maintainer project; that is expected and hone
   as Code-Review.
 - **Fuzzing** — the check recognises property-based testing for
   several languages but not Python's Hypothesis, which is what this
-  repository uses ([fuzzing.md](fuzzing.md)). The property tests run on
+  repository uses ([FUZZING.md](FUZZING.md)). The property tests run on
   every PR regardless.
 
 Code-Review and Branch-Protection both lift the day a second trusted reviewer
@@ -174,7 +174,7 @@ surface; GitHub-native tooling suffices).
 All of the following live in the GitHub UI and must be applied by hand:
 
 1. Settings → Rules → Rulesets: the three rulesets above.
-2. Settings → Environments: per [github-environments.md](github-environments.md).
+2. Settings → Environments: per [GITHUB-ENVIRONMENTS.md](GITHUB-ENVIRONMENTS.md).
 3. Settings → Code security: enable **Private vulnerability reporting**
    (SECURITY.md and the issue templates point reporters at it).
 4. Settings → Emails: verify `trent@trentpower.fr`.

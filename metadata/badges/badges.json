@@ -34,7 +34,7 @@
       "label": "SLSA",
       "value": "Build L3",
       "scope": "readme",
-      "href": "docs/provenance.md"
+      "href": "docs/PROVENANCE.md"
     },
     {
       "id": "languages",
@@ -74,7 +74,7 @@
       "label": "OpenSSF",
       "value": "Best Practices · Silver",
       "scope": "readme",
-      "href": "https://www.bestpractices.dev/projects/13182"
+      "href": "https://www.bestpractices.dev/en/projects/13182/gold"
     },
     {
       "id": "baseline",
@@ -82,7 +82,7 @@
       "label": "OpenSSF Baseline",
       "value": "v2026.02.19 · L2",
       "scope": "readme",
-      "href": "https://www.bestpractices.dev/en/projects/13182/baseline-2"
+      "href": "https://www.bestpractices.dev/en/projects/13182/baseline-3"
     },
     {
       "id": "reuse",
