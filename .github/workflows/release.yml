@@ -91,9 +91,14 @@ jobs:
         run: bash tools/build/build.sh --check
 
       - name: Restore the committed, signed bytes
-        # --check may re-stamp date fields; restore the verified committed tree so
-        # the archive we attest carries the signed edition's exact bytes.
-        run: git checkout -- public/
+        # --check may re-stamp date fields and emit untracked parallel-rebuild
+        # artefacts; restore the verified committed tree AND drop any untracked
+        # re-render output (gitignored fonts are kept) so the attested site archive
+        # is byte-for-byte the committed edition and nothing the runner improvised.
+        run: |
+          set -eu
+          git checkout -- public/
+          git clean -fdq public/
 
       - name: Build the release archive in the runner (the SLSA build step)
         run: |
