@@ -377,6 +377,14 @@ def step_deny_coverage(
     return fails
 
 
+# Pre-signature pass: build.sh builds the in-flight edition's release archives
+# only AFTER signing (stage 08), so at the pre-signature gate (stage 05) the
+# current edition's per-edition SHA256SUMS/.sig do not exist yet. gate.py exports
+# GATE_SKIP_SIGNATURE=1 for that pass. The post-signature gate and CI run without
+# it, so the archives are still fully required before anything ships.
+_PRE_ARCHIVE = os.environ.get("GATE_SKIP_SIGNATURE") == "1"
+
+
 def step_integrity_artefacts(manifest: dict) -> list[str]:
     """Step 5 — baseline integrity files exist on disk."""
     fails: list[str] = []
@@ -389,8 +397,9 @@ def step_integrity_artefacts(manifest: dict) -> list[str]:
     ]
     edition = manifest.get("edition", "")
     if isinstance(edition, str) and re.match(r"^\d{4}-\d{2}-\d{2}$", edition):
-        required.append(f"integrity/releases/{edition}/SHA256SUMS")
-        required.append(f"integrity/releases/{edition}/SHA256SUMS.sig")
+        if not _PRE_ARCHIVE:
+            required.append(f"integrity/releases/{edition}/SHA256SUMS")
+            required.append(f"integrity/releases/{edition}/SHA256SUMS.sig")
     else:
         fails.append(
             f"INTEGRITY: manifest edition {edition!r} is not an ISO date — "
@@ -468,6 +477,16 @@ def step_html_links(
             # disk-presence check.
             disk_rel = url_to_disk_path(u)
             if not (PUBLIC_DIR / disk_rel).is_file():
+                # the in-flight edition's release dir (SHA256SUMS, the archives and
+                # their sigs) is built post-signature (build.sh stage 08); at the
+                # pre-archive gate tolerate any not-yet-built file under THAT edition's
+                # prefix only. index.html/TESTRESULTS already exist and still resolve.
+                if (
+                    _PRE_ARCHIVE
+                    and current_edition_prefix
+                    and disk_rel.startswith(current_edition_prefix)
+                ):
+                    continue
                 tag = "MISSING-ARTEFACT" if is_release_artefact else "BROKEN-LINK"
                 fails.append(f"{tag}: /{rel} → {u} (no file at {disk_rel})")
     return fails, page_count, link_count
