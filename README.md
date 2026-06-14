@@ -2,9 +2,9 @@
 
 [![Signed: PGP](metadata/badges/signed-pgp.svg)](https://trentpower.fr/en-au/verify/)
 [![Integrity: SHA-256](metadata/badges/integrity-sha256.svg)](https://trentpower.fr/integrity.json)
-[![SLSA: Build L3](metadata/badges/slsa-build-l3.svg)](docs/provenance.md)
-[![OpenSSF: Best Practices · Silver](metadata/badges/openssf-best-practices.svg)](https://www.bestpractices.dev/projects/13182)
-[![OpenSSF Baseline: v2026.02.19 · L2](metadata/badges/openssf-baseline.svg)](https://www.bestpractices.dev/en/projects/13182/baseline-2)
+[![SLSA: Build L3](metadata/badges/slsa-build-l3.svg)](docs/PROVENANCE.md)
+[![OpenSSF: Best Practices · Silver](metadata/badges/openssf-best-practices.svg)](https://www.bestpractices.dev/en/projects/13182/gold)
+[![OpenSSF Baseline: v2026.02.19 · L2](metadata/badges/openssf-baseline.svg)](https://www.bestpractices.dev/en/projects/13182/baseline-3)
 [![REUSE: Compliant](metadata/badges/reuse-compliant.svg)](https://api.reuse.software/info/github.com/trentpower/trentpower.fr)
 
 `trentpower.fr` is a static, bilingual, source-verifiable personal publication.
@@ -35,8 +35,8 @@ Every claim below is something you can check yourself, not a badge to take on fa
 | What                   | Status                                            | Verify                                                                                                                  |
 | ---------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | Integrity manifest     | every published file hashed (SHA-256), PGP-signed | [`/integrity.json`](https://trentpower.fr/integrity.json) + `.sig`; [docs](docs/TRUST-AND-VERIFICATION.md)              |
-| Build provenance       | SLSA build-track Level 3 (Sigstore + Rekor)       | `gh attestation verify trentpower-fr-<edition>-site.tar.gz --repo trentpower/trentpower.fr`; [docs](docs/provenance.md) |
-| Signed releases        | signed `edition/*` tags + GitHub Releases         | [Releases](https://github.com/trentpower/trentpower.fr/releases); [docs](docs/provenance.md)                            |
+| Build provenance       | SLSA build-track Level 3 (Sigstore + Rekor)       | `gh attestation verify trentpower-fr-<edition>-site.tar.gz --repo trentpower/trentpower.fr`; [docs](docs/PROVENANCE.md) |
+| Signed releases        | signed `edition/*` tags + GitHub Releases         | [Releases](https://github.com/trentpower/trentpower.fr/releases); [docs](docs/PROVENANCE.md)                            |
 | SBOM                   | CycloneDX, build toolchain, per release           | Release assets; [docs](docs/REPRODUCIBILITY.md)                                                                         |
 | Reproducible build     | byte-deterministic archives                       | [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md)                                                                      |
 | Licensing              | REUSE 3.3; MIT (code) + CC-BY-SA-4.0 (content)    | [`REUSE.toml`](REUSE.toml), [`LICENSES/`](LICENSES/), [NOTICE.md](NOTICE.md)                                            |
@@ -106,8 +106,7 @@ tools/                The pipeline, split into responsibility pillars:
   ├── config/         Declared facts (identity, public-exposure, overrides)
   ├── lib/            Shared across pillars (paths.py, checks.py)
   ├── score-ledger/   Local-only live-site audit tool (not a deploy gate)
-  ├── visual/         Repo-presentation + visual QA proofing (not a deploy gate)
-  └── _retired/       Superseded one-offs, out of the release path
+  └── visual/         Repo-presentation + visual QA proofing (not a deploy gate)
 public/               Generated public output, the live web root (tracked)
 docs/                 Project documentation
 .github/              Workflows (deploy, PR + publication checks), issue forms, ownership
@@ -276,9 +275,9 @@ Full documentation lives in [`docs/`](docs/README.md):
 - [INCIDENT-RESPONSE.md](docs/INCIDENT-RESPONSE.md)
 - [SCORE-LEDGER.md](docs/SCORE-LEDGER.md)
 - [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md)
-- [github-environments.md](docs/github-environments.md)
-- [github-rulesets.md](docs/github-rulesets.md)
-- [provenance.md](docs/provenance.md)
+- [GITHUB-ENVIRONMENTS.md](docs/GITHUB-ENVIRONMENTS.md)
+- [GITHUB-RULESETS.md](docs/GITHUB-RULESETS.md)
+- [PROVENANCE.md](docs/PROVENANCE.md)
 - [SECRETS-AND-KEY-MANAGEMENT.md](docs/SECRETS-AND-KEY-MANAGEMENT.md)
 - [CODE-REVIEW.md](docs/CODE-REVIEW.md)
 
@@ -323,7 +322,7 @@ for how to report an issue and the response timeframe.
 ## Authorship
 
 Content and code are reviewed manually before publication; no automated
-publishing occurs. Full statement: [docs/authorship-statement.md](docs/authorship-statement.md).
+publishing occurs. Full statement: [docs/AUTHORSHIP-STATEMENT.md](docs/AUTHORSHIP-STATEMENT.md).
 
 ## Citing
 

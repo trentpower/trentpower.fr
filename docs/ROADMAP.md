@@ -31,7 +31,7 @@ What this project intends to do — and not do — over the next year
 - No comment system. Feedback goes through the channels in
   CONTRIBUTING.md.
 - No external badge services or third-party security tooling beyond the
-  GitHub-native stack already documented in docs/github-rulesets.md.
+  GitHub-native stack already documented in docs/GITHUB-RULESETS.md.
 - No change to the authorship model: this remains a single-author
   publication. Governance is documented in GOVERNANCE.md, including
   what happens if the author stops.

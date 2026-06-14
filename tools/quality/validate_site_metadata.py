@@ -2,7 +2,7 @@
 """tools/validate_site_metadata.py — canonical schema gate.
 
 enforces the published shape of public/site-metadata.json. the
-schema is documented in docs/public-artefact-conventions.md.
+schema is documented in docs/PUBLIC-ARTEFACT-CONVENTIONS.md.
 
 required top-level keys:
   type, schema_version, name, description, url, canonical_url,

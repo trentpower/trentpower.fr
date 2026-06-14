@@ -698,8 +698,7 @@ gpg --verify integrity.json.sig integrity.json
 <span class="br">│   ├─</span> <span class="t-tool">release/</span>         <span class="cmt">makes it public (archives, seal, deploy.sh)</span>
 <span class="br">│   ├─</span> <span class="t-tool">config/</span>          <span class="cmt">declared facts (identity, public‑exposure)</span>
 <span class="br">│   ├─</span> <span class="t-tool">lib/</span>             <span class="cmt">shared across pillars (paths.py, checks.py)</span>
-<span class="br">│   ├─</span> <span class="t-local">score-ledger/</span>    <span class="cmt">local live‑site audit</span>
-<span class="br">│   └─</span> <span class="t-local">_retired/</span>        <span class="cmt">superseded one‑offs</span>
+<span class="br">│   └─</span> <span class="t-local">score-ledger/</span>    <span class="cmt">local live‑site audit</span>
 <span class="br">├─</span> <span class="t-gen">public/</span>             <span class="cmt">SIGNED, DEPLOYED bytes; the web root</span>
 <span class="br">│   ├─</span> <span class="t-gen">en-au/  fr/  index.html</span>  <span class="cmt">editions + language gate</span>
 <span class="br">│   ├─</span> <span class="t-verify">integrity.json (+ .sig)</span>
@@ -726,7 +725,7 @@ gpg --verify integrity.json.sig integrity.json
 <pre>1 Privacy → 2 Security → 3 Verifiability → 4 Accessibility →
 5 Minimal surface → 6 Determinism → 7 Human‑readable → 8 Finite</pre>
         </div>
-        <p class="body mt2">A companion note, <code class="path">docs/htaccess-future-bilingual.md</code>, holds the rewrite rules for a future routing change, kept out of the live <code class="path">.htaccess</code> on purpose, because the production file should describe what is live, not what may ship later.</p>
+        <p class="body mt2">A companion note, <code class="path">docs/HTACCESS-FUTURE-BILINGUAL.md</code>, holds the rewrite rules for a future routing change, kept out of the live <code class="path">.htaccess</code> on purpose, because the production file should describe what is live, not what may ship later.</p>
       </div>
     </div>
   </div>

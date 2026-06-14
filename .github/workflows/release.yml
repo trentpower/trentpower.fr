@@ -25,7 +25,7 @@ name: Release provenance
 #   - This workflow must already be on main (tag events run the workflow as it
 #     exists in the tagged commit).
 #   - Apply the protect-release-tags ruleset (admin-only edition/* creation;
-#     no updates, no deletions). See docs/github-rulesets.md.
+#     no updates, no deletions). See docs/GITHUB-RULESETS.md.
 
 on:
   push:
@@ -161,7 +161,7 @@ jobs:
           trentpower-fr-${EDITION}-sbom.cdx.json is a CycloneDX SBOM of the build
           toolchain (the site itself ships no runtime dependencies).
 
-          See https://trentpower.fr/en-au/verify/ and docs/provenance.md.
+          See https://trentpower.fr/en-au/verify/ and docs/PROVENANCE.md.
           EOF
           )"
           # Attach the runner-built provenance archive plus the canonical,

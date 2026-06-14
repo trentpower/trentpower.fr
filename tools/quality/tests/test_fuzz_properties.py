@@ -5,7 +5,7 @@ Hypothesis drives arbitrary inputs through the {{ }} token engine, the
 slug helper, the locale date renderer and the badge SVG generator, and
 asserts the invariants each one promises: escaping is total, failures
 are always the declared error type, slugs are idempotent, and generated
-SVG stays well-formed XML. See docs/fuzzing.md for scope and rationale.
+SVG stays well-formed XML. See docs/FUZZING.md for scope and rationale.
 """
 
 import html

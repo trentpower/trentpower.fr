@@ -255,7 +255,7 @@ manually before publication; selective language-model assistance may be
 used for drafting or structuring, but no automated publishing occurs, and
 no AI/co-author trailers are appended to commits.
 
-See **[authorship-statement.md](authorship-statement.md)** for the full,
+See **[AUTHORSHIP-STATEMENT.md](AUTHORSHIP-STATEMENT.md)** for the full,
 canonical statement, enforcement (`tools/quality/validate_git_metadata.py`,
 predeploy step 14), and wording rules. That document is intentionally kept
 standalone at its own path (a validator allow-lists it by path) — its

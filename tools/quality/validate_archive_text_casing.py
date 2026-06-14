@@ -4,7 +4,7 @@
 reads the current edition's release ZIP and confirms that the five
 in-memory orientation files exist with their ALLCAPS filenames and
 that their prose follows the casing matrix documented in
-docs/public-artefact-conventions.md.
+docs/PUBLIC-ARTEFACT-CONVENTIONS.md.
 
 casing rule:
   - prose lines (free-running sentences) are lowercase.
@@ -119,7 +119,7 @@ def _check_prose_line(line: str) -> list[str]:
     if _is_section_header(line):
         # standalone title-case section header (no colon, no content,
         # ≤4 words, ≤30 chars). documented as allowed in
-        # docs/public-artefact-conventions.md.
+        # docs/PUBLIC-ARTEFACT-CONVENTIONS.md.
         return []
     bad: list[str] = []
     for tok in line.split():

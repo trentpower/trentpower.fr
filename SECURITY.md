@@ -47,4 +47,4 @@ posture check ([scorecard.yml](.github/workflows/scorecard.yml)). It
 helps surface risky supply-chain practices in the public repository and
 workflow configuration. It is advisory evidence, not cryptographic
 proof — the site's proof chain remains the signed manifest, source
-mirrors and release archives ([docs/github-releases.md](docs/github-releases.md)).
+mirrors and release archives ([docs/GITHUB-RELEASES.md](docs/GITHUB-RELEASES.md)).

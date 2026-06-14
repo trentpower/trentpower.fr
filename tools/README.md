@@ -15,7 +15,6 @@ Each directory answers one question.
 | `config/`       | What does the pipeline read?     | the declared facts: `identity_canonical.json`, `public-exposure.json`, `source-mirror-exclusions.json`, `date_overrides.json`.                                                                                                                                                                 |
 | `lib/`          | What is shared across pillars?   | `paths.py`, `checks.py`, `minify.py`, `htaccess_config.py`, `sizes.py`, `public_inventory.py`, `public_tree.py`, `check_report.py`, `routes.py`.                                                                                                                                              |
 | `score-ledger/` | What merely observes?            | a local-only live-site audit. Never a build gate. See [`docs/SCORE-LEDGER.md`](../docs/SCORE-LEDGER.md).                                                                                                                                                                                       |
-| `_retired/`     | What is kept for reference only? | superseded one-offs, out of the release path. See [`_retired/README.md`](_retired/README.md).                                                                                                                                                                                                  |
 
 Authored design source CSS lives in repo-root [`styles/`](../styles), a peer of
 `templates/`, not under `tools/`.

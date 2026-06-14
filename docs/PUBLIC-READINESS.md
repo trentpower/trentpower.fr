@@ -27,8 +27,6 @@ check registry).
   an accepted trade-off taken instead of a second history rewrite.
 - **Internal process records** (the authorship-trail audit reports) are
   untracked and stay local.
-- **`tools/_retired/`** stays tracked: reviewed, secret-free, and part of the
-  honest record of how the pipeline evolved.
 - The full-history secret scan runs via `tools/quality/secret_scan.py`
   (gitleaks engine, `scan_git_history.py` fallback); the machine report lands
   at `reports/checks/last-secret-scan.json`, and the blocking
@@ -180,7 +178,7 @@ Tick every box before making the repository public:
 - [ ] Security automation reviewed: Dependabot alerts and update PRs triaged,
       CodeQL has no unresolved high/critical alerts, latest OpenSSF Scorecard
       run reviewed in the Security tab (accepted low readings are documented
-      in `github-rulesets.md`).
+      in `GITHUB-RULESETS.md`).
 - [ ] Deployment secrets are _documented but not exposed_ — `DEPLOYMENT.md`
       describes the SFTP/GPG/CI secret model; the secret values themselves live
       only in CI/host config.

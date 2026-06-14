@@ -128,7 +128,7 @@ jobs:
     # pinned Python and Node manifests. Fail-closed. Honours osv-scanner.toml,
     # whose suppressions are tied to security/openvex.json (no silent ignores).
     # NOT yet a required status check — add it in the ruleset once green on a
-    # promotion PR (see docs/github-rulesets.md, same merge-first-then-require
+    # promotion PR (see docs/GITHUB-RULESETS.md, same merge-first-then-require
     # order as the existing checks).
     runs-on: ubuntu-latest
     steps:

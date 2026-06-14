@@ -3,7 +3,7 @@
 How the GitHub side of the publication pipeline is governed: which
 branches exist, which environments hold which secrets, and where the
 trust boundary sits. The companion document is
-[github-rulesets.md](github-rulesets.md).
+[GITHUB-RULESETS.md](GITHUB-RULESETS.md).
 
 ## The one-line trust boundary
 
@@ -91,7 +91,7 @@ feature/* ──pull request──▶ preprod ──deploy──▶ staging (ver
 | ------------------------------------------------------------- | ----------------------------------------------------------------------------- |
 | Workflow logic, triggers, permissions                         | `.github/workflows/*.yml` (in the repository)                                 |
 | Environment existence, branch restriction, reviewers, secrets | GitHub UI — Settings → Environments (manual; not representable in repo files) |
-| Branch protection                                             | Rulesets — see [github-rulesets.md](github-rulesets.md) (manual)              |
+| Branch protection                                             | Rulesets — see [GITHUB-RULESETS.md](GITHUB-RULESETS.md) (manual)              |
 
 When recreating the repository, apply the environment settings above by
 hand; the workflows fail closed (no secrets → verification only) until
