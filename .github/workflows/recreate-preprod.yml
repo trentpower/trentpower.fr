@@ -16,6 +16,9 @@ on:
   push:
     branches:
       - main
+  # manual lever: run it by hand any time preprod has gone missing, or to
+  # test the create-if-missing path without waiting for a promotion.
+  workflow_dispatch:
 
 permissions:
   contents: write # create the preprod branch ref

@@ -217,6 +217,8 @@ All of the following live in the GitHub UI and must be applied by hand:
    — merged `feature/*` PR branches auto-clean, and `preprod` is deleted
    on promotion then auto-recreated by
    [`recreate-preprod.yml`](../.github/workflows/recreate-preprod.yml)
-   (no manual step). Confirm Settings → Actions → General → Workflow
-   permissions allows that workflow to create the branch (it requests
-   `contents: write` at the job level).
+   (no manual step). The workflow requests `contents: write` at the job
+   level, which overrides the repository default (currently read-only).
+   If the recreate ever fails with a 403, set Settings → Actions →
+   General → Workflow permissions to "Read and write". The workflow also
+   has a `workflow_dispatch` trigger — run it by hand to recover or test.
