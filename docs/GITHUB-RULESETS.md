@@ -69,33 +69,19 @@ accepted. Revisit if a second trusted reviewer ever joins the project.
 
 This ruleset carries a repository-role bypass set to **always** so the
 maintainer can push integrations and promotions straight to `preprod`
-without a PR. Ruleset bypass is ruleset-wide, so that same bypass also
-neutralises the "Restrict deletions" rule above — which is exactly why
-`preprod` used to disappear on every promotion: with the repo setting
-"Automatically delete head branches" on, merging the `preprod → main`
-promotion PR auto-deleted the head branch (`preprod`) straight through
-the bypass. The companion ruleset below fixes that without giving up the
-direct-push convenience.
+without a PR.
 
-## `protect-preprod-no-delete`
-
-A deliberately minimal, **no-bypass** ruleset whose only job is to make
-`preprod` undeletable. GitHub applies the most-restrictive rule across
-all matching rulesets, so this deletion lock wins over the always-bypass
-on `protect-preprod-as-release-candidate` and blocks the
-auto-delete-head-branch automation. `preprod` is therefore permanent: it
-is no longer recreated after each promotion — it simply survives.
-
-| Rule               | Setting                                   |
-| ------------------ | ----------------------------------------- |
-| Target             | `preprod`                                 |
-| Restrict deletions | On                                        |
-| Bypass list        | **Empty** — no actor may delete `preprod` |
-
-The trade-off is intentional: deleting `preprod` (should it ever be
-needed) requires temporarily disabling this ruleset. The repository
-setting "Automatically delete head branches" stays **on** so merged
-`feature/*` PR branches still auto-clean; only `preprod` is exempted.
+`preprod` is **disposable by design.** The repository setting
+"Automatically delete head branches" stays **on**, so merging the
+`preprod → main` promotion PR (whose head is `preprod`) deletes the
+branch — exactly as it cleans up every merged `feature/*` branch. The
+branch is then resurrected automatically: the
+[`recreate-preprod.yml`](../.github/workflows/recreate-preprod.yml)
+workflow runs on every push to `main` and, **only if `preprod` is
+missing**, recreates it at the current `main` commit. It never resets an
+existing `preprod`, so a hotfix or any other push to `main` can never
+wipe unpromoted work. Net: autodelete keeps the branch list clean, and
+`preprod` reappears after each promotion with no manual step.
 
 ## `protect-release-tags`
 
@@ -216,12 +202,10 @@ surface; GitHub-native tooling suffices).
 
 All of the following live in the GitHub UI and must be applied by hand:
 
-1. Settings → Rules → Rulesets: the four rulesets above. On
+1. Settings → Rules → Rulesets: the three rulesets above. On
    `protect-main-as-public-record` the required status checks are
    `release-gate`, `secret-scan`, `release-readiness`, `sca`, `reuse`
    (apply each only after it has run green once on a promotion PR).
-   `protect-preprod-no-delete` must have an **empty bypass list** — that
-   no-bypass is the whole point; it is what keeps `preprod` permanent.
 2. Settings → Environments: per [GITHUB-ENVIRONMENTS.md](GITHUB-ENVIRONMENTS.md).
 3. Settings → Code security: enable **Private vulnerability reporting**
    (SECURITY.md and the issue templates point reporters at it).
@@ -230,6 +214,9 @@ All of the following live in the GitHub UI and must be applied by hand:
 6. Settings → General → Social preview: upload
    `metadata/social-preview/trentpower-fr-github-social.png`.
 7. Settings → General: leave "Automatically delete head branches" **on**
-   — merged `feature/*` PR branches auto-clean; `preprod` is exempted by
-   the no-bypass `protect-preprod-no-delete` ruleset, so it survives
-   promotions and is never recreated.
+   — merged `feature/*` PR branches auto-clean, and `preprod` is deleted
+   on promotion then auto-recreated by
+   [`recreate-preprod.yml`](../.github/workflows/recreate-preprod.yml)
+   (no manual step). Confirm Settings → Actions → General → Workflow
+   permissions allows that workflow to create the branch (it requests
+   `contents: write` at the job level).
