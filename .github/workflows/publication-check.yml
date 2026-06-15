@@ -142,3 +142,62 @@ jobs:
           name: visual-qa-contact-sheets
           path: reports/visual/
           if-no-files-found: ignore
+
+  release-readiness:
+    # The single PASS/FAIL gate. It aggregates the four blocking publication
+    # checks into one result and emits the line `Release readiness: PASS`
+    # (or FAIL with reasons). This is the one required status check the main
+    # ruleset gates on, and the production deploy mirrors it (deploy.yml's
+    # `readiness` job) — so a release is "ready" iff this is green.
+    #
+    # visual-qa is advisory (continue-on-error) and is deliberately NOT a
+    # dependency here.
+    #
+    # `if: always()` is load-bearing: without it this job would be *skipped*
+    # whenever a needed job failed or was skipped, and a skipped required
+    # check does not block a merge. With always() + strict success-only
+    # matching below, any non-success dependency forces FAIL.
+    needs:
+      - release-gate-main
+      - secret-scan
+      - build-check
+      - signature-verify
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Aggregate blocking-check results
+        env:
+          R_GATE: ${{ needs.release-gate-main.result }}
+          R_SECRET: ${{ needs.secret-scan.result }}
+          R_BUILD: ${{ needs.build-check.result }}
+          R_SIG: ${{ needs.signature-verify.result }}
+        run: |
+          set -eu
+          fail=0
+          report() {
+            if [ "$2" = "success" ]; then
+              printf '  PASS  %s\n' "$1"
+            else
+              printf '  FAIL  %s (result=%s)\n' "$1" "$2"
+              fail=1
+            fi
+          }
+          {
+            echo "### Release readiness"
+            echo ""
+            echo '```'
+            report "release-gate-main"  "$R_GATE"
+            report "secret-scan"        "$R_SECRET"
+            report "build-check"        "$R_BUILD"
+            report "signature-verify"   "$R_SIG"
+            echo '```'
+            echo ""
+            if [ "$fail" -eq 0 ]; then
+              echo "Release readiness: PASS"
+            else
+              echo "Release readiness: FAIL"
+            fi
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+          [ "$fail" -eq 0 ] || exit 1

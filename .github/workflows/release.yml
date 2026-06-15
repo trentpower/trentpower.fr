@@ -129,6 +129,45 @@ jobs:
           sha256sum "$sbom" | tee "${sbom}.sha256"
           echo "SBOM=$sbom" >>"$GITHUB_ENV"
 
+      - name: Validate the SBOM is well-formed CycloneDX (fail closed)
+        run: |
+          set -eu
+          # the SBOM is attached and attested, so an empty or malformed document
+          # would silently weaken the release. assert it parses, is CycloneDX,
+          # declares a spec version, and lists the build-toolchain components
+          # (its own component refs must resolve to the hash-pinned build-check
+          # requirements — not invented runtime dependencies). fail closed
+          # before the attestation step ever runs.
+          python3 - "$SBOM" .github/requirements/build-check.txt <<'PY'
+          import json, re, sys
+          sbom_path, reqs_path = sys.argv[1], sys.argv[2]
+          try:
+              doc = json.loads(open(sbom_path, encoding="utf-8").read())
+          except (OSError, json.JSONDecodeError) as e:
+              sys.exit(f"::error::SBOM is not valid JSON: {e}")
+          if doc.get("bomFormat") != "CycloneDX":
+              sys.exit(f"::error::SBOM bomFormat is {doc.get('bomFormat')!r}, expected 'CycloneDX'")
+          if not doc.get("specVersion"):
+              sys.exit("::error::SBOM has no specVersion")
+          components = doc.get("components") or []
+          if not components:
+              sys.exit("::error::SBOM lists no components — it does not represent the build toolchain")
+          # the SBOM must describe the build toolchain: every pinned requirement
+          # name should appear as a component. this is what makes it a toolchain
+          # SBOM rather than a fabricated runtime manifest.
+          pinned = set()
+          for line in open(reqs_path, encoding="utf-8"):
+              m = re.match(r"^([A-Za-z0-9._-]+)\s*==", line.strip())
+              if m:
+                  pinned.add(m.group(1).lower().replace("_", "-"))
+          listed = {(c.get("name") or "").lower().replace("_", "-") for c in components}
+          missing = sorted(pinned - listed)
+          if missing:
+              sys.exit(f"::error::SBOM is missing build-toolchain components: {', '.join(missing)}")
+          print(f"SBOM OK: CycloneDX {doc['specVersion']}, {len(components)} component(s), "
+                f"all {len(pinned)} pinned toolchain package(s) present.")
+          PY
+
       - name: Attest build provenance (SLSA Build L3 for the runner-built archive)
         uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4.1.0
         with:

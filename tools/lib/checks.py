@@ -337,6 +337,14 @@ REGISTRY: list[Check] = [
         command=_script("validate_signing_status.py"),
     ),
     Check(
+        "claims_parity",
+        "validate_claims_parity.py",
+        _B,
+        _SEC,
+        "every public SLSA/Sigstore/Rekor/PGP/SBOM claim maps to a passing automated control",
+        command=_script("validate_claims_parity.py"),
+    ),
+    Check(
         "site_metadata",
         "validate_site_metadata.py",
         _B,
@@ -425,6 +433,15 @@ REGISTRY: list[Check] = [
         _SEC,
         "no third-party runtime / network calls injected",
         command=_script("validate_no_runtime_contamination.py"),
+    ),
+    Check(
+        "storage_keys",
+        "validate_storage_keys.py",
+        _B,
+        _SEC,
+        "every browser-storage key in the live surface is on the documented "
+        "local.js allowlist (no undeclared localStorage/sessionStorage keys)",
+        command=_script("validate_storage_keys.py"),
     ),
     Check(
         "html_correctness",

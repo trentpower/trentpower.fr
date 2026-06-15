@@ -15,6 +15,18 @@ survives without GitHub. The attestation is the supply-chain anchor and survives
 without trusting the maintainer's machine for the build-to-artefact link. Neither
 replaces the other; the signed `integrity.json` on the site remains canonical.
 
+### Where build metadata lives
+
+`integrity.json` carries no commit SHA, tag, workflow name or build timestamp,
+**by design**. It is a deterministic byte-hash record: the build re-renders it
+from source on a clean runner and fails closed on any drift (`build.sh --check`),
+so embedding volatile build facts would break that reproducibility proof. The
+"which commit / which workflow / when" facts live where they belong — in the
+GitHub build-provenance attestation (Sigstore/Rekor) and in the per-edition
+`release.json` under `public/integrity/releases/<edition>/`. Asking
+`integrity.json` to also carry them would duplicate the attestation and forfeit
+determinism for no gain.
+
 ## What is attested
 
 The workflow [`.github/workflows/release.yml`](../.github/workflows/release.yml)
