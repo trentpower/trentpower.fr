@@ -1,25 +1,23 @@
 name: Deploy to Gandi SFTP + smoke test
 
-# Triggers on every push to main, but the PUBLIC SITE only changes when a new
-# EDITION is published. Merging to main is unrestricted; the guard below gates
-# the SFTP mirror — the public change — not the merge.
+# Push to main NEVER deploys the public site automatically. Every push is
+# VERIFIED (the guard + readiness jobs re-check the committed, signed bytes),
+# but the SFTP mirror — the only step that changes the live site — runs ONLY
+# when the maintainer triggers this workflow by hand (workflow_dispatch) and
+# types the DEPLOY confirmation. Publishing is always a deliberate manual act.
 #
-# Edition guard (fail-closed):
-#   - push to main      -> deploy ONLY if the committed canonical edition is
-#                          newer than the edition currently live on the server.
-#                          A non-edition merge (edition unchanged) is stopped
-#                          before any production secret is released: the public
-#                          bytes are not touched. Between-edition changes belong
-#                          on /preprod/ (see preprod-deploy.yml), never here.
-#   - workflow_dispatch -> deliberate override for a genuine hotfix; requires
-#                          the typed DEPLOY confirmation. Bypasses the edition
-#                          check on purpose, with a human in the loop.
-#   - live edition unreadable -> fail-closed (no deploy); re-run via dispatch.
-#
-# The deploy job targets the `production` environment: it waits for the required
-# reviewer's approval before any environment secret is released, and only
-# `main` may deploy to it. PR-level verification lives in pr-checks.yml;
-# this workflow re-verifies the same committed bytes before mirroring.
+#   - push to main       -> verify only. The guard reports whether the committed
+#                           edition is newer than the live one and, if so, prints
+#                           a notice telling you to run the workflow manually to
+#                           publish. It never mirrors and releases no production
+#                           secret. Between-edition changes belong on /preprod/.
+#   - workflow_dispatch   -> the publish path. Requires the typed DEPLOY
+#     (confirm=DEPLOY)       confirmation; then the deploy job runs against the
+#                           `production` environment (which still waits for the
+#                           required reviewer's approval before any secret is
+#                           released). PR-level verification lives in pr-checks.yml;
+#                           this workflow re-verifies the same committed bytes
+#                           before mirroring.
 #
 # Required secrets, scoped to the `production` environment
 # (values are configured in repo settings, never here):
@@ -61,9 +59,10 @@ concurrency:
 
 jobs:
   # ── edition guard ──────────────────────────────────────────────────────────
-  # Decides whether the public site may change at all. Runs with no environment
-  # (no secrets), so the production approval prompt only ever appears for a
-  # genuine edition. Fail-closed: anything uncertain resolves to "do not deploy".
+  # Runs with no environment (no secrets). On a manual dispatch it authorises the
+  # publish (confirm=DEPLOY). On a push it NEVER authorises a deploy — it only
+  # reports whether the committed edition is newer than the live one, so the
+  # deploy job (gated on workflow_dispatch below) stays skipped. Fail-closed.
   guard:
     runs-on: ubuntu-latest
     outputs:
@@ -96,30 +95,67 @@ jobs:
             exit 0
           fi
 
-          # push to main: the public site changes ONLY if the canonical edition
-          # advanced beyond the edition currently live on the server.
-          live="$(curl -fsSL --retry 3 --max-time 30 https://trentpower.fr/integrity.json \
-                  | python3 -c "import json,sys; print(json.load(sys.stdin)['edition'])" 2>/dev/null || true)"
+          # push to main is VERIFY-ONLY — it never auto-deploys. read the live
+          # edition purely to advise the operator. fetch to a file, then parse
+          # with the installed python3 — never pipe the network stream into the
+          # interpreter (a partial download would parse half a document; it also
+          # reads as download-then-run).
+          curl -fsSL --retry 3 --max-time 30 https://trentpower.fr/integrity.json \
+            -o /tmp/live-integrity.json 2>/dev/null || true
+          live="$(python3 -c "import json; print(json.load(open('/tmp/live-integrity.json'))['edition'])" 2>/dev/null || true)"
           echo "live=$live" >> "$GITHUB_OUTPUT"
 
-          if [ -z "$live" ]; then
-            echo "::error::could not read the live edition from https://trentpower.fr/integrity.json — refusing to deploy (fail-closed). Re-run via workflow_dispatch with confirm=DEPLOY to override."
-            echo "deploy=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
           # ISO YYYY-MM-DD compares lexically == chronologically ([[ ]] = bash).
-          if [[ "$committed" > "$live" ]]; then
-            echo "::notice::new edition $committed supersedes the live edition $live — production deploy permitted."
-            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          if [[ -n "$live" && "$committed" > "$live" ]]; then
+            echo "::notice::edition $committed supersedes the live edition $live — to publish, run this workflow manually (Run workflow → confirm=DEPLOY). This push does NOT deploy."
           else
-            echo "::warning::committed edition $committed is not newer than the live edition $live — this push is NOT a new edition, so the public site is left untouched. Between-edition changes belong on /preprod/. For a deliberate hotfix, re-run via workflow_dispatch with confirm=DEPLOY."
-            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::no new edition to publish (committed $committed, live ${live:-unknown}). This push does NOT deploy; between-edition changes belong on /preprod/."
+          fi
+          # a push never authorises a deploy — publishing is a manual dispatch.
+          echo "deploy=false" >> "$GITHUB_OUTPUT"
+
+  # ── release readiness ──────────────────────────────────────────────────────
+  # Re-asserts the single PASS/FAIL readiness gate on the merge commit that is
+  # about to deploy (the PR-time check ran on the PR head; this runs on what
+  # actually ships). Runs the same byte-for-byte validator the PR-time
+  # release-gate uses and emits the same `Release readiness: PASS/FAIL` line.
+  # No environment, no secrets — it must never trigger the production approval
+  # prompt. The deploy job depends on this, so a FAIL here fails the deploy
+  # closed before any secret is released.
+  readiness:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Install gpg + python + Pillow
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gnupg python3 python3-pil python3-pip
+          python3 -m pip install --break-system-packages --quiet --require-hashes -r .github/requirements/release-gate.txt
+
+      - name: Restore licensed font binaries (verified against signed manifest)
+        run: python3 tools/build/fetch_licensed_fonts.py
+
+      - name: Release readiness (full release gate + signature verify)
+        run: |
+          set -eu
+          if python3 tools/verify/validate_release.py; then
+            echo "Release readiness: PASS" | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            rc=$?
+            echo "Release readiness: FAIL (validate_release.py exit $rc)" | tee -a "$GITHUB_STEP_SUMMARY"
+            exit "$rc"
           fi
 
   deploy:
-    needs: guard
-    if: ${{ needs.guard.outputs.deploy == 'true' }}
+    needs: [guard, readiness]
+    # manual-publish only: a push never reaches here (guard sets deploy=false on
+    # push); only a workflow_dispatch with confirm=DEPLOY does. The production
+    # environment approval still gates secret release on top of this.
+    if: ${{ github.event_name == 'workflow_dispatch' && needs.guard.outputs.deploy == 'true' }}
     runs-on: ubuntu-latest
     environment:
       name: production
@@ -415,9 +451,10 @@ jobs:
             *) echo "  FAIL  / Cache-Control='$cc_html' (expected no-store)"; fail=1 ;;
           esac
 
-          av=$(curl -sk https://trentpower.fr/site-metadata.json | jq -r .asset_version 2>/dev/null \
-               || curl -sk https://trentpower.fr/site-metadata.json \
-                  | grep -oE '"asset_version"[[:space:]]*:[[:space:]]*"[^"]+"' \
+          # fetch once to a file, then parse from disk (no curl|interpreter pipe).
+          curl -sk https://trentpower.fr/site-metadata.json -o /tmp/site-metadata.json 2>/dev/null || true
+          av=$(jq -r .asset_version /tmp/site-metadata.json 2>/dev/null \
+               || grep -oE '"asset_version"[[:space:]]*:[[:space:]]*"[^"]+"' /tmp/site-metadata.json \
                   | head -1 | cut -d'"' -f4)
           if [ -n "$av" ]; then
             # Clean filename + ?v= query — the post-asset-versioning-
