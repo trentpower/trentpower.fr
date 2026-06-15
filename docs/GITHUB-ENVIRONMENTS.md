@@ -18,11 +18,11 @@ a secret, not as a variable, not in any branch.
 
 ## Branches
 
-| Branch      | Role                                                                     |
-| ----------- | ------------------------------------------------------------------------ |
-| `feature/*` | Working branches. Never deployed.                                        |
-| `preprod`   | Release candidate. Push triggers verification + optional staging mirror. |
-| `main`      | The public production record. Push triggers the production deploy.       |
+| Branch      | Role                                                                                            |
+| ----------- | ----------------------------------------------------------------------------------------------- |
+| `feature/*` | Working branches. Never deployed.                                                               |
+| `preprod`   | Release candidate. Push triggers verification only; the staging mirror is a manual dispatch.    |
+| `main`      | The public production record. Push triggers verification only; publishing is a manual dispatch. |
 
 ## Environments
 
@@ -62,28 +62,36 @@ scoping is what keeps a feature-branch workflow from ever reading them.
 ## Process
 
 ```
-feature/* ──pull request──▶ preprod ──deploy──▶ staging (verify, mirror when configured)
+feature/* ──pull request──▶ preprod ──push──▶ verify (CHECK only)
+                               │                  └─ manual dispatch ──▶ staging mirror
                                │  review
                                ▼
                           pull request
                                │
                                ▼
-                             main ──approval──▶ production deploy
+                             main ──push──▶ verify (CHECK only)
+                                              └─ manual dispatch + approval ──▶ production deploy
 ```
 
 1. Work happens on a `feature/*` branch.
 2. Pull request into `preprod`. The required checks
    (`release-gate`, `secret-scan` from
    [`pr-checks.yml`](../.github/workflows/pr-checks.yml)) must pass.
-3. Merge deploys the candidate to staging (when configured) for review.
+3. Merge **verifies** the candidate (the `verify` job). It does not
+   mirror. To preview the candidate on staging, trigger the **Deploy
+   preprod** workflow by hand (`workflow_dispatch`, `confirm=DEPLOY`)
+   once staging credentials exist.
 4. Pull request from `preprod` to `main` — the promotion. Same bytes,
    no rebase, no rebuild. The fuller
    [`publication-check.yml`](../.github/workflows/publication-check.yml)
    suite also runs on this PR.
-5. Merge to `main` triggers the production workflow, which **waits for
-   the required reviewer's approval** before deploying.
-6. The deploy re-verifies the signed manifest, mirrors `public/`, and
-   smoke-tests the live site.
+5. Merge to `main` **verifies only — it does not publish.** To publish,
+   trigger the **Deploy to Gandi SFTP** workflow by hand
+   (`workflow_dispatch`, `confirm=DEPLOY`); the `production` environment
+   then **waits for the required reviewer's approval** before any secret
+   is released.
+6. That manual deploy re-verifies the signed manifest, mirrors `public/`,
+   and smoke-tests the live site.
 
 ## What is manual, what is in files
 
