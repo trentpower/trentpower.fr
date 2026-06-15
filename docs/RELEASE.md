@@ -5,13 +5,13 @@ procedure — the authoritative documents are linked inline.
 
 ## The path
 
-| Stage           | What happens                                                                  | Authoritative doc                                      |
-| --------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------ |
-| Build & sign    | The numbered publication ceremony renders, seals, and PGP-signs the edition.  | [BUILD-AND-DEPLOYMENT.md](BUILD-AND-DEPLOYMENT.md)     |
-| Gate            | Blocking security + correctness checks must pass before anything ships.        | [GATES-CHECKS-AND-QUALITY.md](GATES-CHECKS-AND-QUALITY.md) |
-| Promote         | `feature/* → preprod → main`, protected branches, required checks.             | [GITHUB-RULESETS.md](GITHUB-RULESETS.md), [GITHUB-ENVIRONMENTS.md](GITHUB-ENVIRONMENTS.md) |
-| Tag & attest    | A signed `edition/YYYY-MM-DD` tag triggers SLSA L3 provenance + SBOM.          | [PROVENANCE.md](PROVENANCE.md), [GITHUB-RELEASES.md](GITHUB-RELEASES.md) |
-| Deploy          | Push to `main`: the `readiness` gate re-checks, then mirrors to the host after a manual environment approval. | [OPERATIONS.md](OPERATIONS.md) |
+| Stage        | What happens                                                                                                  | Authoritative doc                                                                          |
+| ------------ | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Build & sign | The numbered publication ceremony renders, seals, and PGP-signs the edition.                                  | [BUILD-AND-DEPLOYMENT.md](BUILD-AND-DEPLOYMENT.md)                                         |
+| Gate         | Blocking security + correctness checks must pass before anything ships.                                       | [GATES-CHECKS-AND-QUALITY.md](GATES-CHECKS-AND-QUALITY.md)                                 |
+| Promote      | `feature/* → preprod → main`, protected branches, required checks.                                            | [GITHUB-RULESETS.md](GITHUB-RULESETS.md), [GITHUB-ENVIRONMENTS.md](GITHUB-ENVIRONMENTS.md) |
+| Tag & attest | A signed `edition/YYYY-MM-DD` tag triggers SLSA L3 provenance + SBOM.                                         | [PROVENANCE.md](PROVENANCE.md), [GITHUB-RELEASES.md](GITHUB-RELEASES.md)                   |
+| Deploy       | Push to `main`: the `readiness` gate re-checks, then mirrors to the host after a manual environment approval. | [OPERATIONS.md](OPERATIONS.md)                                                             |
 
 ## Local commands
 
