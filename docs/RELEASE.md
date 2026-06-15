@@ -57,5 +57,11 @@ pipeline, it does not half-ship.
   SFTP secret is released; the live site is untouched. Fix and push a corrected
   commit (a non-edition commit leaves the site as-is; the edition guard only
   deploys when the edition advances).
-- **The `release.yml` tag build fails** — delete the tag, fix, re-tag. The
-  deploy path is separate and is unaffected by a failed attestation build.
+- **The `release.yml` tag build fails** — the deploy path is separate and is
+  unaffected by a failed attestation build. If the failure was transient (a
+  flaky network or toolchain step), re-run the workflow. If it needs a code or
+  content change, do **not** delete or move the tag: `edition/*` tags are
+  immutable under [`protect-release-tags`](GITHUB-RULESETS.md) (restricted
+  updates _and_ deletions), so cut the fix as the next edition and tag that.
+  Removing a published `edition/*` tag is a deliberate, logged admin
+  ruleset-break — avoid it.

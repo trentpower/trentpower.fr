@@ -39,11 +39,18 @@ would be a false positive. This limitation is intentional and documented.
 
 Match rule
 ----------
-A resolved literal U is approved iff:
+Every allowlist entry declares its ``storage`` class (``local`` or ``session``),
+and every scanned operation knows which store it targets (``localStorage`` vs
+``sessionStorage``). A resolved literal U written to store S is approved iff some
+allowlist entry on the *same* store S satisfies one of:
   - U equals an exact allowlist entry, OR
   - U starts with an allowlist prefix entry, OR
   - U is a concatenation root of an allowlisted full key
     (some exact entry starts with U, with len(U) >= 8 to exclude the bare ``tp-`` stem).
+A key written to the wrong store (e.g. a ``session``-only marker persisted to
+``localStorage``) is therefore a failure, not a pass — the runtime privacy page
+only ever looks for each key in its declared store, so a cross-store write would
+otherwise persist undisclosed data indefinitely.
 
 Quiet on success, precise on failure.
 """
@@ -88,10 +95,19 @@ def _skip(rel: str) -> bool:
 # "tp-" loophole). "tp-last-read:/" is length 14; 8 is a safe floor.
 CONCAT_ROOT_MIN_LEN = 8
 
+# a fully quoted string literal (single or double, with escapes). matched
+# first so an operand whose key legitimately contains a delimiter — a comma,
+# a `]`, e.g. setItem('tp-a,b', …) — is captured whole instead of being
+# truncated and misread as a dynamic (unresolvable) key that the gate skips.
+_QUOTED = r"""'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*\""""
+
 # storage operations: localStorage/sessionStorage .getItem/.setItem/.removeItem(
-# or bracket access. capture the operand text up to the first delimiter.
-_DOT_CALL = re.compile(r"\b(?:local|session)Storage\s*\.\s*(?:get|set|remove)Item\s*\(\s*([^,)]+)")
-_BRACKET = re.compile(r"\b(?:local|session)Storage\s*\[\s*([^\]]+)")
+# or bracket access. group 1 is the store ('local'|'session'); group 2 is the
+# operand — a full quoted literal if present, else the text up to the delimiter.
+_DOT_CALL = re.compile(
+    rf"\b(local|session)Storage\s*\.\s*(?:get|set|remove)Item\s*\(\s*({_QUOTED}|[^,)]+)"
+)
+_BRACKET = re.compile(rf"\b(local|session)Storage\s*\[\s*({_QUOTED}|[^\]]+)")
 
 # module constant assignment of a tp-* literal: var NAME = 'tp-...'.
 _CONST = re.compile(r"(?:var|const|let)\s+([A-Za-z_$][\w$]*)\s*=\s*[\"'](tp-[^\"']*)[\"']")
@@ -101,23 +117,43 @@ _LEADING_LITERAL = re.compile(r"""^[\s(]*["']([^"']*)["']""")
 _IDENT = re.compile(r"^[\s(]*([A-Za-z_$][\w$]*)\s*$")
 
 
-def parse_allowlist(text: str) -> tuple[set[str], set[str]]:
-    """Return (exact_keys, prefix_keys) from local.js LOCAL_KEYS entries."""
-    exact: set[str] = set()
-    prefix: set[str] = set()
-    for m in re.finditer(r"key:\s*['\"]([^'\"]+)['\"][^}]*?prefix:\s*(true|false)", text):
-        key, is_prefix = m.group(1), m.group(2) == "true"
-        (prefix if is_prefix else exact).add(key)
-    return exact, prefix
+# one allowlist entry: the key, whether it is a prefix, and its declared store.
+Entry = tuple[str, bool, str]
 
 
-def approved(literal: str, exact: set[str], prefix: set[str]) -> bool:
-    if literal in exact:
-        return True
-    if any(literal.startswith(p) for p in prefix):
-        return True
-    if len(literal) >= CONCAT_ROOT_MIN_LEN and any(e.startswith(literal) for e in exact):
-        return True
+def parse_allowlist(text: str) -> list[Entry]:
+    """Return the LOCAL_KEYS entries as (key, is_prefix, store) triples.
+
+    Scoped to the ``LOCAL_KEYS = [ … ]`` array so unrelated object literals in
+    local.js (e.g. the render-loop ``rows.push({ key: k, … })``) cannot leak in.
+    Each entry must declare a literal ``storage: 'local'|'session'`` — the store
+    is now part of the contract, not discarded.
+    """
+    arr = re.search(r"LOCAL_KEYS\s*=\s*\[(.*?)\]", text, re.DOTALL)
+    scope = arr.group(1) if arr else ""
+    entries: list[Entry] = []
+    for obj in re.finditer(r"\{[^}]*\}", scope):
+        body = obj.group(0)
+        km = re.search(r"key:\s*['\"]([^'\"]+)['\"]", body)
+        sm = re.search(r"storage:\s*['\"](local|session)['\"]", body)
+        pm = re.search(r"prefix:\s*(true|false)", body)
+        if km and sm and pm:
+            entries.append((km.group(1), pm.group(1) == "true", sm.group(1)))
+    return entries
+
+
+def approved(literal: str, store: str, entries: list[Entry]) -> bool:
+    """True iff some same-store allowlist entry covers this literal."""
+    for key, is_prefix, decl_store in entries:
+        if decl_store != store:
+            continue
+        if is_prefix:
+            if literal.startswith(key):
+                return True
+        elif literal == key:
+            return True
+        elif len(literal) >= CONCAT_ROOT_MIN_LEN and key.startswith(literal):
+            return True
     return False
 
 
@@ -132,19 +168,19 @@ def resolve(operand: str, consts: dict[str, str]) -> str | None:
     return None
 
 
-def scan_text(text: str) -> tuple[list[tuple[int, str]], list[int]]:
-    """Return (resolved (line, key) hits, unresolved-line list) for one body."""
+def scan_text(text: str) -> tuple[list[tuple[int, str, str]], list[int]]:
+    """Return (resolved (line, key, store) hits, unresolved-line list) for a body."""
     consts = {m.group(1): m.group(2) for m in _CONST.finditer(text)}
-    hits: list[tuple[int, str]] = []
+    hits: list[tuple[int, str, str]] = []
     unresolved: list[int] = []
     for pat in (_DOT_CALL, _BRACKET):
         for m in pat.finditer(text):
             line_no = text.count("\n", 0, m.start()) + 1
-            key = resolve(m.group(1), consts)
+            store, key = m.group(1), resolve(m.group(2), consts)
             if key is None:
                 unresolved.append(line_no)
             else:
-                hits.append((line_no, key))
+                hits.append((line_no, key, store))
     return hits, unresolved
 
 
@@ -152,12 +188,12 @@ def main() -> int:
     if not ALLOWLIST_SRC.is_file():
         print(f"  FAIL: storage-key allowlist source missing: {ALLOWLIST_SRC}")
         return 1
-    exact, prefix = parse_allowlist(ALLOWLIST_SRC.read_text(encoding="utf-8"))
-    if not (exact or prefix):
+    entries = parse_allowlist(ALLOWLIST_SRC.read_text(encoding="utf-8"))
+    if not entries:
         print("  FAIL: storage-key allowlist (local.js LOCAL_KEYS) parsed empty")
         return 1
 
-    failures: list[tuple[str, int, str]] = []
+    failures: list[tuple[str, int, str, str]] = []
     unresolved_total = 0
 
     for path in sorted(PUBLIC.rglob("*.js")):
@@ -166,9 +202,9 @@ def main() -> int:
             continue
         hits, unresolved = scan_text(path.read_text(encoding="utf-8", errors="replace"))
         unresolved_total += len(unresolved)
-        for line_no, key in hits:
-            if not approved(key, exact, prefix):
-                failures.append((rel, line_no, key))
+        for line_no, key, store in hits:
+            if not approved(key, store, entries):
+                failures.append((rel, line_no, key, store))
 
     for path in sorted(PUBLIC.rglob("*.html")):
         rel = str(path.relative_to(PUBLIC))
@@ -182,19 +218,22 @@ def main() -> int:
             block_line = text.count("\n", 0, blk.body_start) + 1
             hits, unresolved = scan_text(body)
             unresolved_total += len(unresolved)
-            for sub_line, key in hits:
-                if not approved(key, exact, prefix):
-                    failures.append((rel, block_line + sub_line - 1, key))
+            for sub_line, key, store in hits:
+                if not approved(key, store, entries):
+                    failures.append((rel, block_line + sub_line - 1, key, store))
 
     if failures:
         print(f"  FAIL: storage-key allowlist — {len(failures)} undocumented key(s):")
-        for rel, line_no, key in failures[:30]:
-            print(f"    {rel}:{line_no} → '{key}' not in public/js/local.js LOCAL_KEYS")
+        for rel, line_no, key, store in failures[:30]:
+            print(
+                f"    {rel}:{line_no} → {store}Storage '{key}' not on the "
+                "public/js/local.js LOCAL_KEYS allowlist for that store"
+            )
         if len(failures) > 30:
             print(f"    … {len(failures) - 30} more")
         print(
-            "    add the key to LOCAL_KEYS (and its config.yml/privacy-doc mirrors) "
-            "or remove the storage write."
+            "    add the key to LOCAL_KEYS with the right `storage` (and its "
+            "config.yml/privacy-doc mirrors) or remove the storage write."
         )
         return 1
 

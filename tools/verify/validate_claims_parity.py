@@ -92,9 +92,12 @@ def control_pgp() -> tuple[bool, str]:
     if not PGP_KEY.is_file():
         return False, f"published key missing: {PGP_KEY.relative_to(REPO_ROOT)}"
     src = CHECKS_REGISTRY.read_text(encoding="utf-8") if CHECKS_REGISTRY.is_file() else ""
-    # the gpg check must be registered as blocking (_B). match the
-    # Check("gpg", ..., _B, ...) entry tolerant of whitespace/wrapping.
-    registered = re.search(r'Check\(\s*"gpg"\s*,.*?,\s*_B\s*,', src, re.DOTALL) is not None
+    # the gpg check must be registered as blocking (_B). bind to gpg's OWN
+    # Check entry: name, then its single description string, then the tier as
+    # the next positional arg. anchoring on that string (not a DOTALL `.*?`)
+    # stops the match from sliding past a downgraded gpg entry into a later
+    # check's _B — which would mask exactly the regression this gate detects.
+    registered = re.search(r'Check\(\s*"gpg"\s*,\s*"(?:[^"\\]|\\.)*"\s*,\s*_B\b', src) is not None
     if not registered:
         return False, "the gpg signature check is not registered as blocking (_B) in checks.py"
     return True, ""
