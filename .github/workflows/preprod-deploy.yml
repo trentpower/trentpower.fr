@@ -1,12 +1,20 @@
 name: Deploy preprod
 
-# Triggers on every push to preprod (normally a feature-PR merge).
+# Push to preprod is a CHECK ONLY: it re-verifies the committed, signed bytes
+# (signature in an isolated keyring + the read-only release sanity gate) exactly
+# like production, but it NEVER mirrors to the staging host. The SFTP mirror —
+# the only step that changes the staging site — runs ONLY when the maintainer
+# triggers this workflow by hand (workflow_dispatch) and types the DEPLOY
+# confirmation. Staging is published on purpose, never automatically on merge.
 #
-# Verifies the committed bytes exactly like the production deploy, then
-# mirrors public/ to the STAGING host using the SFTP_PREPROD_* secrets from
-# the `preproduction` environment. Until that environment has credentials,
-# the deploy steps skip cleanly with a notice — verification still runs, so
-# preprod merges are always checked even before a staging host exists.
+#   - push to preprod    -> the `verify` job: CHECK only. No environment, no
+#                           secrets, no mirror. Every preprod merge is verified.
+#   - workflow_dispatch   -> the `deploy` job: the staging-publish path. Verifies
+#     (confirm=DEPLOY)       again, then mirrors public/ to the staging host using
+#                           the SFTP_PREPROD_* secrets from the `preproduction`
+#                           environment, then smoke-tests. Until that environment
+#                           has credentials, the mirror skips cleanly with a
+#                           notice — the verify still runs.
 #
 # Required `preproduction` environment secrets (once staging exists):
 #   SFTP_PREPROD_HOST          the staging SFTP endpoint hostname
@@ -28,6 +36,12 @@ on:
   push:
     branches:
       - preprod
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type DEPLOY to confirm the staging mirror'
+        required: true
+        default: ''
 
 permissions:
   contents: read
@@ -37,10 +51,62 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # ── verify (push + dispatch) ───────────────────────────────────────────────
+  # The CHECK that every preprod push runs. No environment, so no staging secret
+  # is ever released on a push — this job cannot deploy, only verify.
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Install gpg + python + Pillow
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gnupg python3 python3-pil python3-pip
+          # see deploy.yml for why jsonschema + pymupdf come from pip.
+          # hash-pinned via .github/requirements/ (dependabot regenerates).
+          python3 -m pip install --break-system-packages --quiet --require-hashes -r .github/requirements/release-gate.txt
+
+      - name: Verify integrity.json signature against committed PGP key (isolated keyring)
+        run: |
+          set -eu
+          # seed a throwaway keyring with ONLY the published key, never the
+          # runner's ambient gpg keyring. mirrors tools/quality/inline_checks.py:check_gpg.
+          GNUPGHOME="$(mktemp -d)"
+          chmod 700 "$GNUPGHOME"
+          export GNUPGHOME
+          gpg --batch --quiet --import public/.well-known/pgp-key.asc
+          gpg --batch --verify public/integrity.json.sig public/integrity.json
+
+      - name: Restore licensed font binaries (verified against signed manifest)
+        run: python3 tools/build/fetch_licensed_fonts.py
+
+      - name: Read-only release sanity check
+        run: python3 tools/verify/validate_release.py
+
+  # ── deploy (manual only) ───────────────────────────────────────────────────
+  # The staging mirror. Runs ONLY on a manual workflow_dispatch with confirm=
+  # DEPLOY. The `preproduction` environment (and its secrets) attaches HERE and
+  # nowhere else, so secrets are never exposed to a push-triggered run.
   deploy:
+    needs: verify
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     environment: preproduction
+    env:
+      # operator-controlled dispatch input — read via env, never inlined.
+      MANUAL_CONFIRM: ${{ github.event.inputs.confirm }}
     steps:
+      - name: Confirm manual staging deploy
+        run: |
+          set -eu
+          if [ "$MANUAL_CONFIRM" != "DEPLOY" ]; then
+            echo "::error::staging mirror requires the confirm input to be exactly DEPLOY — refusing."
+            exit 1
+          fi
+          echo "::notice::manual dispatch confirmed (DEPLOY) — proceeding to mirror public/ to staging."
+
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 
@@ -79,7 +145,7 @@ jobs:
         run: |
           echo "present=$PRESENT" >> "$GITHUB_OUTPUT"
           if [ "$PRESENT" != "true" ]; then
-            echo "::notice::SFTP_PREPROD_* secrets not configured in the 'preproduction' environment — verification passed, staging deploy skipped."
+            echo "::notice::SFTP_PREPROD_* secrets not configured in the 'preproduction' environment — verification passed, staging mirror skipped."
           fi
 
       - name: SFTP mirror public/ to staging
