@@ -67,10 +67,35 @@ accepted. Revisit if a second trusted reviewer ever joins the project.
 | Block force pushes                             | On                                 |
 | Restrict deletions                             | On                                 |
 
-Note: the repository setting "Automatically delete head branches"
-deletes `preprod` after a promotion merge — recreate it from `main`
-after each promotion (`git checkout -b preprod main && git push -u
-origin preprod`).
+This ruleset carries a repository-role bypass set to **always** so the
+maintainer can push integrations and promotions straight to `preprod`
+without a PR. Ruleset bypass is ruleset-wide, so that same bypass also
+neutralises the "Restrict deletions" rule above — which is exactly why
+`preprod` used to disappear on every promotion: with the repo setting
+"Automatically delete head branches" on, merging the `preprod → main`
+promotion PR auto-deleted the head branch (`preprod`) straight through
+the bypass. The companion ruleset below fixes that without giving up the
+direct-push convenience.
+
+## `protect-preprod-no-delete`
+
+A deliberately minimal, **no-bypass** ruleset whose only job is to make
+`preprod` undeletable. GitHub applies the most-restrictive rule across
+all matching rulesets, so this deletion lock wins over the always-bypass
+on `protect-preprod-as-release-candidate` and blocks the
+auto-delete-head-branch automation. `preprod` is therefore permanent: it
+is no longer recreated after each promotion — it simply survives.
+
+| Rule               | Setting                                   |
+| ------------------ | ----------------------------------------- |
+| Target             | `preprod`                                 |
+| Restrict deletions | On                                        |
+| Bypass list        | **Empty** — no actor may delete `preprod` |
+
+The trade-off is intentional: deleting `preprod` (should it ever be
+needed) requires temporarily disabling this ruleset. The repository
+setting "Automatically delete head branches" stays **on** so merged
+`feature/*` PR branches still auto-clean; only `preprod` is exempted.
 
 ## `protect-release-tags`
 
@@ -191,10 +216,12 @@ surface; GitHub-native tooling suffices).
 
 All of the following live in the GitHub UI and must be applied by hand:
 
-1. Settings → Rules → Rulesets: the three rulesets above. On
+1. Settings → Rules → Rulesets: the four rulesets above. On
    `protect-main-as-public-record` the required status checks are
    `release-gate`, `secret-scan`, `release-readiness`, `sca`, `reuse`
    (apply each only after it has run green once on a promotion PR).
+   `protect-preprod-no-delete` must have an **empty bypass list** — that
+   no-bypass is the whole point; it is what keeps `preprod` permanent.
 2. Settings → Environments: per [GITHUB-ENVIRONMENTS.md](GITHUB-ENVIRONMENTS.md).
 3. Settings → Code security: enable **Private vulnerability reporting**
    (SECURITY.md and the issue templates point reporters at it).
@@ -202,5 +229,7 @@ All of the following live in the GitHub UI and must be applied by hand:
 5. Settings → SSH and GPG keys: add the signing key as a Signing Key.
 6. Settings → General → Social preview: upload
    `metadata/social-preview/trentpower-fr-github-social.png`.
-7. Settings → General: leave "Automatically delete head branches" as
-   configured, remembering the preprod-recreation note above.
+7. Settings → General: leave "Automatically delete head branches" **on**
+   — merged `feature/*` PR branches auto-clean; `preprod` is exempted by
+   the no-bypass `protect-preprod-no-delete` ruleset, so it survives
+   promotions and is never recreated.
