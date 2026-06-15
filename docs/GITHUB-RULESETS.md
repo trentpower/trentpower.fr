@@ -11,16 +11,16 @@ applying or restoring them. The companion document is
 `main` is the public production record. Nothing rewrites it — not the
 maintainer, not automation.
 
-| Rule                                           | Setting                                                                                    |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Target                                         | `main`                                                                                     |
-| Require a pull request before merging          | On (approvals: 0 — see note below; stale approvals dismissed on push)                      |
-| Require status checks to pass                  | On — `release-gate`, `secret-scan`, `release-readiness`, `sca`, `reuse`                     |
-| Require signed commits                         | On                                                                                         |
-| Require linear history                         | On                                                                                         |
-| Require conversation resolution before merging | On                                                                                         |
-| Block force pushes                             | On                                                                                         |
-| Restrict deletions                             | On                                                                                         |
+| Rule                                           | Setting                                                                 |
+| ---------------------------------------------- | ----------------------------------------------------------------------- |
+| Target                                         | `main`                                                                  |
+| Require a pull request before merging          | On (approvals: 0 — see note below; stale approvals dismissed on push)   |
+| Require status checks to pass                  | On — `release-gate`, `secret-scan`, `release-readiness`, `sca`, `reuse` |
+| Require signed commits                         | On                                                                      |
+| Require linear history                         | On                                                                      |
+| Require conversation resolution before merging | On                                                                      |
+| Block force pushes                             | On                                                                      |
+| Restrict deletions                             | On                                                                      |
 
 **`release-readiness` is the single readiness gate.** It is one
 aggregation job in `publication-check.yml` that `needs:` the three
@@ -126,15 +126,15 @@ Attribution is fixed forward instead:
 
 The repository's security stack is deliberately small and GitHub-native:
 
-| Tool                              | Status                                                     | Role                                                                                                                                                                                                                                                                      |
-| --------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| CodeQL (default setup)            | On                                                         | Static analysis on PRs; its check blocks merges on its own                                                                                                                                                                                                                |
-| Secret scanning + push protection | On                                                         | Blocks committed credentials at push time                                                                                                                                                                                                                                 |
-| Private vulnerability reporting   | On (manual setting)                                        | The private channel SECURITY.md and the issue forms point to                                                                                                                                                                                                              |
-| Dependabot                        | On — weekly, npm 3 / pip 5 / actions 2                     | Update PRs for review; nothing merges automatically. The pip ecosystem also regenerates the hash-pinned CI sets in [`.github/requirements/`](../.github/requirements/README.md)                                                                                           |
-| OpenSSF Scorecard                 | On — [`scorecard.yml`](../.github/workflows/scorecard.yml) | Repository-posture checks (branch protection, pinned actions, token permissions) published to the Security tab. A check, not a badge                                                                                                                                      |
+| Tool                              | Status                                                                | Role                                                                                                                                                                                                                                                                                                                                        |
+| --------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CodeQL (default setup)            | On                                                                    | Static analysis on PRs; its check blocks merges on its own                                                                                                                                                                                                                                                                                  |
+| Secret scanning + push protection | On                                                                    | Blocks committed credentials at push time                                                                                                                                                                                                                                                                                                   |
+| Private vulnerability reporting   | On (manual setting)                                                   | The private channel SECURITY.md and the issue forms point to                                                                                                                                                                                                                                                                                |
+| Dependabot                        | On — weekly, npm 3 / pip 5 / actions 2                                | Update PRs for review; nothing merges automatically. The pip ecosystem also regenerates the hash-pinned CI sets in [`.github/requirements/`](../.github/requirements/README.md)                                                                                                                                                             |
+| OpenSSF Scorecard                 | On — [`scorecard.yml`](../.github/workflows/scorecard.yml)            | Repository-posture checks (branch protection, pinned actions, token permissions) published to the Security tab. A check, not a badge                                                                                                                                                                                                        |
 | osv-scanner (`sca` job)           | On — required — [`pr-checks.yml`](../.github/workflows/pr-checks.yml) | Dependency vulnerability scan (OSV.dev) over the pinned Python + Node manifests on every PR; fail-closed and a **required** check on `main`. False positives are not silenced ad hoc: each suppression lives in `osv-scanner.toml`, tied to a statement in `security/openvex.json`, so a real CVE blocks while a triaged advisory does not. |
-| REUSE (`reuse` job)               | On — required — [`pr-checks.yml`](../.github/workflows/pr-checks.yml) | `reuse lint` over [`REUSE.toml`](../REUSE.toml) + [`LICENSES/`](../LICENSES); a **required** check on `main`. Every file must carry a resolvable licence, so the public "REUSE: Compliant" claim stays earned. |
+| REUSE (`reuse` job)               | On — required — [`pr-checks.yml`](../.github/workflows/pr-checks.yml) | `reuse lint` over [`REUSE.toml`](../REUSE.toml) + [`LICENSES/`](../LICENSES); a **required** check on `main`. Every file must carry a resolvable licence, so the public "REUSE: Compliant" claim stays earned.                                                                                                                              |
 
 ### Scorecard readings that are accepted, not fixed
 

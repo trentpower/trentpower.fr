@@ -25,8 +25,8 @@ deeper on each area.
 | [REPRODUCIBILITY.md](REPRODUCIBILITY.md)                       | How to rebuild an edition from source, what is byte-deterministic, and the deliberate non-determinism (PGP salt, licensed fonts).                 |
 | [SECRETS-AND-KEY-MANAGEMENT.md](SECRETS-AND-KEY-MANAGEMENT.md) | Where the few secrets and keys live, who can access them, and the rotation, revocation and re-keying policy.                                      |
 | [CODE-REVIEW.md](CODE-REVIEW.md)                               | What every change is checked against before it reaches the public record; the maintainer self-review checklist.                                   |
-| [RELEASE.md](RELEASE.md)                                       | Map of the release path (build → gate → promote → tag → deploy), the local `make` commands, and what each artefact proves.                       |
-| [SECURITY-PIPELINE.md](SECURITY-PIPELINE.md)                   | Map of the supply-chain controls and the `claims_parity` honesty gate that binds public claims to passing automated checks.                      |
+| [RELEASE.md](RELEASE.md)                                       | Map of the release path (build → gate → promote → tag → deploy), the local `make` commands, and what each artefact proves.                        |
+| [SECURITY-PIPELINE.md](SECURITY-PIPELINE.md)                   | Map of the supply-chain controls and the `claims_parity` honesty gate that binds public claims to passing automated checks.                       |
 
 Licensing for the repository lives at the root: [`LICENSE`](../LICENSE) (code,
 MIT), [`CONTENT-RIGHTS.md`](../CONTENT-RIGHTS.md) (authored content,
