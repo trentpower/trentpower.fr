@@ -98,8 +98,12 @@ jobs:
 
           # push to main: the public site changes ONLY if the canonical edition
           # advanced beyond the edition currently live on the server.
-          live="$(curl -fsSL --retry 3 --max-time 30 https://trentpower.fr/integrity.json \
-                  | python3 -c "import json,sys; print(json.load(sys.stdin)['edition'])" 2>/dev/null || true)"
+          # fetch to a file, then parse with the installed python3 — never pipe
+          # the network stream straight into the interpreter (a partial download
+          # would parse half a document; it also reads as download-then-run).
+          curl -fsSL --retry 3 --max-time 30 https://trentpower.fr/integrity.json \
+            -o /tmp/live-integrity.json 2>/dev/null || true
+          live="$(python3 -c "import json; print(json.load(open('/tmp/live-integrity.json'))['edition'])" 2>/dev/null || true)"
           echo "live=$live" >> "$GITHUB_OUTPUT"
 
           if [ -z "$live" ]; then
@@ -451,9 +455,10 @@ jobs:
             *) echo "  FAIL  / Cache-Control='$cc_html' (expected no-store)"; fail=1 ;;
           esac
 
-          av=$(curl -sk https://trentpower.fr/site-metadata.json | jq -r .asset_version 2>/dev/null \
-               || curl -sk https://trentpower.fr/site-metadata.json \
-                  | grep -oE '"asset_version"[[:space:]]*:[[:space:]]*"[^"]+"' \
+          # fetch once to a file, then parse from disk (no curl|interpreter pipe).
+          curl -sk https://trentpower.fr/site-metadata.json -o /tmp/site-metadata.json 2>/dev/null || true
+          av=$(jq -r .asset_version /tmp/site-metadata.json 2>/dev/null \
+               || grep -oE '"asset_version"[[:space:]]*:[[:space:]]*"[^"]+"' /tmp/site-metadata.json \
                   | head -1 | cut -d'"' -f4)
           if [ -n "$av" ]; then
             # Clean filename + ?v= query — the post-asset-versioning-
