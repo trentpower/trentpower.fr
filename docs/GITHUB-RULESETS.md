@@ -15,19 +15,33 @@ maintainer, not automation.
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | Target                                         | `main`                                                                                     |
 | Require a pull request before merging          | On (approvals: 0 — see note below; stale approvals dismissed on push)                      |
-| Require status checks to pass                  | On — `release-gate`, `secret-scan`, `release-gate-main`, `build-check`, `signature-verify` |
+| Require status checks to pass                  | On — `release-gate`, `secret-scan`, `release-readiness`, `sca`, `reuse`                     |
 | Require signed commits                         | On                                                                                         |
 | Require linear history                         | On                                                                                         |
 | Require conversation resolution before merging | On                                                                                         |
 | Block force pushes                             | On                                                                                         |
 | Restrict deletions                             | On                                                                                         |
 
-The `publication-check.yml` blocking jobs (`release-gate-main`,
-`build-check`, `signature-verify`) became required checks once the
-workflow had run green on promotion PRs. **Order matters** when adding
-new required checks: merge the workflow to `main` first, make its jobs
+**`release-readiness` is the single readiness gate.** It is one
+aggregation job in `publication-check.yml` that `needs:` the three
+blocking publication jobs (`release-gate-main`, `build-check`,
+`signature-verify`) and emits `Release readiness: PASS` / `FAIL`. Those
+three are therefore required **transitively** — they no longer need to be
+listed individually, and are not. The production deploy mirrors this gate:
+`deploy.yml`'s `readiness` job re-runs the same `validate_release.py` on
+the merge commit and the `deploy` job `needs: [guard, readiness]`, so a
+FAIL fails the deploy closed before any secret is released. A release is
+"ready" iff `release-readiness` is green.
+
+`sca` (osv-scanner) and `reuse` are also required: a real CVE or a
+licensing-metadata gap must block a promotion, not merely warn.
+
+**Order matters** when adding new required checks: merge the workflow to
+`main` first, let the job run green once on a promotion PR, make it
 required afterwards — requiring a check that does not exist yet would
-deadlock the very PR that introduces it.
+deadlock the very PR that introduces it. The job-id strings above are
+load-bearing: renaming a job silently drops its protection until the
+ruleset is updated to match.
 
 Required code-owner review stays **off**: this is a single-maintainer
 repository and GitHub does not count self-approval, so enabling it would
@@ -60,8 +74,11 @@ origin preprod`).
 
 ## `protect-release-tags`
 
-Apply only if edition tags or GitHub Releases enter the publication
-model (they have not yet).
+Edition tags are part of the publication model: a signed `edition/YYYY-MM-DD`
+tag triggers [`release.yml`](../.github/workflows/release.yml), which builds
+the archive, generates and validates the CycloneDX SBOM, attests build
+provenance (SLSA/Sigstore/Rekor) and publishes the GitHub Release. This
+ruleset keeps those tags admin-only and immutable.
 
 | Rule               | Setting                    |
 | ------------------ | -------------------------- |
@@ -116,7 +133,8 @@ The repository's security stack is deliberately small and GitHub-native:
 | Private vulnerability reporting   | On (manual setting)                                        | The private channel SECURITY.md and the issue forms point to                                                                                                                                                                                                              |
 | Dependabot                        | On — weekly, npm 3 / pip 5 / actions 2                     | Update PRs for review; nothing merges automatically. The pip ecosystem also regenerates the hash-pinned CI sets in [`.github/requirements/`](../.github/requirements/README.md)                                                                                           |
 | OpenSSF Scorecard                 | On — [`scorecard.yml`](../.github/workflows/scorecard.yml) | Repository-posture checks (branch protection, pinned actions, token permissions) published to the Security tab. A check, not a badge                                                                                                                                      |
-| osv-scanner (`sca` job)           | On — [`pr-checks.yml`](../.github/workflows/pr-checks.yml) | Dependency vulnerability scan (OSV.dev) over the pinned Python + Node manifests on every PR; fail-closed. Suppressions live in `osv-scanner.toml`, each tied to a statement in `security/openvex.json`. Make it a required check once it has run green on a promotion PR. |
+| osv-scanner (`sca` job)           | On — required — [`pr-checks.yml`](../.github/workflows/pr-checks.yml) | Dependency vulnerability scan (OSV.dev) over the pinned Python + Node manifests on every PR; fail-closed and a **required** check on `main`. False positives are not silenced ad hoc: each suppression lives in `osv-scanner.toml`, tied to a statement in `security/openvex.json`, so a real CVE blocks while a triaged advisory does not. |
+| REUSE (`reuse` job)               | On — required — [`pr-checks.yml`](../.github/workflows/pr-checks.yml) | `reuse lint` over [`REUSE.toml`](../REUSE.toml) + [`LICENSES/`](../LICENSES); a **required** check on `main`. Every file must carry a resolvable licence, so the public "REUSE: Compliant" claim stays earned. |
 
 ### Scorecard readings that are accepted, not fixed
 
@@ -173,7 +191,10 @@ surface; GitHub-native tooling suffices).
 
 All of the following live in the GitHub UI and must be applied by hand:
 
-1. Settings → Rules → Rulesets: the three rulesets above.
+1. Settings → Rules → Rulesets: the three rulesets above. On
+   `protect-main-as-public-record` the required status checks are
+   `release-gate`, `secret-scan`, `release-readiness`, `sca`, `reuse`
+   (apply each only after it has run green once on a promotion PR).
 2. Settings → Environments: per [GITHUB-ENVIRONMENTS.md](GITHUB-ENVIRONMENTS.md).
 3. Settings → Code security: enable **Private vulnerability reporting**
    (SECURITY.md and the issue templates point reporters at it).
