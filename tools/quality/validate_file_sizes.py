@@ -22,12 +22,21 @@ checks:
 
 exit 0 = every size on disk; warnings allowed.
 exit 1 = at least one hard mismatch.
+
+Shape (deep module, small interface). The external interface is `main() -> int`
+plus the OK/WARN/ERROR text contract. Internally the filesystem is the injected
+`Repo(root)` seam (everything under public/ resolved through it), so the whole
+gate runs through `evaluate(repo) -> Result` over a fixture repo with no
+monkeypatching. Compute (`evaluate`) is separate from render (`main`).
 """
 
+from __future__ import annotations
+
 import json
-import pathlib
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -40,9 +49,34 @@ sys.path.insert(
         / "lib"
     ),
 )
-from paths import PUBLIC_DIR as ROOT
-from script_blocks import strip_script_blocks
-from sizes import humanise_bytes
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
+from script_blocks import strip_script_blocks  # noqa: E402
+from sizes import humanise_bytes  # noqa: E402
+
+
+# named accessors over the shared Repo seam. every path here is relative to
+# public/ (the former ROOT); the prefix knowledge stays in the validator.
+def _read_public(repo: Repo, prel: str) -> str:
+    return repo.read(f"public/{prel}")
+
+
+def _is_public(repo: Repo, prel: str) -> bool:
+    return repo.is_file(f"public/{prel}")
+
+
+def _size_public(repo: Repo, prel: str) -> int:
+    return repo.size(f"public/{prel}")
+
+
+def _public_glob(repo: Repo, pattern: str) -> list[str]:
+    prefix = "public/"
+    return [rel[len(prefix):] for rel in repo.glob(f"{prefix}**/{pattern}")]
+
+
+def _read_json(repo: Repo, prel: str):
+    return json.loads(_read_public(repo, prel))
+
 
 # ── helpers ─────────────────────────────────────────────────────
 
@@ -57,38 +91,43 @@ def _fmt_size_compat(n: int) -> str:
     return humanise_bytes(n, lang="en")
 
 
-def _read_json(path: pathlib.Path):
-    return json.loads(path.read_text(encoding="utf-8"))
+@dataclass
+class Result:
+    errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+    oks: list[str] = field(default_factory=list)
+
+    @property
+    def ok(self) -> bool:
+        return not self.errors
 
 
 # ── 1. file-metadata.json ───────────────────────────────────────
 
 
-def check_file_metadata(errors: list, oks: list) -> None:
-    path = ROOT / "file-metadata.json"
-    if not path.exists():
-        errors.append("file-metadata.json: file missing")
+def check_file_metadata(repo: Repo, r: Result) -> None:
+    if not _is_public(repo, "file-metadata.json"):
+        r.errors.append("file-metadata.json: file missing")
         return
     try:
-        data = _read_json(path)
+        data = _read_json(repo, "file-metadata.json")
     except json.JSONDecodeError as e:
-        errors.append(f"file-metadata.json: invalid JSON ({e})")
+        r.errors.append(f"file-metadata.json: invalid JSON ({e})")
         return
     files = data.get("files") or {}
     if not isinstance(files, dict):
-        errors.append("file-metadata.json: missing 'files' dict")
+        r.errors.append("file-metadata.json: missing 'files' dict")
         return
     bad = 0
     for rel, entry in files.items():
-        disk = ROOT / rel
-        if not disk.is_file():
-            errors.append(f"file-metadata.json: {rel} listed but missing on disk")
+        if not _is_public(repo, rel):
+            r.errors.append(f"file-metadata.json: {rel} listed but missing on disk")
             bad += 1
             continue
         recorded = entry.get("bytes")
-        actual = disk.stat().st_size
+        actual = _size_public(repo, rel)
         if recorded != actual:
-            errors.append(f"file-metadata.json: /{rel} bytes={recorded} but disk={actual}")
+            r.errors.append(f"file-metadata.json: /{rel} bytes={recorded} but disk={actual}")
             bad += 1
             continue
         # human labels are pure functions of the byte count.
@@ -96,31 +135,30 @@ def check_file_metadata(errors: list, oks: list) -> None:
             recorded_label = entry.get(key)
             expected_label = humanise_bytes(actual, lang=lang)
             if recorded_label != expected_label:
-                errors.append(
+                r.errors.append(
                     f"file-metadata.json: /{rel} {key}={recorded_label!r} "
                     f"but humanise_bytes({actual}, {lang!r})={expected_label!r}"
                 )
                 bad += 1
     if bad == 0:
-        oks.append(f"file-metadata.json: {len(files)} entries; bytes + human labels match disk")
+        r.oks.append(f"file-metadata.json: {len(files)} entries; bytes + human labels match disk")
 
 
 # ── 2. source-manifest.json ─────────────────────────────────────
 
 
-def check_source_manifest(errors: list, oks: list) -> None:
-    path = ROOT / "source" / "source-manifest.json"
-    if not path.exists():
-        errors.append("source/source-manifest.json: file missing")
+def check_source_manifest(repo: Repo, r: Result) -> None:
+    if not _is_public(repo, "source/source-manifest.json"):
+        r.errors.append("source/source-manifest.json: file missing")
         return
     try:
-        data = _read_json(path)
+        data = _read_json(repo, "source/source-manifest.json")
     except json.JSONDecodeError as e:
-        errors.append(f"source/source-manifest.json: invalid JSON ({e})")
+        r.errors.append(f"source/source-manifest.json: invalid JSON ({e})")
         return
     entries = data.get("files") or []
     if not isinstance(entries, list):
-        errors.append("source/source-manifest.json: 'files' is not a list")
+        r.errors.append("source/source-manifest.json: 'files' is not a list")
         return
     bad = 0
     for entry in entries:
@@ -128,15 +166,15 @@ def check_source_manifest(errors: list, oks: list) -> None:
         live_path = entry.get("live_path") or ""
         # canonical live file: strip leading slash, resolve under public/.
         if live_path:
-            live = ROOT / live_path.lstrip("/")
             recorded_size = entry.get("size")
-            if not live.is_file():
-                errors.append(f"source-manifest.json: {name} live_path {live_path} missing on disk")
+            live_rel = live_path.lstrip("/")
+            if not _is_public(repo, live_rel):
+                r.errors.append(f"source-manifest.json: {name} live_path {live_path} missing on disk")
                 bad += 1
             else:
-                actual = live.stat().st_size
+                actual = _size_public(repo, live_rel)
                 if recorded_size != actual:
-                    errors.append(
+                    r.errors.append(
                         f"source-manifest.json: {name} size={recorded_size} "
                         f"but disk({live_path})={actual}"
                     )
@@ -144,7 +182,7 @@ def check_source_manifest(errors: list, oks: list) -> None:
                 else:
                     expected_label = _fmt_size_compat(actual)
                     if entry.get("size_human") != expected_label:
-                        errors.append(
+                        r.errors.append(
                             f"source-manifest.json: {name} size_human="
                             f"{entry.get('size_human')!r} but expected "
                             f"{expected_label!r}"
@@ -153,17 +191,17 @@ def check_source_manifest(errors: list, oks: list) -> None:
         # mirror file: /source/<name>
         mirror_rel = entry.get("name")
         if mirror_rel:
-            mirror_path = ROOT / "source" / mirror_rel
             recorded_mirror = entry.get("mirror_bytes")
-            if not mirror_path.is_file():
-                errors.append(
+            mirror_prel = f"source/{mirror_rel}"
+            if not _is_public(repo, mirror_prel):
+                r.errors.append(
                     f"source-manifest.json: {name} mirror source/{mirror_rel} missing on disk"
                 )
                 bad += 1
             else:
-                actual_mirror = mirror_path.stat().st_size
+                actual_mirror = _size_public(repo, mirror_prel)
                 if recorded_mirror != actual_mirror:
-                    errors.append(
+                    r.errors.append(
                         f"source-manifest.json: {name} mirror_bytes="
                         f"{recorded_mirror} but disk(source/{mirror_rel})="
                         f"{actual_mirror}"
@@ -172,14 +210,14 @@ def check_source_manifest(errors: list, oks: list) -> None:
                 else:
                     expected_label = _fmt_size_compat(actual_mirror)
                     if entry.get("mirror_size_human") != expected_label:
-                        errors.append(
+                        r.errors.append(
                             f"source-manifest.json: {name} mirror_size_human="
                             f"{entry.get('mirror_size_human')!r} but expected "
                             f"{expected_label!r}"
                         )
                         bad += 1
     if bad == 0:
-        oks.append(f"source-manifest.json: {len(entries)} entries (canonical + mirror sizes match)")
+        r.oks.append(f"source-manifest.json: {len(entries)} entries (canonical + mirror sizes match)")
 
 
 # ── 3. verify/verification-data.js ──────────────────────────────
@@ -190,16 +228,15 @@ _VD_OBJECT_RE = re.compile(
 )
 
 
-def check_verification_data(errors: list, oks: list) -> None:
-    path = ROOT / "verify" / "verification-data.js"
-    if not path.exists():
+def check_verification_data(repo: Repo, r: Result) -> None:
+    if not _is_public(repo, "verify/verification-data.js"):
         # absent verification data is not a hard error here; the
         # validate_edition + freshness gates own its presence story.
         return
-    text = path.read_text(encoding="utf-8")
+    text = _read_public(repo, "verify/verification-data.js")
     m = _VD_OBJECT_RE.search(text)
     if not m:
-        errors.append(
+        r.errors.append(
             "verify/verification-data.js: could not locate "
             "window.TP_VERIFICATION_MAP object literal"
         )
@@ -207,10 +244,10 @@ def check_verification_data(errors: list, oks: list) -> None:
     try:
         records = json.loads(m.group(1))
     except json.JSONDecodeError as e:
-        errors.append(f"verify/verification-data.js: object literal not valid JSON ({e})")
+        r.errors.append(f"verify/verification-data.js: object literal not valid JSON ({e})")
         return
     if not isinstance(records, dict):
-        errors.append("verify/verification-data.js: TP_VERIFICATION_MAP is not an object")
+        r.errors.append("verify/verification-data.js: TP_VERIFICATION_MAP is not an object")
         return
     bad = 0
     for route, rec in records.items():
@@ -222,20 +259,19 @@ def check_verification_data(errors: list, oks: list) -> None:
         rel = (rec.get("manifest_entry_path") or rec.get("path") or "").lstrip("/")
         if not rel:
             continue
-        disk = ROOT / rel
-        if not disk.is_file():
-            errors.append(f"verify/verification-data.js: {route} → {rel} missing on disk")
+        if not _is_public(repo, rel):
+            r.errors.append(f"verify/verification-data.js: {route} → {rel} missing on disk")
             bad += 1
             continue
-        actual = disk.stat().st_size
+        actual = _size_public(repo, rel)
         if recorded != actual:
-            errors.append(
+            r.errors.append(
                 f"verify/verification-data.js: {route} size_bytes={recorded} "
                 f"but disk({rel})={actual}"
             )
             bad += 1
     if bad == 0:
-        oks.append(f"verify/verification-data.js: {len(records)} routes (size_bytes match disk)")
+        r.oks.append(f"verify/verification-data.js: {len(records)} routes (size_bytes match disk)")
 
 
 # ── 4. hardcoded KB/MB/Ko/Mo literals in html ───────────────────
@@ -255,69 +291,68 @@ def _scan_html_for_literals(text: str):
     visible content. drops script blocks and comments first."""
     cleaned = strip_script_blocks(text)
     cleaned = _HTML_COMMENT_RE.sub("", cleaned)
-    # also drop nbsp so "5 kb" reads as "5 kb" before the regex.
+    # also drop nbsp so "5 kb" reads as "5 kb" before the regex.
     cleaned = cleaned.replace(" ", " ")
     for m in _BYTE_LITERAL_RE.finditer(cleaned):
         line = cleaned.count("\n", 0, m.start()) + 1
         yield line, m.group(0)
 
 
-def check_html_byte_literals(errors: list, warnings: list, oks: list) -> None:
+def check_html_byte_literals(repo: Repo, r: Result) -> None:
     fails_chip = 0
-    found_anywhere = 0
-    for html in sorted(ROOT.rglob("*.html")):
-        rel = html.relative_to(ROOT).as_posix()
+    # sort by path parts so the order matches the historical Path-sorted walk.
+    for rel in sorted(_public_glob(repo, "*.html"), key=lambda x: x.split("/")):
         # frozen-archive html under /integrity/releases/ is excluded
         # by design — those bytes are immutable historical snapshots.
         if rel.startswith("integrity/releases/"):
             continue
         try:
-            text = html.read_text(encoding="utf-8")
+            text = _read_public(repo, rel)
         except (UnicodeDecodeError, OSError):
             continue
         for line, literal in _scan_html_for_literals(text):
-            found_anywhere += 1
             # find the print-evidence chip context: the brief calls out
             # the previous homepage "28 kb" chip specifically. detect by
             # looking at the surrounding 200 chars for the class name.
             start = max(0, text.find(literal) - 200)
             window = text[start : text.find(literal) + len(literal) + 100]
             if "print-evidence" in window:
-                errors.append(
+                r.errors.append(
                     f"{rel}:{line} print-evidence chip contains byte "
                     f"literal {literal!r} — chip must say 'Edition <date>' only"
                 )
                 fails_chip += 1
             else:
-                warnings.append(f"{rel}: prose byte literal {literal!r} near line {line}")
+                r.warnings.append(f"{rel}: prose byte literal {literal!r} near line {line}")
     if fails_chip == 0:
-        oks.append("no hardcoded KB/MB literals in print-evidence chips")
+        r.oks.append("no hardcoded KB/MB literals in print-evidence chips")
 
 
-# ── main ────────────────────────────────────────────────────────
+# ── evaluate / main ─────────────────────────────────────────────
 
 
-def main() -> int:
-    errors: list[str] = []
-    warnings: list[str] = []
-    oks: list[str] = []
+def evaluate(repo: Repo) -> Result:
+    r = Result()
+    check_file_metadata(repo, r)
+    check_source_manifest(repo, r)
+    check_verification_data(repo, r)
+    check_html_byte_literals(repo, r)
+    return r
+
+
+def main(repo_root: Path = REPO_ROOT) -> int:
+    r = evaluate(Repo(repo_root))
 
     print("SIZE CHECK")
-
-    check_file_metadata(errors, oks)
-    check_source_manifest(errors, oks)
-    check_verification_data(errors, oks)
-    check_html_byte_literals(errors, warnings, oks)
-
-    for line in oks:
+    for line in r.oks:
         print(f"OK {line}")
-    for line in warnings:
+    for line in r.warnings:
         print(f"WARN {line}")
-    for line in errors:
+    for line in r.errors:
         print(f"ERROR {line}")
 
-    n_err = len(errors)
-    n_warn = len(warnings)
+    n_err = len(r.errors)
+    n_warn = len(r.warnings)
     print(
         f"RESULT: {n_err} error{'s' if n_err != 1 else ''}, "
         f"{n_warn} warning{'s' if n_warn != 1 else ''}"

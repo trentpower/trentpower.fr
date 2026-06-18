@@ -33,6 +33,11 @@ class Repo:
     def is_file(self, rel: str) -> bool:
         return (self.root / rel).is_file()
 
+    def size(self, rel: str) -> int:
+        """on-disk byte size of a repo-relative file. callers guard with
+        is_file() first; on a missing file this raises, like stat()."""
+        return (self.root / rel).stat().st_size
+
     def glob(self, pattern: str) -> list[str]:
         """repo-relative posix paths of files matching a glob (supports `**`),
         sorted. directories are filtered out."""
