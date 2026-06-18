@@ -39,12 +39,24 @@ Quiet on success, precise on failure.
 
 from __future__ import annotations
 
-import pathlib
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
-ROOT = pathlib.Path(__file__).resolve().parents[2]
-PUBLIC = ROOT / "public"
+sys.path.insert(
+    0,
+    str(
+        next(
+            _a
+            for _a in __import__("pathlib").Path(__file__).resolve().parents
+            if _a.name == "tools"
+        )
+        / "lib"
+    ),
+)
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
 SECTION_IDS = ("approach", "credentials", "trajectory", "projects", "contact")
 
@@ -153,39 +165,55 @@ def check_styles_css(text: str) -> list[str]:
     return errors
 
 
-def main() -> int:
-    errors: list[str] = []
+@dataclass
+class Result:
+    errors: list[str] = field(default_factory=list)
+
+    @property
+    def ok(self) -> bool:
+        return not self.errors
+
+
+def evaluate(repo: Repo) -> Result:
+    """run the pure homepage-anchor checks over the source files read through
+    the Repo seam. returns a Result; never prints or exits."""
+    result = Result()
 
     # the homepage content lives on the two language editions; the
     # root index.html is now the language gate (no anchor sections).
     for rel in ("en-au/index.html", "fr/index.html"):
-        index_path = PUBLIC / rel
-        if not index_path.exists():
-            errors.append(f"missing file: {index_path}")
+        prel = f"public/{rel}"
+        if not repo.is_file(prel):
+            result.errors.append(f"missing file: public/{rel}")
         else:
-            errors.extend(check_index_html(rel, index_path.read_text(encoding="utf-8")))
+            result.errors.extend(check_index_html(rel, repo.read(prel)))
 
     # the former app.js "brain" is split into behaviour-scoped modules;
     # scan the successors for scroll-hijacking regressions.
     combined = []
     for name in ("js/theme.js", "sw-register.js", "js/reveal.js"):
-        p = PUBLIC / name
-        if not p.exists():
-            errors.append(f"missing file: {p}")
+        prel = f"public/{name}"
+        if not repo.is_file(prel):
+            result.errors.append(f"missing file: public/{name}")
         else:
-            combined.append(p.read_text(encoding="utf-8"))
+            combined.append(repo.read(prel))
     if combined:
-        errors.extend(check_app_js("\n".join(combined)))
+        result.errors.extend(check_app_js("\n".join(combined)))
 
-    styles_path = PUBLIC / "styles.css"
-    if not styles_path.exists():
-        errors.append(f"missing file: {styles_path}")
+    if not repo.is_file("public/styles.css"):
+        result.errors.append("missing file: public/styles.css")
     else:
-        errors.extend(check_styles_css(styles_path.read_text(encoding="utf-8")))
+        result.errors.extend(check_styles_css(repo.read("public/styles.css")))
 
-    if errors:
-        print(f"FAIL: home-anchors — {len(errors)} issue(s):")
-        for e in errors:
+    return result
+
+
+def main(repo_root: Path = REPO_ROOT) -> int:
+    result = evaluate(Repo(repo_root))
+
+    if result.errors:
+        print(f"FAIL: home-anchors — {len(result.errors)} issue(s):")
+        for e in result.errors:
             print(f"  {e}")
         return 1
 
