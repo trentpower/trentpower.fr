@@ -6,7 +6,7 @@
 
 PY := python3
 
-.PHONY: help test gate lint verify release-check integrity sbom privacy-check provenance-check
+.PHONY: help test gate lint verify release-check integrity sbom privacy-check provenance-check claims policy
 
 help: ## list the available targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | sort | \
@@ -31,6 +31,15 @@ privacy-check: ## run the privacy gates (storage keys, runtime contamination, tr
 
 provenance-check: ## confirm every public supply-chain claim maps to a passing control
 	$(PY) tools/verify/validate_claims_parity.py
+
+claims: ## regenerate docs/CLAIMS.md from claims-map.yml, then run the parity gate
+	$(PY) tools/build/generate_claims_md.py
+	$(PY) tools/verify/validate_claims_parity.py
+
+policy: ## run every public-promise gate (privacy + provenance + claims ledger)
+	$(MAKE) privacy-check
+	$(MAKE) provenance-check
+	$(MAKE) claims
 
 release-check: ## re-render from source and assert no drift (reproducibility)
 	bash tools/build/build.sh --check
