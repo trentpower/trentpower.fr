@@ -71,17 +71,19 @@ This ruleset carries a repository-role bypass set to **always** so the
 maintainer can push integrations and promotions straight to `preprod`
 without a PR.
 
-`preprod` is **disposable by design.** The repository setting
-"Automatically delete head branches" stays **on**, so merging the
-`preprod → main` promotion PR (whose head is `preprod`) deletes the
-branch — exactly as it cleans up every merged `feature/*` branch. The
-branch is then resurrected automatically: the
-[`recreate-preprod.yml`](../.github/workflows/recreate-preprod.yml)
-workflow runs on every push to `main` and, **only if `preprod` is
-missing**, recreates it at the current `main` commit. It never resets an
-existing `preprod`, so a hotfix or any other push to `main` can never
-wipe unpromoted work. Net: autodelete keeps the branch list clean, and
-`preprod` reappears after each promotion with no manual step.
+`preprod` survives a promotion and is **reset by hand.** _Restrict
+deletions_ is on for this ruleset, so the repository's "Automatically
+delete head branches" setting does **not** remove `preprod` when the
+`preprod → main` promotion PR merges — the branch protection wins. The
+repo also allows squash merges only, so a promotion collapses to one new
+commit on `main` while `preprod` still holds the individual commits; the
+two then diverge. **Manual step after every promotion:** reset `preprod`
+to `main` — `git checkout preprod && git reset --hard origin/main && git push origin preprod --force-with-lease`
+(the admin bypass on this ruleset allows the force-push; `main` is never
+force-pushed). The [`recreate-preprod.yml`](../.github/workflows/recreate-preprod.yml)
+workflow is a safety net only: it runs on every push to `main` and
+recreates `preprod` **solely if the branch is missing**, so it covers an
+accidental deletion but does not reset a surviving, diverged `preprod`.
 
 ## `protect-release-tags`
 
@@ -149,7 +151,7 @@ The repository's security stack is deliberately small and GitHub-native:
 
 ### Scorecard readings that are accepted, not fixed
 
-The Scorecard badge is a maintenance dashboard, not a medal. Four checks read low
+The Scorecard badge is a maintenance dashboard, not a medal. Five checks read low
 by structural fact rather than by gap, and the corresponding code-scanning alerts
 are dismissed in the Security tab as "won't fix" citing this section. The score is
 capped at roughly 7-8 for a single-maintainer project; that is expected and honest.
@@ -171,6 +173,17 @@ capped at roughly 7-8 for a single-maintainer project; that is expected and hone
   several languages but not Python's Hypothesis, which is what this
   repository uses ([FUZZING.md](FUZZING.md)). The property tests run on
   every PR regardless.
+- **Token-Permissions (release.yml)** — the `release.yml` job already
+  follows least privilege: top-level permissions are `contents: read`, and
+  the single job declares only the writes it needs (`contents: write` to
+  create the Release, `id-token` + `attestations: write` for keyless
+  Sigstore attestation). Scorecard penalises the `contents: write` because
+  it does not recognise `gh release create` (CLI) as a packaging command —
+  it would only forgive a marketplace release action. Swapping to a
+  third-party action to satisfy the heuristic would add supply-chain surface
+  to the signed release path for no real gain, so the alert is dismissed.
+  (The `recreate-preprod.yml` Token-Permissions alert was a genuine
+  top-level over-grant and _was_ fixed — write moved to job level.)
 
 Code-Review and Branch-Protection both lift the day a second trusted reviewer
 joins and required reviews are turned on — the same change that would satisfy
