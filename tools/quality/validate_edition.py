@@ -8,12 +8,22 @@ Frozen archives under /integrity/releases/YYYY-MM/ are excluded by design
 
 Exit 0 = all references match canonical edition.
 Exit 1 = at least one reference is stale; failing paths are printed.
+
+Shape (deep module, small interface). The external interface is `main() -> int`
+plus the OK/FAIL text contract. The filesystem is the injected `Repo(root)`
+seam, so the whole gate runs through `evaluate(repo, edition) -> Result` over a
+fixture repo — and the active-HTML set is discovered inside evaluate, not at
+import time, so a fixture repo is exercised cleanly. Compute (`evaluate`) is
+separate from render (`main`).
 """
 
+from __future__ import annotations
+
 import json
-import pathlib
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -27,39 +37,16 @@ sys.path.insert(
     ),
 )
 from dates import LOCALE_MONTHS, human_date  # noqa: E402
-from paths import (
-    I18N_STRINGS as I18N_STRINGS,
-)
-from paths import (
-    IDENTITY_CANONICAL as CANONICAL,
-)
-from paths import (
-    PUBLIC_DIR as ROOT,
-)
-from paths import (
-    SITE_METADATA as SITE_META,
-)
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
-
-# every active .html under public/ — discovered by walk so the bilingual
-# /en/ and /fr/ trees, the language gate, the neutral reader/archive
-# pages and the root error fallbacks are all picked up automatically.
-# excluded: the dated frozen-archive snapshots under
-# integrity/releases/<edition>/ (PGP-signed historical state), and the
-# generated editorial review documents under editorial/ (not site pages).
-def _discover_active_html() -> list:
-    out = []
-    for p in sorted(ROOT.glob("**/*.html")):
-        rel = p.relative_to(ROOT).as_posix()
-        if re.match(r"integrity/releases/[^/]+/", rel):
-            continue
-        if rel.startswith("editorial/"):
-            continue
-        out.append(rel)
-    return out
-
-
-ACTIVE_HTML = _discover_active_html()
+CANONICAL_REL = "tools/config/identity_canonical.json"
+STRINGS_REL = "tools/build/copy/strings.json"
+SITE_META_REL = "public/site-metadata.json"
+VERIFY_MODAL_REL = "public/js/verify-modal.js"
+SW_REL = "public/sw.js"
+VERIFICATION_DATA_REL = "public/verify/verification-data.js"
+HUMANS_REL = "public/humans.txt"
 
 EDITION_PREFIXES = ("Edition", "Édition", "Edizione", "Edición", "Ausgabe")
 EDITION_PREFIX_RE = re.compile(r"\b(" + "|".join(EDITION_PREFIXES) + r")\s+(\d{4}-\d{2}-\d{2})\b")
@@ -73,10 +60,6 @@ def _locale_date_re(lang):
     return re.compile(r"\b(\d{1,2})\s+(" + alt + r")\s+(\d{4})\b")
 
 
-def _read_json(path):
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
 def _find_with_lines(text, pattern):
     """Yield (line_number, match) for every regex match."""
     for m in pattern.finditer(text):
@@ -84,9 +67,26 @@ def _find_with_lines(text, pattern):
         yield line, m
 
 
-def _check_html_file(path: pathlib.Path, edition: str, fails: list):
-    rel = path.relative_to(ROOT).as_posix()
-    text = path.read_text(encoding="utf-8")
+# every active .html under public/ — discovered by walk so the bilingual
+# /en/ and /fr/ trees, the language gate, the neutral reader/archive pages
+# and the root error fallbacks are all picked up automatically. excluded:
+# the dated frozen-archive snapshots under integrity/releases/<edition>/
+# (PGP-signed historical state), and the generated editorial review
+# documents under editorial/ (not site pages).
+def _active_html(repo: Repo) -> list[str]:
+    out: list[str] = []
+    prefix = "public/"
+    for repo_rel in repo.glob("public/**/*.html"):
+        rel = repo_rel[len(prefix):]
+        if re.match(r"integrity/releases/[^/]+/", rel):
+            continue
+        if rel.startswith("editorial/"):
+            continue
+        out.append(rel)
+    return sorted(out, key=lambda x: x.split("/"))
+
+
+def _check_html_text(rel: str, text: str, edition: str, fails: list) -> None:
     for line, m in _find_with_lines(text, DATA_EDITION_RE):
         if m.group(1) != edition:
             fails.append(f"{rel}:{line} data-edition expected {edition} got {m.group(1)}")
@@ -98,43 +98,40 @@ def _check_html_file(path: pathlib.Path, edition: str, fails: list):
             fails.append(f"{rel}:{line} '{m.group(0)}' expected edition {edition}")
 
 
-def _check_text_file(
-    path: pathlib.Path, edition: str, fails: list, label: str, pattern: re.Pattern, group: int = 1
-):
-    if not path.exists():
-        return
-    text = path.read_text(encoding="utf-8")
-    for line, m in _find_with_lines(text, pattern):
-        if m.group(group) != edition:
-            fails.append(f"{label}:{line} expected {edition} got {m.group(group)}")
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails
 
 
-def main() -> int:
-    if not CANONICAL.exists():
-        print(f"FAIL: {CANONICAL} not found", file=sys.stderr)
-        return 1
-    edition = _read_json(CANONICAL).get("edition", "")
+def load(repo: Repo) -> tuple[str | None, list[str]]:
+    if not repo.is_file(CANONICAL_REL):
+        return None, [f"{CANONICAL_REL} not found"]
+    edition = json.loads(repo.read(CANONICAL_REL)).get("edition", "")
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", edition):
-        print(f"FAIL: canonical edition '{edition}' is not YYYY-MM-DD", file=sys.stderr)
-        return 1
+        return None, [f"canonical edition '{edition}' is not YYYY-MM-DD"]
+    return edition, []
 
+
+def evaluate(repo: Repo, edition: str) -> Result:
     fails: list[str] = []
 
     # 1. active html files
-    for rel in ACTIVE_HTML:
-        p = ROOT / rel
-        if not p.exists():
+    for rel in _active_html(repo):
+        prel = f"public/{rel}"
+        if not repo.is_file(prel):
             fails.append(f"{rel}: missing active HTML file")
             continue
-        _check_html_file(p, edition, fails)
+        _check_html_text(rel, repo.read(prel), edition, fails)
 
-    # 2. site-metadata.json — edition + asset_version prefix
-    # edition is a nested object since schema_version 1.0 — keys
-    # are `id`, `label`, `date`. legacy string form is still
-    # accepted for backward compatibility while the canonical
-    # schema rolls out across mirrors and archives.
-    if SITE_META.exists():
-        sm = _read_json(SITE_META)
+    # 2. site-metadata.json — edition + asset_version prefix. edition is a
+    # nested object since schema_version 1.0 (id/label/date); the legacy
+    # string form is still accepted for backward compatibility.
+    if repo.is_file(SITE_META_REL):
+        sm = json.loads(repo.read(SITE_META_REL))
         sm_edition_field = sm.get("edition", "")
         if isinstance(sm_edition_field, dict):
             sm_edition = sm_edition_field.get("id", "")
@@ -157,30 +154,25 @@ def main() -> int:
         fails.append("site-metadata.json: file missing")
 
     # 3. js/verify-modal.js — var EDITION = '…';
-    verify_modal_js = ROOT / "js" / "verify-modal.js"
-    if verify_modal_js.exists():
-        m = re.search(r"var EDITION = '([^']*)'", verify_modal_js.read_text(encoding="utf-8"))
+    if repo.is_file(VERIFY_MODAL_REL):
+        m = re.search(r"var EDITION = '([^']*)'", repo.read(VERIFY_MODAL_REL))
         if not m:
             fails.append("js/verify-modal.js: no `var EDITION = '...'` literal found")
         elif m.group(1) != edition:
             fails.append(f"js/verify-modal.js: EDITION expected {edition} got {m.group(1)}")
 
     # 4. sw.js — cache name must contain the canonical edition
-    sw_js = ROOT / "sw.js"
-    if sw_js.exists():
-        m = re.search(r"var CACHE = '([^']*)'", sw_js.read_text(encoding="utf-8"))
+    if repo.is_file(SW_REL):
+        m = re.search(r"var CACHE = '([^']*)'", repo.read(SW_REL))
         if not m:
             fails.append("sw.js: no `var CACHE = '...'` literal found")
         elif edition not in m.group(1):
             fails.append(f"sw.js: CACHE name '{m.group(1)}' does not contain edition {edition}")
 
-    # 5. verify/verification-data.js — at least one record's edition must
-    #    equal canonical (the file is json inside a js assignment; substring
-    #    check is sufficient and avoids parsing js).
-    vd = ROOT / "verify" / "verification-data.js"
-    if vd.exists():
-        text = vd.read_text(encoding="utf-8")
-        # every "edition": "<value>" inside the records must equal canonical.
+    # 5. verify/verification-data.js — every record's edition must equal
+    #    canonical (json inside a js assignment; substring scan suffices).
+    if repo.is_file(VERIFICATION_DATA_REL):
+        text = repo.read(VERIFICATION_DATA_REL)
         for line, m in _find_with_lines(text, re.compile(r'"edition": "(\d{4}-\d{2}-\d{2})"')):
             if m.group(1) != edition:
                 fails.append(
@@ -188,28 +180,20 @@ def main() -> int:
                 )
 
     # 6. humans.txt — last reviewed
-    humans = ROOT / "humans.txt"
-    if humans.exists():
-        m = re.search(r"Last reviewed:\s*(\d{4}-\d{2}-\d{2})", humans.read_text(encoding="utf-8"))
+    if repo.is_file(HUMANS_REL):
+        m = re.search(r"Last reviewed:\s*(\d{4}-\d{2}-\d{2})", repo.read(HUMANS_REL))
         if m and m.group(1) != edition:
             fails.append(f"humans.txt: Last reviewed expected {edition} got {m.group(1)}")
 
-    # 7. source/source-manifest.json — date freshness moved into
-    # validate_source_mirrors.py (which checks every row's `modified`
-    # against today's utc date, the canonical "validated" timestamp).
-    # the edition date is no longer the right semantic here: source
-    # mirrors are validated per build, not pinned to the publishing
-    # edition. keep this comment as a placeholder so future changes
-    # don't accidentally restore the stricter check.
+    # 7. source/source-manifest.json — date freshness lives in
+    # validate_source_mirrors.py (per-build, not pinned to the edition).
+    # placeholder kept so future changes don't restore the stricter check.
 
-    # 8. i18n/strings.json — localised human dates inside per-language
-    #    sub-trees must match the canonical edition's localised form.
-    #    this catches the bug-class where a key like integrity.last_reviewed
-    #    keeps "1 may 2026" / "1 mai 2026" / "1. mai 2026" past the bump.
-    strings = I18N_STRINGS
-    if strings.exists():
+    # 8. strings.json — localised human dates in per-language sub-trees must
+    #    match the canonical edition's localised form.
+    if repo.is_file(STRINGS_REL):
         try:
-            sd = json.loads(strings.read_text(encoding="utf-8"))
+            sd = json.loads(repo.read(STRINGS_REL))
         except json.JSONDecodeError:
             sd = None
         if isinstance(sd, dict):
@@ -220,17 +204,12 @@ def main() -> int:
             except ValueError:
                 edt = None
             if edt is not None:
-                # paths whose strings happen to match a localised-date
-                # pattern but are not edition dates. archival release
-                # card labels carry numbered prefixes ("01 may 2026" =
-                # "card 01: may 2026 release") that match the regex
-                # by coincidence; they reference frozen archives and
-                # must not be rewritten or flagged.
+                # paths whose strings match a localised-date pattern but are not
+                # edition dates: archival release-card labels carry numbered
+                # prefixes that match by coincidence and reference frozen
+                # archives — must not be rewritten or flagged.
                 IGNORE_PREFIXES = (
-                    "releases.print.card.",  # numbered archival cards
-                    # date-pinned keys for the 2026-05-09 frozen archive page
-                    # and the per-edition lineage labels. these reference
-                    # specific frozen releases, not the current edition.
+                    "releases.print.card.",
                     "releases.detail.",
                     "releases.edition_may09_",
                     "releases.edition_feb_",
@@ -246,8 +225,6 @@ def main() -> int:
                     expected = human_date(edt, lang=lang)
                     pat = _locale_date_re(lang)
 
-                    # bind the loop variables as defaults — _walk is invoked
-                    # within the same iteration, this just makes that explicit
                     def _walk(obj, trail, pat=pat, expected=expected, lang=lang):
                         if isinstance(obj, str):
                             if _is_ignored(trail):
@@ -267,9 +244,21 @@ def main() -> int:
 
                     _walk(tree, "")
 
-    if fails:
-        print(f"FAIL: {len(fails)} edition-consistency issue(s) (canonical {edition}):")
-        for f in fails:
+    return Result(fails=fails)
+
+
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    edition, errors = load(repo)
+    if errors:
+        for e in errors:
+            print(f"FAIL: {e}", file=sys.stderr)
+        return 1
+
+    result = evaluate(repo, edition)
+    if result.fails:
+        print(f"FAIL: {len(result.fails)} edition-consistency issue(s) (canonical {edition}):")
+        for f in result.fails:
             print(f"  {f}")
         return 1
 
