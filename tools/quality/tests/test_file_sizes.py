@@ -126,7 +126,13 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(any("prose byte literal" in w for w in r.warnings), r.warnings)
 
 
+# the real-repo smoke needs a fully-built public/ tree; the font subsets are
+# build-generated and absent in a bare checkout (CI's test job), so skip there.
+_FULL_TREE = bool(list((REPO_ROOT / "public" / "fonts" / "subsets").glob("*.woff2")))
+
+
 class ExternalInterface(unittest.TestCase):
+    @unittest.skipUnless(_FULL_TREE, "public/ tree not fully built (font subsets absent)")
     def test_main_passes_against_the_real_repo(self):
         import contextlib
         import io
