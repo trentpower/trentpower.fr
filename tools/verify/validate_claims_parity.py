@@ -20,14 +20,24 @@ enforced. a token absent from the claim surface requires nothing — the
 gate never speculates about controls the site does not advertise. but the
 surface is WIDE (glob-driven, not the union of stated_in), so a claim added
 to a page the map did not anticipate is still seen and still must be backed.
+
+shape (deep module, small interface). the external interface is `main() -> int`
+plus the YAML data contract. internally the evidence source is a single
+injected seam — `Repo(root)` — so the whole gate is exercised through
+`evaluate(repo, data) -> Result` over a fixture repo, with no monkeypatching.
+compute (`evaluate`) is separate from render (`main`): the former returns a
+Result and never prints or exits; the latter is the only side-effecting adapter.
 """
 
 from __future__ import annotations
 
 import fnmatch
 import inspect
+import json
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 try:
     import yaml
@@ -52,40 +62,64 @@ sys.path.insert(
         / "lib"
     ),
 )
-import json  # noqa: E402
-
 from paths import REPO_ROOT  # noqa: E402
 
-CLAIMS_MAP = REPO_ROOT / "policy-data" / "claims-map.yml"
-CLAIMS_SCHEMA = REPO_ROOT / "schemas" / "claims-map.schema.json"
 
-WORKFLOWS = REPO_ROOT / ".github" / "workflows"
-RELEASE_WORKFLOW = WORKFLOWS / "release.yml"
-PRCHECKS_WORKFLOW = WORKFLOWS / "pr-checks.yml"
-SCORECARD_WORKFLOW = WORKFLOWS / "scorecard.yml"
-CHECKS_REGISTRY = REPO_ROOT / "tools" / "lib" / "checks.py"
-BUILD_SH = REPO_ROOT / "tools" / "build" / "build.sh"
-REUSE_TOML = REPO_ROOT / "REUSE.toml"
-PGP_KEY = REPO_ROOT / "public" / ".well-known" / "pgp-key.asc"
+# ---------------------------------------------------------------------------
+# Repo — the internal evidence seam. one small object resolves every file the
+# controls and the surface scan read, all relative to an injected root. the
+# production adapter is Repo(REPO_ROOT); a test adapter is Repo(tmp_fixture).
+# ---------------------------------------------------------------------------
+@dataclass(frozen=True)
+class Repo:
+    root: Path
 
+    def read(self, rel: str) -> str:
+        p = self.root / rel
+        return p.read_text(encoding="utf-8") if p.is_file() else ""
 
-def _read(path) -> str:
-    return path.read_text(encoding="utf-8") if path.is_file() else ""
+    def is_file(self, rel: str) -> bool:
+        return (self.root / rel).is_file()
 
+    @property
+    def release_yml(self) -> str:
+        return self.read(".github/workflows/release.yml")
 
-def _release_yml() -> str:
-    return _read(RELEASE_WORKFLOW)
+    @property
+    def prchecks_yml(self) -> str:
+        return self.read(".github/workflows/pr-checks.yml")
+
+    @property
+    def scorecard_yml(self) -> str:
+        return self.read(".github/workflows/scorecard.yml")
+
+    @property
+    def build_sh(self) -> str:
+        return self.read("tools/build/build.sh")
+
+    @property
+    def checks_registry(self) -> str:
+        return self.read("tools/lib/checks.py")
+
+    @property
+    def claims_map(self) -> str:
+        return self.read("policy-data/claims-map.yml")
+
+    @property
+    def claims_schema(self) -> str:
+        return self.read("schemas/claims-map.schema.json")
 
 
 # ---------------------------------------------------------------------------
-# controls — the evidence-collection logic the map binds claims to. each
-# returns (ok, detail). control logic lives HERE, not in the data file.
+# controls — the evidence-collection logic the map binds claims to. each takes
+# the Repo seam and returns (ok, detail). they accept their dependency (the
+# repo) rather than creating it, so a fixture repo exercises them directly.
 # ---------------------------------------------------------------------------
-def control_attestation() -> tuple[bool, str]:
+def control_attestation(repo: Repo) -> tuple[bool, str]:
     """SLSA / Sigstore / Rekor / attestation — backed by the build-provenance
     attestation step. keyless attestation implies Sigstore (Fulcio) signing and
     a Rekor transparency record, so the single step covers all four tokens."""
-    text = _release_yml()
+    text = repo.release_yml
     ok = "attest-build-provenance" in text and "id-token: write" in text
     return ok, (
         "release.yml has no actions/attest-build-provenance step with "
@@ -93,11 +127,11 @@ def control_attestation() -> tuple[bool, str]:
     )
 
 
-def control_sbom() -> tuple[bool, str]:
+def control_sbom(repo: Repo) -> tuple[bool, str]:
     """CycloneDX / SBOM — backed by the SBOM generation step AND the
     well-formedness validation step. a generated-but-unvalidated SBOM does
     not earn the claim, so both must be present in release.yml."""
-    text = _release_yml()
+    text = repo.release_yml
     ok = "cyclonedx_py" in text and "bomFormat" in text
     return ok, (
         "release.yml is missing the cyclonedx_py generation step and/or the "
@@ -105,12 +139,12 @@ def control_sbom() -> tuple[bool, str]:
     )
 
 
-def control_pgp() -> tuple[bool, str]:
+def control_pgp(repo: Repo) -> tuple[bool, str]:
     """PGP — backed by the published public key on disk AND the gpg signature
     check registered as a blocking gate in checks.py."""
-    if not PGP_KEY.is_file():
-        return False, f"published key missing: {PGP_KEY.relative_to(REPO_ROOT)}"
-    src = CHECKS_REGISTRY.read_text(encoding="utf-8") if CHECKS_REGISTRY.is_file() else ""
+    if not repo.is_file("public/.well-known/pgp-key.asc"):
+        return False, "published key missing: public/.well-known/pgp-key.asc"
+    src = repo.checks_registry
     # the gpg check must be registered as blocking (_B). bind to gpg's OWN
     # Check entry: name, then its single description string, then the tier as
     # the next positional arg. anchoring on that string (not a DOTALL `.*?`)
@@ -122,32 +156,32 @@ def control_pgp() -> tuple[bool, str]:
     return True, ""
 
 
-def control_scorecard() -> tuple[bool, str]:
+def control_scorecard(repo: Repo) -> tuple[bool, str]:
     """OpenSSF / Scorecard — backed by the scorecard workflow running the
     official ossf/scorecard-action."""
-    ok = "ossf/scorecard-action" in _read(SCORECARD_WORKFLOW)
+    ok = "ossf/scorecard-action" in repo.scorecard_yml
     return ok, "scorecard.yml has no ossf/scorecard-action step (the OpenSSF Scorecard control)"
 
 
-def control_osv() -> tuple[bool, str]:
+def control_osv(repo: Repo) -> tuple[bool, str]:
     """OSV — backed by the osv-scanner dependency-vulnerability job in
     pr-checks.yml."""
-    ok = "osv-scanner" in _read(PRCHECKS_WORKFLOW)
+    ok = "osv-scanner" in repo.prchecks_yml
     return ok, "pr-checks.yml has no osv-scanner step (the OSV dependency-scan control)"
 
 
-def control_reuse() -> tuple[bool, str]:
+def control_reuse(repo: Repo) -> tuple[bool, str]:
     """REUSE — backed by the reuse-lint job AND the REUSE.toml on disk."""
-    if not REUSE_TOML.is_file():
+    if not repo.is_file("REUSE.toml"):
         return False, "REUSE.toml is missing (the REUSE licensing control)"
-    ok = "reuse lint" in _read(PRCHECKS_WORKFLOW)
+    ok = "reuse lint" in repo.prchecks_yml
     return ok, "pr-checks.yml has no `reuse lint` step (the REUSE licensing control)"
 
 
-def control_deterministic() -> tuple[bool, str]:
+def control_deterministic(repo: Repo) -> tuple[bool, str]:
     """deterministic build — backed by the release archive being built with
     sorted, owner-zeroed, fixed-mtime tar + name/timestamp-stripped gzip."""
-    text = _release_yml()
+    text = repo.release_yml
     ok = "--sort=name" in text and "--numeric-owner" in text and "gzip -n" in text
     return ok, (
         "release.yml archive step is missing the determinism flags "
@@ -155,10 +189,10 @@ def control_deterministic() -> tuple[bool, str]:
     )
 
 
-def control_reproducible() -> tuple[bool, str]:
+def control_reproducible(repo: Repo) -> tuple[bool, str]:
     """reproducibility goal — backed by the build's --check path, which
     re-renders from source and asserts zero drift against the committed bytes."""
-    ok = "--check" in _read(BUILD_SH)
+    ok = "--check" in repo.build_sh
     return ok, "build.sh has no --check reproducibility (re-render / no-drift) path"
 
 
@@ -170,43 +204,43 @@ _CONTROLS = {
     if name.startswith("control_") and inspect.isfunction(fn)
 }
 
-# controls that read release.yml — used by meta-check (5) to confirm a claim
-# declaring enforced_at: release is backed by a control that actually inspects
-# the release workflow. derived from source, not hand-maintained.
+# controls that read release.yml — used by the enforced_at meta-check to confirm
+# a claim declaring enforced_at: release is backed by a control that actually
+# inspects the release workflow. derived from source, not hand-maintained.
 _RELEASE_READING = {
-    name for name, fn in _CONTROLS.items() if "_release_yml" in inspect.getsource(fn)
+    name for name, fn in _CONTROLS.items() if "release_yml" in inspect.getsource(fn)
 }
 
 
 # ---------------------------------------------------------------------------
 # map loading + surface computation
 # ---------------------------------------------------------------------------
-def load_map() -> dict:
-    """load + schema-validate policy-data/claims-map.yml. fail loud on any
-    structural problem before parity logic runs."""
-    data = yaml.safe_load(CLAIMS_MAP.read_text(encoding="utf-8"))
-    schema = json.loads(CLAIMS_SCHEMA.read_text(encoding="utf-8"))
-    errors = sorted(
-        Draft202012Validator(schema).iter_errors(data), key=lambda e: list(e.path)
-    )
-    if errors:
-        lines = [
-            f"  {'/'.join(str(p) for p in e.path) or '(root)'}: {e.message}" for e in errors[:12]
-        ]
-        raise SystemExit(
-            "FAIL: policy-data/claims-map.yml does not satisfy "
-            "schemas/claims-map.schema.json:\n" + "\n".join(lines)
-        )
-    return data
+def load_map(repo: Repo) -> tuple[dict | None, list[str]]:
+    """load + schema-validate policy-data/claims-map.yml. returns (data, errors);
+    errors is a list of human-readable strings (never raises on a bad map, so the
+    caller decides how to report — the interface stays a value, not control flow)."""
+    raw = repo.claims_map
+    if not raw:
+        return None, ["policy-data/claims-map.yml is missing or empty"]
+    data = yaml.safe_load(raw)
+    schema = json.loads(repo.claims_schema)
+    errors = [
+        f"{'/'.join(str(p) for p in e.path) or '(root)'}: {e.message}"
+        for e in sorted(Draft202012Validator(schema).iter_errors(data), key=lambda e: list(e.path))
+    ]
+    return (None if errors else data), errors
 
 
-def _surface_files(surface: dict) -> list:
-    """resolve the claim_surface include/exclude globs to a sorted file list."""
+def _surface_files(repo: Repo, surface: dict) -> list[str]:
+    """resolve the claim_surface include/exclude globs to a sorted list of
+    repo-root-relative paths."""
     include = surface.get("include", [])
     exclude = surface.get("exclude", [])
     found: set = set()
     for pat in include:
-        found.update(p for p in REPO_ROOT.glob(pat) if p.is_file())
+        found.update(
+            str(p.relative_to(repo.root)) for p in repo.root.glob(pat) if p.is_file()
+        )
 
     def excluded(rel: str) -> bool:
         for pat in exclude:
@@ -218,7 +252,7 @@ def _surface_files(surface: dict) -> list:
                 return True
         return False
 
-    return sorted(p for p in found if not excluded(str(p.relative_to(REPO_ROOT))))
+    return sorted(rel for rel in found if not excluded(rel))
 
 
 def _quote_first_line(text: str, token: str) -> str:
@@ -229,13 +263,31 @@ def _quote_first_line(text: str, token: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# meta-checks — the honesty the declarative map enables. each appends to a
-# failure list; any failure fails the gate loudly.
+# Result — the value `evaluate` returns. the interface is this struct, not
+# stdout: tests assert on it; `main` renders it. `ok` iff nothing failed.
 # ---------------------------------------------------------------------------
-def _meta_checks(data: dict, surface_paths: list) -> list[str]:
+@dataclass
+class Result:
+    meta_fails: list[str] = field(default_factory=list)
+    parity_fails: list[str] = field(default_factory=list)
+    ruleset_notes: list[str] = field(default_factory=list)
+    backed: int = 0
+    surface_count: int = 0
+    claimed_any: bool = False
+
+    @property
+    def ok(self) -> bool:
+        return not self.meta_fails and not self.parity_fails
+
+
+# ---------------------------------------------------------------------------
+# meta-checks — the honesty the declarative map enables. pure: collects failure
+# strings + ruleset notes, returns them; no I/O beyond the injected Repo.
+# ---------------------------------------------------------------------------
+def _meta_checks(repo: Repo, data: dict, surface_rel: set[str]) -> tuple[list[str], list[str]]:
     claims = data["claims"]
     fails: list[str] = []
-    surface_rel = {str(p.relative_to(REPO_ROOT)) for p in surface_paths}
+    notes: list[str] = []
 
     referenced: set = set()
     for token, c in claims.items():
@@ -249,7 +301,7 @@ def _meta_checks(data: dict, surface_paths: list) -> list[str]:
         # (3) every stated_in path exists AND is inside the scanned surface
         #     (a claim cannot declare a location the scanner does not walk).
         for sp in c["stated_in"]:
-            if not (REPO_ROOT / sp).is_file():
+            if not repo.is_file(sp):
                 fails.append(f'claim "{token}": stated_in path does not exist: {sp}')
             elif sp not in surface_rel:
                 fails.append(
@@ -278,7 +330,7 @@ def _meta_checks(data: dict, surface_paths: list) -> list[str]:
                         "pr_gate_check naming the blocking checks.py id"
                     )
                 else:
-                    src = _read(CHECKS_REGISTRY)
+                    src = repo.checks_registry
                     pat = rf'Check\(\s*"{re.escape(gate_id)}"\s*,\s*"(?:[^"\\]|\\.)*"\s*,\s*_B\b'
                     if not re.search(pat, src):
                         fails.append(
@@ -286,8 +338,8 @@ def _meta_checks(data: dict, surface_paths: list) -> list[str]:
                             "blocking (_B) in checks.py"
                         )
             if "ruleset" in ea:
-                print(
-                    f'  NOTE: claim "{token}" is enforced at ruleset level — confirm it is a '
+                notes.append(
+                    f'claim "{token}" is enforced at ruleset level — confirm it is a '
                     "required status check (governance audit, see docs/GITHUB-RULESETS.md)."
                 )
 
@@ -298,68 +350,86 @@ def _meta_checks(data: dict, surface_paths: list) -> list[str]:
                 f'control "{name}" is defined but bound by no claim (orphan control — '
                 "bind it in policy-data/claims-map.yml or remove it)"
             )
-    return fails
+    return fails, notes
 
 
-def main() -> int:
-    data = load_map()
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. one call, one Result, over the injected
+# Repo. this is the test surface: callers and tests both cross it here.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo, data: dict) -> Result:
     claims = data["claims"]
-    surface_paths = _surface_files(data["claim_surface"])
+    surface_rel = _surface_files(repo, data["claim_surface"])
+    result = Result(surface_count=len(surface_rel))
 
-    meta_fails = _meta_checks(data, surface_paths)
+    result.meta_fails, result.ruleset_notes = _meta_checks(repo, data, set(surface_rel))
 
-    sources = [(p, p.read_text(encoding="utf-8")) for p in surface_paths]
-
-    # which tokens are actually claimed anywhere on the surface.
+    sources = [(rel, repo.read(rel)) for rel in surface_rel]
     claimed: dict[str, list] = {}
-    for path, text in sources:
+    for rel, text in sources:
         for token in claims:
             if token in text:
-                claimed.setdefault(token, []).append((path, text))
+                claimed.setdefault(token, []).append((rel, text))
+    result.claimed_any = bool(claimed)
 
-    parity_fails: list[str] = []
-    backed = 0
     control_cache: dict = {}
     for token, occurrences in claimed.items():
         controls = [_CONTROLS[n] for n in claims[token]["verified_by"] if n in _CONTROLS]
-        token_ok = True
-        detail = ""
+        token_ok, detail = True, ""
         for control in controls:
             if control not in control_cache:
-                control_cache[control] = control()
+                control_cache[control] = control(repo)
             ok, det = control_cache[control]
             if not ok:
-                token_ok = False
-                detail = det
+                token_ok, detail = False, det
                 break
         if token_ok and controls:
-            backed += 1
+            result.backed += 1
             continue
-        for path, text in occurrences:
+        for rel, text in occurrences:
             quoted = _quote_first_line(text, token)
-            rel = path.relative_to(REPO_ROOT)
-            parity_fails.append(f'{rel}: claims "{token}" but {detail}\n        > {quoted}')
+            result.parity_fails.append(f'{rel}: claims "{token}" but {detail}\n        > {quoted}')
 
-    rc = 0
-    if meta_fails:
-        print(f"  FAIL: {len(meta_fails)} claims-map integrity problem(s):")
-        for f in meta_fails:
-            print(f"    {f}")
-        rc = 1
-    if parity_fails:
-        print(f"  FAIL: {len(parity_fails)} unbacked supply-chain claim(s):")
-        for f in parity_fails:
-            print(f"    {f}")
-        rc = 1
-    if rc:
-        return rc
+    return result
 
-    if not claimed:
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. loads, evaluates, renders, returns exit
+# code. the only place stdout and exit codes live.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    data, errors = load_map(repo)
+    if errors:
+        print(
+            "  FAIL: policy-data/claims-map.yml does not satisfy "
+            "schemas/claims-map.schema.json:"
+        )
+        for e in errors[:12]:
+            print(f"    {e}")
+        return 1
+
+    result = evaluate(repo, data)
+    for note in result.ruleset_notes:
+        print(f"  NOTE: {note}")
+
+    if result.meta_fails:
+        print(f"  FAIL: {len(result.meta_fails)} claims-map integrity problem(s):")
+        for f in result.meta_fails:
+            print(f"    {f}")
+    if result.parity_fails:
+        print(f"  FAIL: {len(result.parity_fails)} unbacked supply-chain claim(s):")
+        for f in result.parity_fails:
+            print(f"    {f}")
+    if not result.ok:
+        return 1
+
+    if not result.claimed_any:
         print("  OK: claims-map valid; no supply-chain claims on the public surface to back.")
         return 0
     print(
-        f"  OK: claims-map valid; {backed} supply-chain claim type(s) across "
-        f"{len(surface_paths)} surface file(s) each map to a passing automated control."
+        f"  OK: claims-map valid; {result.backed} supply-chain claim type(s) across "
+        f"{result.surface_count} surface file(s) each map to a passing automated control."
     )
     return 0
 
