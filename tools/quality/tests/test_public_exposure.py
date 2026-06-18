@@ -40,7 +40,12 @@ def _manifest():
         "schema": vpe.SCHEMA_TAG,
         "edition": EDITION,
         "public_routes": ["/"],
-        "public_root_files": ["/integrity.json", "/integrity.json.sig", "/SHA256SUMS", "/SHA256SUMS.sig"],
+        "public_root_files": [
+            "/integrity.json",
+            "/integrity.json.sig",
+            "/SHA256SUMS",
+            "/SHA256SUMS.sig",
+        ],
         "public_well_known_files": ["/.well-known/pgp-key.asc"],
         "public_asset_globs": ["/*.css"],
         "deny_extension_patterns": [".env"],
@@ -84,7 +89,9 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/orphan.txt", "x\n")  # no allow rule matches .txt
         r = vpe.evaluate(self.repo, _manifest(), pre_archive=True)
         self.assertFalse(r.ok)
-        self.assertTrue(any("orphan.txt" in f for f in self._steps(r)["file coverage"]), r.step_results)
+        self.assertTrue(
+            any("orphan.txt" in f for f in self._steps(r)["file coverage"]), r.step_results
+        )
 
     def test_denied_extension_fails_deny(self):
         # cover it with an allow glob so ONLY the deny step trips.
@@ -93,7 +100,10 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/leak.env", "SECRET=1\n")
         r = vpe.evaluate(self.repo, m, pre_archive=True)
         self.assertFalse(r.ok)
-        self.assertTrue(any("leak.env" in f and "extension" in f for f in self._steps(r)["deny coverage"]), r.step_results)
+        self.assertTrue(
+            any("leak.env" in f and "extension" in f for f in self._steps(r)["deny coverage"]),
+            r.step_results,
+        )
 
     def test_broken_internal_link_fails(self):
         _write(self.root, "public/index.html", '<a href="/nope/">x</a>\n')
@@ -105,7 +115,9 @@ class Evaluate(unittest.TestCase):
         (self.root / "public/SHA256SUMS").unlink()
         r = vpe.evaluate(self.repo, _manifest(), pre_archive=True)
         self.assertFalse(r.ok)
-        self.assertTrue(any("SHA256SUMS" in f for f in self._steps(r)["integrity artefacts"]), r.step_results)
+        self.assertTrue(
+            any("SHA256SUMS" in f for f in self._steps(r)["integrity artefacts"]), r.step_results
+        )
 
     def test_pre_archive_flag_toggles_per_edition_requirement(self):
         # pre_archive False requires the per-edition SHA256SUMS (absent here) -> fail.
@@ -158,6 +170,7 @@ class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
         import contextlib
         import io
+
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             rc = vpe.main(REPO_ROOT)

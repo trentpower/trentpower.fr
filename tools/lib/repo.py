@@ -42,7 +42,5 @@ class Repo:
         """repo-relative posix paths of files matching a glob (supports `**`),
         sorted. directories are filtered out."""
         return sorted(
-            p.relative_to(self.root).as_posix()
-            for p in self.root.glob(pattern)
-            if p.is_file()
+            p.relative_to(self.root).as_posix() for p in self.root.glob(pattern) if p.is_file()
         )

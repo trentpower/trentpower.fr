@@ -42,11 +42,17 @@ def _make_fixture_repo(root: pathlib.Path) -> None:
     _write(
         root,
         "public/file-metadata.json",
-        json.dumps({"files": {"index.html": {
-            "bytes": INDEX_BYTES,
-            "size_human_en": humanise_bytes(INDEX_BYTES, lang="en"),
-            "size_human_fr": humanise_bytes(INDEX_BYTES, lang="fr"),
-        }}}),
+        json.dumps(
+            {
+                "files": {
+                    "index.html": {
+                        "bytes": INDEX_BYTES,
+                        "size_human_en": humanise_bytes(INDEX_BYTES, lang="en"),
+                        "size_human_fr": humanise_bytes(INDEX_BYTES, lang="fr"),
+                    }
+                }
+            }
+        ),
     )
     _write(root, "public/source/source-manifest.json", json.dumps({"files": []}))
 
@@ -73,47 +79,78 @@ class Evaluate(unittest.TestCase):
         self.assertEqual(r.warnings, [])
 
     def test_byte_mismatch_errors(self):
-        d = self._meta(); d["files"]["index.html"]["bytes"] = INDEX_BYTES + 1; self._set_meta(d)
+        d = self._meta()
+        d["files"]["index.html"]["bytes"] = INDEX_BYTES + 1
+        self._set_meta(d)
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
         self.assertTrue(any("bytes=" in e and "disk=" in e for e in r.errors), r.errors)
 
     def test_human_label_mismatch_errors(self):
-        d = self._meta(); d["files"]["index.html"]["size_human_en"] = "9 ZB"; self._set_meta(d)
+        d = self._meta()
+        d["files"]["index.html"]["size_human_en"] = "9 ZB"
+        self._set_meta(d)
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
         self.assertTrue(any("size_human_en" in e for e in r.errors), r.errors)
 
     def test_listed_but_missing_on_disk_errors(self):
-        d = self._meta(); d["files"]["ghost.html"] = {"bytes": 1, "size_human_en": "x", "size_human_fr": "x"}
+        d = self._meta()
+        d["files"]["ghost.html"] = {"bytes": 1, "size_human_en": "x", "size_human_fr": "x"}
         self._set_meta(d)
         r = vfs.evaluate(self.repo)
-        self.assertTrue(any("ghost.html" in e and "missing on disk" in e for e in r.errors), r.errors)
+        self.assertTrue(
+            any("ghost.html" in e and "missing on disk" in e for e in r.errors), r.errors
+        )
 
     def test_source_manifest_size_mismatch_errors(self):
-        _write(self.root, "public/source/source-manifest.json", json.dumps({"files": [
-            {"name": "x.txt", "live_path": "/index.html", "size": INDEX_BYTES + 5,
-             "size_human": "x", "mirror_bytes": 0, "mirror_size_human": "x"},
-        ]}))
+        _write(
+            self.root,
+            "public/source/source-manifest.json",
+            json.dumps(
+                {
+                    "files": [
+                        {
+                            "name": "x.txt",
+                            "live_path": "/index.html",
+                            "size": INDEX_BYTES + 5,
+                            "size_human": "x",
+                            "mirror_bytes": 0,
+                            "mirror_size_human": "x",
+                        },
+                    ]
+                }
+            ),
+        )
         _write(self.root, "public/source/x.txt", "mirror\n")
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(any("source-manifest.json" in e and "size=" in e for e in r.errors), r.errors)
+        self.assertTrue(
+            any("source-manifest.json" in e and "size=" in e for e in r.errors), r.errors
+        )
 
     def test_verification_data_size_mismatch_errors(self):
-        _write(self.root, "public/verify/verification-data.js",
-               'window.TP_VERIFICATION_MAP = {"/":{"size_bytes":99999,"path":"/index.html"}};\n')
+        _write(
+            self.root,
+            "public/verify/verification-data.js",
+            'window.TP_VERIFICATION_MAP = {"/":{"size_bytes":99999,"path":"/index.html"}};\n',
+        )
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(any("verification-data.js" in e and "size_bytes=" in e for e in r.errors), r.errors)
+        self.assertTrue(
+            any("verification-data.js" in e and "size_bytes=" in e for e in r.errors), r.errors
+        )
 
     def test_print_evidence_chip_literal_is_a_hard_error(self):
         _write(self.root, "public/chip.html", '<span class="print-evidence">28 KB</span>\n')
         # cover chip.html in the manifest so only the literal trips.
         b = vfs._size_public(self.repo, "chip.html")
         d = self._meta()
-        d["files"]["chip.html"] = {"bytes": b, "size_human_en": humanise_bytes(b, lang="en"),
-                                   "size_human_fr": humanise_bytes(b, lang="fr")}
+        d["files"]["chip.html"] = {
+            "bytes": b,
+            "size_human_en": humanise_bytes(b, lang="en"),
+            "size_human_fr": humanise_bytes(b, lang="fr"),
+        }
         self._set_meta(d)
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
@@ -136,6 +173,7 @@ class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
         import contextlib
         import io
+
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             rc = vfs.main(REPO_ROOT)

@@ -13,8 +13,6 @@ Run:
     python3 -m unittest discover -s tools/quality/tests
 """
 
-import copy
-import json
 import pathlib
 import sys
 import tempfile
@@ -48,7 +46,11 @@ def _make_fixture_repo(root: pathlib.Path) -> None:
         "  - run: jq .bomFormat sbom.json\n"
         "  - run: tar --sort=name --numeric-owner -cf a.tar . && gzip -n a.tar\n",
     )
-    _write(root, ".github/workflows/pr-checks.yml", "steps:\n  - run: osv-scanner .\n  - run: reuse lint\n")
+    _write(
+        root,
+        ".github/workflows/pr-checks.yml",
+        "steps:\n  - run: osv-scanner .\n  - run: reuse lint\n",
+    )
     _write(root, ".github/workflows/scorecard.yml", "steps:\n  - uses: ossf/scorecard-action@v2\n")
     _write(root, "tools/build/build.sh", "#!/bin/sh\n# supports --check\n")
     _write(root, "REUSE.toml", "version = 1\n")
@@ -85,19 +87,30 @@ def _base_data():
     return {
         "claim_surface": {"include": ["*.md"], "exclude": []},
         "claims": {
-            "SLSA": _claim(verified_by=["control_attestation"], severity="critical", release_blocking=True),
+            "SLSA": _claim(
+                verified_by=["control_attestation"], severity="critical", release_blocking=True
+            ),
             "SBOM": _claim(verified_by=["control_sbom"], release_blocking=True),
             "PGP": _claim(
-                verified_by=["control_pgp"], enforced_at=["pr-gate"],
-                pr_gate_check="gpg", severity="critical", release_blocking=True,
+                verified_by=["control_pgp"],
+                enforced_at=["pr-gate"],
+                pr_gate_check="gpg",
+                severity="critical",
+                release_blocking=True,
             ),
-            "Scorecard": _claim(verified_by=["control_scorecard"], enforced_at=["pr-gate"], severity="medium"),
+            "Scorecard": _claim(
+                verified_by=["control_scorecard"], enforced_at=["pr-gate"], severity="medium"
+            ),
             "OSV": _claim(verified_by=["control_osv"], enforced_at=["pr-gate"], severity="medium"),
-            "REUSE": _claim(verified_by=["control_reuse"], enforced_at=["pr-gate"], severity="medium"),
+            "REUSE": _claim(
+                verified_by=["control_reuse"], enforced_at=["pr-gate"], severity="medium"
+            ),
             "deterministic": _claim(verified_by=["control_deterministic"], release_blocking=True),
             "reproducib": _claim(
-                verified_by=["control_reproducible"], enforced_at=["pr-gate"],
-                status="goal", severity="low",
+                verified_by=["control_reproducible"],
+                enforced_at=["pr-gate"],
+                status="goal",
+                severity="low",
             ),
         },
     }
@@ -126,7 +139,9 @@ class Evaluate(unittest.TestCase):
         _write(self.root, ".github/workflows/pr-checks.yml", "steps:\n  - run: reuse lint\n")
         r = vcp.evaluate(self.repo, _base_data())
         self.assertFalse(r.ok)
-        self.assertTrue(any('"OSV"' in f and "README.md" in f for f in r.parity_fails), r.parity_fails)
+        self.assertTrue(
+            any('"OSV"' in f and "README.md" in f for f in r.parity_fails), r.parity_fails
+        )
 
     def test_stated_in_outside_surface_fails(self):
         _write(self.root, "docs/x.md", "SLSA\n")  # exists but not matched by include "*.md"
@@ -134,7 +149,9 @@ class Evaluate(unittest.TestCase):
         data["claims"]["SLSA"]["stated_in"] = ["README.md", "docs/x.md"]
         r = vcp.evaluate(self.repo, data)
         self.assertFalse(r.ok)
-        self.assertTrue(any("outside the scanned" in f and "docs/x.md" in f for f in r.meta_fails), r.meta_fails)
+        self.assertTrue(
+            any("outside the scanned" in f and "docs/x.md" in f for f in r.meta_fails), r.meta_fails
+        )
 
     def test_nonexistent_control_fails(self):
         data = _base_data()
@@ -158,7 +175,9 @@ class Evaluate(unittest.TestCase):
         data["claims"]["reproducib"]["release_blocking"] = True
         r = vcp.evaluate(self.repo, data)
         self.assertFalse(r.ok)
-        self.assertTrue(any("status goal must not be release_blocking" in f for f in r.meta_fails), r.meta_fails)
+        self.assertTrue(
+            any("status goal must not be release_blocking" in f for f in r.meta_fails), r.meta_fails
+        )
 
     def test_ruleset_enforced_at_is_a_note_not_a_failure(self):
         data = _base_data()
@@ -166,7 +185,9 @@ class Evaluate(unittest.TestCase):
         data["claims"]["OSV"]["release_blocking"] = True
         r = vcp.evaluate(self.repo, data)
         # ruleset wiring is advisory: it surfaces a note, never a meta failure.
-        self.assertTrue(any('"OSV"' in n and "ruleset" in n for n in r.ruleset_notes), r.ruleset_notes)
+        self.assertTrue(
+            any('"OSV"' in n and "ruleset" in n for n in r.ruleset_notes), r.ruleset_notes
+        )
         self.assertTrue(r.ok, msg=f"meta={r.meta_fails}")
 
     def test_absent_token_requires_nothing(self):
@@ -182,8 +203,11 @@ class LoadMap(unittest.TestCase):
         self._tmp = tempfile.TemporaryDirectory()
         self.root = pathlib.Path(self._tmp.name)
         # the real schema is the contract under test.
-        _write(self.root, "schemas/claims-map.schema.json",
-               (REPO_ROOT / "schemas" / "claims-map.schema.json").read_text(encoding="utf-8"))
+        _write(
+            self.root,
+            "schemas/claims-map.schema.json",
+            (REPO_ROOT / "schemas" / "claims-map.schema.json").read_text(encoding="utf-8"),
+        )
         self.repo = vcp.Repo(self.root)
 
     def tearDown(self):
@@ -191,6 +215,7 @@ class LoadMap(unittest.TestCase):
 
     def test_schema_break_returns_errors(self):
         import yaml
+
         data = _base_data()
         del data["claims"]["SBOM"]["verified_by"]  # required key missing
         _write(self.root, "policy-data/claims-map.yml", yaml.safe_dump(data))
@@ -201,6 +226,7 @@ class LoadMap(unittest.TestCase):
 
     def test_valid_map_returns_data(self):
         import yaml
+
         _write(self.root, "policy-data/claims-map.yml", yaml.safe_dump(_base_data()))
         out, errors = vcp.load_map(self.repo)
         self.assertEqual(errors, [])
@@ -212,6 +238,7 @@ class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
         import contextlib
         import io
+
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             rc = vcp.main(REPO_ROOT)

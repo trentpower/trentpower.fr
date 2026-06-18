@@ -124,7 +124,7 @@ def walk_public_urls(repo: Repo, deploy_excluded: list[str]) -> list[str]:
     prefix = "public/"
     urls: list[str] = []
     for repo_rel in repo.glob("public/**/*"):
-        rel = repo_rel[len(prefix):]
+        rel = repo_rel[len(prefix) :]
         if rel == ".htaccess":
             continue
         url = "/" + rel

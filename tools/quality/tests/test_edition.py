@@ -36,8 +36,14 @@ def _write(root: pathlib.Path, rel: str, text: str) -> None:
 
 def _make_fixture_repo(root: pathlib.Path) -> None:
     _write(root, ve.CANONICAL_REL, json.dumps({"edition": EDITION}))
-    _write(root, "public/index.html", f'<html data-edition="{EDITION}"><body>Edition {EDITION}</body></html>\n')
-    _write(root, ve.SITE_META_REL, json.dumps({"edition": EDITION, "asset_version": f"{EDITION}.1"}))
+    _write(
+        root,
+        "public/index.html",
+        f'<html data-edition="{EDITION}"><body>Edition {EDITION}</body></html>\n',
+    )
+    _write(
+        root, ve.SITE_META_REL, json.dumps({"edition": EDITION, "asset_version": f"{EDITION}.1"})
+    )
 
 
 class Evaluate(unittest.TestCase):
@@ -65,12 +71,18 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(any("expected edition" in f for f in r.fails), r.fails)
 
     def test_site_metadata_edition_mismatch_fails(self):
-        _write(self.root, ve.SITE_META_REL, json.dumps({"edition": "2020-01-01", "asset_version": "2020-01-01.1"}))
+        _write(
+            self.root,
+            ve.SITE_META_REL,
+            json.dumps({"edition": "2020-01-01", "asset_version": "2020-01-01.1"}),
+        )
         r = ve.evaluate(self.repo, EDITION)
         self.assertTrue(any("site-metadata.json: edition expected" in f for f in r.fails), r.fails)
 
     def test_asset_version_prefix_mismatch_fails(self):
-        _write(self.root, ve.SITE_META_REL, json.dumps({"edition": EDITION, "asset_version": "9999.1"}))
+        _write(
+            self.root, ve.SITE_META_REL, json.dumps({"edition": EDITION, "asset_version": "9999.1"})
+        )
         r = ve.evaluate(self.repo, EDITION)
         self.assertTrue(any("asset_version" in f for f in r.fails), r.fails)
 
@@ -85,10 +97,15 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(any("verify-modal.js: EDITION expected" in f for f in r.fails), r.fails)
 
     def test_verification_data_stale_record_fails(self):
-        _write(self.root, ve.VERIFICATION_DATA_REL,
-               'window.TP_VERIFICATION_MAP = {"/":{"edition": "2020-01-01"}};\n')
+        _write(
+            self.root,
+            ve.VERIFICATION_DATA_REL,
+            'window.TP_VERIFICATION_MAP = {"/":{"edition": "2020-01-01"}};\n',
+        )
         r = ve.evaluate(self.repo, EDITION)
-        self.assertTrue(any("verification-data.js" in f and "edition expected" in f for f in r.fails), r.fails)
+        self.assertTrue(
+            any("verification-data.js" in f and "edition expected" in f for f in r.fails), r.fails
+        )
 
 
 class Load(unittest.TestCase):
@@ -116,6 +133,7 @@ class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
         import contextlib
         import io
+
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             rc = ve.main(REPO_ROOT)

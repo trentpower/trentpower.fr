@@ -24,8 +24,14 @@ import validate_home_anchors as vha  # noqa: E402
 
 REPO_ROOT = TOOLS.parent
 
-_FILES = ("en-au/index.html", "fr/index.html", "js/theme.js", "sw-register.js",
-          "js/reveal.js", "styles.css")
+_FILES = (
+    "en-au/index.html",
+    "fr/index.html",
+    "js/theme.js",
+    "sw-register.js",
+    "js/reveal.js",
+    "styles.css",
+)
 
 
 def _good_index() -> str:
@@ -63,7 +69,9 @@ class PureChecks(unittest.TestCase):
         self.assertTrue(any('id="contact"' in e and "must be unique" in e for e in errs), errs)
 
     def test_app_js_scrollintoview_banned(self):
-        self.assertTrue(any("scrollIntoView" in e for e in vha.check_app_js("el.scrollIntoView();")))
+        self.assertTrue(
+            any("scrollIntoView" in e for e in vha.check_app_js("el.scrollIntoView();"))
+        )
 
     def test_app_js_clean_is_ok(self):
         self.assertEqual(vha.check_app_js("const x = 1;\n"), [])
@@ -85,7 +93,8 @@ class Evaluate(unittest.TestCase):
         for rel in _FILES:
             (self.root / "public" / rel).parent.mkdir(parents=True, exist_ok=True)
             (self.root / "public" / rel).write_text(
-                (REPO_ROOT / "public" / rel).read_text(encoding="utf-8"), encoding="utf-8")
+                (REPO_ROOT / "public" / rel).read_text(encoding="utf-8"), encoding="utf-8"
+            )
         self.repo = vha.Repo(self.root)
 
     def tearDown(self):
@@ -111,6 +120,7 @@ class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
         import contextlib
         import io
+
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             rc = vha.main(REPO_ROOT)

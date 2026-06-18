@@ -376,10 +376,7 @@ def main(repo_root: Path = REPO_ROOT) -> int:
     repo = Repo(repo_root)
     data, errors = load_map(repo)
     if errors:
-        print(
-            "  FAIL: policy-data/claims-map.yml does not satisfy "
-            "schemas/claims-map.schema.json:"
-        )
+        print("  FAIL: policy-data/claims-map.yml does not satisfy schemas/claims-map.schema.json:")
         for e in errors[:12]:
             print(f"    {e}")
         return 1

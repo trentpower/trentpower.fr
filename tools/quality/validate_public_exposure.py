@@ -137,7 +137,7 @@ def walk_public_files(
     deploy_excluded = deploy_excluded or []
     prefix = "public/"
     for repo_rel in repo.glob("public/**/*"):
-        rel = repo_rel[len(prefix):]
+        rel = repo_rel[len(prefix) :]
         url = "/" + rel
         if any(p.match(url) for p in deploy_excluded):
             continue

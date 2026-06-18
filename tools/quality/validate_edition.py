@@ -77,7 +77,7 @@ def _active_html(repo: Repo) -> list[str]:
     out: list[str] = []
     prefix = "public/"
     for repo_rel in repo.glob("public/**/*.html"):
-        rel = repo_rel[len(prefix):]
+        rel = repo_rel[len(prefix) :]
         if re.match(r"integrity/releases/[^/]+/", rel):
             continue
         if rel.startswith("editorial/"):

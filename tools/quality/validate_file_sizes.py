@@ -71,7 +71,7 @@ def _size_public(repo: Repo, prel: str) -> int:
 
 def _public_glob(repo: Repo, pattern: str) -> list[str]:
     prefix = "public/"
-    return [rel[len(prefix):] for rel in repo.glob(f"{prefix}**/{pattern}")]
+    return [rel[len(prefix) :] for rel in repo.glob(f"{prefix}**/{pattern}")]
 
 
 def _read_json(repo: Repo, prel: str):
@@ -169,7 +169,9 @@ def check_source_manifest(repo: Repo, r: Result) -> None:
             recorded_size = entry.get("size")
             live_rel = live_path.lstrip("/")
             if not _is_public(repo, live_rel):
-                r.errors.append(f"source-manifest.json: {name} live_path {live_path} missing on disk")
+                r.errors.append(
+                    f"source-manifest.json: {name} live_path {live_path} missing on disk"
+                )
                 bad += 1
             else:
                 actual = _size_public(repo, live_rel)
@@ -217,7 +219,9 @@ def check_source_manifest(repo: Repo, r: Result) -> None:
                         )
                         bad += 1
     if bad == 0:
-        r.oks.append(f"source-manifest.json: {len(entries)} entries (canonical + mirror sizes match)")
+        r.oks.append(
+            f"source-manifest.json: {len(entries)} entries (canonical + mirror sizes match)"
+        )
 
 
 # ── 3. verify/verification-data.js ──────────────────────────────

@@ -86,7 +86,8 @@ def build() -> str:
     lines.append(
         "<!-- Source: policy-data/claims-map.yml · "
         "Generator: tools/build/generate_claims_md.py · "
-        "Drift gate: claims_map_drift (blocking). -->")
+        "Drift gate: claims_map_drift (blocking). -->"
+    )
     lines.append("")
     lines.append("# Public claims ledger")
     lines.append("")
@@ -121,9 +122,7 @@ def build() -> str:
         "| Claim | Public wording | Severity | Stated in | Verified by | Enforced at | "
         "Status | Release-blocking | Owner | Last reviewed |"
     )
-    lines.append(
-        "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"
-    )
+    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |")
     lines.extend(_rows(claims))
     lines.append("")
     lines.append("## Claim surface")

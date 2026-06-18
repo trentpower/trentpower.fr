@@ -93,7 +93,9 @@ class Evaluate(unittest.TestCase):
 
     def test_injected_import_breaks_evaluate(self):
         styles = self.root / css.STYLES_REL
-        styles.write_text("@import url(x.css);\n" + styles.read_text(encoding="utf-8"), encoding="utf-8")
+        styles.write_text(
+            "@import url(x.css);\n" + styles.read_text(encoding="utf-8"), encoding="utf-8"
+        )
         r = css.evaluate(self.repo)
         self.assertFalse(r.ok)
         self.assertTrue(any(e.startswith("L8") for e in r.failures), r.failures)
@@ -108,6 +110,7 @@ class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
         import contextlib
         import io
+
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             rc = css.main(REPO_ROOT)

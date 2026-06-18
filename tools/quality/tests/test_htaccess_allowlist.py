@@ -89,8 +89,11 @@ class Evaluate(unittest.TestCase):
         self.assertIn("/orphan.txt", r.fallthrough)
 
     def test_denied_file_is_reported(self):
-        _write(self.root, "public/.htaccess",
-               GATE.replace("# END", "RewriteRule ^secret - [F,L]\n# END"))
+        _write(
+            self.root,
+            "public/.htaccess",
+            GATE.replace("# END", "RewriteRule ^secret - [F,L]\n# END"),
+        )
         _write(self.root, "public/secret.json", "{}\n")
         ctx, _ = vha.load(self.repo)
         r = vha.evaluate(self.repo, ctx)
@@ -129,6 +132,7 @@ class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
         import contextlib
         import io
+
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             rc = vha.main(REPO_ROOT)

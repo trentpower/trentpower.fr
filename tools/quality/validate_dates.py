@@ -97,7 +97,7 @@ def _public_glob(repo: Repo, pattern: str) -> list[str]:
     exclusion policy is NOT applied here (it is domain logic, kept in
     _active_html)."""
     prefix = "public/"
-    return [rel[len(prefix):] for rel in repo.glob(f"{prefix}**/{pattern}")]
+    return [rel[len(prefix) :] for rel in repo.glob(f"{prefix}**/{pattern}")]
 
 
 def _read_json(repo: Repo, rel: str):
@@ -386,7 +386,9 @@ def check_validated_word(repo: Repo, r: Result) -> None:
         r.oks.append('no non-canonical "Validated"/"Validé" anywhere')
 
 
-def check_security_txt_expires(repo: Repo, overrides: dict, now: datetime.datetime, r: Result) -> None:
+def check_security_txt_expires(
+    repo: Repo, overrides: dict, now: datetime.datetime, r: Result
+) -> None:
     """security.txt must carry an Expires line in the future. if an
     override declares the expected expiry, mismatch surfaces as a
     warning (the override is documentation, not enforcement)."""

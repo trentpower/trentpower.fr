@@ -44,9 +44,20 @@ def _make_fixture_repo(root: pathlib.Path) -> None:
     _write(
         root,
         vd.MANIFEST_REL,
-        json.dumps({"files": {"index.html": {"modified_iso": MOD}, "privacy/index.html": {"modified_iso": MOD}}}),
+        json.dumps(
+            {
+                "files": {
+                    "index.html": {"modified_iso": MOD},
+                    "privacy/index.html": {"modified_iso": MOD},
+                }
+            }
+        ),
     )
-    _write(root, vd.DATE_OVERRIDES_REL, json.dumps({"published": {}, "modified": {}, "lastmod": {}, "expires": {}}))
+    _write(
+        root,
+        vd.DATE_OVERRIDES_REL,
+        json.dumps({"published": {}, "modified": {}, "lastmod": {}, "expires": {}}),
+    )
     _write(
         root,
         vd.SITEMAP_REL,
@@ -85,8 +96,11 @@ class Evaluate(unittest.TestCase):
         self.assertEqual(r.warns, [])
 
     def test_sitemap_lastmod_drift(self):
-        _write(self.root, vd.SITEMAP_REL,
-               "<urlset><url><loc>https://trentpower.fr/</loc><lastmod>2020-01-01</lastmod></url></urlset>")
+        _write(
+            self.root,
+            vd.SITEMAP_REL,
+            "<urlset><url><loc>https://trentpower.fr/</loc><lastmod>2020-01-01</lastmod></url></urlset>",
+        )
         r = vd.evaluate(self.repo, self._ctx(), NOW)
         self.assertFalse(r.ok)
         self.assertTrue(any("sitemap:" in f and "manifest says" in f for f in r.fails), r.fails)
@@ -110,11 +124,18 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(any("security.txt" in f and "past" in f for f in r.fails), r.fails)
 
     def test_security_txt_override_mismatch_is_a_warning(self):
-        _write(self.root, vd.DATE_OVERRIDES_REL, json.dumps(
-            {"expires": {"/.well-known/security.txt": {"date": "2099-12-31", "reason": "doc"}}}))
+        _write(
+            self.root,
+            vd.DATE_OVERRIDES_REL,
+            json.dumps(
+                {"expires": {"/.well-known/security.txt": {"date": "2099-12-31", "reason": "doc"}}}
+            ),
+        )
         r = vd.evaluate(self.repo, self._ctx(), NOW)
         self.assertTrue(r.ok, msg=r.fails)  # mismatch never fails
-        self.assertTrue(any("security.txt" in w and "differs from override" in w for w in r.warns), r.warns)
+        self.assertTrue(
+            any("security.txt" in w and "differs from override" in w for w in r.warns), r.warns
+        )
 
     def test_unresolved_placeholder_fails(self):
         _write(self.root, "public/foo.html", "lastmod {{lastmod:/index.html}} here\n")
@@ -129,25 +150,37 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(any("non-canonical trust term" in f for f in r.fails), r.fails)
 
     def test_validated_key_tolerated_inside_ldjson(self):
-        _write(self.root, "public/page.html",
-               '<script type="application/ld+json">{"x":"Validated"}</script>\n')
+        _write(
+            self.root,
+            "public/page.html",
+            '<script type="application/ld+json">{"x":"Validated"}</script>\n',
+        )
         r = vd.evaluate(self.repo, self._ctx(), NOW)
         # the word inside an open ld+json block is tolerated -> no fail from it.
         self.assertFalse(any("non-canonical trust term" in f for f in r.fails), r.fails)
 
     def test_override_missing_reason_fails(self):
-        _write(self.root, vd.DATE_OVERRIDES_REL, json.dumps(
-            {"lastmod": {"/foo": {"date": "2026-06-10"}}}))  # no reason
+        _write(
+            self.root,
+            vd.DATE_OVERRIDES_REL,
+            json.dumps({"lastmod": {"/foo": {"date": "2026-06-10"}}}),
+        )  # no reason
         r = vd.evaluate(self.repo, self._ctx(), NOW)
         self.assertFalse(r.ok)
         self.assertTrue(any("missing non-empty 'reason'" in f for f in r.fails), r.fails)
 
     def test_stale_file_is_a_warning(self):
-        _write(self.root, vd.MANIFEST_REL, json.dumps(
-            {"files": {"index.html": {"modified_iso": "2026-01-01"}}}))  # >60d before edition
+        _write(
+            self.root,
+            vd.MANIFEST_REL,
+            json.dumps({"files": {"index.html": {"modified_iso": "2026-01-01"}}}),
+        )  # >60d before edition
         # keep sitemap consistent with the new manifest date so only staleness fires
-        _write(self.root, vd.SITEMAP_REL,
-               "<urlset><url><loc>https://trentpower.fr/</loc><lastmod>2026-01-01</lastmod></url></urlset>")
+        _write(
+            self.root,
+            vd.SITEMAP_REL,
+            "<urlset><url><loc>https://trentpower.fr/</loc><lastmod>2026-01-01</lastmod></url></urlset>",
+        )
         _write(self.root, "public/index.html", '<script>{"dateModified":"2026-01-01"}</script>\n')
         r = vd.evaluate(self.repo, self._ctx(), NOW)
         self.assertTrue(any(w.startswith("stale:") for w in r.warns), r.warns)
@@ -180,6 +213,7 @@ class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
         import contextlib
         import io
+
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             rc = vd.main(REPO_ROOT)
