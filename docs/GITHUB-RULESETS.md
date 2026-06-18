@@ -71,17 +71,19 @@ This ruleset carries a repository-role bypass set to **always** so the
 maintainer can push integrations and promotions straight to `preprod`
 without a PR.
 
-`preprod` is **disposable by design.** The repository setting
-"Automatically delete head branches" stays **on**, so merging the
-`preprod → main` promotion PR (whose head is `preprod`) deletes the
-branch — exactly as it cleans up every merged `feature/*` branch. The
-branch is then resurrected automatically: the
-[`recreate-preprod.yml`](../.github/workflows/recreate-preprod.yml)
-workflow runs on every push to `main` and, **only if `preprod` is
-missing**, recreates it at the current `main` commit. It never resets an
-existing `preprod`, so a hotfix or any other push to `main` can never
-wipe unpromoted work. Net: autodelete keeps the branch list clean, and
-`preprod` reappears after each promotion with no manual step.
+`preprod` survives a promotion and is **reset by hand.** _Restrict
+deletions_ is on for this ruleset, so the repository's "Automatically
+delete head branches" setting does **not** remove `preprod` when the
+`preprod → main` promotion PR merges — the branch protection wins. The
+repo also allows squash merges only, so a promotion collapses to one new
+commit on `main` while `preprod` still holds the individual commits; the
+two then diverge. **Manual step after every promotion:** reset `preprod`
+to `main` — `git checkout preprod && git reset --hard origin/main && git push origin preprod --force-with-lease`
+(the admin bypass on this ruleset allows the force-push; `main` is never
+force-pushed). The [`recreate-preprod.yml`](../.github/workflows/recreate-preprod.yml)
+workflow is a safety net only: it runs on every push to `main` and
+recreates `preprod` **solely if the branch is missing**, so it covers an
+accidental deletion but does not reset a surviving, diverged `preprod`.
 
 ## `protect-release-tags`
 
