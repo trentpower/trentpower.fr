@@ -48,6 +48,7 @@ sys.path.insert(
     ),
 )
 from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
 # repo-relative locations of the inputs (resolved through the Repo seam).
 IDENTITY_CANONICAL_REL = "tools/config/identity_canonical.json"
@@ -85,39 +86,18 @@ ISO_DATE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})")
 EXPIRES_RE = re.compile(r"^Expires:\s*(\S+)\s*$", re.MULTILINE)
 
 
-# ---------------------------------------------------------------------------
-# Repo — the filesystem evidence seam. one small object resolves every file the
-# checks read, relative to an injected root. production adapter is
-# Repo(REPO_ROOT); a test adapter is Repo(tmp_fixture).
-# ---------------------------------------------------------------------------
-@dataclass(frozen=True)
-class Repo:
-    root: Path
+# named accessors over the shared Repo seam. the public-tree knowledge (the
+# "public/" prefix, recursive walks) lives here in the validator, not on Repo.
+def _read_public(repo: Repo, prel: str) -> str:
+    return repo.read(f"public/{prel}")
 
-    @property
-    def public(self) -> Path:
-        return self.root / "public"
 
-    def read(self, rel: str) -> str:
-        p = self.root / rel
-        return p.read_text(encoding="utf-8") if p.is_file() else ""
-
-    def exists(self, rel: str) -> bool:
-        return (self.root / rel).is_file()
-
-    def read_public(self, prel: str) -> str:
-        return self.read(f"public/{prel}")
-
-    def public_glob(self, pattern: str) -> list[str]:
-        """raw public-tree walk — returns public-relative posix paths. exclusion
-        policy is NOT applied here (it is domain logic, kept in _active_html)."""
-        if not self.public.is_dir():
-            return []
-        return sorted(
-            p.relative_to(self.public).as_posix()
-            for p in self.public.rglob(pattern)
-            if p.is_file()
-        )
+def _public_glob(repo: Repo, pattern: str) -> list[str]:
+    """recursive public-tree walk — returns public-relative posix paths.
+    exclusion policy is NOT applied here (it is domain logic, kept in
+    _active_html)."""
+    prefix = "public/"
+    return [rel[len(prefix):] for rel in repo.glob(f"{prefix}**/{pattern}")]
 
 
 def _read_json(repo: Repo, rel: str):
@@ -128,7 +108,7 @@ def _active_html(repo: Repo) -> list[str]:
     """public-relative paths of every active .html — frozen archive snapshots
     and build-output editorial-review documents excluded (the exclusion policy)."""
     out: list[str] = []
-    for rel in repo.public_glob("*.html"):
+    for rel in _public_glob(repo, "*.html"):
         if rel.startswith(FROZEN_PREFIX):
             continue
         if rel.startswith(EDITORIAL_REVIEW_PREFIXES):
@@ -243,7 +223,7 @@ def check_sitemap(repo: Repo, manifest: dict, overrides: dict, edition: str, r: 
     (integrity.json, site-metadata.json, integrity.json.sig) must declare
     a lastmod override so the date surface still has an audit trail.
     """
-    if not repo.exists(SITEMAP_REL):
+    if not repo.is_file(SITEMAP_REL):
         r.fails.append("sitemap.xml: missing")
         return
     text = repo.read(SITEMAP_REL)
@@ -297,7 +277,7 @@ def check_jsonld_datemod(repo: Repo, manifest: dict, r: Result) -> None:
     checked_files = 0
     checked_values = 0
     for rel in _active_html(repo):
-        text = repo.read_public(rel)
+        text = _read_public(repo, rel)
         matches = list(DATEMOD_RE.finditer(text))
         if not matches:
             continue
@@ -333,7 +313,7 @@ def check_integrity_generated(repo: Repo, now: datetime.datetime, r: Result) -> 
     """integrity.json.generated must not be in the future relative to
     today utc. catches a build clock skew that would otherwise mint a
     manifest dated tomorrow."""
-    if not repo.exists(INTEGRITY_REL):
+    if not repo.is_file(INTEGRITY_REL):
         r.fails.append("integrity.json: missing")
         return
     try:
@@ -358,11 +338,11 @@ def check_no_placeholders(repo: Repo, r: Result) -> None:
     skipped or a generator emitted a token after the sweep ran."""
     leaks: list[str] = []
     for ext in PLACEHOLDER_EXTS:
-        for rel in repo.public_glob(f"*{ext}"):
+        for rel in _public_glob(repo, f"*{ext}"):
             if rel.startswith(FROZEN_PREFIX):
                 continue
             try:
-                text = repo.read_public(rel)
+                text = _read_public(repo, rel)
             except UnicodeDecodeError:
                 continue
             m = PLACEHOLDER_RE.search(text)
@@ -390,7 +370,7 @@ def check_validated_word(repo: Repo, r: Result) -> None:
     legitimate machine-readable use."""
     hits = 0
     for rel in _active_html(repo):
-        text = repo.read_public(rel)
+        text = _read_public(repo, rel)
         for m in VALIDATED_RE.finditer(text):
             window_start = max(0, m.start() - 200)
             window = text[window_start : m.start()]
@@ -410,7 +390,7 @@ def check_security_txt_expires(repo: Repo, overrides: dict, now: datetime.dateti
     """security.txt must carry an Expires line in the future. if an
     override declares the expected expiry, mismatch surfaces as a
     warning (the override is documentation, not enforcement)."""
-    if not repo.exists(SECURITY_TXT_REL):
+    if not repo.is_file(SECURITY_TXT_REL):
         r.fails.append(".well-known/security.txt: missing")
         return
     text = repo.read(SECURITY_TXT_REL)
@@ -478,16 +458,16 @@ def check_stale_files(manifest: dict, edition: str, r: Result) -> None:
 # load — read + validate the inputs. returns (ctx, errors); never prints/exits.
 # ---------------------------------------------------------------------------
 def load(repo: Repo) -> tuple[Ctx | None, list[str]]:
-    if not repo.exists(IDENTITY_CANONICAL_REL):
+    if not repo.is_file(IDENTITY_CANONICAL_REL):
         return None, [f"{IDENTITY_CANONICAL_REL} not found"]
     edition = _read_json(repo, IDENTITY_CANONICAL_REL).get("edition", "")
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", edition):
         return None, [f"canonical edition '{edition}' is not YYYY-MM-DD"]
-    if not repo.exists(MANIFEST_REL):
+    if not repo.is_file(MANIFEST_REL):
         return None, [f"{MANIFEST_REL} not found — run generate_file_metadata.py"]
     manifest = _read_json(repo, MANIFEST_REL)
     overrides: dict = {}
-    if repo.exists(DATE_OVERRIDES_REL):
+    if repo.is_file(DATE_OVERRIDES_REL):
         try:
             overrides = _read_json(repo, DATE_OVERRIDES_REL)
         except json.JSONDecodeError as e:

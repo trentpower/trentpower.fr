@@ -63,51 +63,28 @@ sys.path.insert(
     ),
 )
 from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
+
+# repo-relative locations of the evidence files the controls read. named
+# accessors below keep the path knowledge here (in the validator), not on the
+# shared Repo seam — Repo stays a pure adapter.
+RELEASE_YML_REL = ".github/workflows/release.yml"
+PRCHECKS_YML_REL = ".github/workflows/pr-checks.yml"
+SCORECARD_YML_REL = ".github/workflows/scorecard.yml"
+BUILD_SH_REL = "tools/build/build.sh"
+CHECKS_REGISTRY_REL = "tools/lib/checks.py"
+PGP_KEY_REL = "public/.well-known/pgp-key.asc"
+REUSE_TOML_REL = "REUSE.toml"
+CLAIMS_MAP_REL = "policy-data/claims-map.yml"
+CLAIMS_SCHEMA_REL = "schemas/claims-map.schema.json"
 
 
-# ---------------------------------------------------------------------------
-# Repo — the internal evidence seam. one small object resolves every file the
-# controls and the surface scan read, all relative to an injected root. the
-# production adapter is Repo(REPO_ROOT); a test adapter is Repo(tmp_fixture).
-# ---------------------------------------------------------------------------
-@dataclass(frozen=True)
-class Repo:
-    root: Path
+def _release_yml(repo: Repo) -> str:
+    return repo.read(RELEASE_YML_REL)
 
-    def read(self, rel: str) -> str:
-        p = self.root / rel
-        return p.read_text(encoding="utf-8") if p.is_file() else ""
 
-    def is_file(self, rel: str) -> bool:
-        return (self.root / rel).is_file()
-
-    @property
-    def release_yml(self) -> str:
-        return self.read(".github/workflows/release.yml")
-
-    @property
-    def prchecks_yml(self) -> str:
-        return self.read(".github/workflows/pr-checks.yml")
-
-    @property
-    def scorecard_yml(self) -> str:
-        return self.read(".github/workflows/scorecard.yml")
-
-    @property
-    def build_sh(self) -> str:
-        return self.read("tools/build/build.sh")
-
-    @property
-    def checks_registry(self) -> str:
-        return self.read("tools/lib/checks.py")
-
-    @property
-    def claims_map(self) -> str:
-        return self.read("policy-data/claims-map.yml")
-
-    @property
-    def claims_schema(self) -> str:
-        return self.read("schemas/claims-map.schema.json")
+def _checks_registry(repo: Repo) -> str:
+    return repo.read(CHECKS_REGISTRY_REL)
 
 
 # ---------------------------------------------------------------------------
@@ -119,7 +96,7 @@ def control_attestation(repo: Repo) -> tuple[bool, str]:
     """SLSA / Sigstore / Rekor / attestation — backed by the build-provenance
     attestation step. keyless attestation implies Sigstore (Fulcio) signing and
     a Rekor transparency record, so the single step covers all four tokens."""
-    text = repo.release_yml
+    text = _release_yml(repo)
     ok = "attest-build-provenance" in text and "id-token: write" in text
     return ok, (
         "release.yml has no actions/attest-build-provenance step with "
@@ -131,7 +108,7 @@ def control_sbom(repo: Repo) -> tuple[bool, str]:
     """CycloneDX / SBOM — backed by the SBOM generation step AND the
     well-formedness validation step. a generated-but-unvalidated SBOM does
     not earn the claim, so both must be present in release.yml."""
-    text = repo.release_yml
+    text = _release_yml(repo)
     ok = "cyclonedx_py" in text and "bomFormat" in text
     return ok, (
         "release.yml is missing the cyclonedx_py generation step and/or the "
@@ -142,9 +119,9 @@ def control_sbom(repo: Repo) -> tuple[bool, str]:
 def control_pgp(repo: Repo) -> tuple[bool, str]:
     """PGP — backed by the published public key on disk AND the gpg signature
     check registered as a blocking gate in checks.py."""
-    if not repo.is_file("public/.well-known/pgp-key.asc"):
-        return False, "published key missing: public/.well-known/pgp-key.asc"
-    src = repo.checks_registry
+    if not repo.is_file(PGP_KEY_REL):
+        return False, f"published key missing: {PGP_KEY_REL}"
+    src = _checks_registry(repo)
     # the gpg check must be registered as blocking (_B). bind to gpg's OWN
     # Check entry: name, then its single description string, then the tier as
     # the next positional arg. anchoring on that string (not a DOTALL `.*?`)
@@ -159,29 +136,29 @@ def control_pgp(repo: Repo) -> tuple[bool, str]:
 def control_scorecard(repo: Repo) -> tuple[bool, str]:
     """OpenSSF / Scorecard — backed by the scorecard workflow running the
     official ossf/scorecard-action."""
-    ok = "ossf/scorecard-action" in repo.scorecard_yml
+    ok = "ossf/scorecard-action" in repo.read(SCORECARD_YML_REL)
     return ok, "scorecard.yml has no ossf/scorecard-action step (the OpenSSF Scorecard control)"
 
 
 def control_osv(repo: Repo) -> tuple[bool, str]:
     """OSV — backed by the osv-scanner dependency-vulnerability job in
     pr-checks.yml."""
-    ok = "osv-scanner" in repo.prchecks_yml
+    ok = "osv-scanner" in repo.read(PRCHECKS_YML_REL)
     return ok, "pr-checks.yml has no osv-scanner step (the OSV dependency-scan control)"
 
 
 def control_reuse(repo: Repo) -> tuple[bool, str]:
     """REUSE — backed by the reuse-lint job AND the REUSE.toml on disk."""
-    if not repo.is_file("REUSE.toml"):
+    if not repo.is_file(REUSE_TOML_REL):
         return False, "REUSE.toml is missing (the REUSE licensing control)"
-    ok = "reuse lint" in repo.prchecks_yml
+    ok = "reuse lint" in repo.read(PRCHECKS_YML_REL)
     return ok, "pr-checks.yml has no `reuse lint` step (the REUSE licensing control)"
 
 
 def control_deterministic(repo: Repo) -> tuple[bool, str]:
     """deterministic build — backed by the release archive being built with
     sorted, owner-zeroed, fixed-mtime tar + name/timestamp-stripped gzip."""
-    text = repo.release_yml
+    text = _release_yml(repo)
     ok = "--sort=name" in text and "--numeric-owner" in text and "gzip -n" in text
     return ok, (
         "release.yml archive step is missing the determinism flags "
@@ -192,7 +169,7 @@ def control_deterministic(repo: Repo) -> tuple[bool, str]:
 def control_reproducible(repo: Repo) -> tuple[bool, str]:
     """reproducibility goal — backed by the build's --check path, which
     re-renders from source and asserts zero drift against the committed bytes."""
-    ok = "--check" in repo.build_sh
+    ok = "--check" in repo.read(BUILD_SH_REL)
     return ok, "build.sh has no --check reproducibility (re-render / no-drift) path"
 
 
@@ -219,11 +196,11 @@ def load_map(repo: Repo) -> tuple[dict | None, list[str]]:
     """load + schema-validate policy-data/claims-map.yml. returns (data, errors);
     errors is a list of human-readable strings (never raises on a bad map, so the
     caller decides how to report — the interface stays a value, not control flow)."""
-    raw = repo.claims_map
+    raw = repo.read(CLAIMS_MAP_REL)
     if not raw:
         return None, ["policy-data/claims-map.yml is missing or empty"]
     data = yaml.safe_load(raw)
-    schema = json.loads(repo.claims_schema)
+    schema = json.loads(repo.read(CLAIMS_SCHEMA_REL))
     errors = [
         f"{'/'.join(str(p) for p in e.path) or '(root)'}: {e.message}"
         for e in sorted(Draft202012Validator(schema).iter_errors(data), key=lambda e: list(e.path))
@@ -238,9 +215,7 @@ def _surface_files(repo: Repo, surface: dict) -> list[str]:
     exclude = surface.get("exclude", [])
     found: set = set()
     for pat in include:
-        found.update(
-            str(p.relative_to(repo.root)) for p in repo.root.glob(pat) if p.is_file()
-        )
+        found.update(repo.glob(pat))
 
     def excluded(rel: str) -> bool:
         for pat in exclude:
@@ -330,7 +305,7 @@ def _meta_checks(repo: Repo, data: dict, surface_rel: set[str]) -> tuple[list[st
                         "pr_gate_check naming the blocking checks.py id"
                     )
                 else:
-                    src = repo.checks_registry
+                    src = _checks_registry(repo)
                     pat = rf'Check\(\s*"{re.escape(gate_id)}"\s*,\s*"(?:[^"\\]|\\.)*"\s*,\s*_B\b'
                     if not re.search(pat, src):
                         fails.append(
