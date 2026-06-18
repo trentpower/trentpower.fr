@@ -64,12 +64,12 @@ manual_notes:
       check, so it is deliberately NOT bound to a claim token here — binding it
       would make a future honest CodeQL claim impossible to back. No control
       promises that static analysis finds every class of defect.
-  - topic: OSV / REUSE required-status promotion
+  - topic: OSV / REUSE required-status enforcement
     note: >-
-      OSV (sca) and REUSE (reuse) run green in CI but are recorded here as
-      release_blocking false until the protect-main / protect-preprod rulesets
-      add them to required status checks (a separate governance step). When that
-      lands, their enforced_at gains `ruleset` and release_blocking flips true.
+      OSV (sca) and REUSE (reuse) are required status checks on both the
+      protect-main and protect-preprod rulesets, so a pull request cannot merge
+      while either is red. They are enforced at ruleset level (not as a checks.py
+      blocking gate), which is why their enforced_at is `ruleset`.
   - topic: Independent reproducibility
     note: >-
       Off-machine, independent bit-for-bit reproduction is a documented target,
@@ -195,9 +195,9 @@ claims:
     severity: medium
     stated_in: [docs/SECURITY-PIPELINE.md, docs/ASSURANCE-CASE.md]
     verified_by: [control_osv]
-    enforced_at: [pr-gate]
+    enforced_at: [ruleset]
     status: enforced
-    release_blocking: false
+    release_blocking: true
     owner: maintainer
     last_reviewed: "2026-06-18"
     review_cadence: per-release
@@ -207,9 +207,9 @@ claims:
     severity: medium
     stated_in: [README.md, docs/SECURITY-PIPELINE.md]
     verified_by: [control_reuse]
-    enforced_at: [pr-gate]
+    enforced_at: [ruleset]
     status: enforced
-    release_blocking: false
+    release_blocking: true
     owner: maintainer
     last_reviewed: "2026-06-18"
     review_cadence: per-release

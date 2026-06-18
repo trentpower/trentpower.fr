@@ -127,9 +127,8 @@ jobs:
     # blocking — dependency vulnerability scan (osv-scanner, OSV.dev) over the
     # pinned Python and Node manifests. Fail-closed. Honours osv-scanner.toml,
     # whose suppressions are tied to security/openvex.json (no silent ignores).
-    # NOT yet a required status check — add it in the ruleset once green on a
-    # promotion PR (see docs/GITHUB-RULESETS.md, same merge-first-then-require
-    # order as the existing checks).
+    # Required status check on the protect-main and protect-preprod rulesets —
+    # a PR cannot merge while this is red (see docs/GITHUB-RULESETS.md).
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -151,7 +150,8 @@ jobs:
   reuse:
     # blocking — REUSE (reuse.software) licensing compliance. Every tracked file
     # must resolve to a licence + copyright via REUSE.toml + LICENSES/. Fail-closed.
-    # NOT yet a required status check — add it in the ruleset once green.
+    # Required status check on the protect-main and protect-preprod rulesets —
+    # a PR cannot merge while this is red (see docs/GITHUB-RULESETS.md).
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
