@@ -1,0 +1,90 @@
+# trentpower.fr
+
+A static, bilingual publication whose distinguishing property is that every
+public promise it makes is checkable from the source. This glossary fixes the
+language of that promise model so the website, repository, docs, and pipeline
+say the same thing. It is a glossary, not a spec — implementation lives in code.
+
+## Claims & the honesty gate
+
+**Claim**:
+A public, verifiable promise the site makes about its supply chain — e.g. SLSA
+provenance, a CycloneDX SBOM, a PGP-signed integrity manifest.
+_Avoid_: assertion, feature, badge.
+
+**Token**:
+The exact case-sensitive word whose appearance on the claim surface signals that
+a claim is being made (e.g. `SLSA`, `reproducib`). It is the detection trigger,
+not the promise — several tokens may express one underlying claim (`Sigstore`,
+`Rekor`, and `attest` all stand for one keyless-attestation claim).
+_Avoid_: keyword; and do not call a token a "claim" — the token is how a claim is
+detected, not the claim itself.
+
+**Control**:
+The executable evidence-collector (`control_*`) that proves a claim true by
+gathering real evidence — running gpg, parsing a workflow file, checking a file
+on disk. A claim is bound to one or more controls.
+_Avoid_: check, validator, rule, policy.
+
+**Check**:
+A single entry in the deploy registry (`tools/lib/checks.py`) that the gate runs,
+e.g. `claims_parity` or `gpg`. A control is not a check: a control backs a claim;
+a check is a registry-run step. One check (`claims_parity`) runs every control.
+_Avoid_: control, test, validator.
+
+**Gate**:
+The aggregate pass/fail over all blocking checks (`gate.py`); a release is "ready"
+only when the gate is green. Distinct from any single check.
+_Avoid_: pipeline, suite.
+
+**Claim surface**:
+The glob-defined set of public files the gate scans for tokens — it decides where
+the gate *looks*. Deliberately wider than any one claim's declared locations, so a
+claim added to an unanticipated page is still seen and still must be backed.
+_Avoid_: claim source, stated_in.
+
+**stated_in**:
+A claim's declared canonical locations, enforced to be a subset of the claim
+surface. It records where a claim is *meant* to appear, not where the gate
+searches.
+_Avoid_: location, surface.
+
+**Backed**:
+Said of a claimed token whose bound controls all pass. An unbacked claim — a token
+on the surface with no passing control — blocks the gate.
+_Avoid_: verified, validated, satisfied.
+
+**Status**:
+A claim's truth-class: `enforced` (a passing control backs it), `goal` (a
+documented target — never release-blocking, never worded as achieved), or `manual`
+(a human boundary with no automatable control).
+_Avoid_: state, level.
+
+**Enforced-at**:
+The gate level that binds a claim: `pr-gate` (a blocking check in the registry),
+`release` (a control reading the release workflow), or `ruleset` (a required
+GitHub status check).
+_Avoid_: stage, scope.
+
+**Release-blocking**:
+Whether an unmet claim stops a release. Goal-status claims are never
+release-blocking; this is independent of severity.
+_Avoid_: required, critical.
+
+**Claim ledger**:
+The generated human view of every claim and its backing control (`docs/CLAIMS.md`),
+rendered from the claims map and drift-gated against it.
+_Avoid_: manifest, registry.
+
+## Publication anchors
+
+**Edition**:
+A single dated, signed publication of the whole site (`edition/YYYY-MM-DD`); the
+unit of release.
+_Avoid_: version, build; "release" is the act of publishing an edition, not the
+edition itself.
+
+**Integrity manifest**:
+The signed list of SHA-256 hashes of every published file (`integrity.json` +
+`.sig`); the anchor a reader verifies the live site against.
+_Avoid_: checksum file, hash list.
