@@ -25,6 +25,8 @@ make verify           # full release gate + signature verification
 make release-check    # re-render from source and assert no drift
 make privacy-check    # storage-key + runtime-contamination + trusted-types gates
 make provenance-check # every public supply-chain claim maps to a passing control
+make claims           # regenerate docs/CLAIMS.md from claims-map.yml, then parity
+make policy           # privacy + provenance + claims ledger in one shot
 make integrity        # regenerate the public integrity manifest
 make sbom             # generate a CycloneDX SBOM of the build toolchain
 ```

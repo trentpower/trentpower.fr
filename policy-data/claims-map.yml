@@ -1,0 +1,239 @@
+# policy-data/claims-map.yml — the public-promise ledger (policy as data).
+#
+# This file is the single declarative source the honesty gate reads. It binds
+# each public supply-chain claim token to the executable Python control that
+# makes the claim true. CONTROL LOGIC STAYS IN PYTHON
+# (tools/verify/validate_claims_parity.py) — this file only declares bindings,
+# wording, where claims are stated, and the human boundaries around them.
+#
+# Generated human view: docs/CLAIMS.md (kept in lock-step by the
+# claims_map_drift blocking gate). Validated against
+# schemas/claims-map.schema.json at load time.
+#
+# Why no OPA / Conftest / rego / Node: the hard work here is EVIDENCE
+# COLLECTION — running gpg, parsing release.yml, checking files on disk. Rego
+# can only evaluate data that Python must first collect, so a rule engine would
+# add a layer without removing any work. Policy is data (this file); evaluation
+# is code (Python). See docs/SECURITY-PIPELINE.md.
+
+# ---------------------------------------------------------------------------
+# claim_surface — WHERE the gate looks. The map describes claims; it does not
+# decide where the repo is allowed to state them. The scanner walks this wider
+# surface (not merely the union of stated_in), so a claim added to an unlisted
+# public page is still seen and still must be backed. Each claim's stated_in
+# must be a subset of this surface (a claim cannot declare a location the
+# scanner does not actually walk).
+# ---------------------------------------------------------------------------
+claim_surface:
+  include:
+    - README.md
+    - docs/**/*.md
+    - content/en/pages/**/*.yml
+    - content/fr/pages/**/*.yml
+    - public/en-au/**/*.html
+    - public/fr/**/*.html
+    - docs/pdf/readme.html
+  exclude:
+    - docs/CLAIMS.md          # generated view of THIS file — never self-scan
+    - docs/audits/**          # historical point-in-time records — must not be
+                              # re-litigated by today's control set
+    - reports/**
+    - _archives/**
+
+# ---------------------------------------------------------------------------
+# manual_notes — the limits no automated control can close, recorded beside the
+# automated ones so the trust story is honest about its boundaries.
+# ---------------------------------------------------------------------------
+manual_notes:
+  - topic: PGP key custody
+    note: >-
+      The signing key's secrecy is a human responsibility. The gate proves a
+      published key exists and that signatures are checked; it cannot prove the
+      private key has never left trusted custody.
+  - topic: GitHub platform trust
+    note: >-
+      Attestation, Scorecard, OSV and REUSE controls run on GitHub-hosted
+      infrastructure. The claims inherit trust in GitHub's runners and OIDC.
+  - topic: SBOM completeness
+    note: >-
+      The CycloneDX SBOM covers the declared build toolchain. It is validated
+      for well-formedness, not asserted to enumerate every transitive input.
+  - topic: Static-analysis limits
+    note: >-
+      CodeQL runs as GitHub default-setup with no committed repo artefact to
+      check, so it is deliberately NOT bound to a claim token here — binding it
+      would make a future honest CodeQL claim impossible to back. No control
+      promises that static analysis finds every class of defect.
+  - topic: OSV / REUSE required-status promotion
+    note: >-
+      OSV (sca) and REUSE (reuse) run green in CI but are recorded here as
+      release_blocking false until the protect-main / protect-preprod rulesets
+      add them to required status checks (a separate governance step). When that
+      lands, their enforced_at gains `ruleset` and release_blocking flips true.
+  - topic: Independent reproducibility
+    note: >-
+      Off-machine, independent bit-for-bit reproduction is a documented target,
+      not an achieved guarantee. The build proves zero drift on the build host
+      via --check; it does not yet prove a third party reproduces the bytes.
+
+# ---------------------------------------------------------------------------
+# claims — one entry per case-sensitive token. Several tokens share one control
+# because a single pipeline step earns several claims at once.
+# ---------------------------------------------------------------------------
+claims:
+  SLSA:
+    public_wording: "Releases carry SLSA build-track provenance, keyless-signed via Sigstore with a Rekor transparency record."
+    severity: critical
+    stated_in: [README.md, content/en/pages/security.yml, content/fr/pages/security.yml, docs/PROVENANCE.md]
+    verified_by: [control_attestation]
+    enforced_at: [release]
+    status: enforced
+    release_blocking: true
+    owner: maintainer
+    last_reviewed: "2026-06-18"
+    review_cadence: per-release
+
+  Sigstore:
+    public_wording: "Release artefacts are signed keylessly through Sigstore (Fulcio), no long-lived signing key."
+    severity: critical
+    stated_in: [README.md, content/en/pages/security.yml, content/fr/pages/security.yml, docs/PROVENANCE.md]
+    verified_by: [control_attestation]
+    enforced_at: [release]
+    status: enforced
+    release_blocking: true
+    owner: maintainer
+    last_reviewed: "2026-06-18"
+    review_cadence: per-release
+
+  Rekor:
+    public_wording: "Each signed release is recorded in the Rekor public transparency log."
+    severity: critical
+    stated_in: [README.md, content/en/pages/security.yml, content/fr/pages/security.yml, docs/PROVENANCE.md]
+    verified_by: [control_attestation]
+    enforced_at: [release]
+    status: enforced
+    release_blocking: true
+    owner: maintainer
+    last_reviewed: "2026-06-18"
+    review_cadence: per-release
+
+  attest:
+    public_wording: "A build-provenance attestation binds every release artefact to the workflow that produced it."
+    severity: critical
+    stated_in: [README.md, content/en/pages/security.yml, content/fr/pages/security.yml, docs/PROVENANCE.md, docs/TRUST-AND-VERIFICATION.md]
+    verified_by: [control_attestation]
+    enforced_at: [release]
+    status: enforced
+    release_blocking: true
+    owner: maintainer
+    last_reviewed: "2026-06-18"
+    review_cadence: per-release
+
+  CycloneDX:
+    public_wording: "A CycloneDX SBOM of the build toolchain is generated and validated for well-formedness."
+    severity: high
+    stated_in: [README.md, content/en/pages/security.yml, content/fr/pages/security.yml, docs/SECURITY-PIPELINE.md]
+    verified_by: [control_sbom]
+    enforced_at: [release]
+    status: enforced
+    release_blocking: true
+    owner: maintainer
+    last_reviewed: "2026-06-18"
+    review_cadence: per-release
+
+  SBOM:
+    public_wording: "A software bill of materials accompanies the build and is checked for valid structure before release."
+    severity: high
+    stated_in: [README.md, content/en/pages/security.yml, content/fr/pages/security.yml, docs/SECURITY-PIPELINE.md]
+    verified_by: [control_sbom]
+    enforced_at: [release]
+    status: enforced
+    release_blocking: true
+    owner: maintainer
+    last_reviewed: "2026-06-18"
+    review_cadence: per-release
+
+  PGP:
+    public_wording: "The integrity manifest is PGP-signed; the published key and a blocking signature check let anyone verify it."
+    severity: critical
+    stated_in: [README.md, content/en/pages/security.yml, content/en/pages/integrity.yml, content/fr/pages/security.yml, content/fr/pages/integrity.yml, docs/PROVENANCE.md]
+    verified_by: [control_pgp]
+    enforced_at: [pr-gate]
+    pr_gate_check: gpg
+    status: enforced
+    release_blocking: true
+    owner: maintainer
+    last_reviewed: "2026-06-18"
+    review_cadence: per-release
+
+  OpenSSF:
+    public_wording: "The project participates in the OpenSSF Scorecard programme and publishes its results."
+    severity: medium
+    stated_in: [README.md, docs/SECURITY-PIPELINE.md, docs/PUBLIC-READINESS.md]
+    verified_by: [control_scorecard]
+    enforced_at: [pr-gate]
+    status: enforced
+    release_blocking: false
+    owner: maintainer
+    last_reviewed: "2026-06-18"
+    review_cadence: per-release
+
+  Scorecard:
+    public_wording: "OpenSSF Scorecard runs via the official action and its score is reported, not chased."
+    severity: medium
+    stated_in: [README.md, docs/SECURITY-PIPELINE.md, docs/PUBLIC-READINESS.md]
+    verified_by: [control_scorecard]
+    enforced_at: [pr-gate]
+    status: enforced
+    release_blocking: false
+    owner: maintainer
+    last_reviewed: "2026-06-18"
+    review_cadence: per-release
+
+  OSV:
+    public_wording: "Dependencies are scanned for known vulnerabilities with osv-scanner on every pull request."
+    severity: medium
+    stated_in: [docs/SECURITY-PIPELINE.md, docs/ASSURANCE-CASE.md]
+    verified_by: [control_osv]
+    enforced_at: [pr-gate]
+    status: enforced
+    release_blocking: false
+    owner: maintainer
+    last_reviewed: "2026-06-18"
+    review_cadence: per-release
+
+  REUSE:
+    public_wording: "Licensing follows the REUSE specification, linted on every pull request."
+    severity: medium
+    stated_in: [README.md, docs/SECURITY-PIPELINE.md]
+    verified_by: [control_reuse]
+    enforced_at: [pr-gate]
+    status: enforced
+    release_blocking: false
+    owner: maintainer
+    last_reviewed: "2026-06-18"
+    review_cadence: per-release
+
+  deterministic:
+    public_wording: "Release archives are built deterministically — sorted, owner-zeroed tar with name/timestamp-stripped gzip."
+    severity: high
+    stated_in: [README.md, content/en/pages/integrity.yml, docs/PROVENANCE.md, docs/REPRODUCIBILITY.md]
+    verified_by: [control_deterministic]
+    enforced_at: [release]
+    status: enforced
+    release_blocking: true
+    owner: maintainer
+    last_reviewed: "2026-06-18"
+    review_cadence: per-release
+
+  reproducib:
+    public_wording: "Independent, off-machine reproduction of the published bytes is a documented target; the build proves zero on-host drift via --check."
+    severity: low
+    stated_in: [content/en/pages/integrity.yml, content/en/pages/security.yml, docs/REPRODUCIBILITY.md, docs/PROVENANCE.md]
+    verified_by: [control_reproducible]
+    enforced_at: [pr-gate]
+    status: goal
+    release_blocking: false
+    owner: maintainer
+    last_reviewed: "2026-06-18"
+    review_cadence: per-release

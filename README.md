@@ -45,6 +45,7 @@ Every claim below is something you can check yourself, not a badge to take on fa
 | Security policy        | coordinated disclosure, 14-day response           | [SECURITY.md](SECURITY.md)                                                                                              |
 | Privacy                | no analytics, cookies, or third-party assets      | [docs/SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md)                                                            |
 | Continuous integration | PR checks · publication check · deploy            | [Actions](https://github.com/trentpower/trentpower.fr/actions)                                                          |
+| Claims ledger          | every public claim bound to a passing control     | [docs/CLAIMS.md](docs/CLAIMS.md) (generated from `policy-data/claims-map.yml`); `make policy`                           |
 
 The fastest single check — confirm the live site is signed by the published key:
 

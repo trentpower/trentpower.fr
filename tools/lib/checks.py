@@ -345,6 +345,14 @@ REGISTRY: list[Check] = [
         command=_script("validate_claims_parity.py"),
     ),
     Check(
+        "claims_map_drift",
+        "generate_claims_md.py --check (drift gate)",
+        _B,
+        _COR,
+        "generated docs/CLAIMS.md has no drift from policy-data/claims-map.yml",
+        command=_script("generate_claims_md.py", "--check"),
+    ),
+    Check(
         "site_metadata",
         "validate_site_metadata.py",
         _B,

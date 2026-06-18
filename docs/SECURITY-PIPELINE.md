@@ -36,14 +36,29 @@ The site publishes specific supply-chain claims — SLSA, Sigstore, Rekor, PGP,
 SBOM/CycloneDX, OpenSSF Scorecard, OSV, REUSE, deterministic/reproducible build.
 The `claims_parity` gate (`tools/verify/validate_claims_parity.py`, registered
 blocking in `tools/lib/checks.py`) refuses to ship if any of those words appears
-on the public claim surface — the security and verify pages,
-[PROVENANCE.md](PROVENANCE.md), and the root `README.md` — without the automated
-control that makes it true. (CodeQL is deliberately _not_ bound: it runs as
-GitHub default setup with no committed artefact to verify, so binding it would
-make an honest future claim impossible to back.) It is the prose counterpart to
-`validate_signing_status.py`, which checks each public _file_ against its
+on the public claim surface without the automated control that makes it true.
+
+The binding is **policy as data, enforcement as code**: the claim→control map,
+public wording, claim surface, and human boundaries are declared in
+[`policy-data/claims-map.yml`](../policy-data/claims-map.yml); the control logic —
+running gpg, parsing `release.yml`, checking files on disk — stays executable
+Python in the gate. The generated human view is [CLAIMS.md](CLAIMS.md), held in
+lock-step with the data by the blocking `claims_map_drift` gate. (We deliberately
+use neither OPA/Conftest/rego nor Node: a rule engine evaluates data someone has
+already collected, but here the hard work _is_ the evidence collection, so a
+policy engine would add a layer without removing any work — see CLAIMS.md.) The
+claim surface is glob-driven, so a claim added to an unanticipated public page is
+still scanned and still must be backed. (CodeQL is deliberately _not_ bound: it
+runs as GitHub default setup with no committed artefact to verify, so binding it
+would make an honest future claim impossible to back.) It is the prose counterpart
+to `validate_signing_status.py`, which checks each public _file_ against its
 declared signing class. Together they keep the website, repository,
 documentation, and pipeline saying the same thing.
+
+OSV (`sca`) and REUSE (`reuse`) run green in CI and are recorded in the ledger as
+not yet release-blocking until the `protect-main` / `protect-preprod` rulesets add
+them to required status checks — a separate governance step tracked in
+[GITHUB-RULESETS.md](GITHUB-RULESETS.md).
 
 ## What these controls do and do not prove
 

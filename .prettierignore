@@ -10,6 +10,11 @@ public/
 **/file-metadata.json
 **/site-metadata.json
 **/attestations.json
+
+# generated from policy-data/claims-map.yml by generate_claims_md.py —
+# its bytes must match the generator exactly (claims_map_drift gate), so
+# prettier must never rewrite it.
+docs/CLAIMS.md
 **/release.json
 **/sw-cache-manifest.json
 metadata/

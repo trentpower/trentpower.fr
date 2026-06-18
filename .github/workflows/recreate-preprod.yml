@@ -1,0 +1,51 @@
+name: Recreate preprod if missing
+
+# preprod is a disposable release-candidate branch: the repository setting
+# "Automatically delete head branches" removes it when a `preprod → main`
+# promotion PR merges (its head is preprod). That is intended — it keeps the
+# branch list clean alongside every merged feature/* branch.
+#
+# This workflow resurrects it. On every push to main it checks whether preprod
+# exists and, ONLY IF IT IS MISSING, recreates it at the current main commit.
+#
+# CREATE-IF-MISSING, never reset: an existing preprod is left untouched, so a
+# hotfix or any other push to main can never wipe unpromoted work sitting on
+# preprod. The branch only ever reappears after it was actually deleted.
+
+on:
+  push:
+    branches:
+      - main
+  # manual lever: run it by hand any time preprod has gone missing, or to
+  # test the create-if-missing path without waiting for a promotion.
+  workflow_dispatch:
+
+permissions:
+  contents: write # create the preprod branch ref
+
+concurrency:
+  group: recreate-preprod
+  cancel-in-progress: false
+
+jobs:
+  recreate-preprod:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Recreate preprod from main if it was auto-deleted
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          MAIN_SHA: ${{ github.sha }}
+        run: |
+          set -eu
+          if gh api "repos/$REPO/branches/preprod" >/dev/null 2>&1; then
+            echo "::notice::preprod already exists — leaving it untouched (no reset, no clobber)."
+            exit 0
+          fi
+          echo "preprod is missing — recreating it at main ($MAIN_SHA)."
+          # create-only: POST /git/refs fails if the ref already exists, which
+          # is a second guard against ever overwriting an existing preprod.
+          gh api -X POST "repos/$REPO/git/refs" \
+            -f ref="refs/heads/preprod" \
+            -f sha="$MAIN_SHA"
+          echo "::notice::recreated preprod at $MAIN_SHA"

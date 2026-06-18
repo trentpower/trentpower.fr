@@ -67,10 +67,21 @@ accepted. Revisit if a second trusted reviewer ever joins the project.
 | Block force pushes                             | On                                 |
 | Restrict deletions                             | On                                 |
 
-Note: the repository setting "Automatically delete head branches"
-deletes `preprod` after a promotion merge — recreate it from `main`
-after each promotion (`git checkout -b preprod main && git push -u
-origin preprod`).
+This ruleset carries a repository-role bypass set to **always** so the
+maintainer can push integrations and promotions straight to `preprod`
+without a PR.
+
+`preprod` is **disposable by design.** The repository setting
+"Automatically delete head branches" stays **on**, so merging the
+`preprod → main` promotion PR (whose head is `preprod`) deletes the
+branch — exactly as it cleans up every merged `feature/*` branch. The
+branch is then resurrected automatically: the
+[`recreate-preprod.yml`](../.github/workflows/recreate-preprod.yml)
+workflow runs on every push to `main` and, **only if `preprod` is
+missing**, recreates it at the current `main` commit. It never resets an
+existing `preprod`, so a hotfix or any other push to `main` can never
+wipe unpromoted work. Net: autodelete keeps the branch list clean, and
+`preprod` reappears after each promotion with no manual step.
 
 ## `protect-release-tags`
 
@@ -202,5 +213,12 @@ All of the following live in the GitHub UI and must be applied by hand:
 5. Settings → SSH and GPG keys: add the signing key as a Signing Key.
 6. Settings → General → Social preview: upload
    `metadata/social-preview/trentpower-fr-github-social.png`.
-7. Settings → General: leave "Automatically delete head branches" as
-   configured, remembering the preprod-recreation note above.
+7. Settings → General: leave "Automatically delete head branches" **on**
+   — merged `feature/*` PR branches auto-clean, and `preprod` is deleted
+   on promotion then auto-recreated by
+   [`recreate-preprod.yml`](../.github/workflows/recreate-preprod.yml)
+   (no manual step). The workflow requests `contents: write` at the job
+   level, which overrides the repository default (currently read-only).
+   If the recreate ever fails with a 403, set Settings → Actions →
+   General → Workflow permissions to "Read and write". The workflow also
+   has a `workflow_dispatch` trigger — run it by hand to recover or test.
