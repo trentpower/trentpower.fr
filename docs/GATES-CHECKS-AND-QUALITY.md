@@ -72,6 +72,35 @@ command-backed) with its `tier`, `category`, and `rationale`. `gate.py` /
 source. (This consolidated doc is _not_ auto-generated — it is safe to edit by
 hand, but keep the registry table below in sync with `tools/lib/checks.py`.)
 
+### Validator shape — deep and testable (the `Repo` seam)
+
+A `validate_*.py` is a **deep module**: a small interface (`main() -> int` plus
+its text contract) over a lot of evidence-collection. The interface is the test
+surface, so validators follow one shape that keeps it testable without
+monkeypatching:
+
+- **`Repo(root)`** (`tools/lib/repo.py`) is the injected filesystem seam:
+  `read` / `is_file` / `glob` / `size`, everything relative to a root. The
+  production adapter is `Repo(REPO_ROOT)`; tests pass `Repo(tmp_fixture)`. Path
+  knowledge and exclusion policy stay in the validator (named accessors), not on
+  the seam — `Repo` is a pure adapter.
+- **`load(repo) -> (ctx, errors)`** reads + validates preconditions and returns
+  errors instead of `print`+`sys.exit`.
+- **`evaluate(repo, …) -> Result`** is pure compute: it returns a `Result`
+  value and never prints or exits. Other non-filesystem dependencies are
+  injected too — e.g. the date gate takes a `now` instant, the public-exposure
+  gate takes a `pre_archive` flag — so each has a real test adapter (real clock
+  vs frozen instant; real env vs explicit flag).
+- **`main(repo_root=REPO_ROOT)`** is the only side-effecting adapter: load →
+  evaluate → render → exit code.
+
+Tests live in `tools/quality/tests/test_<name>.py` and cross `evaluate()` /
+`load()` over a fixture repo, asserting on the returned `Result` (not stdout).
+Pure sub-checks (e.g. the CSS or anchor `check_*` functions that take text and
+return errors) are exercised directly. Add a validator → add its test file in
+the same shape. Validators not yet migrated to this shape are being converted
+incrementally; the pattern above is the target for any new or touched gate.
+
 ### What is blocking vs advisory
 
 See the full registry in §3. In summary:
