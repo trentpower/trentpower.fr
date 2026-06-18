@@ -88,3 +88,15 @@ edition itself.
 The signed list of SHA-256 hashes of every published file (`integrity.json` +
 `.sig`); the anchor a reader verifies the live site against.
 _Avoid_: checksum file, hash list.
+
+## Trust posture
+
+**Accepted finding**:
+A security-scanner reading (OpenSSF Scorecard, code-scanning) the project
+consciously declines to chase and instead records as won't-fix-by-design, because
+the underlying control is already correct or the gap is structural (e.g. a
+single-maintainer review cap, a scanner that misreads `gh release create` as an
+over-grant). The honest counterpart to a backed claim — it states plainly what is
+_not_ fixed, and why, rather than contorting code to lift a score.
+_Avoid_: false positive (only some accepted findings are false positives; others
+are real-but-structural), suppression, ignore.
