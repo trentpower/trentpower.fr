@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """validate_public_exposure.py — prove the public-exposure manifest covers reality.
 
-The manifest at tools/public-exposure.json declares every URL shape the
+The manifest at tools/config/public-exposure.json declares every URL shape the
 deployable public/ tree is allowed to expose. This validator walks the
 on-disk public/ tree and proves three independent invariants:
 
@@ -16,15 +16,25 @@ on-disk public/ tree and proves three independent invariants:
 
 Exit 0 = green; exit 1 = at least one violation, with all violators
 listed (don't stop on first).
+
+Shape (deep module, small interface). The external interface is `main() -> int`
+plus the OK/FAIL text contract. Internally two dependencies are injected seams —
+`Repo(root)` for the filesystem and a `pre_archive` flag for the pre-signature
+gate pass — so the whole gate is exercised through `evaluate(repo, manifest,
+pre_archive) -> Result` over a fixture repo, with no monkeypatching and no
+reliance on process environment. Compute (`evaluate`) is separate from render
+(`main`): the former returns a Result and never prints or exits; the latter is
+the only side-effecting adapter.
 """
 
 from __future__ import annotations
 
 import json
 import os
-import pathlib
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -37,9 +47,10 @@ sys.path.insert(
         / "lib"
     ),
 )
-from paths import PUBLIC_DIR, TOOLS_DIR
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
-MANIFEST_PATH = TOOLS_DIR / "config" / "public-exposure.json"
+MANIFEST_REL = "tools/config/public-exposure.json"
 SCHEMA_TAG = "trentpower.public-exposure.v1"
 
 # the apache .htaccess file lives at public/.htaccess but is never
@@ -50,6 +61,16 @@ APACHE_CONTROL_FILE = ".htaccess"
 # /.well-known/ starts with a dot but is the IETF-blessed public
 # discovery prefix. it must escape the "leading-dot path" deny.
 WELL_KNOWN_PREFIX = ".well-known/"
+
+
+# named accessors over the shared Repo seam. the public-tree knowledge stays
+# here in the validator, not on the seam.
+def _read_public(repo: Repo, prel: str) -> str:
+    return repo.read(f"public/{prel}")
+
+
+def _public_is_file(repo: Repo, prel: str) -> bool:
+    return repo.is_file(f"public/{prel}")
 
 
 # ─── glob → regex ───────────────────────────────────────────────
@@ -99,48 +120,28 @@ def any_match(url: str, patterns: list[re.Pattern]) -> bool:
     return any(p.match(url) for p in patterns)
 
 
-# ─── manifest loading ───────────────────────────────────────────
-def load_manifest() -> dict:
-    if not MANIFEST_PATH.is_file():
-        print(f"FAIL: manifest not found at {MANIFEST_PATH}", file=sys.stderr)
-        sys.exit(1)
-    try:
-        data = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as e:
-        print(f"FAIL: manifest is not valid JSON ({e})", file=sys.stderr)
-        sys.exit(1)
-    schema = data.get("schema")
-    if schema != SCHEMA_TAG:
-        print(
-            f"FAIL: manifest schema {schema!r} != expected {SCHEMA_TAG!r}",
-            file=sys.stderr,
-        )
-        sys.exit(1)
-    return data
-
-
 # ─── disk walk ──────────────────────────────────────────────────
 def walk_public_files(
+    repo: Repo,
     deploy_excluded: list[re.Pattern] | None = None,
-) -> list[tuple[pathlib.Path, str]]:
-    """Return [(absolute_path, server_url)] for every file under
-    PUBLIC_DIR. server_url is leading-slash + posix relpath.
+) -> list[tuple[str, str]]:
+    """Return [(public_rel, server_url)] for every file under public/.
+    server_url is leading-slash + posix relpath.
 
     Files matching any pattern in deploy_excluded are dropped — they
     exist in the repo but the sftp deploy pipeline excludes them from
     the live web root, so they cannot be exposed and must not be
     validated against allow / deny rules.
     """
-    out: list[tuple[pathlib.Path, str]] = []
+    out: list[tuple[str, str]] = []
     deploy_excluded = deploy_excluded or []
-    for fp in sorted(PUBLIC_DIR.rglob("*")):
-        if not fp.is_file():
-            continue
-        rel = fp.relative_to(PUBLIC_DIR).as_posix()
+    prefix = "public/"
+    for repo_rel in repo.glob("public/**/*"):
+        rel = repo_rel[len(prefix):]
         url = "/" + rel
         if any(p.match(url) for p in deploy_excluded):
             continue
-        out.append((fp, url))
+        out.append((rel, url))
     return out
 
 
@@ -326,14 +327,11 @@ def extract_urls(html: str) -> set[str]:
 
 
 # ─── steps ──────────────────────────────────────────────────────
-def step_file_coverage(
-    files: list[tuple[pathlib.Path, str]],
-    allow: AllowRules,
-) -> list[str]:
+def step_file_coverage(files: list[tuple[str, str]], allow: AllowRules) -> list[str]:
     """Step 2 — every public file is allow-list reachable."""
     fails: list[str] = []
-    for fp, url in files:
-        rel = fp.relative_to(PUBLIC_DIR).as_posix()
+    for rel, url in files:
+        basename = rel.rsplit("/", 1)[-1]
         # the apache control file is never served; skip allow check.
         if rel == APACHE_CONTROL_FILE:
             continue
@@ -341,7 +339,7 @@ def step_file_coverage(
         if allow.matches(url):
             continue
         # for index.html, also try the directory route form.
-        if fp.name == "index.html":
+        if basename == "index.html":
             dir_url = url[: -len("index.html")]
             if dir_url in allow.routes:
                 continue
@@ -351,14 +349,11 @@ def step_file_coverage(
     return fails
 
 
-def step_deny_coverage(
-    files: list[tuple[pathlib.Path, str]],
-    deny: DenyRules,
-) -> list[str]:
+def step_deny_coverage(files: list[tuple[str, str]], deny: DenyRules) -> list[str]:
     """Step 3 — no public file matches deny patterns."""
     fails: list[str] = []
-    for fp, url in files:
-        rel = fp.relative_to(PUBLIC_DIR).as_posix()
+    for rel, url in files:
+        basename = rel.rsplit("/", 1)[-1]
         # exceptions: apache control file and the well-known prefix
         # both legitimately have leading-dot components.
         if rel == APACHE_CONTROL_FILE:
@@ -371,21 +366,13 @@ def step_deny_coverage(
             # target .git/.env, not .well-known. continue running
             # the deny check.
             pass
-        hits = deny.violates(url, fp.name)
+        hits = deny.violates(url, basename)
         if hits:
             fails.append(f"DENY: {url} ({'; '.join(hits)})")
     return fails
 
 
-# Pre-signature pass: build.sh builds the in-flight edition's release archives
-# only AFTER signing (stage 08), so at the pre-signature gate (stage 05) the
-# current edition's per-edition SHA256SUMS/.sig do not exist yet. gate.py exports
-# GATE_SKIP_SIGNATURE=1 for that pass. The post-signature gate and CI run without
-# it, so the archives are still fully required before anything ships.
-_PRE_ARCHIVE = os.environ.get("GATE_SKIP_SIGNATURE") == "1"
-
-
-def step_integrity_artefacts(manifest: dict) -> list[str]:
+def step_integrity_artefacts(repo: Repo, manifest: dict, pre_archive: bool) -> list[str]:
     """Step 5 — baseline integrity files exist on disk."""
     fails: list[str] = []
     required = [
@@ -397,7 +384,7 @@ def step_integrity_artefacts(manifest: dict) -> list[str]:
     ]
     edition = manifest.get("edition", "")
     if isinstance(edition, str) and re.match(r"^\d{4}-\d{2}-\d{2}$", edition):
-        if not _PRE_ARCHIVE:
+        if not pre_archive:
             required.append(f"integrity/releases/{edition}/SHA256SUMS")
             required.append(f"integrity/releases/{edition}/SHA256SUMS.sig")
     else:
@@ -406,7 +393,7 @@ def step_integrity_artefacts(manifest: dict) -> list[str]:
             f"cannot derive per-edition SHA256SUMS paths"
         )
     for rel in required:
-        if not (PUBLIC_DIR / rel).is_file():
+        if not _public_is_file(repo, rel):
             fails.append(f"INTEGRITY: required artefact missing — /{rel}")
     return fails
 
@@ -415,9 +402,11 @@ _RELEASE_ARTEFACT_RE = re.compile(r"\.(zip|tar\.gz|sig|sha256)$", re.IGNORECASE)
 
 
 def step_html_links(
-    files: list[tuple[pathlib.Path, str]],
+    repo: Repo,
+    files: list[tuple[str, str]],
     allow: AllowRules,
     current_edition: str | None,
+    pre_archive: bool,
 ) -> tuple[list[str], int, int]:
     """Step 4 — every internal URL on every HTML page resolves.
 
@@ -438,10 +427,9 @@ def step_html_links(
     page_count = 0
     link_count = 0
     current_edition_prefix = f"integrity/releases/{current_edition}/" if current_edition else None
-    for fp, _ in files:
-        if fp.suffix.lower() != ".html":
+    for rel, _ in files:
+        if not rel.lower().endswith(".html"):
             continue
-        rel = fp.relative_to(PUBLIC_DIR).as_posix()
         # frozen-archive html may legitimately link to versioned assets
         # that no longer exist in /public/ head; their bytes are sealed.
         is_frozen_archive = rel.startswith("integrity/releases/") and not rel.endswith(
@@ -457,11 +445,7 @@ def step_html_links(
         if skip_general_links and not is_frozen_archive:
             continue
         page_count += 1
-        try:
-            html = fp.read_text(encoding="utf-8", errors="replace")
-        except OSError as e:
-            fails.append(f"HTML: cannot read {rel} ({e})")
-            continue
+        html = _read_public(repo, rel)
         urls = extract_urls(html)
         for u in sorted(urls):
             link_count += 1
@@ -476,13 +460,13 @@ def step_html_links(
                 continue
             # disk-presence check.
             disk_rel = url_to_disk_path(u)
-            if not (PUBLIC_DIR / disk_rel).is_file():
+            if not _public_is_file(repo, disk_rel):
                 # the in-flight edition's release dir (SHA256SUMS, the archives and
                 # their sigs) is built post-signature (build.sh stage 08); at the
                 # pre-archive gate tolerate any not-yet-built file under THAT edition's
                 # prefix only. index.html/TESTRESULTS already exist and still resolve.
                 if (
-                    _PRE_ARCHIVE
+                    pre_archive
                     and current_edition_prefix
                     and disk_rel.startswith(current_edition_prefix)
                 ):
@@ -492,39 +476,83 @@ def step_html_links(
     return fails, page_count, link_count
 
 
-# ─── main ───────────────────────────────────────────────────────
-def main() -> int:
-    manifest = load_manifest()
+# ─── load / evaluate / render ───────────────────────────────────
+def load(repo: Repo) -> tuple[dict | None, list[str]]:
+    """read + schema-check the manifest. returns (manifest, errors); never
+    prints or exits."""
+    if not repo.is_file(MANIFEST_REL):
+        return None, [f"manifest not found at {MANIFEST_REL}"]
+    try:
+        data = json.loads(repo.read(MANIFEST_REL))
+    except json.JSONDecodeError as e:
+        return None, [f"manifest is not valid JSON ({e})"]
+    schema = data.get("schema")
+    if schema != SCHEMA_TAG:
+        return None, [f"manifest schema {schema!r} != expected {SCHEMA_TAG!r}"]
+    return data, []
+
+
+@dataclass
+class Result:
+    step_results: list[tuple[str, list[str]]] = field(default_factory=list)
+    file_count: int = 0
+    page_count: int = 0
+    link_count: int = 0
+
+    @property
+    def total_fails(self) -> int:
+        return sum(len(f) for _, f in self.step_results)
+
+    @property
+    def ok(self) -> bool:
+        return self.total_fails == 0
+
+
+def evaluate(repo: Repo, manifest: dict, pre_archive: bool) -> Result:
     allow = AllowRules(manifest)
     deny = DenyRules(manifest)
     deploy_excluded = compile_globs(manifest.get("deploy_excluded_globs", []))
-    files = walk_public_files(deploy_excluded)
+    files = walk_public_files(repo, deploy_excluded)
 
-    step_results: list[tuple[str, list[str]]] = []
-
-    # step 2 — file coverage.
-    fc = step_file_coverage(files, allow)
-    step_results.append(("file coverage", fc))
-
-    # step 3 — deny coverage.
-    dc = step_deny_coverage(files, deny)
-    step_results.append(("deny coverage", dc))
-
-    # step 4 — html link resolution.
     current_edition = manifest.get("edition") if isinstance(manifest, dict) else None
     if not (
         isinstance(current_edition, str) and re.match(r"^\d{4}-\d{2}-\d{2}$", current_edition or "")
     ):
         current_edition = None
-    lc, page_count, link_count = step_html_links(files, allow, current_edition)
-    step_results.append(("html links", lc))
 
-    # step 5 — integrity artefacts.
-    ic = step_integrity_artefacts(manifest)
-    step_results.append(("integrity artefacts", ic))
+    result = Result(file_count=len(files))
+    result.step_results.append(("file coverage", step_file_coverage(files, allow)))
+    result.step_results.append(("deny coverage", step_deny_coverage(files, deny)))
+    lc, pages, links = step_html_links(repo, files, allow, current_edition, pre_archive)
+    result.step_results.append(("html links", lc))
+    result.step_results.append(
+        ("integrity artefacts", step_integrity_artefacts(repo, manifest, pre_archive))
+    )
+    result.page_count = pages
+    result.link_count = links
+    return result
 
-    total_fails = sum(len(f) for _, f in step_results)
-    for label, fails in step_results:
+
+# ─── main ───────────────────────────────────────────────────────
+def main(repo_root: Path = REPO_ROOT, pre_archive: bool | None = None) -> int:
+    repo = Repo(repo_root)
+    # Pre-signature pass: build.sh builds the in-flight edition's release archives
+    # only AFTER signing (stage 08), so at the pre-signature gate (stage 05) the
+    # current edition's per-edition SHA256SUMS/.sig do not exist yet. gate.py exports
+    # GATE_SKIP_SIGNATURE=1 for that pass. The post-signature gate and CI run without
+    # it, so the archives are still fully required before anything ships.
+    if pre_archive is None:
+        pre_archive = os.environ.get("GATE_SKIP_SIGNATURE") == "1"
+
+    manifest, errors = load(repo)
+    if errors:
+        for e in errors:
+            print(f"FAIL: {e}", file=sys.stderr)
+        return 1
+
+    result = evaluate(repo, manifest, pre_archive)
+
+    for label, fails in result.step_results:
         if fails:
             print(f"FAIL [{label}]: {len(fails)} issue(s)")
             for line in fails:
@@ -532,13 +560,14 @@ def main() -> int:
         else:
             print(f"OK   [{label}]")
 
-    if total_fails:
-        print(f"FAIL: {total_fails} public-exposure issue(s)")
+    if not result.ok:
+        print(f"FAIL: {result.total_fails} public-exposure issue(s)")
         return 1
 
     print(
         f"OK: public exposure validated "
-        f"({len(files)} files, {page_count} HTML pages, {link_count} links checked)"
+        f"({result.file_count} files, {result.page_count} HTML pages, "
+        f"{result.link_count} links checked)"
     )
     return 0
 
