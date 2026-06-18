@@ -50,15 +50,28 @@ Quiet on success, precise on failure.
 
 from __future__ import annotations
 
-import pathlib
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
-ROOT = pathlib.Path(__file__).resolve().parents[2]
+sys.path.insert(
+    0,
+    str(
+        next(
+            _a
+            for _a in __import__("pathlib").Path(__file__).resolve().parents
+            if _a.name == "tools"
+        )
+        / "lib"
+    ),
+)
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
-STYLES_PATH = ROOT / "styles" / "styles.src.css"
-PRINT_PATH = ROOT / "styles" / "print.src.css"
-FONTS_PATH = ROOT / "styles" / "fonts-full.src.css"
+STYLES_REL = "styles/styles.src.css"
+PRINT_REL = "styles/print.src.css"
+FONTS_REL = "styles/fonts-full.src.css"
 
 CANONICAL_ORDER = [
     "reset",
@@ -465,24 +478,44 @@ def check_fonts(text: str) -> list[str]:
     return errors
 
 
-def main() -> int:
-    failures: list[str] = []
-    for label, path, fn in [
-        ("styles.src.css", STYLES_PATH, check_styles),
-        ("print.src.css", PRINT_PATH, check_print),
-        ("fonts-full.src.css", FONTS_PATH, check_fonts),
-    ]:
-        if not path.is_file():
-            failures.append(f"{label}: missing")
+# the three source files and their pure check functions. each check is
+# text -> list[str]; only this table and evaluate() touch the filesystem.
+_SOURCES = [
+    ("styles.src.css", STYLES_REL, check_styles),
+    ("print.src.css", PRINT_REL, check_print),
+    ("fonts-full.src.css", FONTS_REL, check_fonts),
+]
+
+
+@dataclass
+class Result:
+    failures: list[str] = field(default_factory=list)
+
+    @property
+    def ok(self) -> bool:
+        return not self.failures
+
+
+def evaluate(repo: Repo) -> Result:
+    """run every pure check over the three CSS source files read through the
+    Repo seam. returns a Result; never prints or exits."""
+    result = Result()
+    for label, rel, fn in _SOURCES:
+        if not repo.is_file(rel):
+            result.failures.append(f"{label}: missing")
             continue
-        for err in fn(path.read_text(encoding="utf-8")):
-            failures.append(err)
-    if failures:
-        print(f"  FAIL: css-architecture — {len(failures)} issue(s):")
-        for err in failures[:40]:
+        result.failures.extend(fn(repo.read(rel)))
+    return result
+
+
+def main(repo_root: Path = REPO_ROOT) -> int:
+    result = evaluate(Repo(repo_root))
+    if result.failures:
+        print(f"  FAIL: css-architecture — {len(result.failures)} issue(s):")
+        for err in result.failures[:40]:
             print(f"    {err}")
-        if len(failures) > 40:
-            print(f"    … {len(failures) - 40} more")
+        if len(result.failures) > 40:
+            print(f"    … {len(result.failures) - 40} more")
         return 1
     print("  OK: css-architecture — 3 source files conform to the cascade-layer contract")
     return 0
