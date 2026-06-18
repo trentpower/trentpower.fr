@@ -12,7 +12,7 @@ cross `evaluate()`/`load()` over a fixture repo and assert on the returned
 
 The earlier validators read module-global paths and mixed compute with
 `print`+`sys.exit` in `main()`, so the only way to test them was to monkeypatch
-globals — which tests *past* the interface and breaks on internal refactors. We
+globals — which tests _past_ the interface and breaks on internal refactors. We
 chose to inject the filesystem as a seam (two real adapters: the production repo
 and a `tmp` fixture) and split compute from render, rather than (a) keep
 monkeypatching, or (b) extract every sub-function as a separately-tested unit
@@ -22,7 +22,7 @@ together, which only the `evaluate` interface exercises).
 `Repo` is a pure adapter on purpose: domain knowledge (which file is "the release
 workflow", the public-tree exclusion policy) stays in each validator, so the seam
 serves every gate without coupling to one. The per-validator `Result` types are
-deliberately *not* unified — their shapes genuinely differ, and forcing one would
+deliberately _not_ unified — their shapes genuinely differ, and forcing one would
 fit the abstraction to a single case.
 
 ## Consequences

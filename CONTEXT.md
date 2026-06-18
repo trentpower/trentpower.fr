@@ -39,13 +39,13 @@ _Avoid_: pipeline, suite.
 
 **Claim surface**:
 The glob-defined set of public files the gate scans for tokens — it decides where
-the gate *looks*. Deliberately wider than any one claim's declared locations, so a
+the gate _looks_. Deliberately wider than any one claim's declared locations, so a
 claim added to an unanticipated page is still seen and still must be backed.
 _Avoid_: claim source, stated_in.
 
 **stated_in**:
 A claim's declared canonical locations, enforced to be a subset of the claim
-surface. It records where a claim is *meant* to appear, not where the gate
+surface. It records where a claim is _meant_ to appear, not where the gate
 searches.
 _Avoid_: location, surface.
 
