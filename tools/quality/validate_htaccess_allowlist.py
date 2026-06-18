@@ -12,12 +12,21 @@ fallback deny is a missing allow rule.
 
 Exit 0 = every public file passes through an allow rule.
 Exit 1 = at least one file would be denied by .htaccess.
+
+Shape (deep module, small interface). The external interface is `main() -> int`
+plus the text contract. The filesystem is the injected `Repo(root)` seam, so the
+whole gate runs through `evaluate(repo, ctx) -> Result` over a fixture repo. The
+per-url rule simulation stays a pure function (`classify`). Compute is separate
+from render (`main`).
 """
 
 from __future__ import annotations
 
+import json
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -30,41 +39,28 @@ sys.path.insert(
         / "lib"
     ),
 )
-from paths import PUBLIC_DIR, TOOLS_DIR
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
-HTACCESS = PUBLIC_DIR / ".htaccess"
-MANIFEST_PATH = TOOLS_DIR / "config" / "public-exposure.json"
+HTACCESS_REL = "public/.htaccess"
+MANIFEST_REL = "tools/config/public-exposure.json"
 
 # the rewrite gate block sits between the BEGIN/END PUBLIC EXPOSURE
-# markers emitted by tools/generate_htaccess.py. extract only the
-# rules inside that range so the cache/header directives outside it
-# do not confuse the parser.
+# markers emitted by tools/generate_htaccess.py.
 GATE_OPEN = re.compile(r"#\s*BEGIN PUBLIC EXPOSURE")
 GATE_CLOSE = re.compile(r"#\s*END PUBLIC EXPOSURE")
 
-# matches " RewriteRule <pattern> <substitution> [<flags>]" with
-# leading whitespace tolerated. captures pattern + flags. the
-# substitution is always "-" in this gate (we never rewrite the url,
-# only allow or deny). flags are required because we depend on [f,l]
-# vs [l] to distinguish deny from allow.
 RULE_RE = re.compile(
     r"""^\s*RewriteRule\s+(\S+)\s+-\s+\[([A-Z,]+)\]\s*$""",
     re.MULTILINE,
 )
 
 
-def load_gate() -> str:
-    text = HTACCESS.read_text(encoding="utf-8")
-    open_m = GATE_OPEN.search(text)
-    close_m = GATE_CLOSE.search(text)
-    if not open_m or not close_m:
-        print("FAIL: could not locate the rewrite gate block in .htaccess")
-        sys.exit(1)
-    return text[open_m.end() : close_m.start()]
-
-
-def parse_rules(gate_text: str) -> list[tuple[re.Pattern, str]]:
+def parse_rules(gate_text: str) -> tuple[list[tuple[re.Pattern, str]], list[str]]:
+    """compile every RewriteRule in the gate block. returns (rules, errors);
+    a bad pattern becomes an error string rather than a process exit."""
     rules: list[tuple[re.Pattern, str]] = []
+    errors: list[str] = []
     for m in RULE_RE.finditer(gate_text):
         pat_raw = m.group(1)
         flags = m.group(2)
@@ -75,13 +71,14 @@ def parse_rules(gate_text: str) -> list[tuple[re.Pattern, str]]:
         try:
             pat = re.compile(pat_raw)
         except re.error as e:
-            print(f"FAIL: invalid regex in .htaccess: {pat_raw!r} ({e})")
-            sys.exit(1)
+            errors.append(f"invalid regex in .htaccess: {pat_raw!r} ({e})")
+            continue
         rules.append((pat, flags))
-    return rules
+    return rules, errors
 
 
-def evaluate(url: str, rules: list[tuple[re.Pattern, str]]) -> str:
+def classify(url: str, rules: list[tuple[re.Pattern, str]]) -> str:
+    """pure per-url rule simulation: 'allow' | 'deny' | 'fallthrough'."""
     # mod_rewrite in .htaccess context drops the leading slash from
     # the request URI before matching against RewriteRule patterns.
     rel = url.lstrip("/")
@@ -92,29 +89,6 @@ def evaluate(url: str, rules: list[tuple[re.Pattern, str]]) -> str:
             if "L" in flags.split(","):
                 return "allow"
     return "fallthrough"
-
-
-def walk_public_urls(deploy_excluded: list[str]) -> list[str]:
-    # mirror validate_public_exposure.py walking semantics.
-    deploy_re = [re.compile(_glob_to_regex(g)) for g in deploy_excluded]
-    urls: list[str] = []
-    for fp in sorted(PUBLIC_DIR.rglob("*")):
-        if not fp.is_file():
-            continue
-        rel = fp.relative_to(PUBLIC_DIR).as_posix()
-        if rel == ".htaccess":
-            continue
-        url = "/" + rel
-        if any(p.match(url) for p in deploy_re):
-            continue
-        urls.append(url)
-    # also include the directory-form url for any index.html, so we
-    # test that mod_dir's subrequest resolution would succeed.
-    dir_urls: list[str] = []
-    for u in urls:
-        if u.endswith("/index.html"):
-            dir_urls.append(u[: -len("index.html")])
-    return urls + dir_urls
 
 
 def _glob_to_regex(pattern: str) -> str:
@@ -144,55 +118,105 @@ def _glob_to_regex(pattern: str) -> str:
     return "^" + "".join(out) + "$"
 
 
-def load_deploy_excluded() -> list[str]:
-    import json
+def walk_public_urls(repo: Repo, deploy_excluded: list[str]) -> list[str]:
+    """mirror validate_public_exposure.py walking semantics."""
+    deploy_re = [re.compile(_glob_to_regex(g)) for g in deploy_excluded]
+    prefix = "public/"
+    urls: list[str] = []
+    for repo_rel in repo.glob("public/**/*"):
+        rel = repo_rel[len(prefix):]
+        if rel == ".htaccess":
+            continue
+        url = "/" + rel
+        if any(p.match(url) for p in deploy_re):
+            continue
+        urls.append(url)
+    # also include the directory-form url for any index.html, so we test
+    # that mod_dir's subrequest resolution would succeed.
+    dir_urls = [u[: -len("index.html")] for u in urls if u.endswith("/index.html")]
+    return urls + dir_urls
 
-    if not MANIFEST_PATH.is_file():
-        return []
-    data = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
-    return list(data.get("deploy_excluded_globs", []))
+
+@dataclass(frozen=True)
+class Ctx:
+    rules: list[tuple[re.Pattern, str]]
+    deploy_excluded: list[str]
 
 
-def main() -> int:
-    gate = load_gate()
-    rules = parse_rules(gate)
+@dataclass
+class Result:
+    rule_count: int = 0
+    allowed: int = 0
+    denied: list[str] = field(default_factory=list)
+    fallthrough: list[str] = field(default_factory=list)
+
+    @property
+    def ok(self) -> bool:
+        return not self.denied and not self.fallthrough
+
+
+def load(repo: Repo) -> tuple[Ctx | None, list[str]]:
+    if not repo.is_file(HTACCESS_REL):
+        return None, ["could not read public/.htaccess"]
+    text = repo.read(HTACCESS_REL)
+    open_m = GATE_OPEN.search(text)
+    close_m = GATE_CLOSE.search(text)
+    if not open_m or not close_m:
+        return None, ["could not locate the rewrite gate block in .htaccess"]
+    gate_text = text[open_m.end() : close_m.start()]
+    rules, errors = parse_rules(gate_text)
+    if errors:
+        return None, errors
     if not rules:
-        print("FAIL: no RewriteRule directives parsed from the gate block")
-        return 1
-    print(f"  parsed {len(rules)} RewriteRule directives from .htaccess")
+        return None, ["no RewriteRule directives parsed from the gate block"]
+    deploy_excluded: list[str] = []
+    if repo.is_file(MANIFEST_REL):
+        data = json.loads(repo.read(MANIFEST_REL))
+        deploy_excluded = list(data.get("deploy_excluded_globs", []))
+    return Ctx(rules=rules, deploy_excluded=deploy_excluded), []
 
-    deploy_excluded = load_deploy_excluded()
-    urls = walk_public_urls(deploy_excluded)
 
-    denied: list[str] = []
-    fallthrough: list[str] = []
-    allowed = 0
-    for url in urls:
-        verdict = evaluate(url, rules)
+def evaluate(repo: Repo, ctx: Ctx) -> Result:
+    result = Result(rule_count=len(ctx.rules))
+    for url in walk_public_urls(repo, ctx.deploy_excluded):
+        verdict = classify(url, ctx.rules)
         if verdict == "allow":
-            allowed += 1
+            result.allowed += 1
         elif verdict == "deny":
-            denied.append(url)
+            result.denied.append(url)
         else:
-            fallthrough.append(url)
+            result.fallthrough.append(url)
+    return result
 
-    if denied:
-        print(f"FAIL: {len(denied)} public file(s) are explicitly denied by the gate:")
-        for u in denied[:50]:
+
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    ctx, errors = load(repo)
+    if errors:
+        for e in errors:
+            print(f"FAIL: {e}")
+        return 1
+
+    print(f"  parsed {len(ctx.rules)} RewriteRule directives from .htaccess")
+    result = evaluate(repo, ctx)
+
+    if result.denied:
+        print(f"FAIL: {len(result.denied)} public file(s) are explicitly denied by the gate:")
+        for u in result.denied[:50]:
             print(f"  DENIED: {u}")
-        if len(denied) > 50:
-            print(f"  ... and {len(denied) - 50} more")
+        if len(result.denied) > 50:
+            print(f"  ... and {len(result.denied) - 50} more")
         return 1
 
-    if fallthrough:
-        print(f"FAIL: {len(fallthrough)} public file(s) fall through to the final deny:")
-        for u in fallthrough[:50]:
+    if result.fallthrough:
+        print(f"FAIL: {len(result.fallthrough)} public file(s) fall through to the final deny:")
+        for u in result.fallthrough[:50]:
             print(f"  FALLTHROUGH: {u}")
-        if len(fallthrough) > 50:
-            print(f"  ... and {len(fallthrough) - 50} more")
+        if len(result.fallthrough) > 50:
+            print(f"  ... and {len(result.fallthrough) - 50} more")
         return 1
 
-    print(f"OK: every public url passes through an allow rule ({allowed} urls)")
+    print(f"OK: every public url passes through an allow rule ({result.allowed} urls)")
     return 0
 
 
