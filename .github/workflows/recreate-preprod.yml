@@ -20,8 +20,10 @@ on:
   # test the create-if-missing path without waiting for a promotion.
   workflow_dispatch:
 
+# least privilege: the workflow token is read-only by default; only the one
+# job that creates the branch ref is granted contents: write (job-level).
 permissions:
-  contents: write # create the preprod branch ref
+  contents: read
 
 concurrency:
   group: recreate-preprod
@@ -30,6 +32,8 @@ concurrency:
 jobs:
   recreate-preprod:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the preprod branch ref
     steps:
       - name: Recreate preprod from main if it was auto-deleted
         env:
