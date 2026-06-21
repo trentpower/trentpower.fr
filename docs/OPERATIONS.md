@@ -425,22 +425,23 @@ Remove: X-Powered-By
 
 ### Cache rules
 
-| Pattern                                                      | Cache-Control                                    | Rationale                                                               |
-| ------------------------------------------------------------ | ------------------------------------------------ | ----------------------------------------------------------------------- |
-| `*.html`                                                     | `no-store, no-cache, must-revalidate, max-age=0` | always fresh                                                            |
-| `styles.css`, `app.js`, `cite.css`, `sw.js`                  | `no-cache, must-revalidate`                      | clean-named active assets; the `?v=` tag busts via revalidation         |
-| `print.css`, active `*.woff2`                                | `public, max-age=86400, must-revalidate`         | daily, still revalidated                                                |
-| content-addressed + frozen-archive assets                    | `public, max-age=31536000, immutable`            | immutable URLs (env-gated by the `.htaccess` rewrite, not the filename) |
-| `images/trent-power.jpg`, `images/trent-power-og.jpg`        | `public, max-age=31536000, immutable`            | permanent entity images                                                 |
-| `sitemap.xml`, `robots.txt`                                  | `public, max-age=3600`                           | hourly                                                                  |
-| `security.txt`, `humans.txt`, `pgp.txt`                      | `public, max-age=86400`                          | daily                                                                   |
-| `pgp-key.asc`, `attribution.txt`, `attribution.sig`          | `public, max-age=86400`                          | daily                                                                   |
-| `person.json`, `site-metadata.json`                          | `public, max-age=86400`                          | daily                                                                   |
-| `llms.txt`, `ai-usage.txt`, `assertion.txt`, `statement.txt` | `public, max-age=86400`                          | daily                                                                   |
-| `cite.css`, `webfinger`                                      | `public, max-age=86400`                          | daily                                                                   |
-| `attestations.json`, `manifest.webmanifest`                  | `public, max-age=86400`                          | daily                                                                   |
-| `archive.css`                                                | `public, max-age=86400`                          | daily                                                                   |
-| `integrity.json`, `integrity.json.sig`                       | `public, max-age=300, must-revalidate`           | 5 minutes                                                               |
+| Pattern                                                                                | Cache-Control                                    | Rationale                                                                 |
+| -------------------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------- |
+| `*.html`                                                                               | `no-store, no-cache, must-revalidate, max-age=0` | always fresh                                                              |
+| any `*.css` / `*.js` / `*.woff2` **requested with `?v=…`** (how every asset is linked) | `public, max-age=31536000, immutable`            | `IS_VERSIONED_ASSET` — the content-derived tag makes the URL safe forever |
+| bare `styles.css`, `cite.css`, `sw.js`, `js/*.js` (no query)                           | `no-cache, must-revalidate`                      | unversioned fallback fetch revalidates                                    |
+| bare `print.css`, active `*.woff2` (no query)                                          | `public, max-age=86400, must-revalidate`         | daily, revalidated                                                        |
+| frozen-archive assets (`integrity/releases/.../assets/`)                               | `public, max-age=31536000, immutable`            | `IS_ARCHIVE_ASSET` — sealed, byte-frozen                                  |
+| `images/trent-power.jpg`, `images/trent-power-og.jpg`                                  | `public, max-age=31536000, immutable`            | permanent entity images                                                   |
+| `sitemap.xml`, `robots.txt`                                                            | `public, max-age=3600`                           | hourly                                                                    |
+| `security.txt`, `humans.txt`, `pgp.txt`                                                | `public, max-age=86400`                          | daily                                                                     |
+| `pgp-key.asc`, `attribution.txt`, `attribution.sig`                                    | `public, max-age=86400`                          | daily                                                                     |
+| `person.json`, `site-metadata.json`                                                    | `public, max-age=86400`                          | daily                                                                     |
+| `llms.txt`, `ai-usage.txt`, `assertion.txt`, `statement.txt`                           | `public, max-age=86400`                          | daily                                                                     |
+| `cite.css`, `webfinger`                                                                | `public, max-age=86400`                          | daily                                                                     |
+| `attestations.json`, `manifest.webmanifest`                                            | `public, max-age=86400`                          | daily                                                                     |
+| `archive.css`                                                                          | `public, max-age=86400`                          | daily                                                                     |
+| `integrity.json`, `integrity.json.sig`                                                 | `public, max-age=300, must-revalidate`           | 5 minutes                                                                 |
 
 ### Content types (explicit in `.htaccess`)
 
@@ -458,11 +459,14 @@ Remove: X-Powered-By
 
 ### Notes
 
-- Active assets keep clean filenames and **revalidate**; the content-derived
-  `?v=<edition>.<hash8>` tag turns a changed asset into a new URL, so a
-  conditional request returns 304 until the bytes change. Only
-  content-addressed and frozen-archive assets are served `immutable` (gated by
-  the `.htaccess` rewrite, not by a filename pattern).
+- Assets keep clean filenames; the cache regime is chosen by request **shape**,
+  not by the filename. Every asset is linked **with** a content-derived
+  `?v=<edition>.<hash8>` query — the `.htaccess` rewrite flags those requests
+  `IS_VERSIONED_ASSET` and serves them `immutable` for a year (safe forever,
+  because a byte change yields a new tag = a new URL). A bare, unversioned fetch
+  of the same file (no `?v=`) falls back to `no-cache, must-revalidate` (or daily
+  for `print.css` / fonts). Frozen-archive assets are independently `immutable`
+  via `IS_ARCHIVE_ASSET`.
 - HTML revalidates on every request for fresh content.
 - Integrity files have a short 5-minute TTL so signature updates propagate
   quickly after deploys.
@@ -783,9 +787,9 @@ Once per year (or after any significant change):
 3. **Review the privacy page** — confirm claims still match implementation:
    | Claim | Verify |
    |---|---|
-   | No cookies | `grep -rn 'cookie' app.js` returns nothing |
-   | No storage | `grep -rn 'localStorage\|sessionStorage' app.js` returns nothing |
-   | No third-party requests | `grep -rn 'https\?://' app.js` returns nothing |
+   | No cookies | `grep -rn 'document.cookie' public/js public/sw-register.js public/verify/verify.js` returns nothing |
+   | Storage is same-origin only | `grep -rn 'localStorage\|sessionStorage' public/js` shows only visitor-preference + offline-cache keys (chiefly `js/local.js`); none are transmitted |
+   | No third-party requests | `grep -rnE 'https?://' public/js public/sw-register.js public/verify/verify.js` returns no off-origin endpoints |
    | No analytics | no tracking scripts in any HTML file |
    | No AI inference on visitors | no ML/AI libraries loaded |
 4. **Update `attestations.json`** — update `last_reviewed` after verifying all
