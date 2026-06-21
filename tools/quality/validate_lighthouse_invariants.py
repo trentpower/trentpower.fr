@@ -43,11 +43,22 @@ Checks
       bar at small sizes when the surrounding row reflows.
 
 Exit 0 = green. Exit 1 = block.
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the whole gate runs over a fixture repo with no
+monkeypatching. `load(repo)` reads the canonical identity JSON; `evaluate(repo,
+edition)` is the pure compute path returning a Result; `main()` is the only
+adapter that prints/exits. The per-check helpers take the Repo (and any read
+text) as parameters — no module-global path reads.
 """
+
+from __future__ import annotations
 
 import json
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -60,17 +71,22 @@ sys.path.insert(
         / "lib"
     ),
 )
-from paths import IDENTITY_CANONICAL, PUBLIC_DIR  # noqa: E402
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 from script_blocks import strip_script_blocks  # noqa: E402
+
+# repo-relative location of the canonical identity input (resolved through Repo).
+IDENTITY_CANONICAL_REL = "tools/config/identity_canonical.json"
 
 
 # every active .html under public/ — discovered by walk so the
 # bilingual /en/ and /fr/ trees are covered. the dated frozen-archive
 # snapshots and the editorial review documents are excluded.
-def _discover_active_html() -> list:
-    out = []
-    for p in sorted(PUBLIC_DIR.glob("**/*.html")):
-        rel = p.relative_to(PUBLIC_DIR).as_posix()
+def _discover_active_html(repo: Repo) -> list[str]:
+    out: list[str] = []
+    prefix = "public/"
+    for full in repo.glob(f"{prefix}**/*.html"):
+        rel = full[len(prefix) :]
         if re.match(r"integrity/releases/[^/]+/", rel):
             continue
         if rel.startswith("editorial/"):
@@ -78,8 +94,6 @@ def _discover_active_html() -> list:
         out.append(rel)
     return out
 
-
-ACTIVE_HTML = _discover_active_html()
 
 INLINE_HANDLER_RE = re.compile(
     r"\son(?:click|load|error|change|input|submit|focus|blur|"
@@ -96,13 +110,13 @@ def _fail(fails: list, msg: str):
     fails.append(msg)
 
 
-def _check_no_inline_handlers(fails: list) -> None:
-    for rel in ACTIVE_HTML:
-        p = PUBLIC_DIR / rel
-        if not p.is_file():
+def _check_no_inline_handlers(repo: Repo, fails: list) -> None:
+    for rel in _discover_active_html(repo):
+        prel = f"public/{rel}"
+        if not repo.is_file(prel):
             _fail(fails, f"L1: {rel} missing")
             continue
-        text = p.read_text(encoding="utf-8")
+        text = repo.read(prel)
         # strip <script>...</script> blocks first — js code inside a
         # script element legitimately uses identifiers like onclick.
         text_no_scripts = strip_script_blocks(text)
@@ -114,7 +128,7 @@ def _check_no_inline_handlers(fails: list) -> None:
             _fail(fails, f"L1: {rel} carries inline event handler near: …{ctx}…")
 
 
-def _check_no_eval(fails: list) -> None:
+def _check_no_eval(repo: Repo, fails: list) -> None:
     for rel in (
         "js/theme.js",
         "sw-register.js",
@@ -124,11 +138,11 @@ def _check_no_eval(fails: list) -> None:
         "js/overlay.js",
         "js/fonts.js",
     ):
-        p = PUBLIC_DIR / rel
-        if not p.is_file():
+        prel = f"public/{rel}"
+        if not repo.is_file(prel):
             _fail(fails, f"L2: {rel} missing")
             continue
-        text = p.read_text(encoding="utf-8")
+        text = repo.read(prel)
         if EVAL_RE.search(text):
             _fail(
                 fails,
@@ -136,12 +150,12 @@ def _check_no_eval(fails: list) -> None:
             )
 
 
-def _check_htaccess_sw_block(fails: list) -> None:
-    p = PUBLIC_DIR / ".htaccess"
-    if not p.is_file():
+def _check_htaccess_sw_block(repo: Repo, fails: list) -> None:
+    prel = "public/.htaccess"
+    if not repo.is_file(prel):
         _fail(fails, "L3: .htaccess missing")
         return
-    text = p.read_text(encoding="utf-8")
+    text = repo.read(prel)
     # the 2026-05-19 .htaccess refactor split the sw.js policy across
     # two FilesMatch blocks: one in section d (csp override) and one
     # in section e (Content-Type + Service-Worker-Allowed + cache).
@@ -165,12 +179,12 @@ def _check_htaccess_sw_block(fails: list) -> None:
         _fail(fails, "L3: sw.js FilesMatch block(s) missing Service-Worker-Allowed: /")
 
 
-def _check_footer_lang_touch_target(fails: list) -> None:
-    p = PUBLIC_DIR / "styles.css"
-    if not p.is_file():
+def _check_footer_lang_touch_target(repo: Repo, fails: list) -> None:
+    prel = "public/styles.css"
+    if not repo.is_file(prel):
         _fail(fails, "L4: styles.css missing")
         return
-    text = p.read_text(encoding="utf-8")
+    text = repo.read(prel)
     # the footer language switcher is two static <a> links between the
     # editions. the lighthouse touch-target audit wants ≥44px tap
     # height; we accept either the legacy min-width/min-height: 44px
@@ -209,11 +223,11 @@ def _check_footer_lang_touch_target(fails: list) -> None:
         )
 
 
-def _check_cite_btn_touch_target(fails: list) -> None:
-    p = PUBLIC_DIR / "styles.css"
-    if not p.is_file():
+def _check_cite_btn_touch_target(repo: Repo, fails: list) -> None:
+    prel = "public/styles.css"
+    if not repo.is_file(prel):
         return  # l4 already reported missing
-    text = p.read_text(encoding="utf-8")
+    text = repo.read(prel)
     m = re.search(r"\.cite-btn\s*\{([^}]*)\}", text)
     if not m:
         # cite-btn may be absent on some surfaces; treat as not-applicable
@@ -223,7 +237,7 @@ def _check_cite_btn_touch_target(fails: list) -> None:
         _fail(fails, "L8: .cite-btn missing min-height: 44px (touch-target audit)")
 
 
-def _check_versioned_verification_data(fails: list) -> None:
+def _check_versioned_verification_data(repo: Repo, edition: str, fails: list) -> None:
     """L5 — the verification-data script ships as a single clean file
     `/verify/verification-data.js`; cache busting rides on the
     `?v={asset_version}` query string stamped into every HTML
@@ -231,38 +245,38 @@ def _check_versioned_verification_data(fails: list) -> None:
     must be NO dated `verification-data.<edition>.<sha>.js` siblings
     in the active tree (enforced by stage 7a too); this gate just
     confirms the clean alias is present and non-empty."""
-    canon = json.loads(IDENTITY_CANONICAL.read_text(encoding="utf-8"))
-    edition = canon.get("edition")
     if not edition:
         _fail(fails, "L5: identity_canonical.json has no edition")
         return
-    verify_dir = PUBLIC_DIR / "verify"
-    alias = verify_dir / "verification-data.js"
-    if not alias.is_file():
+    alias_rel = "public/verify/verification-data.js"
+    if not repo.is_file(alias_rel):
         _fail(fails, "L5: /verify/verification-data.js missing")
         return
-    if alias.stat().st_size == 0:
+    if repo.size(alias_rel) == 0:
         _fail(fails, "L5: /verify/verification-data.js is empty")
         return
     # belt-and-braces: any leftover dated siblings would have been
     # caught by stage 7a (validate_no_dated_assets.py), but flag
     # them here too so the L5 message names the offender directly.
     dated_pat = re.compile(rf"^verification-data\.{re.escape(edition)}\.[a-f0-9]+\.js$")
-    stale = sorted(p for p in verify_dir.glob("verification-data.*.js") if dated_pat.match(p.name))
+    siblings = repo.glob("public/verify/verification-data.*.js")
+    stale = sorted(
+        rel for rel in siblings if dated_pat.match(rel.rsplit("/", 1)[-1])
+    )
     if stale:
-        names = [m.name for m in stale]
+        names = [rel.rsplit("/", 1)[-1] for rel in stale]
         _fail(
             fails,
             f"L5: dated verification-data sibling(s) present (should have been pruned): {names}",
         )
 
 
-def _check_principle_close_tags(fails: list) -> None:
-    p = PUBLIC_DIR / "index.html"
-    if not p.is_file():
+def _check_principle_close_tags(repo: Repo, fails: list) -> None:
+    prel = "public/index.html"
+    if not repo.is_file(prel):
         _fail(fails, "L7: index.html missing")
         return
-    text = p.read_text(encoding="utf-8")
+    text = repo.read(prel)
     bad = re.findall(
         r'<h3[^>]*class="principle-title"[^>]*>[^<]*</h2>',
         text,
@@ -271,12 +285,12 @@ def _check_principle_close_tags(fails: list) -> None:
         _fail(fails, f"L7: {len(bad)} principle-title <h3> rule(s) close with </h2>")
 
 
-def _check_homepage_font_preloads(fails: list) -> None:
-    p = PUBLIC_DIR / "index.html"
-    if not p.is_file():
+def _check_homepage_font_preloads(repo: Repo, fails: list) -> None:
+    prel = "public/index.html"
+    if not repo.is_file(prel):
         _fail(fails, "L6: index.html missing")
         return
-    text = p.read_text(encoding="utf-8")
+    text = repo.read(prel)
     preloads = re.findall(
         r"<link[^>]+rel=[\"\']preload[\"\'][^>]+as=[\"\']font[\"\'][^>]*>",
         text,
@@ -285,7 +299,7 @@ def _check_homepage_font_preloads(fails: list) -> None:
         _fail(fails, f"L6: index.html preloads {len(preloads)} fonts (≤3 expected)")
 
 
-def _check_no_data_urls_in_stylesheets(fails: list) -> None:
+def _check_no_data_urls_in_stylesheets(repo: Repo, fails: list) -> None:
     """L9 — no data: URLs inside url(...) in stylesheets.
 
     the site's CSP at .htaccess pins img-src to 'self', and browsers
@@ -296,10 +310,10 @@ def _check_no_data_urls_in_stylesheets(fails: list) -> None:
     silent regression next time a generator inlines a tiny svg.
     """
     for name in ("styles.css", "print.css"):
-        p = PUBLIC_DIR / name
-        if not p.is_file():
+        prel = f"public/{name}"
+        if not repo.is_file(prel):
             continue
-        text = p.read_text(encoding="utf-8")
+        text = repo.read(prel)
         # match `url(` optional-quote `data:`
         if re.search(r"url\(\s*['\"]?data:", text):
             _fail(
@@ -309,29 +323,70 @@ def _check_no_data_urls_in_stylesheets(fails: list) -> None:
             )
 
 
-def main() -> int:
-    fails: list = []
-    _check_no_inline_handlers(fails)
-    _check_no_eval(fails)
-    _check_htaccess_sw_block(fails)
-    _check_footer_lang_touch_target(fails)
-    _check_cite_btn_touch_target(fails)
-    _check_versioned_verification_data(fails)
-    _check_homepage_font_preloads(fails)
-    _check_principle_close_tags(fails)
-    _check_no_data_urls_in_stylesheets(fails)
-
-    if fails:
-        print(f"FAIL: {len(fails)} Lighthouse-invariant issue(s):", file=sys.stderr)
-        for f in fails:
-            print(f"  ✗ {f}", file=sys.stderr)
-        return 1
-    print(
-        "OK: Lighthouse invariants — inline handlers, eval, sw.js headers, "
+# ---------------------------------------------------------------------------
+# Result — the value that flows through the interface. evaluate() produces it;
+# main() renders it. tests assert on Result, never on stdout. `summary` carries
+# the green one-liner so the render stays a thin adapter.
+# ---------------------------------------------------------------------------
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+    warns: list[str] = field(default_factory=list)
+    summary: str = (
+        "Lighthouse invariants — inline handlers, eval, sw.js headers, "
         "touch targets, versioned verification-data, font preloads, "
         "principle close tags, cite-btn tap target, i18n core (en+fr) carries every locale, "
         "no data: URLs in stylesheets"
     )
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+# ---------------------------------------------------------------------------
+# load — read the canonical identity JSON through the Repo seam. returns the
+# edition (or None when missing); never prints/exits.
+# ---------------------------------------------------------------------------
+def load(repo: Repo) -> str | None:
+    if not repo.is_file(IDENTITY_CANONICAL_REL):
+        return None
+    return json.loads(repo.read(IDENTITY_CANONICAL_REL)).get("edition")
+
+
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. one call, one Result, over the injected
+# Repo + the canonical edition. this is the test surface.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo, edition: str | None) -> Result:
+    r = Result()
+    _check_no_inline_handlers(repo, r.fails)
+    _check_no_eval(repo, r.fails)
+    _check_htaccess_sw_block(repo, r.fails)
+    _check_footer_lang_touch_target(repo, r.fails)
+    _check_cite_btn_touch_target(repo, r.fails)
+    _check_versioned_verification_data(repo, edition or "", r.fails)
+    _check_homepage_font_preloads(repo, r.fails)
+    _check_principle_close_tags(repo, r.fails)
+    _check_no_data_urls_in_stylesheets(repo, r.fails)
+    return r
+
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. loads, evaluates, renders, returns exit
+# code. the only place stdout and exit codes live.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    edition = load(repo)
+    r = evaluate(repo, edition)
+
+    if r.fails:
+        print(f"FAIL: {len(r.fails)} Lighthouse-invariant issue(s):", file=sys.stderr)
+        for f in r.fails:
+            print(f"  ✗ {f}", file=sys.stderr)
+        return 1
+    print(f"OK: {r.summary}")
     return 0
 
 
