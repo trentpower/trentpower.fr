@@ -26,11 +26,23 @@ images-manifest.json if present, source-manifest.json) are not
 treated as references — they only describe what is on disk, and
 relying on them would let orphans cite themselves.
 
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the scan runs over a fixture repo with no monkeypatching. The
+LANGS source-of-truth read can fail before the scan, so the load step returns
+either a Ctx (the live LANGS) or errors; `evaluate(repo, ctx)` is the pure
+compute path returning a Result; `main()` is the only adapter that prints/exits.
+The reference-scan, exclusions, and messages are byte-identical to the former
+module-global form.
+
 Exit 0 = clean; exit 1 = orphan(s) found.
 """
 
+from __future__ import annotations
+
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -43,9 +55,14 @@ sys.path.insert(
         / "lib"
     ),
 )
-from paths import PUBLIC_DIR, TEMPLATES_DIR, TOOLS_DIR  # noqa: E402
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
-IMAGES_DIR = PUBLIC_DIR / "images"
+# repo-relative roots (resolved through the Repo seam).
+PUBLIC_REL = "public"
+TEMPLATES_REL = "templates"
+IMAGES_REL = "public/images"
+ARCH_GENERATOR_REL = "tools/build/_generate_architecture_svgs.py"
 
 # manifests that describe the disk rather than reference it. excluded
 # so an asset can't self-justify by appearing only in a manifest.
@@ -70,40 +87,53 @@ CORPUS_SUFFIXES = {
 }
 
 
-def _load_langs_from_arch_generator() -> list[str]:
+@dataclass(frozen=True)
+class Ctx:
+    langs: list[str]
+
+
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+    warns: list[str] = field(default_factory=list)
+    oks: list[str] = field(default_factory=list)
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+def _load_langs_from_arch_generator(repo: Repo) -> list[str] | None:
     """Read LANGS = [...] from the architecture-svg generator. single
-    source of truth for which per-language variants are live."""
-    src = (TOOLS_DIR / "build" / "_generate_architecture_svgs.py").read_text(encoding="utf-8")
+    source of truth for which per-language variants are live. returns
+    None if the list cannot be read (the caller surfaces the error)."""
+    src = repo.read(ARCH_GENERATOR_REL)
     m = re.search(r"^LANGS\s*=\s*\[([^\]]*)\]", src, re.MULTILINE)
     if not m:
-        print("  FAIL: cannot read LANGS from _generate_architecture_svgs.py")
-        sys.exit(1)
+        return None
     return [s.strip().strip('"').strip("'") for s in m.group(1).split(",") if s.strip()]
 
 
-def _build_corpus() -> str:
+def _build_corpus(repo: Repo) -> str:
     parts: list[str] = []
-    for root in (PUBLIC_DIR, TEMPLATES_DIR):
-        for p in root.rglob("*"):
-            if not p.is_file():
-                continue
+    for root in (PUBLIC_REL, TEMPLATES_REL):
+        for rel in repo.glob(f"{root}/**/*"):
             # skip the images tree itself and the manifests that
             # only describe disk.
-            try:
-                rel = p.relative_to(PUBLIC_DIR)
-                if rel.parts and rel.parts[0] == "images":
+            if rel.startswith(PUBLIC_REL + "/"):
+                prel = rel[len(PUBLIC_REL) + 1 :]
+                parts_rel = prel.split("/")
+                if parts_rel and parts_rel[0] == "images":
                     continue
-                if p.name in MANIFEST_EXCLUDES:
+                name = parts_rel[-1]
+                if name in MANIFEST_EXCLUDES:
                     continue
-                if p.name == SOURCE_MANIFEST_NAME:
+                if name == SOURCE_MANIFEST_NAME:
                     continue
-            except ValueError:
-                pass  # not under PUBLIC_DIR (i.e. templates/)
-            if p.suffix.lower() in CORPUS_SUFFIXES or p.name == ".htaccess":
-                try:
-                    parts.append(p.read_text(encoding="utf-8", errors="ignore"))
-                except OSError:
-                    continue
+            name = rel.rsplit("/", 1)[-1]
+            suffix = ("." + name.rsplit(".", 1)[1]) if "." in name else ""
+            if suffix.lower() in CORPUS_SUFFIXES or name == ".htaccess":
+                parts.append(repo.read(rel))
     return "\n".join(parts)
 
 
@@ -121,26 +151,42 @@ def _is_arch_lang_variant(rel_path: str, langs: list[str]) -> bool:
     return m.group(2) in langs
 
 
-def main() -> int:
-    if not IMAGES_DIR.is_dir():
-        print(f"  OK: no images directory at {IMAGES_DIR}")
-        return 0
+# ---------------------------------------------------------------------------
+# load — read + validate the inputs. returns (ctx, errors); never prints/exits.
+# ---------------------------------------------------------------------------
+def load(repo: Repo) -> tuple[Ctx | None, list[str]]:
+    langs = _load_langs_from_arch_generator(repo)
+    if langs is None:
+        return None, ["  FAIL: cannot read LANGS from _generate_architecture_svgs.py"]
+    return Ctx(langs=langs), []
 
-    langs = _load_langs_from_arch_generator()
-    corpus = _build_corpus()
+
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. one call, one Result, over the injected
+# Repo. this is the test surface.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo, ctx: Ctx) -> Result:
+    r = Result()
+
+    images_dir = repo.root / IMAGES_REL
+    if not images_dir.is_dir():
+        r.oks.append(f"  OK: no images directory at {images_dir}")
+        return r
+
+    image_rels = sorted(repo.glob(f"{IMAGES_REL}/**/*"))
+    corpus = _build_corpus(repo)
     orphans: list[str] = []
 
-    for img in sorted(IMAGES_DIR.rglob("*")):
-        if not img.is_file():
-            continue
-        rel = "/" + img.relative_to(PUBLIC_DIR).as_posix()
-        basename = img.name
+    for img_rel in image_rels:
+        prel = img_rel[len(PUBLIC_REL) + 1 :]
+        rel = "/" + prel
+        basename = prel.rsplit("/", 1)[-1]
 
         if rel in corpus:
             continue
         if basename in corpus:
             continue
-        if _is_arch_lang_variant(rel, langs):
+        if _is_arch_lang_variant(rel, ctx.langs):
             # extra guard: confirm the architecture path namespace
             # is actually referenced somewhere live. if not, the
             # whole feature is orphaned and the dynamic pattern
@@ -150,17 +196,38 @@ def main() -> int:
         orphans.append(rel)
 
     if orphans:
-        print(
+        r.fails.append(
             f"  FAIL: {len(orphans)} orphan image(s) under /images/ "
             f"(no reference in HTML/CSS/JS/JSON/webmanifest/xml/txt/htaccess "
             f"or templates):"
         )
         for o in orphans:
-            print(f"    {o}")
+            r.fails.append(f"    {o}")
+        return r
+
+    r.oks.append(f"  OK: every image under /images/ is referenced (LANGS={ctx.langs}).")
+    return r
+
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. loads, evaluates, renders, returns exit
+# code. the only place stdout and exit codes live.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+
+    ctx, errors = load(repo)
+    if errors:
+        for e in errors:
+            print(e)
         return 1
 
-    print(f"  OK: every image under /images/ is referenced (LANGS={langs}).")
-    return 0
+    r = evaluate(repo, ctx)
+    for line in r.oks:
+        print(line)
+    for line in r.fails:
+        print(line)
+    return 1 if r.fails else 0
 
 
 if __name__ == "__main__":
