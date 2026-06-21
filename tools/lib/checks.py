@@ -254,7 +254,7 @@ REGISTRY: list[Check] = [
         _B,
         _COR,
         "every Verify record is validated today (UTC)",
-        function=pdc.check_verification_map_dates,
+        command=_script("validate_verification_map_dates.py"),
     ),
     Check(
         "verification_data_shape",
