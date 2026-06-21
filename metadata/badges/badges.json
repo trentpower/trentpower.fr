@@ -123,6 +123,14 @@
       "value": "Civil · Factual · On topic",
       "scope": "docs",
       "href": "#code-of-conduct"
+    },
+    {
+      "id": "coverage",
+      "label": "Coverage",
+      "value": "93%",
+      "filename": "coverage.svg",
+      "href": "docs/COVERAGE.md",
+      "scope": "docs"
     }
   ],
   "proof_strip": {
