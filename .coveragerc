@@ -1,10 +1,15 @@
 # coverage.py config for the tools/ test suite.
 #
 # Targeted, not blanket: measure the policy-bearing Python (build, quality, lib,
-# verify), excluding the tests themselves and the thin gate/lint runners. Reports
-# only for now — no fail-under here; the ratchet is applied per-surface by the
-# coverage scripts once the migrated structure is measured (avoids coverage
-# theatre for one-off wrappers).
+# verify), excluding the tests themselves and the thin gate/lint runners.
+#
+# coverage.sh reports THREE surfaces, each with its own target (the global tools/
+# number is not a target — generators get integration tests later, not now):
+#   1. convergence + seal (signing-critical)  → 90%+   [at ~98%]
+#   2. ADR-0002 validators                     → 90%+   [ongoing ratchet]
+#   3. broad quality-policy                    → 85%    [advisory]
+# Reports only for now — no fail-under; the blocking ratchet is wired per-surface
+# once each is at target (avoids coverage theatre for one-off wrappers).
 
 [run]
 branch = True
