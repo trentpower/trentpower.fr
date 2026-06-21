@@ -20,6 +20,14 @@ requires a fresh, clean full-history secret scan report from
 tools/quality/secret_scan.py. The report is local-only and gitignored, so the
 routine gate — which must pass on a fresh CI checkout — never asks for it.
 
+Shape (deep module, small interface). Two dependencies are injected seams —
+`Repo(root)` for the filesystem and `Proc()` for the git crossings (what is
+tracked, the HEAD hash, the merge-base ancestor check) — so the whole gate is
+exercised through `evaluate(repo, proc, full=...) -> Result` over a fixture
+repo with a FakeProc, no monkeypatching. Compute (`evaluate`) is separate from
+render (`main`): the former returns a Result and never prints or exits; the
+latter is the only side-effecting adapter.
+
 Run standalone:
     python3 tools/quality/validate_public_readiness.py
     python3 tools/quality/validate_public_readiness.py --full
@@ -30,8 +38,8 @@ from __future__ import annotations
 import argparse
 import datetime
 import json
-import subprocess
 import sys
+from dataclasses import dataclass, field
 from pathlib import Path
 
 _TOOLS = next(_a for _a in Path(__file__).resolve().parents if _a.name == "tools")
@@ -39,45 +47,59 @@ sys.path.insert(0, str(_TOOLS / "lib"))
 sys.path.insert(0, str(_TOOLS / "quality"))
 
 from paths import REPO_ROOT  # noqa: E402
+from proc import Proc  # noqa: E402  (shared subprocess evidence seam)
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 from validate_repository_hygiene import FORBIDDEN_NAMES  # noqa: E402
 
-CONFIG = _TOOLS / "config" / "public-release.json"
-EXCLUSIONS = REPO_ROOT / "metadata" / "repo-exclusions.json"
-SCAN_REPORT = REPO_ROOT / "reports" / "checks" / "last-secret-scan.json"
+# repo-relative locations of the inputs (resolved through the Repo seam).
+CONFIG_REL = "tools/config/public-release.json"
+EXCLUSIONS_REL = "metadata/repo-exclusions.json"
+SCAN_REPORT_REL = "reports/checks/last-secret-scan.json"
 
 
-def _git(*args: str) -> str:
-    return subprocess.run(["git", *args], cwd=REPO_ROOT, capture_output=True, text=True).stdout
+# ---------------------------------------------------------------------------
+# Result — the value that flows through the interface. evaluate() produces it;
+# main() renders it. tests assert on Result, never on stdout.
+# ---------------------------------------------------------------------------
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser(description="public-repo posture gate")
-    ap.add_argument(
-        "--full",
-        action="store_true",
-        help="also require a fresh, clean full-history secret scan (release ceremony)",
-    )
-    args = ap.parse_args()
+# ---------------------------------------------------------------------------
+# load — read the declared-facts config through the Repo seam.
+# ---------------------------------------------------------------------------
+def load(repo: Repo) -> dict:
+    return json.loads(repo.read(CONFIG_REL))
 
-    cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
-    fails: list[str] = []
+
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. one call, one Result, over the injected
+# Repo + Proc. this is the test surface.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo, proc: Proc, full: bool = False) -> Result:
+    cfg = load(repo)
+    r = Result()
+    fails = r.fails
+
+    def _git(*args: str) -> str:
+        return proc.run(["git", *args], cwd=repo.root).stdout
 
     # required root files, present and non-empty, with the load-bearing phrases.
     for name in cfg["required_root_files"]:
-        p = REPO_ROOT / name
-        if not p.is_file() or p.stat().st_size == 0:
+        if not repo.is_file(name) or repo.size(name) == 0:
             fails.append(f"required root file missing or empty: {name}")
-    licence = REPO_ROOT / "LICENSE"
-    if licence.is_file() and "MIT License" not in licence.read_text(encoding="utf-8"):
+    if repo.is_file("LICENSE") and "MIT License" not in repo.read("LICENSE"):
         fails.append("LICENSE does not contain the MIT License text")
-    content_licence = REPO_ROOT / "CONTENT-RIGHTS.md"
-    if content_licence.is_file() and "CC BY-SA 4.0" not in content_licence.read_text(
-        encoding="utf-8"
-    ):
+    if repo.is_file("CONTENT-RIGHTS.md") and "CC BY-SA 4.0" not in repo.read("CONTENT-RIGHTS.md"):
         fails.append("CONTENT-RIGHTS.md does not name CC BY-SA 4.0")
 
     # README: no private-repo claim, and it must point at both licences.
-    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    readme = repo.read("README.md")
     for phrase in cfg["forbidden_readme_phrases"]:
         if phrase in readme:
             fails.append(f"README.md still claims: {phrase!r}")
@@ -86,8 +108,9 @@ def main() -> int:
             fails.append(f"README.md does not reference {ref}")
 
     # .gitattributes must keep public/ marked generated.
-    attrs = REPO_ROOT / ".gitattributes"
-    if attrs.is_file() and "public/** linguist-generated" not in attrs.read_text(encoding="utf-8"):
+    if repo.is_file(".gitattributes") and "public/** linguist-generated" not in repo.read(
+        ".gitattributes"
+    ):
         fails.append(".gitattributes lost the public/** linguist-generated marker")
 
     # nothing forbidden tracked: dependency trees, secret-named files.
@@ -104,13 +127,10 @@ def main() -> int:
         tracked_fonts = _git("ls-files", "--", *cfg["untracked_font_globs"]).strip()
         if tracked_fonts:
             fails.append(f"licensed font binaries are tracked: {tracked_fonts.splitlines()[:3]}")
-        declared = {e["path"] for e in json.loads(EXCLUSIONS.read_text(encoding="utf-8"))["files"]}
+        declared = {e["path"] for e in json.loads(repo.read(EXCLUSIONS_REL))["files"]}
         on_disk = set()
         for glob in cfg["untracked_font_globs"]:
-            base, _, pattern = glob.rpartition("/")
-            on_disk.update(
-                p.relative_to(REPO_ROOT).as_posix() for p in (REPO_ROOT / base).glob(pattern)
-            )
+            on_disk.update(repo.glob(glob))
         for path in sorted(on_disk - declared):
             fails.append(f"font on disk but not declared in repo-exclusions.json: {path}")
         for path in sorted(declared - on_disk):
@@ -124,19 +144,19 @@ def main() -> int:
             fails.append(f"internal record is tracked: {rel}")
 
     # release ceremony only: a fresh, clean full-history secret scan.
-    if args.full:
-        if not SCAN_REPORT.is_file():
+    if full:
+        if not repo.is_file(SCAN_REPORT_REL):
             fails.append("no secret-scan report — run tools/quality/secret_scan.py")
         else:
-            scan = json.loads(SCAN_REPORT.read_text(encoding="utf-8"))
+            scan = json.loads(repo.read(SCAN_REPORT_REL))
             if scan.get("status") != "passed":
                 fails.append(f"secret scan status is {scan.get('status')!r}, not passed")
             head = _git("rev-parse", "HEAD").strip()
             scanned = scan.get("scanned_commit", "")
             if scanned != head:
-                ancestor = subprocess.run(
+                ancestor = proc.run(
                     ["git", "merge-base", "--is-ancestor", scanned, head],
-                    cwd=REPO_ROOT,
+                    cwd=repo.root,
                 ).returncode
                 if ancestor != 0:
                     fails.append("secret scan was run on an unrelated commit — rerun it")
@@ -150,9 +170,29 @@ def main() -> int:
             except ValueError:
                 fails.append(f"secret scan report has no parseable timestamp: {generated!r}")
 
-    if fails:
-        print(f"FAIL: {len(fails)} public-readiness violation(s):")
-        for f in fails:
+    return r
+
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. builds the seams, evaluates, renders,
+# returns exit code. the only place stdout and exit codes live.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    ap = argparse.ArgumentParser(description="public-repo posture gate")
+    ap.add_argument(
+        "--full",
+        action="store_true",
+        help="also require a fresh, clean full-history secret scan (release ceremony)",
+    )
+    args = ap.parse_args()
+
+    repo = Repo(repo_root)
+    proc = Proc()
+    r = evaluate(repo, proc, full=args.full)
+
+    if r.fails:
+        print(f"FAIL: {len(r.fails)} public-readiness violation(s):")
+        for f in r.fails:
             print(f"  ✗ {f}")
         return 1
     mode = "full" if args.full else "routine"
