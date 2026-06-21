@@ -73,7 +73,9 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(r.ok, msg=r.fails)
 
     def test_external_link_skipped(self):
-        _write(self.root, "README.md", "# T\n\n[site](https://trentpower.fr/) and [m](mailto:x@y).\n")
+        _write(
+            self.root, "README.md", "# T\n\n[site](https://trentpower.fr/) and [m](mailto:x@y).\n"
+        )
         r = self._eval()
         self.assertTrue(r.ok, msg=r.fails)
 

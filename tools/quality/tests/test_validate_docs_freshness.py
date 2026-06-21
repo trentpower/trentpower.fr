@@ -70,9 +70,7 @@ def _make_fixture_repo(root: pathlib.Path) -> None:
 def _tracked(root: pathlib.Path, *extra: str) -> set[str]:
     """The git-tracked set the fixture stands in for: every file on disk plus any
     extra repo-paths the docs reference but that need not exist as files."""
-    files = {
-        p.relative_to(root).as_posix() for p in root.rglob("*") if p.is_file()
-    }
+    files = {p.relative_to(root).as_posix() for p in root.rglob("*") if p.is_file()}
     return files | set(extra)
 
 
@@ -134,7 +132,11 @@ class Evaluate(unittest.TestCase):
 
     # --- stale phrases ------------------------------------------------------
     def test_stale_phrase_fails(self):
-        _write(self.root, "docs/COVERAGE.md", "# C\n\nThe coverage is advisory here.\n[x](SCORE-LEDGER.md)\n")
+        _write(
+            self.root,
+            "docs/COVERAGE.md",
+            "# C\n\nThe coverage is advisory here.\n[x](SCORE-LEDGER.md)\n",
+        )
         r = self._eval()
         self.assertFalse(r.ok)
         self.assertTrue(any("coverage is advisory" in f for f in r.fails))
@@ -143,8 +145,7 @@ class Evaluate(unittest.TestCase):
         _write(
             self.root,
             "docs/COVERAGE.md",
-            "# C\n\nWe never say coverage is advisory. <!-- stale-ok -->\n"
-            "[x](SCORE-LEDGER.md)\n",
+            "# C\n\nWe never say coverage is advisory. <!-- stale-ok -->\n[x](SCORE-LEDGER.md)\n",
         )
         r = self._eval()
         self.assertTrue(r.ok, msg=r.fails)

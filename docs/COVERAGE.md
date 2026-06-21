@@ -46,15 +46,15 @@ The suite is grouped by file and purpose rather than by a formal taxonomy, so th
 per-category figures below are descriptive, not separately gated — only the totals
 are enforced:
 
-| group                          | what it covers                                                              |
-| ------------------------------ | --------------------------------------------------------------------------- |
-| validator fixture tests        | each `validate_*.py` over fixture repos — clean fixture passes, seeded defect fails |
-| seam / integration tests       | `Repo(root)` and process seams, `evaluate()` boundaries over temp trees     |
-| convergence + seal             | byte-fixpoint guard and post-seal immutability (`assert_seal_immutable`, `validate_sri_coherence`) |
-| badge + coverage sync          | the published figure and inventory stay in lock-step with the measurement   |
-| library / helper               | shared parsing, hashing, path and minify logic in `tools/lib`               |
-| property / fuzz                 | Hypothesis-generated inputs against parsing and policy invariants           |
-| score-ledger                   | the local export path only — its live-network audit is intentionally not unit-tested |
+| group                    | what it covers                                                                                     |
+| ------------------------ | -------------------------------------------------------------------------------------------------- |
+| validator fixture tests  | each `validate_*.py` over fixture repos — clean fixture passes, seeded defect fails                |
+| seam / integration tests | `Repo(root)` and process seams, `evaluate()` boundaries over temp trees                            |
+| convergence + seal       | byte-fixpoint guard and post-seal immutability (`assert_seal_immutable`, `validate_sri_coherence`) |
+| badge + coverage sync    | the published figure and inventory stay in lock-step with the measurement                          |
+| library / helper         | shared parsing, hashing, path and minify logic in `tools/lib`                                      |
+| property / fuzz          | Hypothesis-generated inputs against parsing and policy invariants                                  |
+| score-ledger             | the local export path only — its live-network audit is intentionally not unit-tested               |
 
 ## What the tests protect
 

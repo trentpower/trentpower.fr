@@ -33,21 +33,21 @@ that each edition can be independently checked.
 
 Every claim below is something you can check yourself, not a badge to take on faith.
 
-| What                   | Status                                            | Verify                                                                                                                  |
-| ---------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Integrity manifest     | every published file hashed (SHA-256), PGP-signed | [`/integrity.json`](https://trentpower.fr/integrity.json) + `.sig`; [docs](docs/TRUST-AND-VERIFICATION.md)              |
-| Build provenance       | SLSA build-track Level 3 (Sigstore + Rekor)       | `gh attestation verify trentpower-fr-<edition>-site.tar.gz --repo trentpower/trentpower.fr`; [docs](docs/PROVENANCE.md) |
-| Signed releases        | signed `edition/*` tags + GitHub Releases         | [Releases](https://github.com/trentpower/trentpower.fr/releases); [docs](docs/PROVENANCE.md)                            |
-| SBOM                   | CycloneDX, build toolchain, per release           | Release assets; [docs](docs/REPRODUCIBILITY.md)                                                                         |
-| Reproducible build     | byte-deterministic archives                       | [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md)                                                                      |
-| Licensing              | REUSE 3.3; MIT (code) + CC-BY-SA-4.0 (content)    | [`REUSE.toml`](REUSE.toml), [`LICENSES/`](LICENSES/), [NOTICE.md](NOTICE.md)                                            |
-| Best practices         | OpenSSF Baseline (Silver)                         | [bestpractices.dev/projects/13182](https://www.bestpractices.dev/projects/13182)                                        |
-| Supply-chain posture   | OpenSSF Scorecard (a dashboard, not a medal)      | [scorecard.dev](https://scorecard.dev/viewer/?uri=github.com/trentpower/trentpower.fr)                                  |
-| Security policy        | coordinated disclosure, 14-day response           | [SECURITY.md](SECURITY.md)                                                                                              |
-| Privacy                | no analytics, cookies, or third-party assets      | [docs/SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md)                                                            |
-| Continuous integration | PR checks · publication check · deploy            | [Actions](https://github.com/trentpower/trentpower.fr/actions)                                                          |
-| Test coverage          | source-derived; unit-testable logic, enforced floors | `bash tools/quality/coverage.sh`; [docs/COVERAGE.md](docs/COVERAGE.md)                                               |
-| Claims ledger          | every public claim bound to a passing control     | [docs/CLAIMS.md](docs/CLAIMS.md) (generated from `policy-data/claims-map.yml`); `make policy`                           |
+| What                   | Status                                               | Verify                                                                                                                  |
+| ---------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Integrity manifest     | every published file hashed (SHA-256), PGP-signed    | [`/integrity.json`](https://trentpower.fr/integrity.json) + `.sig`; [docs](docs/TRUST-AND-VERIFICATION.md)              |
+| Build provenance       | SLSA build-track Level 3 (Sigstore + Rekor)          | `gh attestation verify trentpower-fr-<edition>-site.tar.gz --repo trentpower/trentpower.fr`; [docs](docs/PROVENANCE.md) |
+| Signed releases        | signed `edition/*` tags + GitHub Releases            | [Releases](https://github.com/trentpower/trentpower.fr/releases); [docs](docs/PROVENANCE.md)                            |
+| SBOM                   | CycloneDX, build toolchain, per release              | Release assets; [docs](docs/REPRODUCIBILITY.md)                                                                         |
+| Reproducible build     | byte-deterministic archives                          | [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md)                                                                      |
+| Licensing              | REUSE 3.3; MIT (code) + CC-BY-SA-4.0 (content)       | [`REUSE.toml`](REUSE.toml), [`LICENSES/`](LICENSES/), [NOTICE.md](NOTICE.md)                                            |
+| Best practices         | OpenSSF Baseline (Silver)                            | [bestpractices.dev/projects/13182](https://www.bestpractices.dev/projects/13182)                                        |
+| Supply-chain posture   | OpenSSF Scorecard (a dashboard, not a medal)         | [scorecard.dev](https://scorecard.dev/viewer/?uri=github.com/trentpower/trentpower.fr)                                  |
+| Security policy        | coordinated disclosure, 14-day response              | [SECURITY.md](SECURITY.md)                                                                                              |
+| Privacy                | no analytics, cookies, or third-party assets         | [docs/SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md)                                                            |
+| Continuous integration | PR checks · publication check · deploy               | [Actions](https://github.com/trentpower/trentpower.fr/actions)                                                          |
+| Test coverage          | source-derived; unit-testable logic, enforced floors | `bash tools/quality/coverage.sh`; [docs/COVERAGE.md](docs/COVERAGE.md)                                                  |
+| Claims ledger          | every public claim bound to a passing control        | [docs/CLAIMS.md](docs/CLAIMS.md) (generated from `policy-data/claims-map.yml`); `make policy`                           |
 
 The fastest single check — confirm the live site is signed by the published key:
 

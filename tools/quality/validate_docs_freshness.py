@@ -46,10 +46,9 @@ sys.path.insert(
     0,
     str(next(_a for _a in Path(__file__).resolve().parents if _a.name == "tools") / "lib"),
 )
+import render_proof  # noqa: E402  (sibling — single source of the render-proof hashes)
 from paths import REPO_ROOT  # noqa: E402
 from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
-
-import render_proof  # noqa: E402  (sibling — single source of the render-proof hashes)
 
 # repo-relative policy data.
 INVENTORY_REL = "metadata/docs/docs_inventory.json"
@@ -240,8 +239,7 @@ def check_commands(repo: Repo, ctx: Ctx, md_files: list[str], tracked: set[str],
                     continue
                 if cmd not in blessed:
                     r.fails.append(
-                        f"{rel}: canonical-commands block has '{cmd}' "
-                        f"— not a {COMMANDS_REL} value"
+                        f"{rel}: canonical-commands block has '{cmd}' — not a {COMMANDS_REL} value"
                     )
     r.oks.append(f"commands: {len(values)} canonical paths resolve, {blocks} marked block(s)")
 
