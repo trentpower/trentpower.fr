@@ -101,5 +101,5 @@ def main(argv: list[str] | None = None, repo_root: Path = REPO_ROOT) -> int:
     return record(repo_root) if args.record else verify(repo_root)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())

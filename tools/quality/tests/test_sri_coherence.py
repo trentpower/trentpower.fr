@@ -97,6 +97,48 @@ class Evaluate(unittest.TestCase):
         self.assertFalse(r.ok)
         self.assertTrue(any("not found" in f for f in r.fails), r.fails)
 
+    def test_cross_origin_and_scheme_refs_skipped(self):
+        # cross-origin (https://) + data:/mailto: refs are out of SRI scope ->
+        # resolve to None -> not checked, no fail.
+        html = (
+            '<link rel="stylesheet" href="https://cdn.example/x.css" integrity="sha384-z">'
+            '<script src="data:text/javascript,1" integrity="sha384-z"></script>'
+        )
+        _fixture.write(self.root, "public/index.html", html)
+        r = vsc.evaluate(self.repo)
+        self.assertTrue(r.ok, msg=r.fails)
+        self.assertEqual(r.checked, 0)
+
+    def test_document_relative_ref_resolved(self):
+        # a relative href (no leading /) resolves against the page's directory.
+        css = b"a{}\n"
+        _fixture.write(self.root, "public/sub/theme.css", css.decode())
+        _fixture.write(
+            self.root,
+            "public/sub/index.html",
+            f'<link rel="stylesheet" href="theme.css" integrity="{_sri(css)}">',
+        )
+        r = vsc.evaluate(self.repo)
+        self.assertTrue(r.ok, msg=r.fails)
+        self.assertEqual(r.checked, 1)
+
+    def test_link_without_href_skipped(self):
+        _fixture.write(self.root, "public/index.html", '<link rel="stylesheet">')
+        r = vsc.evaluate(self.repo)
+        self.assertTrue(r.ok, msg=r.fails)
+
+    def test_main_renders_failures_over_fixture(self):
+        # main() over a seeded-defect fixture exercises the FAIL render + RC 1.
+        import contextlib
+        import io
+
+        self._page("sha384-STALEWRONG", _sri(self.js))
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = vsc.main(self.root)
+        self.assertEqual(rc, 1)
+        self.assertIn("SRI coherence issue", buf.getvalue())
+
     def test_frozen_archive_html_skipped(self):
         _fixture.write(
             self.root,

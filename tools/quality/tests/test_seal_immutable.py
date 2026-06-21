@@ -65,6 +65,34 @@ class RecordVerifyCycle(unittest.TestCase):
         self.assertFalse(asi._snapshot_path(self.root).exists())
         self.assertEqual(asi.verify(self.root), 1)
 
+    def test_verify_reports_a_removed_file(self):
+        asi.record(self.root)
+        (self.root / "public/styles.css").unlink()  # sealed has it, now gone
+        self.assertEqual(asi.verify(self.root), 1)
+
+    def test_main_record_then_verify_dispatch(self):
+        # exercises the argparse dispatch (both subcommands) through main().
+        self.assertEqual(asi.main(["--record"], repo_root=self.root), 0)
+        self.assertEqual(asi.main(["--verify"], repo_root=self.root), 0)
+
+
+class SnapshotTree(unittest.TestCase):
+    def test_hashes_every_file_and_is_stable(self):
+        import pathlib
+        import tempfile
+
+        import public_tree
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _fixture.write(root, "a.html", "x")
+            _fixture.write(root, "sub/b.css", "y")
+            snap = public_tree.snapshot_tree(root)
+            self.assertEqual(set(snap), {"a.html", "sub/b.css"})
+            self.assertEqual(snap, public_tree.snapshot_tree(root))  # deterministic
+            _fixture.write(root, "a.html", "CHANGED")
+            self.assertNotEqual(public_tree.snapshot_tree(root)["a.html"], snap["a.html"])
+
 
 if __name__ == "__main__":
     unittest.main()
