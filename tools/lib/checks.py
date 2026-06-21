@@ -302,7 +302,7 @@ REGISTRY: list[Check] = [
         _B,
         _SEC,
         "no hidden artefacts/keys; release ZIP free of fonts and stale stylesheets",
-        function=pdc.check_hidden_and_archive_safety,
+        command=_script("validate_hidden_artefacts.py"),
     ),
     Check(
         "frozen_archives_immutable",
