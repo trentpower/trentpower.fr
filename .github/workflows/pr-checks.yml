@@ -116,6 +116,11 @@ jobs:
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Install Node dev tools
         run: npm ci
+      - name: Restore licensed font binaries (verified against signed manifest)
+        # audit_htaccess's real-repo + coherent-fixture tests assert the .htaccess
+        # font allow-rules match files on disk; fonts are gitignored (fetched, not
+        # committed), so without this the tests see a "dead rule".
+        run: python3 tools/build/fetch_licensed_fonts.py
       - name: Unit + property-based tests (hypothesis fuzz)
         run: python3 -m unittest discover -s tools/quality/tests -p 'test_*.py' -v
       - name: Coverage ratchet (enforced — convergence/seal 90, ADR-0002 90, broad 85)

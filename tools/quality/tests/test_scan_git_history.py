@@ -97,6 +97,48 @@ class ContentScan(unittest.TestCase):
         self.assertEqual(cwd, REPO_ROOT)
 
 
+# a synthetic aws-key under an ALLOWLISTED scanner-test fixture: acknowledged.
+_ACK_PATCH = (
+    "commit ack1234567890\n"
+    "diff --git a/tools/quality/tests/test_secret_scan.py b/tools/quality/tests/test_secret_scan.py\n"
+    "+++ b/tools/quality/tests/test_secret_scan.py\n"
+    "+aws_key = AKIAIOSFODNN7EXAMPLE\n"
+)
+# a /home/ path (a label NOT acknowledged for that file) — assembled from
+# fragments so this test file does not itself carry the literal pattern.
+_UNLISTED_LABEL_PATCH = (
+    "commit unl1234567890\n"
+    "diff --git a/tools/quality/tests/test_secret_scan.py b/tools/quality/tests/test_secret_scan.py\n"
+    "+++ b/tools/quality/tests/test_secret_scan.py\n"
+    "+local = "
+    "/ho"
+    "me/x/y\n"
+)
+
+
+class AcknowledgedFixtures(unittest.TestCase):
+    def test_synthetic_fixture_secret_is_acknowledged(self):
+        # aws key under test_secret_scan.py is a documented synthetic fixture.
+        proc = _fake_for(_ACK_PATCH, "")
+        self.assertEqual(sgh.scan_added_content(proc, REPO_ROOT, max_lines=5000), [])
+
+    def test_non_acknowledged_label_in_listed_file_still_reports(self):
+        # the file is listed for aws/inline only — a /home/ path still reports.
+        proc = _fake_for(_UNLISTED_LABEL_PATCH, "")
+        findings = sgh.scan_added_content(proc, REPO_ROOT, max_lines=5000)
+        self.assertEqual(len(findings), 1, findings)
+        self.assertIn("absolute /home/ path", findings[0])
+
+    def test_acknowledged_predicate(self):
+        self.assertTrue(
+            sgh._acknowledged("tools/quality/tests/test_secret_scan.py", "aws access key id")
+        )
+        self.assertFalse(
+            sgh._acknowledged("tools/quality/tests/test_secret_scan.py", "absolute /home/ path")
+        )
+        self.assertFalse(sgh._acknowledged("src/conf.py", "aws access key id"))
+
+
 class FilenameScan(unittest.TestCase):
     def test_forbidden_basename_and_suffix_flagged(self):
         names = "src/app.py\n.env\nlib/data/store.sqlite\n"

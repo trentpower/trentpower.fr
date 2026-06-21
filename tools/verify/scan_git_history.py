@@ -68,6 +68,46 @@ PATH_PATTERNS = [
 ]
 IP_PATTERN = (re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b"), "bare IPv4 (verify host/secret)")
 
+# Acknowledged history findings: the secret/path scanners and their own test
+# fixtures MUST embed secret- and path-shaped strings to define their patterns
+# and exercise detection — those are synthetic, not real leaks. History cannot be
+# rewritten (no-force-push rule), so they are acknowledged here, scoped tightly to
+# (file basename -> the exact labels that file legitimately carries). A real secret
+# in any other file — or any non-listed label in a listed file — still reports.
+# Add an entry only for a finding you have personally confirmed is synthetic.
+HISTORY_ALLOW = {
+    "scan_git_history.py": {
+        "private key block",
+        "exported private pgp key",
+        "aws access key id",
+        "absolute /home/ path",
+    },
+    "test_scan_git_history.py": {
+        "aws access key id",
+        "inline credential assignment",
+        "private key block",
+        "exported private pgp key",
+    },
+    "secret_scan.py": {"aws access key id", "inline credential assignment"},
+    "test_secret_scan.py": {"aws access key id", "inline credential assignment"},
+    "validate_repository_hygiene.py": {"inline credential assignment"},
+    "test_repository_hygiene.py": {"inline credential assignment"},
+    "validate_local_path_leakage.py": {"absolute /home/ path"},
+    "test_local_path_leakage.py": {"absolute /home/ path"},
+    "inline_checks.py": {"absolute /home/ path"},
+    "test_page_provenance.py": {"absolute /home/ path"},
+    # the deploy lftp recipe (since scrubbed to a template + env renderer) once held
+    # the server's /home/ deploy directory — a path, not the credential. Removal
+    # needs a history rewrite; the credential itself is rotated out-of-band.
+    "deploy.sftp.lftp": {"absolute /home/ path"},
+}
+
+
+def _acknowledged(path: str, label: str) -> bool:
+    """True if this (file, finding) is a documented synthetic false positive."""
+    return label in HISTORY_ALLOW.get(path.rsplit("/", 1)[-1], frozenset())
+
+
 # filenames whose mere presence anywhere in history is a finding.
 FORBIDDEN_BASENAMES = re.compile(
     r"(?:^|/)(?:\.env(?:\.[A-Za-z0-9_-]+)?|\.htpasswd|\.gate_credentials|"
@@ -131,13 +171,13 @@ def scan_added_content(proc, root: Path, max_lines: int, include_ips: bool = Fal
         body = line[1:]
         for pat, label in SECRET_PATTERNS:
             m = pat.search(body)
-            if m:
+            if m and not _acknowledged(path, label):
                 # masked value, never the secret itself: a short prefix +
                 # sha-256 fingerprint to correlate the same value across
                 # commits without re-leaking it into the terminal or ci log.
                 findings.append(f"{commit} {path}: {label} [{mask_secret(m.group(0))}]")
         for pat, label in path_patterns:
-            if pat.search(body):
+            if pat.search(body) and not _acknowledged(path, label):
                 findings.append(f"{commit} {path}: {label}")
     return findings
 
