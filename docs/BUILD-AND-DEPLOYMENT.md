@@ -107,7 +107,7 @@ below). Stage 14 exists only in `--public-release` runs.
 | Stage | Name                   | What it does                                                                                                                                                                                                                                    | What it produces                                           |
 | ----- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | 01    | PUBLICATION INTENT     | Interactive menu: create new edition / rebuild existing / check only / exit; records the edition date and a one-line note. TTY only; skipped when a mode flag is given.                                                                         | The run's mode, edition and note                           |
-| 02    | RENDER                 | Source-quality gate, coverage ratchet (floors 90/90/85, fail-fast), QR-drift gate, copy compile, bilingual render, single-tree prune, repository-hygiene gate, font subsets (order below).                                                      | The `/en-au/` + `/fr/` page trees and the language gate    |
+| 02    | RENDER                 | Source-quality gate, coverage ratchet (floors 90/90/85, fail-fast), documentation-freshness + links gates (fail-fast), QR-drift gate, copy compile, bilingual render, single-tree prune, repository-hygiene gate, font subsets (order below).   | The `/en-au/` + `/fr/` page trees and the language gate    |
 | 03    | PREPARE PUBLIC BYTES   | Every generator that produces or sweeps public artefacts, ending in the source-mirror convergence loop (order below). `--editorial` adds the review exports here.                                                                               | All generated public files except the final manifest       |
 | 04    | SEAL                   | Final `generate_integrity.py` pass over the now-stable post-SRI tree.                                                                                                                                                                           | Final `integrity.json` (archives queued until approval)    |
 | 05    | VERIFY                 | `gate.py --skip-signature --all` (blocking, pre-signature) then `lint.py` (advisory, non-blocking). `--check` and `--no-sign` end here.                                                                                                         | Go / no-go verdict                                         |
@@ -139,16 +139,24 @@ This is where the original pipeline lives; the order is the contract.
    the build here, before any public byte is generated**. `--skip-coverage`
    skips it for local iteration only (refused for public builds). See
    [`COVERAGE.md`](./COVERAGE.md).
-3. `generate_qr.py --check` — QR drift gate.
-4. `copy/build_copy.py` — compile `content/en/*.yml` → the `en` subtree
+3. `validate_docs_freshness.py` + `validate_docs_links.py` — the
+   **documentation-freshness gates**. Fail-fast, before any public byte: the
+   docs source must make no stale machine-checkable claim (repo-path references
+   resolve, the coverage figure and test-inventory counts are in lock-step,
+   canonical commands match `metadata/docs/commands.json`, the score-ledger
+   exclusion is stated positively) and no internal link or embedded image may be
+   broken. A failure **halts the build here**. Same two gates run in the
+   `gate.py` blocking tier (stages 05/08) and in CI.
+4. `generate_qr.py --check` — QR drift gate.
+5. `copy/build_copy.py` — compile `content/en/*.yml` → the `en` subtree
    of `tools/build/copy/strings.json` (resolves `{{ shared.x.y }}`
    refs, lints duplicates; the hand-curated `fr` subtree is preserved).
-5. `render_pages.py` — render the bilingual `/en-au/` + `/fr/` trees
+6. `render_pages.py` — render the bilingual `/en-au/` + `/fr/` trees
    and the `/` language gate from YAML through templates.
-6. `copy/prune_single_tree.py` — remove single-tree leftovers.
-7. `validate_repository_hygiene.py` — forbidden-artefact gate on
+7. `copy/prune_single_tree.py` — remove single-tree leftovers.
+8. `validate_repository_hygiene.py` — forbidden-artefact gate on
    `public/` (see file class 7).
-8. `build_font_subsets.py` — font subsets (non-blocking).
+9. `build_font_subsets.py` — font subsets (non-blocking).
 
 **Stage 03 — PREPARE PUBLIC BYTES**
 
@@ -537,10 +545,13 @@ Work flows `feature/* → preprod → main`. Three workflows implement it:
 - `pr-checks.yml` — on every PR into `preprod` or `main`: the blocking
   `release-gate` job runs the full gate via
   `tools/verify/validate_release.py` (byte-identical to deploy-time
-  verification, including the committed-signature check), and the
+  verification, including the committed-signature check) — which includes
+  the blocking `docs_freshness` + `docs_links` documentation gates — and the
   blocking `secret-scan` job runs `scan_git_history.py --strict` plus
-  `validate_repository_hygiene.py` over the full history. Advisory
-  lint jobs ride along without blocking.
+  `validate_repository_hygiene.py` over the full history. The `source-quality`
+  job additionally runs the two documentation-freshness validators directly,
+  for pre-render parity with the build. Advisory lint jobs ride along without
+  blocking.
 - `preprod-deploy.yml` — on push to `preprod`: re-verifies, then mirrors
   to the staging host using `SFTP_PREPROD_*` secrets from the
   `preproduction` environment. Until those secrets exist the deploy

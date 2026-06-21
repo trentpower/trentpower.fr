@@ -44,4 +44,3 @@ policies they support are in [SECURITY-AND-PRIVACY.md](SECURITY-AND-PRIVACY.md).
 | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | [AUTHORSHIP-STATEMENT.md](AUTHORSHIP-STATEMENT.md)               | AI/tool-usage policy; its path is allow-listed by `tools/quality/validate_git_metadata.py`. |
 | [PUBLIC-ARTEFACT-CONVENTIONS.md](PUBLIC-ARTEFACT-CONVENTIONS.md) | Public-artefact schema referenced by site-metadata validators.                              |
-| [HTACCESS-FUTURE-BILINGUAL.md](HTACCESS-FUTURE-BILINGUAL.md)     | Forward-looking `.htaccess` plan (future work, not yet shipped).                            |
