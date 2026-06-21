@@ -238,7 +238,7 @@ REGISTRY: list[Check] = [
         _B,
         _SEC,
         "every active public file is recorded in integrity.json with a matching hash",
-        function=pdc.check_integrity_manifest_freshness,
+        command=_script("validate_integrity_manifest.py"),
     ),
     Check(
         "integrity_sig_freshness",
