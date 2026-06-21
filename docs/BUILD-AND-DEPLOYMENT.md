@@ -23,6 +23,11 @@ Three concerns are kept strictly separate:
    push verifies — it no longer ships; publishing is a separate, deliberate
    manual dispatch. Deployment never rebuilds and never signs.
 
+Documentation freshness is build-blocking. Public claims about tests, coverage,
+badges, gates, signing, integrity, byte convergence and deployment must match the
+repository state. The quality gate checks key documentation for stale paths, stale
+badge/coverage values, broken internal links and contradictory claims.
+
 ```
 ┌──────────────┐  tools/build/build.sh   ┌──────────────┐   deploy   ┌──────────────┐
 │  authored    │ ────────────────▶ │  artefact    │ ─────────▶ │  live host   │

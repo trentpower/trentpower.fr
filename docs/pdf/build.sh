@@ -44,3 +44,9 @@ python3 tools/quality/pdf/validate-layout.py "$out" --review docs/pdf/review
 # spaces intact, edition mentions current.
 echo "validating content…"
 python3 tools/quality/pdf/validate-content.py "$out"
+
+# Render proof: bind the committed PDF to the exact source bytes that produced
+# it (the source→PDF render is non-reproducible, so this is the freshness anchor
+# validate_docs_freshness.py warns against). Commit alongside the new PDF.
+echo "stamping render proof…"
+python3 tools/quality/render_proof.py
