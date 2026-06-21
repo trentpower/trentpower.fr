@@ -176,3 +176,28 @@ def iter_public_files(root, *, extra_exclude_files=frozenset()):
             if rel in EXCLUDE_PATHS:
                 continue
             yield rel, full
+
+
+def snapshot_tree(root) -> dict:
+    """Content-hash EVERY file under `root`, no exclusions — the convergence
+    signal. Returns {root-relative posix path: sha256 hex}.
+
+    Distinct from iter_public_files on purpose: the byte-convergence driver and
+    the seal-immutability guard must notice ANY file moving, including the ones
+    the signed-surface walker excludes (integrity.json, site-metadata.json,
+    verification-data.js). On a converged tree a full generator pass rewrites
+    those with identical content, so their hash is stable here; if anything is
+    genuinely churning, this surfaces it. No writes, no chdir, import-safe.
+    """
+    from pathlib import Path
+
+    from hashing import sha256_file_hex
+
+    out: dict[str, str] = {}
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames.sort()
+        for fn in sorted(filenames):
+            full = os.path.join(dirpath, fn)
+            rel = os.path.relpath(full, root).replace(os.sep, "/")
+            out[rel] = sha256_file_hex(Path(full))
+    return out

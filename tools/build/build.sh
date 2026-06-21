@@ -331,6 +331,11 @@ stage04_seal() {
   local entries
   entries="$(count_manifest)"
   [ -n "$entries" ] && t_say ink_dim "   $(t_mark pass) Manifest hashes $(t_seg paper "$entries") entries"
+  # record a content snapshot of the just-sealed tree. the seal-immutability
+  # guard in stage 07 re-checks it just before signing, so no generator can move
+  # public bytes between seal and signature (see docs/adr/0003 + the publication
+  # rule it enforces). nothing must mutate public/ after this point.
+  step "Record seal snapshot" python3 "$TOOLS_DIR/build/assert_seal_immutable.py" --record
   if [ "$MODE" = "full" ]; then
     t_say ink_faint "   Release archive queued — built after publication approval (it signs the sealed bytes)."
   fi
@@ -518,6 +523,13 @@ stage07_approval() {
     t_say ink_dim "Non-interactive: signing with the published key (unattended build)."
   fi
   printf '\n'
+  # seal-immutability guard — the publication rule. the tree must be byte-for-byte
+  # what stage 04 sealed; if any generator (or stray edit) moved public bytes
+  # since the seal, the signature would cover something other than the manifest.
+  # refuse to sign a moved tree (see docs/adr/0003).
+  if ! python3 "$TOOLS_DIR/build/assert_seal_immutable.py" --verify; then
+    _fail "public bytes changed between seal and sign — refusing to sign"
+  fi
   t_spin_start "Signing publication…"
   local rc
   (
