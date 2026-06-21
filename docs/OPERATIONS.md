@@ -121,42 +121,37 @@ All surfaces update automatically — never hand-roll the date across files.
 
 ### Scheme
 
-All cacheable static assets carry an explicit version number in the filename:
+Cacheable static assets keep **clean, unversioned filenames** and are
+cache-busted with a `?v=` query string — the version is _not_ in the filename:
 
+```text
+/styles.css?v=2026-06-14.8eb5797d
+/app.js?v=2026-06-14.8eb5797d
+/fonts-full.css?v=2026-06-14.8eb5797d
 ```
-styles.v6.css
-app.v6.js
-ibm-plex-mono-400.v5.woff2
+
+The tag is `<edition>.<hash8>`: the canonical edition date plus the first eight
+hex of a SHA-256 over the bundle's bytes. HTML URLs are never versioned. Because
+the tag is content-derived it changes whenever the bytes change, so a stale
+asset can never be served under a fresh tag — and an unchanged asset keeps its
+tag, so there is no needless cache churn.
+
+### How versions are set (automatically)
+
+You do **not** rename files or hand-bump a number. `generate_site.py` computes
+the asset version (`_compute_asset_version()`) from the asset bytes and sweeps
+`?v=<version>` onto every active CSS/JS reference in the HTML and into `sw.js`.
+The build is the single source of truth; the blocking `asset_version_coherence`
+gate fails if the tag in the HTML, the tag in `sw.js`, and the recomputed bundle
+hash disagree.
+
+```sh
+# just build — the version is derived and swept automatically, then verified
+bash tools/build/build.sh --check
 ```
 
-HTML URLs are never versioned. **Never reuse a version number, even for
-identical content** — reuse causes cache poisoning across CDN and browser
-caches.
-
-### How to bump versions
-
-Current state at time of writing: CSS at v6, fonts at v5, JS at v6. When
-bumping, increment all to the next unified version (e.g. v7).
-
-1. **Rename files:**
-   ```bash
-   mv styles.v6.css styles.v7.css
-   mv app.v6.js app.v7.js
-   cd fonts/
-   for f in *.v5.woff2; do mv "$f" "$(echo $f | sed 's/.v5./.v7./')"; done
-   ```
-2. **Update all HTML references** in every `.html` file (`styles.v6.css →
-styles.v7.css`, `app.v6.js → app.v7.js`).
-3. **Update CSS font references** in the new stylesheet (`.v5.woff2 →
-.v7.woff2`).
-4. **Regenerate the service worker:** `python3 generate_sw.py`.
-5. **Verify no old references remain:**
-   ```bash
-   grep -rn '\.v5\.\|\.v6\.' *.html styles.v7.css sw.js
-   ```
-6. **Regenerate and sign:** `python3 generate_integrity.py`, then sign and
-   deploy.
-7. **Delete old files from the server.**
+Legacy filename-versioned URLs (e.g. `/fonts-full.2026-06-14.8eb5797d.css`) are
+301-redirected to their clean path by `.htaccess`, so any old link keeps working.
 
 ---
 
@@ -374,7 +369,7 @@ sftp <SFTP_USERNAME>@<SFTP_HOST>
 # Upload changed files only:
 put .htaccess
 put index.html
-put styles.v6.css
+put styles.css
 # ...or upload everything:
 put -r .
 ```
@@ -430,20 +425,23 @@ Remove: X-Powered-By
 
 ### Cache rules
 
-| Pattern                                                      | Cache-Control                          | Rationale                          |
-| ------------------------------------------------------------ | -------------------------------------- | ---------------------------------- |
-| `*.html`                                                     | `public, max-age=0, must-revalidate`   | always fresh                       |
-| `*.v{N}.css`, `*.v{N}.js`, `*.v{N}.woff2`                    | `public, max-age=31536000, immutable`  | version in filename = safe forever |
-| `images/trent-power.jpg`, `images/trent-power-og.jpg`        | `public, max-age=31536000, immutable`  | permanent entity images            |
-| `sitemap.xml`, `robots.txt`                                  | `public, max-age=3600`                 | hourly                             |
-| `security.txt`, `humans.txt`, `pgp.txt`                      | `public, max-age=86400`                | daily                              |
-| `pgp-key.asc`, `attribution.txt`, `attribution.sig`          | `public, max-age=86400`                | daily                              |
-| `person.json`, `site-metadata.json`                          | `public, max-age=86400`                | daily                              |
-| `llms.txt`, `ai-usage.txt`, `assertion.txt`, `statement.txt` | `public, max-age=86400`                | daily                              |
-| `cite.css`, `webfinger`                                      | `public, max-age=86400`                | daily                              |
-| `attestations.json`, `manifest.webmanifest`                  | `public, max-age=86400`                | daily                              |
-| `archive.css`                                                | `public, max-age=86400`                | daily                              |
-| `integrity.json`, `integrity.json.sig`                       | `public, max-age=300, must-revalidate` | 5 minutes                          |
+| Pattern                                                                                | Cache-Control                                    | Rationale                                                                 |
+| -------------------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------- |
+| `*.html`                                                                               | `no-store, no-cache, must-revalidate, max-age=0` | always fresh                                                              |
+| any `*.css` / `*.js` / `*.woff2` **requested with `?v=…`** (how every asset is linked) | `public, max-age=31536000, immutable`            | `IS_VERSIONED_ASSET` — the content-derived tag makes the URL safe forever |
+| bare `styles.css`, `cite.css`, `sw.js`, `js/*.js` (no query)                           | `no-cache, must-revalidate`                      | unversioned fallback fetch revalidates                                    |
+| bare `print.css`, active `*.woff2` (no query)                                          | `public, max-age=86400, must-revalidate`         | daily, revalidated                                                        |
+| frozen-archive assets (`integrity/releases/.../assets/`)                               | `public, max-age=31536000, immutable`            | `IS_ARCHIVE_ASSET` — sealed, byte-frozen                                  |
+| `images/trent-power.jpg`, `images/trent-power-og.jpg`                                  | `public, max-age=31536000, immutable`            | permanent entity images                                                   |
+| `sitemap.xml`, `robots.txt`                                                            | `public, max-age=3600`                           | hourly                                                                    |
+| `security.txt`, `humans.txt`, `pgp.txt`                                                | `public, max-age=86400`                          | daily                                                                     |
+| `pgp-key.asc`, `attribution.txt`, `attribution.sig`                                    | `public, max-age=86400`                          | daily                                                                     |
+| `person.json`, `site-metadata.json`                                                    | `public, max-age=86400`                          | daily                                                                     |
+| `llms.txt`, `ai-usage.txt`, `assertion.txt`, `statement.txt`                           | `public, max-age=86400`                          | daily                                                                     |
+| `cite.css`, `webfinger`                                                                | `public, max-age=86400`                          | daily                                                                     |
+| `attestations.json`, `manifest.webmanifest`                                            | `public, max-age=86400`                          | daily                                                                     |
+| `archive.css`                                                                          | `public, max-age=86400`                          | daily                                                                     |
+| `integrity.json`, `integrity.json.sig`                                                 | `public, max-age=300, must-revalidate`           | 5 minutes                                                                 |
 
 ### Content types (explicit in `.htaccess`)
 
@@ -461,8 +459,14 @@ Remove: X-Powered-By
 
 ### Notes
 
-- Versioned assets use `immutable` because the version number changes when
-  content changes — safe forever-caching.
+- Assets keep clean filenames; the cache regime is chosen by request **shape**,
+  not by the filename. Every asset is linked **with** a content-derived
+  `?v=<edition>.<hash8>` query — the `.htaccess` rewrite flags those requests
+  `IS_VERSIONED_ASSET` and serves them `immutable` for a year (safe forever,
+  because a byte change yields a new tag = a new URL). A bare, unversioned fetch
+  of the same file (no `?v=`) falls back to `no-cache, must-revalidate` (or daily
+  for `print.css` / fonts). Frozen-archive assets are independently `immutable`
+  via `IS_ARCHIVE_ASSET`.
 - HTML revalidates on every request for fresh content.
 - Integrity files have a short 5-minute TTL so signature updates propagate
   quickly after deploys.
@@ -783,9 +787,9 @@ Once per year (or after any significant change):
 3. **Review the privacy page** — confirm claims still match implementation:
    | Claim | Verify |
    |---|---|
-   | No cookies | `grep -rn 'cookie' app.v6.js` returns nothing |
-   | No storage | `grep -rn 'localStorage\|sessionStorage' app.v6.js` returns nothing |
-   | No third-party requests | `grep -rn 'https\?://' app.v6.js` returns nothing |
+   | No cookies | `grep -rn 'document.cookie' public/js public/sw-register.js public/verify/verify.js` returns nothing |
+   | Storage is same-origin only | `grep -rn 'localStorage\|sessionStorage' public/js` shows only visitor-preference + offline-cache keys (chiefly `js/local.js`); none are transmitted |
+   | No third-party requests | `grep -rnE 'https?://' public/js public/sw-register.js public/verify/verify.js` returns no off-origin endpoints |
    | No analytics | no tracking scripts in any HTML file |
    | No AI inference on visitors | no ML/AI libraries loaded |
 4. **Update `attestations.json`** — update `last_reviewed` after verifying all
@@ -804,13 +808,13 @@ Fonts are self-hosted in `/fonts/` as woff2, no external loading (IBM Plex Mono
 
 ## 14. Troubleshooting
 
-| Symptom                                | Cause                                                         | Fix                                                                                    |
-| -------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| Redirect loop after `.htaccess` change | `RewriteRule` for HTTPS; Varnish terminates SSL before Apache | remove all `RewriteRule`/`RewriteCond`                                                 |
-| "Server unable to read htaccess file"  | non-ASCII characters or disallowed directives (`AddType`)     | ensure pure ASCII (`grep -P '[^\x00-\x7F]' .htaccess`); use `Header set` not `AddType` |
-| Styles/JS not updating after deploy    | browser cached the immutable v{N} asset                       | bump the version number; never use cache-busting query strings                         |
-| CSP blocking a resource                | a new resource not covered by CSP                             | check console; if JSON-LD changed, rebuild (auto-updates CSP hashes)                   |
-| JSON-LD not detected by Rich Results   | CSP hash mismatch                                             | rebuild — recomputes + updates CSP hashes automatically                                |
-| BAD signature on `integrity.json`      | regenerated but not re-signed                                 | `gpg --detach-sign --armor -o integrity.json.sig integrity.json`; deploy both          |
-| Privacy page 404                       | missing trailing slash, file/dir conflict, or cached 404      | use trailing slashes; check SFTP; wait or `?bust=1`                                    |
-| SW installed but offline fails         | `sw.js` served with global CSP blocking `fetch()`             | ensure `.htaccess` CSP override for `sw.js` has `connect-src 'self'`                   |
+| Symptom                                | Cause                                                            | Fix                                                                                                                    |
+| -------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Redirect loop after `.htaccess` change | `RewriteRule` for HTTPS; Varnish terminates SSL before Apache    | remove all `RewriteRule`/`RewriteCond`                                                                                 |
+| "Server unable to read htaccess file"  | non-ASCII characters or disallowed directives (`AddType`)        | ensure pure ASCII (`grep -P '[^\x00-\x7F]' .htaccess`); use `Header set` not `AddType`                                 |
+| Styles/JS not updating after deploy    | the `?v=` tag did not change (build skipped, or bytes unchanged) | rebuild — `build.sh` recomputes the `?v=<edition>.<hash8>` tag and sweeps it; any real content change yields a new tag |
+| CSP blocking a resource                | a new resource not covered by CSP                                | check console; if JSON-LD changed, rebuild (auto-updates CSP hashes)                                                   |
+| JSON-LD not detected by Rich Results   | CSP hash mismatch                                                | rebuild — recomputes + updates CSP hashes automatically                                                                |
+| BAD signature on `integrity.json`      | regenerated but not re-signed                                    | `gpg --detach-sign --armor -o integrity.json.sig integrity.json`; deploy both                                          |
+| Privacy page 404                       | missing trailing slash, file/dir conflict, or cached 404         | use trailing slashes; check SFTP; wait or `?bust=1`                                                                    |
+| SW installed but offline fails         | `sw.js` served with global CSP blocking `fetch()`                | ensure `.htaccess` CSP override for `sw.js` has `connect-src 'self'`                                                   |
