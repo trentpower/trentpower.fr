@@ -58,6 +58,11 @@ COMMANDS_REL = "metadata/docs/commands.json"
 # (CHANGELOG.md, .coveragerc, prose nouns) is out of scope by design.
 ALLOWLIST_ROOTS = ("tools/", "docs/", "metadata/", ".github/", "public/")
 
+# intentionally-untracked local-only trees (gitignored): private notes, local
+# audits, and the score-ledger's local report output. docs reference these by
+# design, so they are exempt from the tracked-path existence check.
+LOCAL_ONLY_PREFIXES = ("docs/private/", "docs/audits/", "tools/score-ledger/reports/")
+
 # banned stale phrases (normalised: lower-cased, runs of whitespace collapsed).
 # a doc that must quote one to negate it ends that line with <!-- stale-ok -->.
 STALE_PHRASES = (
@@ -132,11 +137,15 @@ def _path_tokens(value: str) -> list[str]:
 
 
 def _is_checkable_path(tok: str) -> bool:
+    # files AND directories are checked; a directory "ships" iff some tracked
+    # file lives under it (handled in _path_ships via prefix match).
     if not tok.startswith(ALLOWLIST_ROOTS):
         return False
-    if tok.endswith("/"):  # a directory reference — not a tracked file
+    if tok.startswith(LOCAL_ONLY_PREFIXES):  # gitignored local-only trees
         return False
     if tok.startswith(".build/") or "/.build/" in tok:
+        return False
+    if "YYYY" in tok:  # date placeholder, e.g. releases/YYYY-MM/
         return False
     return not any(c in tok for c in "<>*?[]")
 
@@ -189,16 +198,18 @@ def check_tracked_paths(repo: Repo, md_files: list[str], tracked: set[str], r: R
     for rel in md_files:
         text = repo.read(rel)
         for m in BACKTICK_RE.finditer(text):
-            # a backtick span may be a bare path or a full command (`script.sh
-            # --flag`); the path candidate is its first whitespace-delimited word.
-            tok = m.group(1).strip().split()[0] if m.group(1).strip() else ""
-            tok = tok.split("#")[0]
-            if not _is_checkable_path(tok):
-                continue
-            checked += 1
-            if not _path_ships(tok, tracked):
-                line = text.count("\n", 0, m.start()) + 1
-                r.fails.append(f"{rel}:{line} references `{tok}` — not a tracked path")
+            # a backtick span may be a bare path, a path with args, or a full
+            # command with an interpreter prefix (`python3 tools/x.py`, `bash
+            # tools/y.sh --flag`). check EVERY allowlisted-root token in the span,
+            # so the real path inside an interpreter-prefixed command is not missed.
+            for raw in m.group(1).strip().split():
+                tok = raw.strip("`'\"").split("#")[0]
+                if not _is_checkable_path(tok):
+                    continue
+                checked += 1
+                if not _path_ships(tok, tracked):
+                    line = text.count("\n", 0, m.start()) + 1
+                    r.fails.append(f"{rel}:{line} references `{tok}` — not a tracked path")
     r.oks.append(f"path references: {checked} backticked repo-paths resolve")
 
 

@@ -113,22 +113,41 @@ class Evaluate(unittest.TestCase):
         self.assertFalse(r.ok)
         self.assertTrue(any("tools/gone.py" in f for f in r.fails))
 
-    def test_placeholder_glob_and_build_paths_ignored(self):
+    def test_placeholder_glob_build_and_local_only_ignored(self):
         _write(
             self.root,
             "README.md",
             "Examples: `tools/quality/tests/test_<name>.py`, `tools/quality/*.py`, "
-            "`.build/coverage/x.json`, `public/integrity/releases/<edition>/`.\n",
+            "`.build/coverage/x.json`, `public/integrity/releases/<edition>/`, "
+            "`public/integrity/releases/YYYY-MM/`, `docs/private/`, "
+            "`tools/score-ledger/reports/`.\n",
         )
-        # none of these should be checked, so no path failure.
+        # placeholders, globs, .build and gitignored local-only trees are skipped.
         r = self._eval()
         self.assertFalse(any("references" in f for f in r.fails), msg=r.fails)
 
-    def test_command_token_uses_first_word(self):
-        # a backticked full command resolves on its first word only.
-        _write(self.root, "README.md", "Run `tools/quality/gate.py --all --json x`.\n")
+    def test_interpreter_prefixed_command_path_checked(self):
+        # the path inside `python3 tools/...` / `bash tools/...` must be checked,
+        # not just the interpreter (Codex P2). a missing script fails.
+        _write(self.root, "README.md", "Run `python3 tools/quality/gone.py --all`.\n")
+        r = self._eval()
+        self.assertFalse(r.ok)
+        self.assertTrue(any("tools/quality/gone.py" in f for f in r.fails))
+
+    def test_interpreter_prefixed_command_path_resolves(self):
+        _write(self.root, "README.md", "Run `python3 tools/quality/gate.py --all`.\n")
         r = self._eval()
         self.assertTrue(r.ok, msg=r.fails)
+
+    def test_directory_reference_validated(self):
+        # a backticked directory reference must resolve via tracked prefix; a
+        # renamed/deleted directory fails (Codex P2).
+        _write(self.root, "README.md", "See `tools/quality/tests/` and `docs/gone-dir/`.\n")
+        tracked = _tracked(self.root, "tools/quality/gate.py", "tools/quality/tests/test_x.py")
+        r = self._eval(tracked=tracked)
+        self.assertFalse(r.ok)
+        self.assertTrue(any("docs/gone-dir/" in f for f in r.fails))
+        self.assertFalse(any("tools/quality/tests/" in f for f in r.fails), msg=r.fails)
 
     # --- stale phrases ------------------------------------------------------
     def test_stale_phrase_fails(self):
