@@ -14,23 +14,18 @@ import base64
 import hashlib
 import json
 import pathlib
-import sys
 import tempfile
 import unittest
 
 TOOLS = pathlib.Path(__file__).resolve().parents[2]
-for _sub in ("lib", "build", "quality", "verify"):
-    sys.path.insert(0, str(TOOLS / _sub))
+import _fixture  # noqa: E402
+
+_fixture.bootstrap()
 
 import validate_integrity_manifest as vim  # noqa: E402
+from _fixture import write_bytes as _write  # noqa: E402
 
 REPO_ROOT = TOOLS.parent
-
-
-def _write(root: pathlib.Path, rel: str, data: bytes) -> None:
-    p = root / rel
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_bytes(data)
 
 
 def _sha256_b64(data: bytes) -> str:

@@ -12,15 +12,16 @@ Run:
 """
 
 import pathlib
-import sys
 import tempfile
 import unittest
 
 TOOLS = pathlib.Path(__file__).resolve().parents[2]
-for _sub in ("lib", "build", "quality", "verify"):
-    sys.path.insert(0, str(TOOLS / _sub))
+import _fixture  # noqa: E402
+
+_fixture.bootstrap()
 
 import validate_nav_regression as vnr  # noqa: E402
+from _fixture import write as _write  # noqa: E402
 
 REPO_ROOT = TOOLS.parent
 _SECTIONS = ("approach", "credentials", "trajectory", "projects", "contact")
@@ -40,12 +41,6 @@ def _good_index() -> str:
         '<header class="site-header"><div class="nav">'
         '<a class="nav-mark">Trent Power</a></div></header>\n' + secs
     )
-
-
-def _write(root: pathlib.Path, rel: str, text: str) -> None:
-    p = root / rel
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(text, encoding="utf-8")
 
 
 class PureChecks(unittest.TestCase):

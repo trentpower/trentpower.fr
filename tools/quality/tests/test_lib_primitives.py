@@ -3,13 +3,12 @@
 
 import datetime
 import pathlib
-import sys
 import tempfile
 import unittest
 
-_TOOLS = pathlib.Path(__file__).resolve().parents[2]
-for _sub in ("lib", "build", "quality", "verify", "release"):
-    sys.path.insert(0, str(_TOOLS / _sub))
+import _fixture  # noqa: E402
+
+_fixture.bootstrap("release")
 
 from dates import LOCALE_MONTHS, human_date  # noqa: E402
 from hashing import sha256_b64, sha256_file_hex, sha256_hex, sri_sha256  # noqa: E402

@@ -14,23 +14,18 @@ Run:
 """
 
 import pathlib
-import sys
 import tempfile
 import unittest
 
 TOOLS = pathlib.Path(__file__).resolve().parents[2]
-for _sub in ("lib", "build", "quality", "verify"):
-    sys.path.insert(0, str(TOOLS / _sub))
+import _fixture  # noqa: E402
+
+_fixture.bootstrap()
 
 import validate_claims_parity as vcp  # noqa: E402
+from _fixture import write as _write  # noqa: E402
 
 REPO_ROOT = TOOLS.parent
-
-
-def _write(root: pathlib.Path, rel: str, text: str) -> None:
-    p = root / rel
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(text, encoding="utf-8")
 
 
 def _make_fixture_repo(root: pathlib.Path) -> None:

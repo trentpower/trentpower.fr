@@ -9,13 +9,11 @@ Run:
     python3 -m unittest discover -s tools/quality/tests
 """
 
-import pathlib
-import sys
 import unittest
 
-TOOLS = pathlib.Path(__file__).resolve().parents[2]
-for _sub in ("lib", "build", "quality", "verify"):
-    sys.path.insert(0, str(TOOLS / _sub))
+import _fixture  # noqa: E402
+
+_fixture.bootstrap()
 
 import checks  # noqa: E402
 

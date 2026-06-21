@@ -11,13 +11,13 @@ Run:
 
 import datetime
 import pathlib
-import sys
 import tempfile
 import unittest
 
 TOOLS = pathlib.Path(__file__).resolve().parents[2]
-for _sub in ("lib", "build", "quality", "verify"):
-    sys.path.insert(0, str(TOOLS / _sub))
+import _fixture  # noqa: E402
+
+_fixture.bootstrap()
 
 import validate_verification_map_dates as vm  # noqa: E402
 

@@ -6,13 +6,11 @@ text by the reported offsets (csp hashes are computed from those bytes),
 so reconstruction from gaps + block slices must reproduce the input.
 """
 
-import pathlib
-import sys
 import unittest
 
-_TOOLS = pathlib.Path(__file__).resolve().parents[2]
-for _sub in ("lib", "build", "quality", "verify", "release"):
-    sys.path.insert(0, str(_TOOLS / _sub))
+import _fixture  # noqa: E402
+
+_fixture.bootstrap("release")
 
 from script_blocks import iter_script_blocks, strip_script_blocks  # noqa: E402
 

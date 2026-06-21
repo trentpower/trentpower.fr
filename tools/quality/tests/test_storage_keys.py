@@ -2,13 +2,11 @@
 """Tests for the browser-storage-key allowlist gate
 (tools/quality/validate_storage_keys.py)."""
 
-import pathlib
-import sys
 import unittest
 
-_TOOLS = pathlib.Path(__file__).resolve().parents[2]
-for _sub in ("lib", "build", "quality", "verify", "release"):
-    sys.path.insert(0, str(_TOOLS / _sub))
+import _fixture  # noqa: E402
+
+_fixture.bootstrap("release")
 
 import validate_storage_keys as vsk  # noqa: E402
 
