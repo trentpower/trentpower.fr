@@ -270,7 +270,7 @@ REGISTRY: list[Check] = [
         _B,
         _COR,
         "asset version agrees across HTML, sw.js and the recomputed bundle hash",
-        function=pdc.check_asset_version_coherence,
+        command=_script("validate_asset_version.py"),
     ),
     Check(
         "no_dated_assets",
