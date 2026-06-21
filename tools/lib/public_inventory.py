@@ -56,6 +56,31 @@ def _public_pages() -> list:
 
 PUBLIC_PAGES = _public_pages()
 
+
+def page_outputs() -> list:
+    """public/-relative output path of every rendered bilingual page, both
+    editions — derived from the route map so French slugs are tracked without
+    restating them. e.g. 'en-au/index.html', 'fr/confidentialite/index.html'.
+
+    Distinct from PUBLIC_PAGES (URL form): these are on-disk paths under
+    public/, the surface the integrity-manifest and asset-version gates walk.
+    """
+    return [
+        _routes.route_output(key, lang)
+        for key in _routes.route_keys()
+        for lang in _routes.languages()
+    ]
+
+
+def error_page_outputs() -> list:
+    """per-language-tree error documents, public/-relative. e.g.
+    'en-au/403.html', 'fr/maintenance.html'."""
+    return [
+        f"{_routes.lang_url_segment(lang)}/{err}"
+        for lang in _routes.languages()
+        for err in ("403.html", "404.html", "500.html", "maintenance.html")
+    ]
+
 # ─── stylesheets ────────────────────────────────────────────────
 # screen + print. print stylesheet is shared by every trust-page
 # print sheet so it must be offline-available.
