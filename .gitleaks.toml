@@ -8,25 +8,6 @@
 [extend]
 useDefault = true
 
-# deployment metadata must never be committed: the sftp host + account live in
-# env / the GitHub production secrets, and the lftp recipe is rendered locally
-# from tools/release/deploy.sftp.lftp.template into a gitignored file. mirrors
-# the deploy-metadata scan in tools/quality/validate_public_readiness.py.
-[[rules]]
-id = "trentpower-sftp-deploy-metadata"
-description = "literal SFTP host / lftp open directive / Gandi gpaas host"
-regex = '''(?:\bopen\s+-u\b|sftp://[A-Za-z0-9]|gpaas\.net|\bSFTP_(?:USERNAME|USER|HOST|REMOTE_PATH|PASSWORD)\s*=\s*[^\s$#'"])'''
-[rules.allowlist]
-description = "env-placeholder template, CI workflow secret keys, scanners"
-paths = [
-    '''tools/release/deploy\.sftp\.lftp\.template''',
-    '''tools/release/render_deploy_lftp\.py''',
-    '''\.github/workflows/deploy\.yml''',
-    '''tools/quality/validate_public_readiness\.py''',
-    '''tools/quality/tests/test_public_readiness\.py''',
-    '''\.gitleaks\.toml''',
-]
-
 [allowlist]
 description = "published pgp public-key fingerprint"
 regexTarget = "line"

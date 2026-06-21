@@ -72,8 +72,12 @@ _DEPLOY_PATTERNS = (
     ),
 )
 # files that legitimately carry the patterns: the template (placeholders only),
-# the CI workflow (names secret keys, not values), this gate + its test (the
-# pattern list), and the secret-scan config (the matching rule).
+# the renderer (env contract), the CI workflow (names secret keys, not values),
+# and this gate + its test (the pattern list). This current-tree scan is the
+# enforcement layer — a gitleaks history rule was deliberately NOT added: the
+# host/account are already spread across this PUBLIC repo's history, which we
+# neutralise by rotating the credential (not by rewriting history), so a
+# history-scanning rule would only perpetually flag the accepted finding.
 _DEPLOY_SCAN_ALLOWLIST = frozenset(
     {
         "tools/release/deploy.sftp.lftp.template",
@@ -81,7 +85,6 @@ _DEPLOY_SCAN_ALLOWLIST = frozenset(
         ".github/workflows/deploy.yml",
         "tools/quality/validate_public_readiness.py",
         "tools/quality/tests/test_public_readiness.py",
-        ".gitleaks.toml",
     }
 )
 _DEPLOY_SCAN_SUFFIXES = (
