@@ -25,7 +25,7 @@
   <title>Integrity · Trent Power</title>
   <meta name="description"
         content="Signed public releases, integrity manifest, detached signature and public signing key">
-  <meta name="document-edition" content="2026-06-14">
+  <meta name="document-edition" content="2026-06-21">
   <link rel="canonical" href="https://trentpower.fr/en-au/integrity/">
   <link rel="alternate" hreflang="en-AU" href="https://trentpower.fr/en-au/integrity/">
   <link rel="alternate" hreflang="fr" href="https://trentpower.fr/fr/integrite/">
@@ -76,8 +76,8 @@
   <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
 
   <!-- head · 09 · rendering and assets -->
-  <link rel="stylesheet" href="/styles.css?v=2026-06-14.8eb5797d" integrity="sha384-PKmLVxbd/YfbUiIpYTcgq9EPzTLIMmT684A7Y93xg7UV5Iuoli1U99dfwTxs7nDE">
-  <link rel="stylesheet" href="/print.css?v=2026-06-14.8eb5797d" media="print">
+  <link rel="stylesheet" href="/styles.css?v=2026-06-21.fc5b8e9b" integrity="sha384-tIDETJBSrDw2H7Q+qRLmRIQm0LOK5PATjolhpolMw8AJEwY5vtXon6h8JIahxl6h">
+  <link rel="stylesheet" href="/print.css?v=2026-06-21.fc5b8e9b" media="print">
 
   <!-- head · 10 · structured data -->
   <script type="application/ld+json">
@@ -108,7 +108,7 @@
     "height": 630
   },
   "datePublished": "2026-02-15T00:00:00+00:00",
-  "dateModified": "2026-06-14T00:00:00+00:00"
+  "dateModified": "2026-06-21T00:00:00+00:00"
 }
   </script>
 
@@ -120,12 +120,12 @@
   "sourcePath": "content/en/pages/integrity.yml",
   "templatePath": "templates/pages/integrity.html",
   "sourceUrl": "https://github.com/trentpower/trentpower.fr/blob/main/content/en/pages/integrity.yml",
-  "edition": "2026-06-14",
+  "edition": "2026-06-21",
   "generated": true
 }
   </script>
 </head>
-<body data-page="integrity" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-14" data-source-sha256-short="--------">
+<body data-page="integrity" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-21" data-source-sha256-short="--------">
 
 <a href="#main" class="skip-link">Skip to content</a>
 
@@ -210,7 +210,7 @@
             <div class="integrity-rg">
               <dt class="integrity-rg-label">Archive checksums</dt>
               <dd class="integrity-rg-value">
-                <a class="integrity-rg-link" href="/integrity/releases/2026-06-14/SHA256SUMS" aria-describedby="desc-link-checksums"><code>/SHA256SUMS</code></a>
+                <a class="integrity-rg-link" href="/integrity/releases/2026-06-21/SHA256SUMS" aria-describedby="desc-link-checksums"><code>/SHA256SUMS</code></a>
                 <span class="visually-hidden" id="desc-link-checksums">Download the SHA-256 checksums for the signed release archives</span>
               </dd>
             </div>
@@ -220,10 +220,10 @@
         <section class="integrity-record-group" aria-labelledby="integrity-group-archives">
           <p class="integrity-record-group-label" id="integrity-group-archives">Source archives</p>
           <p class="integrity-record-archives">
-            <a class="integrity-rg-link" href="/integrity/releases/2026-06-14/trentpower-fr-2026-06-14.zip" title="trentpower-fr-2026-06-14.zip" aria-describedby="desc-link-zip">ZIP</a>
+            <a class="integrity-rg-link" href="/integrity/releases/2026-06-21/trentpower-fr-2026-06-21.zip" title="trentpower-fr-2026-06-21.zip" aria-describedby="desc-link-zip">ZIP</a>
             <span class="visually-hidden" id="desc-link-zip">Download the source archive as a ZIP file</span>
             <span class="integrity-rg-sep" aria-hidden="true">·</span>
-            <a class="integrity-rg-link" href="/integrity/releases/2026-06-14/trentpower-fr-2026-06-14.tar.gz" title="trentpower-fr-2026-06-14.tar.gz" aria-describedby="desc-link-targz">TAR.GZ</a>
+            <a class="integrity-rg-link" href="/integrity/releases/2026-06-21/trentpower-fr-2026-06-21.tar.gz" title="trentpower-fr-2026-06-21.tar.gz" aria-describedby="desc-link-targz">TAR.GZ</a>
             <span class="visually-hidden" id="desc-link-targz">Download the source archive as a TAR.GZ file</span>
           </p>
         </section>
@@ -275,7 +275,7 @@
 
       <ul class="site-footer__colophon" id="footerImprint" aria-label="Publication verification">
         <li class="site-footer__colophon-row">
-          <a class="site-footer__colophon-link" href="/en-au/verify/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Edition</span> <time datetime="2026-06-14">2026-06-14</time></a>
+          <a class="site-footer__colophon-link" href="/en-au/verify/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Edition</span> <time datetime="2026-06-21">2026-06-21</time></a>
           <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
           <span class="site-footer__colophon-note" data-edition-age>Published today</span>
           <span class="visually-hidden" id="desc-integrity">Open the verification record for this edition — citation, source mirror, fingerprint, signed release</span>
@@ -300,7 +300,7 @@
     <p class="print-trust-kicker">Integrity</p>
     <p class="print-trust-title">Signed public verification</p>
     <p class="print-trust-lede">Published files are listed in a public manifest and signed with a detached <abbr title="Pretty Good Privacy">PGP</abbr> signature so updates can be verified independently.</p>
-    <p class="print-trust-meta">Edition 2026-06-14 · trentpower.fr/integrity/</p>
+    <p class="print-trust-meta">Edition 2026-06-21 · trentpower.fr/integrity/</p>
   </header>
 
   <div class="print-trust-grid">
@@ -333,7 +333,7 @@
   <footer class="print-trust-footer">
     <div class="print-trust-footer-text">
       <p class="print-proof">Private · Static · Signed · No tracking</p>
-      <p>Edition 2026-06-14 · trentpower.fr/integrity/</p>
+      <p>Edition 2026-06-21 · trentpower.fr/integrity/</p>
     </div>
     <div class="print-qr-block" aria-hidden="true">
       <img class="print-qr-image" src="/images/qr/qr-integrity.svg" width="144" height="144" loading="lazy" decoding="async" alt="">
@@ -343,16 +343,16 @@
 </div>
 
 <!-- scripts · progressive enhancement, no telemetry -->
-<script src="/js/theme.js?v=2026-06-14.8eb5797d" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
-<script src="/sw-register.js?v=2026-06-14.8eb5797d" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
-<script src="/js/reveal.js?v=2026-06-14.8eb5797d" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
-<script src="/js/overlay.js?v=2026-06-14.8eb5797d" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
-<script src="/verify/verification-data.js?v=2026-06-14.8eb5797d" defer></script>
-<script src="/js/copy.js?v=2026-06-14.8eb5797d" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
-<script src="/js/edition.js?v=2026-06-14.8eb5797d" integrity="sha384-iO0w8zmiIy+PKCcn52n+bxnD8GxJcyMXMMddSHMJAjxRpRxaYbPG3dD7jRtM7oKC" defer></script>
+<script src="/js/theme.js?v=2026-06-21.fc5b8e9b" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/sw-register.js?v=2026-06-21.fc5b8e9b" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+<script src="/js/reveal.js?v=2026-06-21.fc5b8e9b" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+<script src="/js/overlay.js?v=2026-06-21.fc5b8e9b" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+<script src="/verify/verification-data.js?v=2026-06-21.fc5b8e9b" defer></script>
+<script src="/js/copy.js?v=2026-06-21.fc5b8e9b" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/edition.js?v=2026-06-21.fc5b8e9b" integrity="sha384-iO0w8zmiIy+PKCcn52n+bxnD8GxJcyMXMMddSHMJAjxRpRxaYbPG3dD7jRtM7oKC" defer></script>
 <script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
-<script src="/js/verify-modal.js?v=2026-06-14.8eb5797d" integrity="sha384-cZZ9jdw4bkLl3MiF5cbm4+RTIcTRwOOwy++dCTz6LLIjpny4MF9Xac3mDa441Avy" defer></script>
-<script src="/js/fonts.js?v=2026-06-14.8eb5797d" integrity="sha384-0spuMQXrqwVs8UwbF5T1hlwoR2bc0i6siuoVnFCs+UBg2mhvpDzRoEsLItXwS5Cd" defer></script>
+<script src="/js/verify-modal.js?v=2026-06-21.fc5b8e9b" integrity="sha384-ZhueGCOBZ6BX3B77Al0JDdlAHSpq1BR6+ASwX0YBz75xxwLnQdRkXCbl+vDN6y8x" defer></script>
+<script src="/js/fonts.js?v=2026-06-21.fc5b8e9b" integrity="sha384-tRx+BQo5W/lcy75l/8xTsfmMEMKdriWuNc/CQdx/gAASrTGBMDQjDag3i25AuabQ" defer></script>
 
 
 <!-- body · construction rail -->

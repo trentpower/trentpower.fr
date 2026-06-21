@@ -7566,8 +7566,8 @@ body[data-source-mode="raw"] .section-divider-gloss { opacity: 0; }
      the top of the sheet without competing with the record itself.
      padding-block-start reclaimed accordingly; the perforation column
      stays. paper raise becomes a single soft drop-shadow per spec. */
-  --paper-edge-height: 6px;
   [data-verify-treatment="slip"] .verify-card {
+    --paper-edge-height: 6px;
     background: var(--paper-raised-high);
     border: none;
     border-radius: 0;

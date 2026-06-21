@@ -1,0 +1,144 @@
+<!doctype html>
+<!--
+  trentpower.fr
+  Release artefacts · 2026-06-21
+  Public site snapshot, signed and checksummed
+-->
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#E9E5DC">
+
+  <title>Release · 21 June 2026 · Trent Power</title>
+  <meta name="description" content="Signed downloadable release archives for trentpower.fr — 21 June 2026 edition.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://trentpower.fr/integrity/releases/2026-06-21/">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/soehne-buch.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/signifier-regular.woff2" crossorigin>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/print.css" media="print">
+</head>
+<body data-page="release-archive-2026-06-21" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-21">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header" data-component="site-header">
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="nav-mark u-author" href="/" aria-label="Trent Power home"><span>Trent</span> <span>Power</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="site" id="main" tabindex="-1">
+  <div class="page">
+    <h1 class="page-title">21 June 2026</h1>
+    <div class="page-body">
+      <p class="page-lede">Signed release archives for the 21 June 2026 edition. A signed checksum list verifies the archive set; checksums verify the downloaded files; detached signatures verify each archive directly. The signed manifest at /integrity.json remains the live-site authority.</p>
+
+      <p class="integrity-page-level-note">Frozen snapshot. This edition is kept as published and is not re-rendered when the live site changes.</p>
+
+      <section class="integrity-record-card" aria-labelledby="release-archive-title">
+        <p class="integrity-record-kicker">Release files</p>
+        <h2 class="integrity-record-title" id="release-archive-title">21 June 2026</h2>
+        <p class="integrity-record-status">ZIP · TAR.GZ · Checksums · Signatures · Test results</p>
+
+        <dl class="integrity-record-dl">
+          <div class="integrity-rg integrity-rg--ruled">
+            <dt class="integrity-rg-label">Checksum list</dt>
+            <dd class="integrity-rg-value">
+              <a class="integrity-rg-link" href="/integrity/releases/2026-06-21/SHA256SUMS">SHA256SUMS</a>
+            </dd>
+            <dd class="integrity-rg-desc">SHA-256 list for release archives</dd>
+          </div>
+          <div class="integrity-rg">
+            <dt class="integrity-rg-label">Checksum list signature</dt>
+            <dd class="integrity-rg-value">
+              <a class="integrity-rg-link" href="/integrity/releases/2026-06-21/SHA256SUMS.sig">SHA256SUMS.sig</a>
+            </dd>
+            <dd class="integrity-rg-desc">Detached <abbr title="Pretty Good Privacy">PGP</abbr> signature over SHA256SUMS</dd>
+          </div>
+          <div class="integrity-rg integrity-rg--ruled">
+            <dt class="integrity-rg-label">ZIP</dt>
+            <dd class="integrity-rg-value">
+              <a class="integrity-rg-link" href="/integrity/releases/2026-06-21/trentpower-fr-2026-06-21.zip">trentpower-fr-2026-06-21.zip</a>
+            </dd>
+            <dd class="integrity-rg-desc">Portable public source snapshot</dd>
+          </div>
+          <div class="integrity-rg">
+            <dt class="integrity-rg-label">ZIP checksum</dt>
+            <dd class="integrity-rg-value">
+              <a class="integrity-rg-link" href="/integrity/releases/2026-06-21/trentpower-fr-2026-06-21.zip.sha256">trentpower-fr-2026-06-21.zip.sha256</a>
+            </dd>
+            <dd class="integrity-rg-desc">SHA-256 checksum</dd>
+          </div>
+          <div class="integrity-rg">
+            <dt class="integrity-rg-label">ZIP signature</dt>
+            <dd class="integrity-rg-value">
+              <a class="integrity-rg-link" href="/integrity/releases/2026-06-21/trentpower-fr-2026-06-21.zip.sig">trentpower-fr-2026-06-21.zip.sig</a>
+            </dd>
+            <dd class="integrity-rg-desc">Detached <abbr title="Pretty Good Privacy">PGP</abbr> signature</dd>
+          </div>
+          <div class="integrity-rg integrity-rg--ruled">
+            <dt class="integrity-rg-label">TAR.GZ</dt>
+            <dd class="integrity-rg-value">
+              <a class="integrity-rg-link" href="/integrity/releases/2026-06-21/trentpower-fr-2026-06-21.tar.gz">trentpower-fr-2026-06-21.tar.gz</a>
+            </dd>
+            <dd class="integrity-rg-desc">Technical preservation archive</dd>
+          </div>
+          <div class="integrity-rg">
+            <dt class="integrity-rg-label">TAR.GZ checksum</dt>
+            <dd class="integrity-rg-value">
+              <a class="integrity-rg-link" href="/integrity/releases/2026-06-21/trentpower-fr-2026-06-21.tar.gz.sha256">trentpower-fr-2026-06-21.tar.gz.sha256</a>
+            </dd>
+            <dd class="integrity-rg-desc">SHA-256 checksum</dd>
+          </div>
+          <div class="integrity-rg">
+            <dt class="integrity-rg-label">TAR.GZ signature</dt>
+            <dd class="integrity-rg-value">
+              <a class="integrity-rg-link" href="/integrity/releases/2026-06-21/trentpower-fr-2026-06-21.tar.gz.sig">trentpower-fr-2026-06-21.tar.gz.sig</a>
+            </dd>
+            <dd class="integrity-rg-desc">Detached <abbr title="Pretty Good Privacy">PGP</abbr> signature</dd>
+          </div>
+          <div class="integrity-rg integrity-rg--ruled">
+            <dt class="integrity-rg-label">Test results</dt>
+            <dd class="integrity-rg-value">
+              <a class="integrity-rg-link" href="/integrity/releases/2026-06-21/TESTRESULTS.txt">TESTRESULTS.txt</a>
+            </dd>
+            <dd class="integrity-rg-desc">Signed test and verification snapshot for this edition. Rendered at <a href="/tests/">/tests/</a>.</dd>
+          </div>
+          <div class="integrity-rg">
+            <dt class="integrity-rg-label">Test results signature</dt>
+            <dd class="integrity-rg-value">
+              <a class="integrity-rg-link" href="/integrity/releases/2026-06-21/TESTRESULTS.txt.sig">TESTRESULTS.txt.sig</a>
+            </dd>
+            <dd class="integrity-rg-desc">Detached <abbr title="Pretty Good Privacy">PGP</abbr> signature over TESTRESULTS.txt</dd>
+          </div>
+        </dl>
+      </section>
+
+      <p class="integrity-page-level-note">Archive binaries are not included in /integrity.json to avoid recursive hashing. They are verified separately through the signed checksum list, individual SHA-256 checksums and detached signatures. <a href="/en-au/integrity/">Integrity</a> remains the live-site authority.</p>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__top">
+      <p class="site-footer__identity">
+        <span class="year">&copy; <time datetime="2026">2026</time></span>
+        <a class="wm" href="/" rel="home"><bdi>Trent Power</bdi></a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

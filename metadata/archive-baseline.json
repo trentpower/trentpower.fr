@@ -55,5 +55,13 @@
   "integrity/releases/2026-06-14/trentpower-fr-2026-06-14.tar.gz": "sha256-Y12Y5zfnxpwVaZF9dsbIStjeqSm6VGmDlktSwndhy8c=",
   "integrity/releases/2026-06-14/trentpower-fr-2026-06-14.tar.gz.sha256": "sha256-raK5LwKgbGLudmhWFVTH7OUDWPy7mW1xbRShx+/VqpA=",
   "integrity/releases/2026-06-14/trentpower-fr-2026-06-14.zip": "sha256-3I/OPgxRDVCYadSk5oTcPn1Dxz7bc/WkXCs4IHeksyI=",
-  "integrity/releases/2026-06-14/trentpower-fr-2026-06-14.zip.sha256": "sha256-6s3zCOacFzxp9zvQ9KeZU37GTI5XQngZE1MJu3AjY0Q="
+  "integrity/releases/2026-06-14/trentpower-fr-2026-06-14.zip.sha256": "sha256-6s3zCOacFzxp9zvQ9KeZU37GTI5XQngZE1MJu3AjY0Q=",
+  "integrity/releases/2026-06-21/EXCLUDED_FILES.json": "sha256-2e6qa446UQUu8Q0mQfwZj3nVM2WN9P9tDLCHm+XNfgk=",
+  "integrity/releases/2026-06-21/EXCLUDED_FILES.txt": "sha256-ge+coMJDfWytx2KI8s01rdpC6E6ARs5nbOhqWkIfNEQ=",
+  "integrity/releases/2026-06-21/integrity-redistributable.json": "sha256-+OGmofosofL8Xse3yrvh+Vcd4oqW1gCnSYKRDBG6vug=",
+  "integrity/releases/2026-06-21/release.json": "sha256-mKsROS1VXV8M+77dd1co/J3kz2Gw2rbvd6l7qxOkW98=",
+  "integrity/releases/2026-06-21/trentpower-fr-2026-06-21.tar.gz": "sha256-tMPxG0OvgIEPyDPHxf6bX1ZFtRkF33rfQ7/vzeXZplw=",
+  "integrity/releases/2026-06-21/trentpower-fr-2026-06-21.tar.gz.sha256": "sha256-3drdDpWfcj71pdHRlO5QRwDiheWgsAppFIURg7xqwZI=",
+  "integrity/releases/2026-06-21/trentpower-fr-2026-06-21.zip": "sha256-o0gZjQRGD6V398ahunfNm+glmr4KDkRy+uDbEv618jU=",
+  "integrity/releases/2026-06-21/trentpower-fr-2026-06-21.zip.sha256": "sha256-dCC+39pSGuA3vwzM7lBh88niXRbzyWg9qZVBI6Cd33Y="
 }
