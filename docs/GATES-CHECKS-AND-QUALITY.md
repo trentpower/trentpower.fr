@@ -8,6 +8,25 @@ classes + the CI workflow).
 This document merges the former `gate-architecture.md`, `check-registry.md` and
 `quality.md`.
 
+> **Documentation freshness is build-blocking.** Public claims about tests,
+> coverage, badges, gates, signing, integrity, byte convergence and deployment
+> must match the repository state. The quality gate checks key documentation for
+> stale paths, stale badge/coverage values, broken internal links and
+> contradictory claims (`docs_freshness` + `docs_links`, §3).
+
+The blessed command invocations referenced across these docs are kept verbatim in
+`metadata/docs/commands.json`; the `docs_freshness` gate fails if a canonical
+block drifts from it:
+
+<!-- canonical-commands -->
+
+```sh
+python3 -m unittest discover -s tools/quality/tests
+bash tools/quality/coverage.sh
+python3 tools/quality/gate.py --all
+bash tools/build/build.sh --check
+```
+
 ---
 
 ## 1. The two-tier gate
@@ -123,7 +142,8 @@ These are distinct and easy to confuse:
 - **Unit tests** (`tools/quality/tests/`, `unittest` + Hypothesis) — cross
   `evaluate()` over fixtures. There is no standalone unit-test build step, but they
   execute under the coverage ratchet below, so a failing test halts both the build
-  and CI.
+  and CI. The suite size (test files + functions) is source-derived and published in
+  the [`COVERAGE.md`](./COVERAGE.md) test inventory.
 - **Coverage ratchet** (`tools/quality/coverage.sh`) — measures three enforced
   surfaces over the unit suite; reports land in `.build/coverage/` (gitignored,
   local-only, never deployed). It runs in **two** places: `build.sh` stage 02
@@ -138,7 +158,9 @@ These are distinct and easy to confuse:
   **auto-derived** — `coverage.sh` writes the measured figure to
   `.build/coverage/coverage-summary.json` and `tools/badges/sync_coverage.py`
   propagates it to `badges.json`, the SVG, the README alt text and `COVERAGE.md`
-  (`--write` in the build, `--check` in CI). The blocking **`local_badges`** gate
+  — along with the source-derived test-inventory counts into `COVERAGE.md`
+  (`--write` in the build, `--check` in CI, which fails a PR that leaves either the
+  figure or the counts stale). The blocking **`local_badges`** gate
   (`tools/badges/validate_badges.py`) additionally fails if a badge SVG drifts from
   the generator, so a stale percentage cannot ship.
 - **Validators / gate checks** (`gate.py` over the registry in §3) — inspect the
@@ -246,52 +268,54 @@ Sourced from `tools/lib/checks.py` — **48 checks (36 blocking, 12 advisory)**.
 `tools/quality/gate.py` runs the blocking tier (deploy-blocking); `tools/quality/lint.py` runs
 the advisory tier (never blocks).
 
-| id                             | category | tier     | blocks deploy | owning check                            | rationale                                                                                                                                 |
-| ------------------------------ | -------- | -------- | ------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `edition`                      | COR      | blocking | yes           | `validate_edition.py`                   | no stale edition reference anywhere on the site                                                                                           |
-| `repository_hygiene`           | SEC      | blocking | yes           | `validate_repository_hygiene.py`        | no keys / .env / hidden / stale generated artefacts ship                                                                                  |
-| `public_readiness`             | SEC      | blocking | yes           | `validate_public_readiness.py`          | public-repo posture holds: licences present, no private-claim drift, no tracked secrets or licensed binaries                              |
-| `source_mirrors`               | SEC      | blocking | yes           | `validate_source_mirrors.py`            | every /source/ mirror byte-matches the live file it claims to mirror                                                                      |
-| `file_sizes`                   | COR      | blocking | yes           | `validate_file_sizes.py`                | recorded file sizes match disk (convergence honesty)                                                                                      |
-| `dates`                        | COR      | blocking | yes           | `validate_dates.py`                     | no date drift across sitemap / json-ld / manifest / metadata                                                                              |
-| `gpg`                          | SEC      | blocking | yes           | `check_gpg()`                           | signature verifies against the published key in a clean temp keyring                                                                      |
-| `integrity_manifest_freshness` | SEC      | blocking | yes           | `check_integrity_manifest_freshness()`  | every active public file is recorded in integrity.json with a matching hash                                                               |
-| `integrity_sig_freshness`      | SEC      | blocking | yes           | `check_integrity_sig_freshness()`       | signature is not stale relative to the manifest it signs                                                                                  |
-| `verification_map_dates`       | COR      | blocking | yes           | `check_verification_map_dates()`        | every Verify record is validated today (UTC)                                                                                              |
-| `asset_version_coherence`      | COR      | blocking | yes           | `check_asset_version_coherence()`       | asset version agrees across HTML, sw.js and the recomputed bundle hash                                                                    |
-| `no_dated_assets`              | COR      | blocking | yes           | `validate_no_dated_assets.py`           | clean asset filenames only; cache-busting lives in ?v=, not the name                                                                      |
-| `sw_precache`                  | COR      | blocking | yes           | `check_sw_precache()`                   | every sw.js precache URL maps to a real file of a valid type                                                                              |
-| `local_path_leakage`           | SEC      | blocking | yes           | `check_local_path_leakage()`            | no /home/, Desktop/, htdocs/htdocs or server paths leak into public bytes                                                                 |
-| `hidden_and_archive_safety`    | SEC      | blocking | yes           | `check_hidden_and_archive_safety()`     | no hidden artefacts/keys; release ZIP free of fonts and stale stylesheets                                                                 |
-| `frozen_archives_immutable`    | SEC      | blocking | yes           | `check_frozen_archives_immutable()`     | sealed release archives are byte-identical to their baseline                                                                              |
-| `images`                       | COR      | blocking | yes           | `validate_images.py`                    | declared images exist with valid dimensions/formats                                                                                       |
-| `no_orphan_images`             | QUAL     | advisory | no            | `validate_no_orphan_images.py`          | no unreferenced images shipped                                                                                                            |
-| `signing_status`               | SEC      | blocking | yes           | `validate_signing_status.py`            | the site's 'signed' trust claims match reality                                                                                            |
-| `site_metadata`                | COR      | blocking | yes           | `validate_site_metadata.py`             | canonical site-metadata schema is well-formed                                                                                             |
-| `archive_text_casing`          | QUAL     | advisory | no            | `validate_archive_text_casing.py`       | ZIP orientation/casing convention                                                                                                         |
-| `language_consistency`         | QUAL     | advisory | no            | `validate_language_consistency.py`      | authorship-language consistency                                                                                                           |
-| `git_metadata`                 | SEC      | blocking | yes           | `validate_git_metadata.py`              | no AI/attribution trailers; git metadata policy holds                                                                                     |
-| `trusted_types`                | SEC      | blocking | yes           | `validate_trusted_types.py`             | Trusted Types / CSP posture holds (XSS hardening)                                                                                         |
-| `schema_graph`                 | QUAL     | advisory | no            | `validate_schema_graph.py`              | JSON-LD @graph coherence (SEO/GEO). NOTE: broken JSON-LD should be promoted to blocking when this merges into validate_html in PR3        |
-| `lighthouse_invariants`        | QUAL     | advisory | no            | `validate_lighthouse_invariants.py`     | static invariants protecting the Lighthouse score                                                                                         |
-| `fonts`                        | COR      | blocking | yes           | `validate_fonts.py`                     | declared fonts exist                                                                                                                      |
-| `public_comment_hygiene`       | QUAL     | advisory | no            | `validate_public_comment_hygiene.py`    | no machinery references in deployed comments. NOTE: if it asserts any hard secret-leak rule, split that assertion back to blocking in PR3 |
-| `source_mirror_readability`    | QUAL     | advisory | no            | `validate_source_mirror_readability.py` | /source/ assets are served as readable text (byte-match itself is blocking, above)                                                        |
-| `no_runtime_contamination`     | SEC      | blocking | yes           | `validate_no_runtime_contamination.py`  | no third-party runtime / network calls injected                                                                                           |
-| `html_correctness`             | COR      | blocking | yes           | `validate_html_correctness.py`          | no structural HTML defects (parse-clean)                                                                                                  |
-| `css_architecture`             | QUAL     | advisory | no            | `validate_css_architecture.py`          | cascade-layer contract (@layer rules, !important budget)                                                                                  |
-| `editorial_copy`               | QUAL     | advisory | no            | `validate_editorial_copy.py`            | editorial-copy rules                                                                                                                      |
-| `nav_regression`               | QUAL     | advisory | no            | `validate_nav_regression.py`            | masthead-only header shape didn't regress                                                                                                 |
-| `home_anchors`                 | QUAL     | advisory | no            | `validate_home_anchors.py`              | homepage anchor model intact                                                                                                              |
-| `bilingual_html`               | COR      | blocking | yes           | `validate_bilingual_html.py`            | per-page lang/canonical/hreflang + no runtime-i18n residue                                                                                |
-| `translation_state`            | QUAL     | advisory | no            | `validate_translation_state.py`         | every content/fr/ page declares translation freshness                                                                                     |
-| `lowercase_comments`           | QUAL     | advisory | no            | `validate_lowercase_comments.py`        | CSS/source comment prose is lowercase                                                                                                     |
-| `lang_gate`                    | COR      | blocking | yes           | `validate_lang_gate.py`                 | the / language vestibule is static, self-canonical, no auto-redirect                                                                      |
-| `public_exposure`              | SEC      | blocking | yes           | `validate_public_exposure.py`           | the public-exposure allow-list covers exactly the real public routes                                                                      |
-| `htaccess_allowlist`           | SEC      | blocking | yes           | `validate_htaccess_allowlist.py`        | simulate the .htaccess rewrite gate -- only intended URLs are reachable                                                                   |
-| `htaccess_drift`               | SEC      | blocking | yes           | `generate_htaccess.py`                  | generated .htaccess regions have no uncommitted drift                                                                                     |
-| `htaccess_audit`               | SEC      | blocking | yes           | `audit_htaccess.py`                     | focused .htaccess + CSP-freshness audit                                                                                                   |
-| `changelog_freshness`          | COR      | blocking | yes           | `check_changelog_freshness()`           | edition is not newer than the topmost changelog entry                                                                                     |
+| id                             | category | tier     | blocks deploy | owning check                            | rationale                                                                                                                                                                     |
+| ------------------------------ | -------- | -------- | ------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `edition`                      | COR      | blocking | yes           | `validate_edition.py`                   | no stale edition reference anywhere on the site                                                                                                                               |
+| `repository_hygiene`           | SEC      | blocking | yes           | `validate_repository_hygiene.py`        | no keys / .env / hidden / stale generated artefacts ship                                                                                                                      |
+| `public_readiness`             | SEC      | blocking | yes           | `validate_public_readiness.py`          | public-repo posture holds: licences present, no private-claim drift, no tracked secrets or licensed binaries                                                                  |
+| `source_mirrors`               | SEC      | blocking | yes           | `validate_source_mirrors.py`            | every /source/ mirror byte-matches the live file it claims to mirror                                                                                                          |
+| `file_sizes`                   | COR      | blocking | yes           | `validate_file_sizes.py`                | recorded file sizes match disk (convergence honesty)                                                                                                                          |
+| `dates`                        | COR      | blocking | yes           | `validate_dates.py`                     | no date drift across sitemap / json-ld / manifest / metadata                                                                                                                  |
+| `gpg`                          | SEC      | blocking | yes           | `check_gpg()`                           | signature verifies against the published key in a clean temp keyring                                                                                                          |
+| `integrity_manifest_freshness` | SEC      | blocking | yes           | `check_integrity_manifest_freshness()`  | every active public file is recorded in integrity.json with a matching hash                                                                                                   |
+| `integrity_sig_freshness`      | SEC      | blocking | yes           | `check_integrity_sig_freshness()`       | signature is not stale relative to the manifest it signs                                                                                                                      |
+| `verification_map_dates`       | COR      | blocking | yes           | `check_verification_map_dates()`        | every Verify record is validated today (UTC)                                                                                                                                  |
+| `asset_version_coherence`      | COR      | blocking | yes           | `check_asset_version_coherence()`       | asset version agrees across HTML, sw.js and the recomputed bundle hash                                                                                                        |
+| `no_dated_assets`              | COR      | blocking | yes           | `validate_no_dated_assets.py`           | clean asset filenames only; cache-busting lives in ?v=, not the name                                                                                                          |
+| `sw_precache`                  | COR      | blocking | yes           | `check_sw_precache()`                   | every sw.js precache URL maps to a real file of a valid type                                                                                                                  |
+| `local_path_leakage`           | SEC      | blocking | yes           | `check_local_path_leakage()`            | no /home/, Desktop/, htdocs/htdocs or server paths leak into public bytes                                                                                                     |
+| `hidden_and_archive_safety`    | SEC      | blocking | yes           | `check_hidden_and_archive_safety()`     | no hidden artefacts/keys; release ZIP free of fonts and stale stylesheets                                                                                                     |
+| `frozen_archives_immutable`    | SEC      | blocking | yes           | `check_frozen_archives_immutable()`     | sealed release archives are byte-identical to their baseline                                                                                                                  |
+| `images`                       | COR      | blocking | yes           | `validate_images.py`                    | declared images exist with valid dimensions/formats                                                                                                                           |
+| `no_orphan_images`             | QUAL     | advisory | no            | `validate_no_orphan_images.py`          | no unreferenced images shipped                                                                                                                                                |
+| `signing_status`               | SEC      | blocking | yes           | `validate_signing_status.py`            | the site's 'signed' trust claims match reality                                                                                                                                |
+| `site_metadata`                | COR      | blocking | yes           | `validate_site_metadata.py`             | canonical site-metadata schema is well-formed                                                                                                                                 |
+| `archive_text_casing`          | QUAL     | advisory | no            | `validate_archive_text_casing.py`       | ZIP orientation/casing convention                                                                                                                                             |
+| `language_consistency`         | QUAL     | advisory | no            | `validate_language_consistency.py`      | authorship-language consistency                                                                                                                                               |
+| `git_metadata`                 | SEC      | blocking | yes           | `validate_git_metadata.py`              | no AI/attribution trailers; git metadata policy holds                                                                                                                         |
+| `trusted_types`                | SEC      | blocking | yes           | `validate_trusted_types.py`             | Trusted Types / CSP posture holds (XSS hardening)                                                                                                                             |
+| `schema_graph`                 | QUAL     | advisory | no            | `validate_schema_graph.py`              | JSON-LD @graph coherence (SEO/GEO). NOTE: broken JSON-LD should be promoted to blocking when this merges into validate_html in PR3                                            |
+| `lighthouse_invariants`        | QUAL     | advisory | no            | `validate_lighthouse_invariants.py`     | static invariants protecting the Lighthouse score                                                                                                                             |
+| `fonts`                        | COR      | blocking | yes           | `validate_fonts.py`                     | declared fonts exist                                                                                                                                                          |
+| `public_comment_hygiene`       | QUAL     | advisory | no            | `validate_public_comment_hygiene.py`    | no machinery references in deployed comments. NOTE: if it asserts any hard secret-leak rule, split that assertion back to blocking in PR3                                     |
+| `source_mirror_readability`    | QUAL     | advisory | no            | `validate_source_mirror_readability.py` | /source/ assets are served as readable text (byte-match itself is blocking, above)                                                                                            |
+| `no_runtime_contamination`     | SEC      | blocking | yes           | `validate_no_runtime_contamination.py`  | no third-party runtime / network calls injected                                                                                                                               |
+| `html_correctness`             | COR      | blocking | yes           | `validate_html_correctness.py`          | no structural HTML defects (parse-clean)                                                                                                                                      |
+| `css_architecture`             | QUAL     | advisory | no            | `validate_css_architecture.py`          | cascade-layer contract (@layer rules, !important budget)                                                                                                                      |
+| `editorial_copy`               | QUAL     | advisory | no            | `validate_editorial_copy.py`            | editorial-copy rules                                                                                                                                                          |
+| `nav_regression`               | QUAL     | advisory | no            | `validate_nav_regression.py`            | masthead-only header shape didn't regress                                                                                                                                     |
+| `home_anchors`                 | QUAL     | advisory | no            | `validate_home_anchors.py`              | homepage anchor model intact                                                                                                                                                  |
+| `bilingual_html`               | COR      | blocking | yes           | `validate_bilingual_html.py`            | per-page lang/canonical/hreflang + no runtime-i18n residue                                                                                                                    |
+| `translation_state`            | QUAL     | advisory | no            | `validate_translation_state.py`         | every content/fr/ page declares translation freshness                                                                                                                         |
+| `lowercase_comments`           | QUAL     | advisory | no            | `validate_lowercase_comments.py`        | CSS/source comment prose is lowercase                                                                                                                                         |
+| `lang_gate`                    | COR      | blocking | yes           | `validate_lang_gate.py`                 | the / language vestibule is static, self-canonical, no auto-redirect                                                                                                          |
+| `public_exposure`              | SEC      | blocking | yes           | `validate_public_exposure.py`           | the public-exposure allow-list covers exactly the real public routes                                                                                                          |
+| `htaccess_allowlist`           | SEC      | blocking | yes           | `validate_htaccess_allowlist.py`        | simulate the .htaccess rewrite gate -- only intended URLs are reachable                                                                                                       |
+| `htaccess_drift`               | SEC      | blocking | yes           | `generate_htaccess.py`                  | generated .htaccess regions have no uncommitted drift                                                                                                                         |
+| `htaccess_audit`               | SEC      | blocking | yes           | `audit_htaccess.py`                     | focused .htaccess + CSP-freshness audit                                                                                                                                       |
+| `changelog_freshness`          | COR      | blocking | yes           | `check_changelog_freshness()`           | edition is not newer than the topmost changelog entry                                                                                                                         |
+| `docs_freshness`               | COR      | blocking | no            | `validate_docs_freshness.py`            | documentation source makes no stale machine-checkable claim (paths resolve, coverage figure in lock-step, canonical commands match, score-ledger exclusion stated positively) |
+| `docs_links`                   | COR      | blocking | no            | `validate_docs_links.py`                | every relative link and embedded image in the tracked markdown resolves to a file that ships                                                                                  |
 
 ---
 

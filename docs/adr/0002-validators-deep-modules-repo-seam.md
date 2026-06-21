@@ -33,6 +33,16 @@ not every gate is converted yet, but the pattern is the target. See
 [GATES-CHECKS-AND-QUALITY.md](../GATES-CHECKS-AND-QUALITY.md) §1 ("Validator
 shape").
 
+## Testable by design
+
+This shape is why the measured coverage is high — and why the number is
+meaningful. Because `evaluate()` is a pure seam, a test calls it directly over a
+fixture repo and asserts on the returned `Result`; the clean-fixture-passes /
+seeded-defect-fails pair makes each rule cheap to cover at its decision point. The
+CLI stays a thin print/exit adapter, so coverage measures the rule logic, not
+stdout scraping. Coverage climbs because the logic is reachable, not because the
+tests reach around it — see [COVERAGE.md](../COVERAGE.md).
+
 ## Compliance checklist (pattern → standard)
 
 A validator is **ADR-0002 compliant** only if every line below holds. Use this as

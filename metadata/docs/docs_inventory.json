@@ -1,0 +1,15 @@
+{
+  "_doc": "Policy-as-data for validate_docs_freshness.py. `required` lists the docs that must exist; `flags` tags docs with extra machine-checkable assertions (coverage_critical → re-verify the published TEST COVERAGE figure; score_ledger_authority → the score-ledger exclusion must be a positive, cross-referenced statement). Global checks (links, stale-phrase, tracked-path, canonical-commands) run over every tracked *.md regardless of this file.",
+  "required": [
+    "README.md",
+    "docs/COVERAGE.md",
+    "docs/GATES-CHECKS-AND-QUALITY.md",
+    "docs/BUILD-AND-DEPLOYMENT.md",
+    "docs/SCORE-LEDGER.md",
+    "docs/adr/0002-validators-deep-modules-repo-seam.md"
+  ],
+  "flags": {
+    "docs/COVERAGE.md": ["coverage_critical", "score_ledger_authority"],
+    "docs/SCORE-LEDGER.md": ["score_ledger_authority"]
+  }
+}

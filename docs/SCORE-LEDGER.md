@@ -31,9 +31,10 @@ How coverage treats it:
 - Score-ledger is **excluded from the `TEST COVERAGE` metric** (see
   [`docs/COVERAGE.md`](COVERAGE.md)). It is a live-site network audit tool that
   hits external services (W3C, SSL Labs, PageSpeed) against the deployed site, so
-  unit-test coverage of its modules is not meaningful. The four coverage
-  `--source` trees in `tools/quality/coverage.sh` do not include
-  `tools/score-ledger/`.
+  unit-test coverage of its modules is not meaningful. The coverage source set
+  (`.coveragerc`: `tools/build`, `tools/quality`, `tools/lib`, `tools/verify`)
+  does not include `tools/score-ledger/`, and `tools/quality/coverage.sh` measures
+  only that set.
 - This is **not** a way to inflate the coverage number by hiding untested code.
   Its one repo-coupled seam — the signed-`TESTRESULTS.txt` export path — **is**
   unit-tested (`tools/quality/tests/test_score_ledger_export.py`). The rest is

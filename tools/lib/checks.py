@@ -621,6 +621,26 @@ REGISTRY: list[Check] = [
         "governance file references an external badge service",
         command=_script("validate_badges.py"),
     ),
+    Check(
+        "docs_freshness",
+        "validate_docs_freshness.py",
+        _B,
+        _COR,
+        "documentation source makes no stale machine-checkable claim — repo-path "
+        "references resolve, the coverage figure is in lock-step, canonical "
+        "commands match metadata/docs/commands.json, the score-ledger exclusion "
+        "is stated positively",
+        command=_script("validate_docs_freshness.py"),
+    ),
+    Check(
+        "docs_links",
+        "validate_docs_links.py",
+        _B,
+        _COR,
+        "every relative link and embedded image in the tracked markdown resolves "
+        "to a file that ships",
+        command=_script("validate_docs_links.py"),
+    ),
 ]
 
 
