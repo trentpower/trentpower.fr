@@ -294,7 +294,7 @@ REGISTRY: list[Check] = [
         _B,
         _SEC,
         "no /home/, Desktop/, htdocs/htdocs or server paths leak into public bytes",
-        function=pdc.check_local_path_leakage,
+        command=_script("validate_local_path_leakage.py"),
     ),
     Check(
         "hidden_and_archive_safety",
