@@ -24,13 +24,20 @@ Patterns checked
 - liveodds
 
 Quiet on success, precise on failure.
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the scan runs over a fixture repo with no monkeypatching.
+`evaluate(repo)` is the pure compute path returning a Result; `main()` is the
+only adapter that prints/exits. Behaviour (patterns, messages, allowlist,
+exclusions) is byte-identical to the former inline version.
 """
 
 from __future__ import annotations
 
-import pathlib
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -43,9 +50,12 @@ sys.path.insert(
         / "lib"
     ),
 )
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 from script_blocks import iter_script_blocks  # noqa: E402
 
-ROOT = pathlib.Path(__file__).resolve().parents[2] / "public"
+# repo-relative root of the deployable bytes — the only tree the gate scans.
+PUBLIC_PREFIX = "public/"
 
 PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("socket.io", re.compile(r"socket\.io")),
@@ -75,6 +85,17 @@ LINE_ALLOWLIST = (
 )
 
 
+@dataclass
+class Result:
+    # one finding per (rel, line_no, label, snippet); empty == clean.
+    fails: list[tuple[str, int, str, str]] = field(default_factory=list)
+    public_missing: bool = False
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails and not self.public_missing
+
+
 def scan_text(text: str) -> list[tuple[int, str, str]]:
     findings: list[tuple[int, str, str]] = []
     for label, pat in PATTERNS:
@@ -91,8 +112,7 @@ def scan_text(text: str) -> list[tuple[int, str, str]]:
     return findings
 
 
-def scan_html(path: pathlib.Path) -> list[tuple[int, str, str]]:
-    text = path.read_text(encoding="utf-8", errors="replace")
+def scan_html(text: str) -> list[tuple[int, str, str]]:
     findings: list[tuple[int, str, str]] = []
     for blk in iter_script_blocks(text):
         body = blk.body
@@ -104,32 +124,40 @@ def scan_html(path: pathlib.Path) -> list[tuple[int, str, str]]:
     return findings
 
 
-def scan_js(path: pathlib.Path) -> list[tuple[int, str, str]]:
-    text = path.read_text(encoding="utf-8", errors="replace")
+def scan_js(text: str) -> list[tuple[int, str, str]]:
     return scan_text(text)
 
 
-def main() -> int:
-    if not ROOT.is_dir():
-        print(f"FAIL: public root not found at {ROOT}")
-        return 1
-    failures: list[tuple[str, int, str, str]] = []
-    for path in sorted(ROOT.rglob("*.js")):
-        if path.suffix != ".js":
+def evaluate(repo: Repo) -> Result:
+    r = Result()
+    if not (repo.root / "public").is_dir():
+        r.public_missing = True
+        return r
+    for full in repo.glob(f"{PUBLIC_PREFIX}**/*.js"):
+        if not full.endswith(".js"):
             continue
-        for line_no, label, snippet in scan_js(path):
-            rel = str(path.relative_to(ROOT))
-            failures.append((rel, line_no, label, snippet))
-    for path in sorted(ROOT.rglob("*.html")):
-        for line_no, label, snippet in scan_html(path):
-            rel = str(path.relative_to(ROOT))
-            failures.append((rel, line_no, label, snippet))
-    if failures:
-        print(f"  FAIL: runtime-contamination — {len(failures)} match(es):")
-        for rel, line_no, label, snippet in failures[:30]:
+        rel = full[len(PUBLIC_PREFIX) :]
+        for line_no, label, snippet in scan_js(repo.read(full)):
+            r.fails.append((rel, line_no, label, snippet))
+    for full in repo.glob(f"{PUBLIC_PREFIX}**/*.html"):
+        rel = full[len(PUBLIC_PREFIX) :]
+        for line_no, label, snippet in scan_html(repo.read(full)):
+            r.fails.append((rel, line_no, label, snippet))
+    return r
+
+
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    r = evaluate(repo)
+    if r.public_missing:
+        print(f"FAIL: public root not found at {repo_root / 'public'}")
+        return 1
+    if r.fails:
+        print(f"  FAIL: runtime-contamination — {len(r.fails)} match(es):")
+        for rel, line_no, label, snippet in r.fails[:30]:
             print(f"    {rel}:{line_no} → {label}: {snippet[:140]}")
-        if len(failures) > 30:
-            print(f"    … {len(failures) - 30} more")
+        if len(r.fails) > 30:
+            print(f"    … {len(r.fails) - 30} more")
         return 1
     print("  OK: runtime-contamination — deployed JS/HTML free of analytics, sockets, dev tooling")
     return 0
