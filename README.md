@@ -153,7 +153,7 @@ checks (a failure blocks deploy); `lint.py` runs **advisory** quality checks.
 Both draw from the registry in `tools/lib/checks.py`, which combines the
 `validate_*` scripts with the inline checks in `tools/quality/inline_checks.py`.
 
-The suite is **1,063** unit-test functions across **67** files — both counts are
+The suite is **1,064** unit-test functions across **67** files — both counts are
 source-derived by `coverage.sh` and held in lock-step here by
 `sync_coverage.py --check` (a PR that changes the suite size but leaves these
 numbers stale fails CI). See [docs/COVERAGE.md](docs/COVERAGE.md).
