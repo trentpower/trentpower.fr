@@ -55,7 +55,10 @@ def _make_fixture_repo(root: pathlib.Path) -> None:
     _write(root, "tools/build/build.sh", "#!/bin/sh\n# supports --check\n")
     _write(root, "REUSE.toml", "version = 1\n")
     _write(root, "public/.well-known/pgp-key.asc", "-----BEGIN PGP PUBLIC KEY BLOCK-----\n")
-    _write(root, "tools/lib/checks.py", 'Check("gpg", "gpg signature verify", _B, _SEC)\n')
+    # NOTE: the gpg/pr_gate "registered as blocking" meta-check now consults the
+    # live checks.py registry through checks.is_blocking(), not a planted file —
+    # so no fixture checks.py is written here (see test_checks_registry.py for the
+    # is_blocking unit tests).
     _write(
         root,
         "README.md",
@@ -189,6 +192,29 @@ class Evaluate(unittest.TestCase):
             any('"OSV"' in n and "ruleset" in n for n in r.ruleset_notes), r.ruleset_notes
         )
         self.assertTrue(r.ok, msg=f"meta={r.meta_fails}")
+
+    def test_pr_gate_check_pointing_at_non_blocking_fails(self):
+        # a release_blocking pr-gate claim whose pr_gate_check names a check that
+        # is NOT blocking in the live registry must fail — this is the regression
+        # the former regex guarded, now via checks.is_blocking().
+        data = _base_data()
+        data["claims"]["PGP"]["pr_gate_check"] = "nav_regression"  # a real _A (advisory) id
+        r = vcp.evaluate(self.repo, data)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any('"PGP"' in f and "not registered as blocking" in f for f in r.meta_fails),
+            r.meta_fails,
+        )
+
+    def test_pr_gate_release_blocking_without_check_id_fails(self):
+        data = _base_data()
+        data["claims"]["PGP"].pop("pr_gate_check")
+        r = vcp.evaluate(self.repo, data)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any('"PGP"' in f and "requires a pr_gate_check" in f for f in r.meta_fails),
+            r.meta_fails,
+        )
 
     def test_absent_token_requires_nothing(self):
         # a surface with no claimed tokens passes even with no controls exercised.
