@@ -68,6 +68,11 @@ class Check:
     rationale: str
     function: Callable[[], int] | None = None
     command: Sequence[str] | None = None
+    # True for checks that depend on a fresh detached signature being present
+    # (gpg verify, integrity.json.sig freshness). The pre-signing Publication
+    # Review pass omits exactly these; gate.py derives that set from this flag
+    # via signature_check_ids() rather than hardcoding ids it cannot see drift in.
+    requires_signature: bool = False
 
 
 def _script(name: str, *args: str) -> list[str]:
@@ -231,6 +236,7 @@ REGISTRY: list[Check] = [
         _SEC,
         "signature verifies against the published key in a clean temp keyring",
         function=pdc.check_gpg,
+        requires_signature=True,
     ),
     Check(
         "integrity_manifest_freshness",
@@ -247,6 +253,7 @@ REGISTRY: list[Check] = [
         _SEC,
         "signature is not stale relative to the manifest it signs",
         command=_script("validate_integrity_sig.py"),
+        requires_signature=True,
     ),
     Check(
         "verification_map_dates",
@@ -615,3 +622,28 @@ def blocking() -> list[Check]:
 
 def advisory() -> list[Check]:
     return [c for c in REGISTRY if c.tier is Tier.ADVISORY]
+
+
+# ── registry queries ────────────────────────────────────────────────────────
+# the registry is the single source of truth for what a check IS — its tier and
+# whether it depends on a fresh signature. consumers ask through these functions
+# instead of re-deriving the facts by parsing this file's source text
+# (validate_claims_parity once regex-matched `Check("gpg", …, _B)`; gate.py once
+# hardcoded the signature-skip ids). small surface on purpose.
+_BY_ID = {c.id: c for c in REGISTRY}
+
+
+def is_blocking(check_id: str) -> bool:
+    """Whether a check with this id is registered in the BLOCKING tier. A missing
+    id returns False, so a check that was removed or renamed fails any meta-check
+    that asserts it must be blocking."""
+    c = _BY_ID.get(check_id)
+    return c is not None and c.tier is Tier.BLOCKING
+
+
+def signature_check_ids() -> tuple[str, ...]:
+    """Ids of the checks that depend on a fresh detached signature — the set the
+    pre-signing Publication Review pass omits. Derived from the registry, in
+    registry order, so a new signature-dependent check is covered by flagging it,
+    not by editing a second list in gate.py."""
+    return tuple(c.id for c in REGISTRY if c.requires_signature)
