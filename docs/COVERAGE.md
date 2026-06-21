@@ -8,6 +8,11 @@ The `TEST COVERAGE` badge reports unit-test coverage of the project's own
 > unit-testable-logic surface (defined below). The build writes this figure into
 > the badge and this page; CI fails a PR that leaves it stale.
 
+Documentation freshness is build-blocking. Public claims about tests, coverage,
+badges, gates, signing, integrity, byte convergence and deployment must match the
+repository state. The quality gate checks key documentation for stale paths, stale
+badge/coverage values, broken internal links and contradictory claims.
+
 ## What the figure is
 
 The deterministic unit suite (`tools/quality/tests/`, stdlib `unittest` +
@@ -99,4 +104,5 @@ gate (`validate_badges.py`) independently checks that every badge SVG matches
   is not reliably reproducible across runs), so it is never the published figure.
 - **`tools/score-ledger/`** is a live-site network audit tool (W3C / SSL Labs /
   PageSpeed over HTTP). It exists to hit external services against the deployed
-  site, so unit-test coverage of it is meaningless.
+  site, so unit-test coverage of it is meaningless. Its retention and exclusion
+  rationale are documented in [SCORE-LEDGER.md](SCORE-LEDGER.md).

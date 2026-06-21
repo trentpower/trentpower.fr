@@ -153,6 +153,11 @@ checks (a failure blocks deploy); `lint.py` runs **advisory** quality checks.
 Both draw from the registry in `tools/lib/checks.py`, which combines the
 `validate_*` scripts with the inline checks in `tools/quality/inline_checks.py`.
 
+Documentation freshness is build-blocking. Public claims about tests, coverage,
+badges, gates, signing, integrity, byte convergence and deployment must match the
+repository state. The quality gate checks key documentation for stale paths, stale
+badge/coverage values, broken internal links and contradictory claims.
+
 See [docs/GATES-CHECKS-AND-QUALITY.md](docs/GATES-CHECKS-AND-QUALITY.md).
 
 ## Editing content

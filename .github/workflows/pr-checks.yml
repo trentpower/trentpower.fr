@@ -131,6 +131,10 @@ jobs:
           bash tools/quality/coverage.sh
       - name: Coverage badge + docs in sync with the measured figure
         run: python3 tools/badges/sync_coverage.py --check
+      - name: Documentation freshness (build-blocking — paths, claims, links)
+        run: |
+          python3 tools/quality/validate_docs_freshness.py
+          python3 tools/quality/validate_docs_links.py
       - name: Source quality (enforced)
         env:
           QUALITY_ENFORCE: '1'
