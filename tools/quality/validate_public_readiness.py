@@ -38,6 +38,7 @@ from __future__ import annotations
 import argparse
 import datetime
 import json
+import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -55,6 +56,38 @@ from validate_repository_hygiene import FORBIDDEN_NAMES  # noqa: E402
 CONFIG_REL = "tools/config/public-release.json"
 EXCLUSIONS_REL = "metadata/repo-exclusions.json"
 SCAN_REPORT_REL = "reports/checks/last-secret-scan.json"
+
+# deployment-metadata leak signatures. the host + sftp account must never be
+# committed (they live in env / the GitHub production secrets); the concrete
+# lftp recipe is rendered locally from a template and gitignored. the env-
+# placeholder forms (${VAR}, $VAR) and the secret KEY names in the workflow are
+# fine — only literal values trip these.
+_DEPLOY_PATTERNS = (
+    ("lftp open directive (host+user)", re.compile(r"\bopen\s+-u\b")),
+    ("literal sftp host", re.compile(r"sftp://[A-Za-z0-9]")),
+    ("Gandi gpaas host", re.compile(r"gpaas\.net")),
+    (
+        "SFTP_* assigned a literal value",
+        re.compile(r"\bSFTP_(?:USERNAME|USER|HOST|REMOTE_PATH|PASSWORD)\s*=\s*[^\s$#'\"]"),
+    ),
+)
+# files that legitimately carry the patterns: the template (placeholders only),
+# the CI workflow (names secret keys, not values), this gate + its test (the
+# pattern list), and the secret-scan config (the matching rule).
+_DEPLOY_SCAN_ALLOWLIST = frozenset(
+    {
+        "tools/release/deploy.sftp.lftp.template",
+        "tools/release/render_deploy_lftp.py",
+        ".github/workflows/deploy.yml",
+        "tools/quality/validate_public_readiness.py",
+        "tools/quality/tests/test_public_readiness.py",
+        ".gitleaks.toml",
+    }
+)
+_DEPLOY_SCAN_SUFFIXES = (
+    ".lftp", ".sh", ".yml", ".yaml", ".md", ".txt", ".py", ".json", ".cfg",
+    ".ini", ".toml", ".example",
+)
 
 
 # ---------------------------------------------------------------------------
@@ -120,6 +153,30 @@ def evaluate(repo: Repo, proc: Proc, full: bool = False) -> Result:
     for rel in tracked:
         if rel and Path(rel).name.lower() in FORBIDDEN_NAMES:
             fails.append(f"forbidden filename tracked: {rel}")
+
+    # no deployment metadata (sftp host / account / lftp recipe) in tracked
+    # source. the live recipe is rendered from a template into a gitignored file;
+    # a literal host or `open -u` directive committed here is an exposure (the
+    # repo is public). scan tracked NON-public source only — published bytes have
+    # their own leak gate.
+    for rel in tracked:
+        if (
+            not rel
+            or rel.startswith("public/")
+            or rel in _DEPLOY_SCAN_ALLOWLIST
+            or not rel.endswith(_DEPLOY_SCAN_SUFFIXES)
+        ):
+            continue
+        try:
+            text = repo.read(rel)
+        except UnicodeDecodeError:
+            continue
+        for label, pat in _DEPLOY_PATTERNS:
+            m = pat.search(text)
+            if m:
+                line = text.count("\n", 0, m.start()) + 1
+                fails.append(f"deployment metadata in tracked source: {rel}:{line} ({label})")
+                break
 
     # font policy: untracked in git, declared in the exclusion manifest,
     # present on disk so the local build stays honest.

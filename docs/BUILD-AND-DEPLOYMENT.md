@@ -337,7 +337,7 @@ tools/quality/inline_checks.py          ← inline cross-cutting check functions
 tools/quality/validate_*.py         ← edition / bilingual / htaccess / hygiene validators
 tools/verify/validate_*.py          ← release / source-mirror / verification-data validators
 tools/release/deploy.sh                 ← build + commit + push convenience wrapper
-tools/release/deploy.sftp.lftp          ← manual emergency-deploy lftp recipe
+tools/release/deploy.sftp.lftp.template ← manual emergency-deploy lftp recipe (host/account from env; render with render_deploy_lftp.py)
 tools/quality/csp-hashes.sh             ← manual CSP-hash diagnostic helper
 ```
 
@@ -445,9 +445,13 @@ bash tools/release/deploy.sh --help         # usage
 ```
 
 For a true SFTP-from-this-machine emergency (GitHub or Actions
-unavailable), `tools/release/deploy.sftp.lftp` is a manual, staged lftp
-recipe; lftp prompts for the SFTP password interactively — nothing is
-stored.
+unavailable), `tools/release/deploy.sftp.lftp.template` is a manual,
+staged lftp recipe. The host + account are never committed: export
+`SFTP_USERNAME` and `SFTP_HOST` from your secret store and render the
+concrete (gitignored) recipe with
+`python3 tools/release/render_deploy_lftp.py`, then
+`cd public && lftp -f ../tools/release/deploy.sftp.lftp`. lftp prompts for
+the SFTP password interactively — nothing is stored.
 
 ---
 

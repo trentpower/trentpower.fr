@@ -109,6 +109,45 @@ class Evaluate(unittest.TestCase):
             any("licensed font binaries are tracked" in f for f in r.fails), msg=r.fails
         )
 
+    def _ls_files_proc(self, *tracked: str) -> FakeProc:
+        """A green-ish FakeProc whose `git ls-files -z` lists the given files."""
+
+        def handler(argv, cwd, env):
+            if argv[:3] == ["git", "ls-files", "-z"]:
+                return proc_result(0, "\0".join(tracked))
+            return proc_result(0, "")
+
+        return FakeProc(handler)
+
+    def test_deploy_metadata_in_tracked_source_caught(self):
+        # a tracked recipe with a literal sftp host + lftp open directive.
+        _write(
+            self.root,
+            "tools/release/deploy.sftp.lftp",
+            'open -u "acct-123" sftp://sftp.sd3.gpaas.net\n',
+        )
+        r = vpr.evaluate(self.repo, self._ls_files_proc("tools/release/deploy.sftp.lftp"))
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("deployment metadata in tracked source" in f for f in r.fails), msg=r.fails
+        )
+
+    def test_template_path_is_allowlisted(self):
+        # the template carries `open -u` but is an allowlisted path -> not flagged.
+        _write(
+            self.root,
+            "tools/release/deploy.sftp.lftp.template",
+            'open -u "${SFTP_USERNAME}" sftp://${SFTP_HOST}\n',
+        )
+        r = vpr.evaluate(self.repo, self._ls_files_proc("tools/release/deploy.sftp.lftp.template"))
+        self.assertTrue(r.ok, msg=r.fails)
+
+    def test_env_placeholder_form_not_flagged(self):
+        # a doc using ${VAR}/$VAR placeholders (not literals) must pass.
+        _write(self.root, "docs/DEPLOY.md", "connect: sftp://${SFTP_HOST} as $SFTP_USERNAME\n")
+        r = vpr.evaluate(self.repo, self._ls_files_proc("docs/DEPLOY.md"))
+        self.assertTrue(r.ok, msg=r.fails)
+
 
 class ExternalInterface(unittest.TestCase):
     """main() against the REAL repo (real git + real Proc) — pins the text
