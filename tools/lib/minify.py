@@ -210,7 +210,7 @@ def minify_js(text: str) -> str:
 
 
 # ─── cli helper for ad-hoc use ───────────────────────────────────────
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     import sys
 
     if len(sys.argv) != 3 or sys.argv[1] not in ("css", "js"):
