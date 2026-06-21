@@ -32,13 +32,13 @@ sys.path.insert(
 import check_report  # noqa: E402
 from checks import blocking, run_check, run_check_captured, signature_check_ids  # noqa: E402
 
-# The signature-dependent checks (gpg verify + sig freshness) are flagged in the
+# the signature-dependent checks (gpg verify + sig freshness) are flagged in the
 # registry (Check.requires_signature) and surfaced via signature_check_ids(), so
-# this gate no longer keeps its own list to drift out of sync. The graphical
+# this gate no longer keeps its own list to drift out of sync. the graphical
 # build runs the blocking gate ONCE before signing (for the publication review
 # screen) and again, in full, after signing. --skip-signature /
 # GATE_SKIP_SIGNATURE=1 omits only the flagged checks for that pre-signature
-# pass; the post-signature run is full. A normal `gate.py` is unaffected.
+# pass; the post-signature run is full. a normal `gate.py` is unaffected.
 
 
 def _blocking_checks(skip_signature: bool) -> list:
@@ -103,9 +103,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.skip_signature:
         skipped = ", ".join(signature_check_ids())
         print(f"note: --skip-signature -- omitting signature checks ({skipped})")
-        # In the graphical build, release archives are built only AFTER signing
+        # in the graphical build, release archives are built only AFTER signing
         # (build.sh stage 08), so a pre-signature pass is also a pre-archive pass.
-        # Export the flag so subprocess validators defer the in-flight edition's
+        # export the flag so subprocess validators defer the in-flight edition's
         # release-archive checks; the post-signature gate (and CI) still enforce them.
         os.environ["GATE_SKIP_SIGNATURE"] = "1"
 

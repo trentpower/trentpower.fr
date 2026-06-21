@@ -69,8 +69,8 @@ class Check:
     function: Callable[[], int] | None = None
     command: Sequence[str] | None = None
     # True for checks that depend on a fresh detached signature being present
-    # (gpg verify, integrity.json.sig freshness). The pre-signing Publication
-    # Review pass omits exactly these; gate.py derives that set from this flag
+    # (gpg verify, integrity.json.sig freshness). the pre-signing Publication
+    # review pass omits exactly these; gate.py derives that set from this flag
     # via signature_check_ids() rather than hardcoding ids it cannot see drift in.
     requires_signature: bool = False
 
