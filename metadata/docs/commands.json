@@ -1,0 +1,7 @@
+{
+  "_doc": "Canonical invocations the docs are allowed to print inside a <!-- canonical-commands --> fenced block. validate_docs_freshness.py asserts (a) each value's leading script path exists in the tree, and (b) every command line inside a canonical-commands block matches one of these values verbatim. Command blocks WITHOUT the marker are free-form and ignored.",
+  "unit_tests": "python3 -m unittest discover -s tools/quality/tests",
+  "coverage": "bash tools/quality/coverage.sh",
+  "gate": "python3 tools/quality/gate.py --all",
+  "build_check": "bash tools/build/build.sh --check"
+}

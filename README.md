@@ -46,6 +46,7 @@ Every claim below is something you can check yourself, not a badge to take on fa
 | Security policy        | coordinated disclosure, 14-day response           | [SECURITY.md](SECURITY.md)                                                                                              |
 | Privacy                | no analytics, cookies, or third-party assets      | [docs/SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md)                                                            |
 | Continuous integration | PR checks · publication check · deploy            | [Actions](https://github.com/trentpower/trentpower.fr/actions)                                                          |
+| Test coverage          | source-derived; unit-testable logic, enforced floors | `bash tools/quality/coverage.sh`; [docs/COVERAGE.md](docs/COVERAGE.md)                                               |
 | Claims ledger          | every public claim bound to a passing control     | [docs/CLAIMS.md](docs/CLAIMS.md) (generated from `policy-data/claims-map.yml`); `make policy`                           |
 
 The fastest single check — confirm the live site is signed by the published key:
@@ -152,6 +153,11 @@ The gate is two-tier: `gate.py` runs the **blocking** security and correctness
 checks (a failure blocks deploy); `lint.py` runs **advisory** quality checks.
 Both draw from the registry in `tools/lib/checks.py`, which combines the
 `validate_*` scripts with the inline checks in `tools/quality/inline_checks.py`.
+
+Documentation freshness is build-blocking. Public claims about tests, coverage,
+badges, gates, signing, integrity, byte convergence and deployment must match the
+repository state. The quality gate checks key documentation for stale paths, stale
+badge/coverage values, broken internal links and contradictory claims.
 
 See [docs/GATES-CHECKS-AND-QUALITY.md](docs/GATES-CHECKS-AND-QUALITY.md).
 

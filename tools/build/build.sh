@@ -315,6 +315,10 @@ stage02_render() {
     esac
     step "Sync coverage badge + docs" python3 "$TOOLS_DIR/badges/sync_coverage.py" --write
   fi
+  # documentation freshness is build-blocking — no public byte is generated while
+  # the docs make a stale machine-checkable claim or a broken internal link.
+  step "Docs freshness gate" python3 "$TOOLS_DIR/quality/validate_docs_freshness.py"
+  step "Docs links gate" python3 "$TOOLS_DIR/quality/validate_docs_links.py"
   step "QR drift gate" python3 "$TOOLS_DIR/build/generate_qr.py" --check
   step "Compile copy (yaml → strings.json)" python3 "$TOOLS_DIR/build/copy/build_copy.py"
   step "Render bilingual pages (/en-au/ + /fr/ + gate)" python3 "$TOOLS_DIR/build/render_pages.py" --out "$PUBLIC_DIR"

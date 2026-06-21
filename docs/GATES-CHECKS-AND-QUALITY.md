@@ -8,6 +8,24 @@ classes + the CI workflow).
 This document merges the former `gate-architecture.md`, `check-registry.md` and
 `quality.md`.
 
+> **Documentation freshness is build-blocking.** Public claims about tests,
+> coverage, badges, gates, signing, integrity, byte convergence and deployment
+> must match the repository state. The quality gate checks key documentation for
+> stale paths, stale badge/coverage values, broken internal links and
+> contradictory claims (`docs_freshness` + `docs_links`, §3).
+
+The blessed command invocations referenced across these docs are kept verbatim in
+`metadata/docs/commands.json`; the `docs_freshness` gate fails if a canonical
+block drifts from it:
+
+<!-- canonical-commands -->
+```sh
+python3 -m unittest discover -s tools/quality/tests
+bash tools/quality/coverage.sh
+python3 tools/quality/gate.py --all
+bash tools/build/build.sh --check
+```
+
 ---
 
 ## 1. The two-tier gate
@@ -123,7 +141,8 @@ These are distinct and easy to confuse:
 - **Unit tests** (`tools/quality/tests/`, `unittest` + Hypothesis) — cross
   `evaluate()` over fixtures. There is no standalone unit-test build step, but they
   execute under the coverage ratchet below, so a failing test halts both the build
-  and CI.
+  and CI. The suite size (test files + functions) is source-derived and published in
+  the [`COVERAGE.md`](./COVERAGE.md) test inventory.
 - **Coverage ratchet** (`tools/quality/coverage.sh`) — measures three enforced
   surfaces over the unit suite; reports land in `.build/coverage/` (gitignored,
   local-only, never deployed). It runs in **two** places: `build.sh` stage 02
@@ -138,7 +157,9 @@ These are distinct and easy to confuse:
   **auto-derived** — `coverage.sh` writes the measured figure to
   `.build/coverage/coverage-summary.json` and `tools/badges/sync_coverage.py`
   propagates it to `badges.json`, the SVG, the README alt text and `COVERAGE.md`
-  (`--write` in the build, `--check` in CI). The blocking **`local_badges`** gate
+  — along with the source-derived test-inventory counts into `COVERAGE.md`
+  (`--write` in the build, `--check` in CI, which fails a PR that leaves either the
+  figure or the counts stale). The blocking **`local_badges`** gate
   (`tools/badges/validate_badges.py`) additionally fails if a badge SVG drifts from
   the generator, so a stale percentage cannot ship.
 - **Validators / gate checks** (`gate.py` over the registry in §3) — inspect the
@@ -292,6 +313,8 @@ the advisory tier (never blocks).
 | `htaccess_drift`               | SEC      | blocking | yes           | `generate_htaccess.py`                  | generated .htaccess regions have no uncommitted drift                                                                                     |
 | `htaccess_audit`               | SEC      | blocking | yes           | `audit_htaccess.py`                     | focused .htaccess + CSP-freshness audit                                                                                                   |
 | `changelog_freshness`          | COR      | blocking | yes           | `check_changelog_freshness()`           | edition is not newer than the topmost changelog entry                                                                                     |
+| `docs_freshness`               | COR      | blocking | no            | `validate_docs_freshness.py`            | documentation source makes no stale machine-checkable claim (paths resolve, coverage figure in lock-step, canonical commands match, score-ledger exclusion stated positively) |
+| `docs_links`                   | COR      | blocking | no            | `validate_docs_links.py`                | every relative link and embedded image in the tracked markdown resolves to a file that ships                                              |
 
 ---
 

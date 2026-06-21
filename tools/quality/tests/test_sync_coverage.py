@@ -19,13 +19,21 @@ _fixture.bootstrap("badges")
 import sync_coverage as sc  # noqa: E402
 
 
-def _seed(root: Path, pct: int) -> None:
-    """Write a coherent fixture at TEST COVERAGE = pct%."""
+def _seed(root: Path, pct: int, files: int = 65, funcs: int = 1029) -> None:
+    """Write a coherent fixture at TEST COVERAGE = pct% with the given suite size."""
     (root / ".build" / "coverage").mkdir(parents=True, exist_ok=True)
     (root / "docs").mkdir(parents=True, exist_ok=True)
     (root / "metadata" / "badges").mkdir(parents=True, exist_ok=True)
     sc.SUMMARY_PATH.write_text(
-        json.dumps({"test_coverage_pct": pct, "surface": "unit-testable-logic"}), encoding="utf-8"
+        json.dumps(
+            {
+                "test_coverage_pct": pct,
+                "surface": "unit-testable-logic",
+                "test_files": files,
+                "test_functions": funcs,
+            }
+        ),
+        encoding="utf-8",
     )
     sc.BADGES_JSON.write_text(
         json.dumps({"marks": [{"id": "coverage", "label": "Test Coverage", "value": f"{pct}%"}]}),
@@ -34,7 +42,11 @@ def _seed(root: Path, pct: int) -> None:
     sc.README.write_text(
         f"[![Test Coverage: {pct}%](metadata/badges/coverage.svg)]\n", encoding="utf-8"
     )
-    sc.COVERAGE_DOC.write_text(f"> **Current figure: {pct}%** — auto-derived.\n", encoding="utf-8")
+    sc.COVERAGE_DOC.write_text(
+        f"> **Current figure: {pct}%** — auto-derived.\n"
+        f"The suite is currently **{files:,}** unit-test files / **{funcs:,}** test functions.\n",
+        encoding="utf-8",
+    )
     sc.COVERAGE_SVG.write_text(
         sc.generate_badges.colophon_svg("Test Coverage", f"{pct}%"), encoding="utf-8"
     )
@@ -60,9 +72,13 @@ class SyncCoverage(unittest.TestCase):
         self.assertEqual(sc.main(["--check"]), 0)
 
     def test_seeded_defect_fails_check(self):
-        # measured 94 but every location still says 90 → drift on all four
+        # measured 94 but every figure location still says 90 → drift on all four
+        # (suite size stays coherent, so only the percentage drifts)
         _seed(Path(self._tmp.name), 90)
-        sc.SUMMARY_PATH.write_text(json.dumps({"test_coverage_pct": 94}), encoding="utf-8")
+        sc.SUMMARY_PATH.write_text(
+            json.dumps({"test_coverage_pct": 94, "test_files": 65, "test_functions": 1029}),
+            encoding="utf-8",
+        )
         drift = sc.check(94)
         self.assertEqual(len(drift), 4, drift)
         self.assertEqual(sc.main(["--check"]), 1)
@@ -81,6 +97,30 @@ class SyncCoverage(unittest.TestCase):
     def test_write_is_idempotent(self):
         _seed(Path(self._tmp.name), 94)
         self.assertEqual(sc.write(94), [])  # nothing to change
+
+    def test_seeded_count_drift_fails_check(self):
+        # coverage figure matches, but the documented suite size is stale
+        _seed(Path(self._tmp.name), 94, files=60, funcs=1000)
+        sc.SUMMARY_PATH.write_text(
+            json.dumps({"test_coverage_pct": 94, "test_files": 65, "test_functions": 1029}),
+            encoding="utf-8",
+        )
+        drift = sc.check(94)
+        self.assertEqual(len(drift), 2, drift)  # files + functions, nothing else
+        self.assertEqual(sc.main(["--check"]), 1)
+
+    def test_write_repairs_count_drift(self):
+        _seed(Path(self._tmp.name), 94, files=60, funcs=1000)
+        sc.SUMMARY_PATH.write_text(
+            json.dumps({"test_coverage_pct": 94, "test_files": 65, "test_functions": 1029}),
+            encoding="utf-8",
+        )
+        changed = sc.write(94)
+        self.assertEqual(changed, ["docs/COVERAGE.md"])  # only the inventory shifted
+        doc = sc.COVERAGE_DOC.read_text(encoding="utf-8")
+        self.assertIn("**65** unit-test files", doc)
+        self.assertIn("**1,029** test functions", doc)
+        self.assertEqual(sc.check(94), [])
 
 
 if __name__ == "__main__":

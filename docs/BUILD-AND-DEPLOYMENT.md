@@ -23,6 +23,11 @@ Three concerns are kept strictly separate:
    push verifies — it no longer ships; publishing is a separate, deliberate
    manual dispatch. Deployment never rebuilds and never signs.
 
+Documentation freshness is build-blocking. Public claims about tests, coverage,
+badges, gates, signing, integrity, byte convergence and deployment must match the
+repository state. The quality gate checks key documentation for stale paths, stale
+badge/coverage values, broken internal links and contradictory claims.
+
 ```
 ┌──────────────┐  tools/build/build.sh   ┌──────────────┐   deploy   ┌──────────────┐
 │  authored    │ ────────────────▶ │  artefact    │ ─────────▶ │  live host   │
@@ -131,9 +136,13 @@ This is where the original pipeline lives; the order is the contract.
 2. `tools/quality/coverage.sh` — coverage ratchet (the same script CI runs):
    the unit suite under coverage, three enforced surfaces (floors 90/90/85).
    A surface below floor — or any failing unit test — exits non-zero and **halts
-   the build here, before any public byte is generated**. `--skip-coverage`
-   skips it for local iteration only (refused for public builds). See
-   [`COVERAGE.md`](./COVERAGE.md).
+   the build here, before any public byte is generated**. On success,
+   `tools/badges/sync_coverage.py --write` stamps the measured figure and the
+   source-derived test-inventory counts into the badge + docs. `--skip-coverage`
+   skips this step for local iteration only (refused for public builds); where
+   `coverage.py` is absent — e.g. the publication-check / release jobs — it is
+   skipped with a warning, since CI's `source-quality` job is the authoritative
+   gate. See [`COVERAGE.md`](./COVERAGE.md).
 3. `generate_qr.py --check` — QR drift gate.
 4. `copy/build_copy.py` — compile `content/en/*.yml` → the `en` subtree
    of `tools/build/copy/strings.json` (resolves `{{ shared.x.y }}`
