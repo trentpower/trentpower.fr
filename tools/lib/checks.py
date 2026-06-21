@@ -246,7 +246,7 @@ REGISTRY: list[Check] = [
         _B,
         _SEC,
         "signature is not stale relative to the manifest it signs",
-        function=pdc.check_integrity_sig_freshness,
+        command=_script("validate_integrity_sig.py"),
     ),
     Check(
         "verification_map_dates",
