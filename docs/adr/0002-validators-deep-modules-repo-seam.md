@@ -32,3 +32,35 @@ New or touched validators follow this shape and ship a
 not every gate is converted yet, but the pattern is the target. See
 [GATES-CHECKS-AND-QUALITY.md](../GATES-CHECKS-AND-QUALITY.md) §1 ("Validator
 shape").
+
+## Compliance checklist (pattern → standard)
+
+A validator is **ADR-0002 compliant** only if every line below holds. Use this as
+the review gate when adding or touching a validator.
+
+- [ ] Receives repository access through the injected `Repo(root)` seam
+      (`tools/lib/repo.py`) — never a module-global path or a bare `open()`.
+- [ ] All paths are **repo-root-relative** (e.g. `"public/index.html"`), so a
+      fixture repo at any root works unchanged.
+- [ ] Split into `load()` / `evaluate()` / `main()`. `load(repo)` reads + parses
+      inputs (the only impure-IO step besides `Repo`); `evaluate(repo, …)` holds
+      the rule decision and **returns a `Result`** (with `ok` + `fails`/`warns`);
+      it never prints or exits.
+- [ ] `main()` is the **only** adapter that prints or calls `sys.exit`; it builds
+      the seam(s), calls `evaluate`, renders, returns the exit code.
+- [ ] Unit tests cross `evaluate()` (and `load()`), **not** the CLI — no stdout
+      scraping, no subprocess of the validator.
+- [ ] Tests include **one pristine fixture that passes** and **one seeded-defect
+      fixture that fails** — proving the rule catches the bad case it guards.
+- [ ] After migration, CLI **output and exit code are behaviour-identical** to
+      the pre-migration validator (capture a baseline first; diff it).
+- [ ] Any dependency that is *not* the filesystem — subprocess, network, a
+      binary-only library (PIL, PyMuPDF), or in-place mutation — is taken through
+      its **own injected seam** (e.g. `Proc` in `tools/lib/proc.py`) or explicitly
+      **deferred** with a noted reason, never reached for directly inside
+      `evaluate`.
+
+Two non-filesystem seams already exist and set the precedent: `Repo` (filesystem)
+and `Proc` (subprocess, used by `validate_release` + `validate_public_readiness`).
+A new kind of dependency earns a new seam only when **two** real adapters cross it
+— one adapter is a hypothetical seam, two is a real one.
