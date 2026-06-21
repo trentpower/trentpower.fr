@@ -286,7 +286,7 @@ REGISTRY: list[Check] = [
         _B,
         _COR,
         "every sw.js precache URL maps to a real file of a valid type",
-        function=pdc.check_sw_precache,
+        command=_script("validate_sw_precache.py"),
     ),
     Check(
         "local_path_leakage",
