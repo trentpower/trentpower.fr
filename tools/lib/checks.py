@@ -280,6 +280,14 @@ REGISTRY: list[Check] = [
         command=_script("validate_asset_version.py"),
     ),
     Check(
+        "sri_coherence",
+        "SRI coherence (integrity attrs vs referenced assets)",
+        _B,
+        _SEC,
+        "every integrity sha384 attribute matches the hash of the asset it covers",
+        command=_script("validate_sri_coherence.py"),
+    ),
+    Check(
         "no_dated_assets",
         "validate_no_dated_assets.py",
         _B,
