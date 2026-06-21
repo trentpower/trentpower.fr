@@ -59,7 +59,10 @@ failing unit test) cannot reach the live site:
    (RENDER), right after the source-quality gate and **before** any public byte is
    generated. A surface below its floor exits non-zero and halts the build
    fail-fast, leaving `public/` untouched. (`--skip-coverage` skips it for local
-   inner-loop iteration only and is refused for `--public-check` / `--public-release`.)
+   inner-loop iteration only and is refused for `--public-check` / `--public-release`.
+   Where coverage.py is not installed — e.g. the publication-check/release build
+   jobs — the step is skipped with a warning, since the `source-quality` CI job
+   below is the authoritative gate.)
 2. **CI** — the **`source-quality`** job of `pr-checks.yml` re-runs it
    ("Coverage ratchet (enforced)"). Below floor → the job fails; because merges to
    `preprod`/`main` require the PR checks green and a deploy ships from `main`,

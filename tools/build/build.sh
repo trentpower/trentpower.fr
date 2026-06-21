@@ -284,6 +284,12 @@ stage02_render() {
   # then the figure is synced into the badge + docs (sync_coverage.py).
   if [ "$SKIP_COVERAGE" -eq 1 ]; then
     t_say warn "$(t_mark warn) Coverage ratchet — SKIPPED (--skip-coverage, dev only)"
+  elif ! python3 -m coverage --version >/dev/null 2>&1; then
+    # coverage.py is the build machine's responsibility; the dedicated CI
+    # coverage job (pr-checks source-quality) is the authoritative gate. Skip
+    # rather than hard-fail in environments that do not install it (e.g. the
+    # publication-check / release build jobs).
+    t_say warn "$(t_mark warn) Coverage ratchet — SKIPPED (coverage.py not installed; enforced on the build host + the source-quality CI job)"
   else
     cov_log="$(mktemp)"
     t_spin_start "Coverage ratchet · floors 90/90/85"
