@@ -18,6 +18,7 @@ import _fixture
 
 _fixture.bootstrap()
 
+import datetime as dt  # noqa: E402
 import pathlib  # noqa: E402
 import tempfile  # noqa: E402
 import zipfile  # noqa: E402
@@ -185,6 +186,481 @@ class ManifestDrift(unittest.TestCase):
             self.assertEqual(rc, 1)
             joined = "\n".join(lines)
             self.assertIn("redistributable-manifest issue", joined)
+
+
+class SecurityTxtExpires(unittest.TestCase):
+    """R1 — check_security_txt_expires branches, called directly over a repo."""
+
+    def _repo(self, root: pathlib.Path) -> Repo:
+        return Repo(root)
+
+    def test_missing_security_txt_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rc, lines = vr.check_security_txt_expires(self._repo(root))
+            self.assertEqual(rc, 1)
+            self.assertIn("missing", "\n".join(lines))
+
+    def test_no_expires_line_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _write(root, "public/.well-known/security.txt", "Contact: mailto:x@y\n")
+            rc, lines = vr.check_security_txt_expires(self._repo(root))
+            self.assertEqual(rc, 1)
+            self.assertIn("no Expires", "\n".join(lines))
+
+    def test_unparseable_expires_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _write(root, "public/.well-known/security.txt", "Expires: not-a-date\n")
+            rc, lines = vr.check_security_txt_expires(self._repo(root))
+            self.assertEqual(rc, 1)
+            self.assertIn("not parseable", "\n".join(lines))
+
+    def test_expires_inside_window_fails(self):
+        # an Expires only a few days out is inside the 60-day cushion.
+        soon = (
+            dt.datetime.now(dt.UTC) + dt.timedelta(days=5)
+        ).strftime("%Y-%m-%dT%H:%M:%SZ")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _write(root, "public/.well-known/security.txt", f"Expires: {soon}\n")
+            rc, lines = vr.check_security_txt_expires(self._repo(root))
+            self.assertEqual(rc, 1)
+            joined = "\n".join(lines)
+            self.assertIn("window is", joined)
+
+    def test_future_expires_passes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _write(root, "public/.well-known/security.txt", f"Expires: {FUTURE_EXPIRES}\n")
+            rc, lines = vr.check_security_txt_expires(self._repo(root))
+            self.assertEqual(rc, 0)
+            self.assertIn("OK", "\n".join(lines))
+
+
+class FindReleaseDir(unittest.TestCase):
+    """_find_release_dir + _current_exclusion_manifest pure helpers."""
+
+    def test_no_releases_dir_returns_none(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            self.assertIsNone(vr._find_release_dir(Repo(root)))
+
+    def test_non_date_child_skipped(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            # a non-date directory must not be returned as a release dir.
+            (root / "public/integrity/releases/scratch").mkdir(parents=True)
+            self.assertIsNone(vr._find_release_dir(Repo(root)))
+            # add a proper date dir; it is the one selected.
+            (root / f"public/integrity/releases/{EDITION}").mkdir(parents=True)
+            found = vr._find_release_dir(Repo(root))
+            self.assertIsNotNone(found)
+            self.assertEqual(found.name, EDITION)
+
+    def test_dated_exclusion_manifest_preferred(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = root / f"public/integrity/releases/{EDITION}"
+            rel.mkdir(parents=True)
+            (rel / "EXCLUDED_FILES.json").write_text("{}")
+            (rel / "EXCLUDED_FILES-2026-06-20.json").write_text("{}")
+            chosen = vr._current_exclusion_manifest(rel)
+            self.assertEqual(chosen.name, "EXCLUDED_FILES-2026-06-20.json")
+
+
+class RedistributableManifest(unittest.TestCase):
+    """R2 — check_redistributable_manifest failure branches."""
+
+    def test_no_release_dir_is_ok(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rc, lines = vr.check_redistributable_manifest(Repo(root))
+            self.assertEqual(rc, 0)
+            self.assertIn("nothing to check", "\n".join(lines))
+
+    def test_manifest_missing_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / f"public/integrity/releases/{EDITION}").mkdir(parents=True)
+            rc, lines = vr.check_redistributable_manifest(Repo(root))
+            self.assertEqual(rc, 1)
+            self.assertIn("missing", "\n".join(lines))
+
+    def test_invalid_json_manifest_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            _write(root, f"{rel}/integrity-redistributable.json", "{not json")
+            rc, lines = vr.check_redistributable_manifest(Repo(root))
+            self.assertEqual(rc, 1)
+            self.assertIn("invalid JSON", "\n".join(lines))
+
+    def test_missing_files_map_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            _write(root, f"{rel}/integrity-redistributable.json", _json({"edition": EDITION}))
+            rc, lines = vr.check_redistributable_manifest(Repo(root))
+            self.assertEqual(rc, 1)
+            self.assertIn("missing 'files' map", "\n".join(lines))
+
+    def test_no_zip_present_fails(self):
+        # manifest with a non-matching edition and no zip at all -> no candidates.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            _write(
+                root,
+                f"{rel}/integrity-redistributable.json",
+                _json({"edition": "9999-99-99", "files": {"a": "sha256-x"}}),
+            )
+            rc, lines = vr.check_redistributable_manifest(Repo(root))
+            self.assertEqual(rc, 1)
+            self.assertIn("no trentpower-fr-*.zip", "\n".join(lines))
+
+    def test_declared_path_not_in_zip_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            zip_path = root / rel / f"trentpower-fr-{EDITION}.zip"
+            zip_path.parent.mkdir(parents=True, exist_ok=True)
+            with zipfile.ZipFile(zip_path, "w") as zf:
+                zf.writestr("index.html", b"<x>")
+            # declare a path the archive does not contain.
+            _write(
+                root,
+                f"{rel}/integrity-redistributable.json",
+                _json(
+                    {
+                        "edition": EDITION,
+                        "files": {
+                            "index.html": sri_sha256(b"<x>"),
+                            "ghost.js": "sha256-deadbeef",
+                        },
+                    }
+                ),
+            )
+            rc, lines = vr.check_redistributable_manifest(Repo(root))
+            self.assertEqual(rc, 1)
+            joined = "\n".join(lines)
+            self.assertIn("not in", joined)
+
+    def test_archive_path_not_declared_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            zip_path = root / rel / f"trentpower-fr-{EDITION}.zip"
+            zip_path.parent.mkdir(parents=True, exist_ok=True)
+            with zipfile.ZipFile(zip_path, "w") as zf:
+                zf.writestr("index.html", b"<x>")
+                zf.writestr("extra.js", b"y")
+            # declare only one of the two archive members.
+            _write(
+                root,
+                f"{rel}/integrity-redistributable.json",
+                _json({"edition": EDITION, "files": {"index.html": sri_sha256(b"<x>")}}),
+            )
+            rc, lines = vr.check_redistributable_manifest(Repo(root))
+            self.assertEqual(rc, 1)
+            self.assertIn("does not declare it", "\n".join(lines))
+
+    def test_many_fails_truncated_to_twelve(self):
+        # 14 ghost declarations exercise the ">12 -> ... (N more)" tail.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            zip_path = root / rel / f"trentpower-fr-{EDITION}.zip"
+            zip_path.parent.mkdir(parents=True, exist_ok=True)
+            with zipfile.ZipFile(zip_path, "w") as zf:
+                zf.writestr("index.html", b"<x>")
+            ghosts = {f"ghost{i}.js": "sha256-x" for i in range(14)}
+            ghosts["index.html"] = sri_sha256(b"<x>")
+            _write(
+                root,
+                f"{rel}/integrity-redistributable.json",
+                _json({"edition": EDITION, "files": ghosts}),
+            )
+            rc, lines = vr.check_redistributable_manifest(Repo(root))
+            self.assertEqual(rc, 1)
+            joined = "\n".join(lines)
+            self.assertIn("more)", joined)
+
+    def test_canonical_zip_absent_uses_glob_candidate(self):
+        # canonical name absent but a dated rebuild zip exists -> glob fallback.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            zip_path = root / rel / "trentpower-fr-2026-06-20.zip"
+            zip_path.parent.mkdir(parents=True, exist_ok=True)
+            with zipfile.ZipFile(zip_path, "w") as zf:
+                zf.writestr("index.html", b"<x>")
+            _write(
+                root,
+                f"{rel}/integrity-redistributable.json",
+                _json({"edition": EDITION, "files": {"index.html": sri_sha256(b"<x>")}}),
+            )
+            rc, lines = vr.check_redistributable_manifest(Repo(root))
+            self.assertEqual(rc, 0)
+            self.assertIn("byte-for-byte", "\n".join(lines))
+
+
+class RedistributableSignature(unittest.TestCase):
+    """R3 — check_redistributable_signature branches."""
+
+    def test_no_release_dir_is_ok(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rc, lines = vr.check_redistributable_signature(Repo(root), FakeProc(_gpg_ok_handler))
+            self.assertEqual(rc, 0)
+            self.assertIn("nothing to verify", "\n".join(lines))
+
+    def test_missing_manifest_or_sig_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / f"public/integrity/releases/{EDITION}").mkdir(parents=True)
+            rc, lines = vr.check_redistributable_signature(Repo(root), FakeProc(_gpg_ok_handler))
+            self.assertEqual(rc, 1)
+            self.assertIn("missing", "\n".join(lines))
+
+    def test_missing_published_key_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            _write(root, f"{rel}/integrity-redistributable.json", "{}")
+            _write(root, f"{rel}/integrity-redistributable.json.sig", "SIG\n")
+            rc, lines = vr.check_redistributable_signature(Repo(root), FakeProc(_gpg_ok_handler))
+            self.assertEqual(rc, 1)
+            self.assertIn("public key", "\n".join(lines))
+
+    def test_key_import_failure_fails(self):
+        def handler(argv, cwd, env):
+            if argv[:1] == ["gpg"] and "--import" in argv:
+                return proc_result(1, "", "import broke")
+            return proc_result(0)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _make_fixture_repo(root)
+            rc, lines = vr.check_redistributable_signature(Repo(root), FakeProc(handler))
+            self.assertEqual(rc, 1)
+            self.assertIn("could not import", "\n".join(lines))
+
+
+class ReleaseJsonSignature(unittest.TestCase):
+    """R4 — check_release_json_signature branches."""
+
+    def test_no_release_dir_is_ok(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rc, lines = vr.check_release_json_signature(Repo(root), FakeProc(_gpg_ok_handler))
+            self.assertEqual(rc, 0)
+            self.assertIn("nothing to verify", "\n".join(lines))
+
+    def test_release_json_absent_is_ok(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / f"public/integrity/releases/{EDITION}").mkdir(parents=True)
+            rc, lines = vr.check_release_json_signature(Repo(root), FakeProc(_gpg_ok_handler))
+            self.assertEqual(rc, 0)
+            self.assertIn("predates phase 2", "\n".join(lines))
+
+    def test_signature_failure_fails(self):
+        def handler(argv, cwd, env):
+            if argv[:1] == ["gpg"]:
+                if "--verify" in argv:
+                    return proc_result(2, "", "BAD")
+                return proc_result(0)
+            return proc_result(0)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _make_fixture_repo(root)
+            rc, lines = vr.check_release_json_signature(Repo(root), FakeProc(handler))
+            self.assertEqual(rc, 1)
+            self.assertIn("does not verify", "\n".join(lines))
+
+
+class VerifyDetachedSig(unittest.TestCase):
+    """_verify_detached_sig low-level branches not hit elsewhere."""
+
+    def test_missing_target_or_sig_reports_missing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _write(root, "public/.well-known/pgp-key.asc", "KEY\n")
+            target = root / "public/integrity/releases/x/release.json"
+            sig = root / "public/integrity/releases/x/release.json.sig"
+            target.parent.mkdir(parents=True, exist_ok=True)
+            # neither target nor sig exist.
+            ok, err = vr._verify_detached_sig(Repo(root), FakeProc(_gpg_ok_handler), target, sig)
+            self.assertFalse(ok)
+            self.assertIn("missing", err)
+
+    def test_missing_published_key_reports(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            # no public/.well-known/pgp-key.asc -> key-missing branch.
+            target = root / "t.json"
+            sig = root / "t.json.sig"
+            target.write_text("{}")
+            sig.write_text("SIG")
+            ok, err = vr._verify_detached_sig(Repo(root), FakeProc(_gpg_ok_handler), target, sig)
+            self.assertFalse(ok)
+            self.assertIn("public key", err)
+
+    def test_import_failure_reports(self):
+        def handler(argv, cwd, env):
+            if argv[:1] == ["gpg"] and "--import" in argv:
+                return proc_result(1, "", "nope")
+            return proc_result(0)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _write(root, "public/.well-known/pgp-key.asc", "KEY\n")
+            target = root / "t.json"
+            sig = root / "t.json.sig"
+            target.write_text("{}")
+            sig.write_text("SIG")
+            ok, err = vr._verify_detached_sig(Repo(root), FakeProc(handler), target, sig)
+            self.assertFalse(ok)
+            self.assertIn("could not import", err)
+
+
+class ExclusionManifestSignature(unittest.TestCase):
+    """R5 — check_exclusion_manifest_signature branches."""
+
+    def test_no_release_dir_is_ok(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rc, lines = vr.check_exclusion_manifest_signature(
+                Repo(root), FakeProc(_gpg_ok_handler)
+            )
+            self.assertEqual(rc, 0)
+            self.assertIn("nothing to verify", "\n".join(lines))
+
+    def test_no_exclusion_manifest_is_ok(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / f"public/integrity/releases/{EDITION}").mkdir(parents=True)
+            rc, lines = vr.check_exclusion_manifest_signature(
+                Repo(root), FakeProc(_gpg_ok_handler)
+            )
+            self.assertEqual(rc, 0)
+            self.assertIn("predates phase 1", "\n".join(lines))
+
+    def test_signature_failure_fails(self):
+        def handler(argv, cwd, env):
+            if argv[:1] == ["gpg"]:
+                if "--verify" in argv:
+                    return proc_result(2, "", "BAD")
+                return proc_result(0)
+            return proc_result(0)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _make_fixture_repo(root)
+            rc, lines = vr.check_exclusion_manifest_signature(Repo(root), FakeProc(handler))
+            self.assertEqual(rc, 1)
+            self.assertIn("does not verify", "\n".join(lines))
+
+
+class ExclusionLiveCross(unittest.TestCase):
+    """R6 — check_exclusion_live_sha256_cross branches."""
+
+    def test_no_release_dir_is_ok(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rc, lines = vr.check_exclusion_live_sha256_cross(Repo(root))
+            self.assertEqual(rc, 0)
+            self.assertIn("nothing to verify", "\n".join(lines))
+
+    def test_no_integrity_json_is_ok(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            _write(root, f"{rel}/EXCLUDED_FILES.json", _json({"exclusions": []}))
+            # no public/integrity.json present.
+            rc, lines = vr.check_exclusion_live_sha256_cross(Repo(root))
+            self.assertEqual(rc, 0)
+            self.assertIn("nothing to cross-check", "\n".join(lines))
+
+    def test_invalid_json_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            _write(root, f"{rel}/EXCLUDED_FILES.json", "{not json")
+            _write(root, "public/integrity.json", "{}")
+            rc, lines = vr.check_exclusion_live_sha256_cross(Repo(root))
+            self.assertEqual(rc, 1)
+            self.assertIn("cannot parse", "\n".join(lines))
+
+    def test_path_absent_from_live_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            _write(
+                root,
+                f"{rel}/EXCLUDED_FILES.json",
+                _json({"exclusions": [{"path": "ghost.js", "live_sha256": "sha256-x"}]}),
+            )
+            _write(root, "public/integrity.json", _json({"files": {"app.js": "sha256-y"}}))
+            rc, lines = vr.check_exclusion_live_sha256_cross(Repo(root))
+            self.assertEqual(rc, 1)
+            self.assertIn("not present in live", "\n".join(lines))
+
+    def test_hash_mismatch_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            _write(
+                root,
+                f"{rel}/EXCLUDED_FILES.json",
+                _json(
+                    {
+                        "exclusions": [
+                            {"path": "app.js", "live_sha256": "sha256-CLAIMED"},
+                            {"path": "skip.js"},  # no live_sha256 -> skipped
+                        ]
+                    }
+                ),
+            )
+            _write(
+                root,
+                "public/integrity.json",
+                _json({"files": {"/app.js": "sha256-ACTUAL"}}),
+            )
+            rc, lines = vr.check_exclusion_live_sha256_cross(Repo(root))
+            self.assertEqual(rc, 1)
+            joined = "\n".join(lines)
+            self.assertIn("exclusion-cross-check issue", joined)
+
+    def test_many_mismatches_truncated(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            exclusions = [
+                {"path": f"miss{i}.js", "live_sha256": "sha256-x"} for i in range(14)
+            ]
+            _write(root, f"{rel}/EXCLUDED_FILES.json", _json({"exclusions": exclusions}))
+            _write(root, "public/integrity.json", _json({"files": {}}))
+            rc, lines = vr.check_exclusion_live_sha256_cross(Repo(root))
+            self.assertEqual(rc, 1)
+            self.assertIn("more)", "\n".join(lines))
+
+    def test_all_match_passes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            _write(
+                root,
+                f"{rel}/EXCLUDED_FILES.json",
+                _json({"exclusions": [{"path": "app.js", "live_sha256": "sha256-LIVEHASH"}]}),
+            )
+            _write(root, "public/integrity.json", _json({"files": {"app.js": "sha256-LIVEHASH"}}))
+            rc, lines = vr.check_exclusion_live_sha256_cross(Repo(root))
+            self.assertEqual(rc, 0)
+            self.assertIn("match live integrity.json", "\n".join(lines))
 
 
 if __name__ == "__main__":

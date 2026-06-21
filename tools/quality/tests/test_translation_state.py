@@ -85,6 +85,46 @@ class Evaluate(unittest.TestCase):
         self.assertFalse(r.ok)
         self.assertTrue(any("no content/fr/pages" in f for f in r.fails), r.fails)
 
+    def test_missing_field_in_block_fails(self):
+        # a translation block lacking the updated field trips the per-field check.
+        page = (
+            "translation:\n"
+            "  source_page: home\n"
+            f"  source_hash: {_fresh_hash(self.repo)}\n"
+            "  status: machine-assisted\n"
+            "meta:\n  home:\n    title: Accueil\n"
+        )
+        _write(self.root, "content/fr/pages/home.yml", page)
+        r = vts.evaluate(vts.load(self.repo))
+        self.assertFalse(r.ok)
+        self.assertTrue(any("translation.updated missing" in f for f in r.fails), r.fails)
+
+    def test_invalid_status_fails(self):
+        _write(
+            self.root,
+            "content/fr/pages/home.yml",
+            _fr_page(_fresh_hash(self.repo), status="approved"),
+        )
+        r = vts.evaluate(vts.load(self.repo))
+        self.assertFalse(r.ok)
+        self.assertTrue(any("invalid status 'approved'" in f for f in r.fails), r.fails)
+
+    def test_missing_en_source_yields_no_stale_warning(self):
+        # source_page names an EN page that does not exist; _en_source_hash
+        # returns None, so the page is never flagged stale even with a bogus hash.
+        page = (
+            "translation:\n"
+            "  source_page: ghost\n"
+            "  source_hash: sha256-deadbeef\n"
+            "  status: human-reviewed\n"
+            "  updated: '2026-05-22'\n"
+            "meta:\n  home:\n    title: Accueil\n"
+        )
+        _write(self.root, "content/fr/pages/home.yml", page)
+        r = vts.evaluate(vts.load(self.repo))
+        self.assertTrue(r.ok, msg=r.fails)
+        self.assertEqual(r.warns, [])
+
 
 class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
@@ -101,6 +141,29 @@ class ExternalInterface(unittest.TestCase):
         finally:
             sys.argv = saved
         self.assertEqual(rc, 0, msg=buf.getvalue())
+
+    def test_main_fails_and_prints_to_stderr_on_defect_fixture(self):
+        import contextlib
+        import io
+        import tempfile
+
+        # main() renders fails (and the summary line) to stderr; a fixture with
+        # no fr pages drives the fail branch.
+        saved = sys.argv
+        sys.argv = [saved[0]]
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                root = pathlib.Path(d)
+                _write(root, "content/en/pages/home.yml", _EN_HOME)
+                err = io.StringIO()
+                with contextlib.redirect_stderr(err):
+                    rc = vts.main(root)
+        finally:
+            sys.argv = saved
+        out = err.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("translation state:", out)
+        self.assertIn("error(s)", out)
 
 
 if __name__ == "__main__":

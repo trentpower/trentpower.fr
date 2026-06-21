@@ -145,6 +145,258 @@ class Evaluate(unittest.TestCase):
             any("Service-Worker-Allowed" in f for f in r.fails), r.fails
         )
 
+    def test_missing_js_bundle_caught(self):
+        # defect (L2): one behaviour-scoped bundle is absent on disk.
+        self._seed_clean()
+        (self.root / "public" / "js" / "copy.js").unlink()
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any(f.startswith("L2:") and "js/copy.js missing" in f for f in r.fails),
+            r.fails,
+        )
+
+    def test_missing_htaccess_caught(self):
+        # defect (L3): the whole .htaccess is gone.
+        self._seed_clean()
+        (self.root / "public" / ".htaccess").unlink()
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(any(f == "L3: .htaccess missing" for f in r.fails), r.fails)
+
+    def test_htaccess_no_filesmatch_block_caught(self):
+        # defect (L3): .htaccess present but carries no sw.js FilesMatch block.
+        self._seed_clean()
+        _write(self.root, "public/.htaccess", "# nothing about sw.js here\n")
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("no <FilesMatch sw.js> block" in f for f in r.fails), r.fails
+        )
+
+    def test_htaccess_missing_content_type_caught(self):
+        # defect (L3): the block omits the explicit Content-Type directive.
+        self._seed_clean()
+        _write(
+            self.root,
+            "public/.htaccess",
+            '<FilesMatch "^sw\\.js$">\n'
+            "  Header set Service-Worker-Allowed /\n"
+            "</FilesMatch>\n",
+        )
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("missing explicit Content-Type" in f for f in r.fails), r.fails
+        )
+
+    def test_missing_styles_css_caught(self):
+        # defect (L4): styles.css absent — the footer touch-target rule is
+        # unverifiable.
+        self._seed_clean()
+        (self.root / "public" / "styles.css").unlink()
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any(f == "L4: styles.css missing" for f in r.fails), r.fails
+        )
+
+    def test_footer_lang_rule_absent_caught(self):
+        # defect (L4): styles.css present but has no footer language-link rule.
+        self._seed_clean()
+        _write(
+            self.root, "public/styles.css", ".some-other-rule { color: red; }\n"
+        )
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("no footer language-link rule" in f for f in r.fails), r.fails
+        )
+
+    def test_footer_lang_rule_undersized_caught(self):
+        # defect (L4): the footer rule exists but neither the 44px box nor a
+        # padding-block ≥ 12px is present, so it fails the touch-target bar.
+        self._seed_clean()
+        _write(
+            self.root,
+            "public/styles.css",
+            ".site-footer__language a { padding-block: 4px; }\n" + CITE_BTN_RULE + "\n",
+        )
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("needs touch-target ≥ 44px" in f for f in r.fails), r.fails
+        )
+
+    def test_footer_lang_rule_padding_satisfies(self):
+        # green path (L4): a padding-block ≥ 12px alone satisfies the bar.
+        self._seed_clean()
+        _write(
+            self.root,
+            "public/styles.css",
+            ".site-footer__language a { padding-block: 14px; }\n" + CITE_BTN_RULE + "\n",
+        )
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertTrue(r.ok, msg=r.fails)
+
+    def test_cite_btn_missing_min_height_caught(self):
+        # defect (L8): a .cite-btn rule exists but omits min-height: 44px.
+        self._seed_clean()
+        _write(
+            self.root,
+            "public/styles.css",
+            FOOTER_LANG_RULE + "\n.cite-btn { color: blue; }\n",
+        )
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any(f.startswith("L8:") and "min-height" in f for f in r.fails), r.fails
+        )
+
+    def test_cite_btn_absent_is_not_applicable(self):
+        # green path (L8): no .cite-btn rule at all is treated as not-applicable.
+        self._seed_clean()
+        _write(self.root, "public/styles.css", FOOTER_LANG_RULE + "\n")
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertTrue(r.ok, msg=r.fails)
+
+    def test_no_edition_caught(self):
+        # defect (L5): the canonical identity carries no edition string.
+        self._seed_clean()
+        r = vli.evaluate(self.repo, None)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("identity_canonical.json has no edition" in f for f in r.fails),
+            r.fails,
+        )
+
+    def test_verification_data_alias_missing_caught(self):
+        # defect (L5): the clean verification-data alias is absent.
+        self._seed_clean()
+        (self.root / "public" / "verify" / "verification-data.js").unlink()
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("verification-data.js missing" in f for f in r.fails), r.fails
+        )
+
+    def test_verification_data_alias_empty_caught(self):
+        # defect (L5): the alias exists but is zero-length.
+        self._seed_clean()
+        _write(self.root, "public/verify/verification-data.js", "")
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("verification-data.js is empty" in f for f in r.fails), r.fails
+        )
+
+    def test_verification_data_dated_sibling_caught(self):
+        # defect (L5): a dated verification-data sibling lingers in the tree.
+        self._seed_clean()
+        _write(
+            self.root,
+            f"public/verify/verification-data.{EDITION}.deadbeef.js",
+            "window.V = {};\n",
+        )
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("dated verification-data sibling" in f for f in r.fails), r.fails
+        )
+
+    def test_missing_index_caught(self):
+        # defect (L6 + L7): index.html absent — both homepage checks fire.
+        self._seed_clean()
+        (self.root / "public" / "index.html").unlink()
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(any(f == "L7: index.html missing" for f in r.fails), r.fails)
+        self.assertTrue(any(f == "L6: index.html missing" for f in r.fails), r.fails)
+
+    def test_principle_close_tag_mismatch_caught(self):
+        # defect (L7): a principle-title <h3> closes with </h2>.
+        self._seed_clean()
+        _write(
+            self.root,
+            "public/index.html",
+            "<!doctype html><html><head></head><body>\n"
+            '<h3 class="principle-title">One</h2>\n'
+            "</body></html>\n",
+        )
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("close with </h2>" in f for f in r.fails), r.fails
+        )
+
+    def test_too_many_font_preloads_caught(self):
+        # defect (L6): the homepage preloads more than three first-paint fonts.
+        self._seed_clean()
+        preload = '<link rel="preload" as="font" href="/f{}.woff2">'
+        links = "\n".join(preload.format(i) for i in range(4))
+        _write(
+            self.root,
+            "public/index.html",
+            "<!doctype html><html><head>\n"
+            + links
+            + "\n</head><body></body></html>\n",
+        )
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any(f.startswith("L6:") and "preloads 4 fonts" in f for f in r.fails),
+            r.fails,
+        )
+
+    def test_data_url_in_stylesheet_caught(self):
+        # defect (L9): a url(data:...) inlined into a stylesheet would be blocked
+        # by the CSP img-src 'self'.
+        self._seed_clean()
+        _write(
+            self.root,
+            "public/styles.css",
+            FOOTER_LANG_RULE
+            + "\n"
+            + CITE_BTN_RULE
+            + '\n.x { background: url("data:image/svg+xml;base64,AAAA"); }\n',
+        )
+        r = vli.evaluate(self.repo, EDITION)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any(f.startswith("L9:") and "url(data:" in f for f in r.fails), r.fails
+        )
+
+
+class Load(unittest.TestCase):
+    def test_load_returns_none_when_identity_missing(self):
+        # load() over a repo with no identity_canonical.json yields None.
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = vli.Repo(pathlib.Path(tmp))
+            self.assertIsNone(vli.load(repo))
+
+
+class MainRender(unittest.TestCase):
+    """Drive the side-effecting adapter over a FAILING fixture so the
+    fail-render branch (print + per-fail loop + rc 1) is exercised; the green
+    path is covered by ExternalInterface against the real repo."""
+
+    def test_main_returns_1_and_prints_on_failure(self):
+        import contextlib
+        import io
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            # an empty repo: load() returns None and every check fails.
+            out, err = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                rc = vli.main(root)
+            self.assertEqual(rc, 1)
+            combined = out.getvalue() + err.getvalue()
+            self.assertIn("FAIL:", combined)
+            self.assertIn("Lighthouse-invariant issue(s)", combined)
+            # at least one per-fail line was rendered.
+            self.assertIn("✗", combined)
+
 
 class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):

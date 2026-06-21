@@ -105,6 +105,55 @@ class ExternalInterface(unittest.TestCase):
             rc = vnrc.main(REPO_ROOT)
         self.assertEqual(rc, 0, msg=buf.getvalue())
 
+    def test_main_fails_and_prints_on_contamination_fixture(self):
+        import contextlib
+        import io
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            _write(root, "public/live.js", "const sock = new WebSocket('wss://x.test');\n")
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vnrc.main(root)
+        out = buf.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("FAIL", out)
+        self.assertIn("runtime-contamination", out)
+        self.assertIn("live.js", out)
+
+    def test_main_fails_and_prints_when_public_root_missing(self):
+        import contextlib
+        import io
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            _write(root, "notpublic/x.js", "var a = 1;\n")
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vnrc.main(root)
+        out = buf.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("public root not found", out)
+
+    def test_main_truncates_when_over_thirty_matches(self):
+        import contextlib
+        import io
+        import tempfile
+
+        # 31 contaminated lines drives the "… N more" truncation branch.
+        body = "".join(f"const s{i} = new WebSocket('wss://x.test');\n" for i in range(31))
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            _write(root, "public/many.js", body)
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vnrc.main(root)
+        out = buf.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("more", out)
+
 
 if __name__ == "__main__":
     unittest.main()

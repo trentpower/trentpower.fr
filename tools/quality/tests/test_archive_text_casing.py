@@ -91,8 +91,78 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(r.ok, msg=r.fails)
         self.assertTrue(r.skipped)
 
+    def test_clearsign_block_caught(self):
+        # an orientation file carrying an inline pgp block must be flagged
+        # because archive_only files are not directly_signed (line 205).
+        bodies = dict(_CLEAN)
+        bodies["README.txt"] = (
+            f"{vatc.CLEARSIGN_HEADER}\nEdition: 2026-05-09\n"
+            "this archive mirrors the published edition.\n"
+        )
+        _seed_identity(self.root)
+        _seed_zip(self.root, bodies)
+        r = vatc.evaluate(self.repo, vatc.load(self.repo))
+        self.assertFalse(r.ok)
+        self.assertTrue(any("clearsigned block" in f for f in r.fails), r.fails)
+
+    def test_shouting_acronym_run_caught(self):
+        # a multi-letter uppercase run inside a plain prose token is loud
+        # shouting and gets flagged via the [A-Z]{2,} branch (lines 137-138).
+        bodies = dict(_CLEAN)
+        bodies["FILES.txt"] = "this archive lists its files LOUDly for the reader.\n"
+        _seed_identity(self.root)
+        _seed_zip(self.root, bodies)
+        r = vatc.evaluate(self.repo, vatc.load(self.repo))
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("LOUDly" in f for f in r.fails),
+            r.fails,
+        )
+
+
+class PreserveToken(unittest.TestCase):
+    # direct coverage of _is_preserve_token branches that line.split()
+    # cannot reach through prose (empty token) or that need specific shapes.
+    def test_empty_token_is_preserved(self):
+        self.assertTrue(vatc._is_preserve_token(""))  # line 100
+
+    def test_pure_hex_is_preserved(self):
+        self.assertTrue(vatc._is_preserve_token("deadbeef0123"))  # line 102
+
+    def test_camel_case_is_preserved(self):
+        self.assertTrue(vatc._is_preserve_token("someThing"))  # line 106
+
+
+class Load(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = pathlib.Path(self._tmp.name)
+        self.repo = vatc.Repo(self.root)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_no_identity_file_yields_no_zip(self):
+        # no identity_canonical.json at all: the is_file guard is false so
+        # edition stays empty and load returns a none zip path (lines 177->179, 180).
+        ctx = vatc.load(self.repo)
+        self.assertIsNone(ctx.zip_path)
+
+    def test_empty_edition_yields_no_zip(self):
+        # identity present but edition empty: still the skip case (line 180).
+        _write(self.root, vatc.IDENTITY_CANONICAL_REL, '{"edition": ""}')
+        ctx = vatc.load(self.repo)
+        self.assertIsNone(ctx.zip_path)
+
 
 class ExternalInterface(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = pathlib.Path(self._tmp.name)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
     def test_main_passes_against_the_real_repo(self):
         import contextlib
 
@@ -100,6 +170,51 @@ class ExternalInterface(unittest.TestCase):
         with contextlib.redirect_stdout(buf):
             rc = vatc.main(REPO_ROOT)
         self.assertEqual(rc, 0, msg=buf.getvalue())
+
+    def test_main_skips_when_no_zip(self):
+        # no identity, no zip: main renders the skip line and returns 0
+        # (lines 227-228).
+        import contextlib
+
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = vatc.main(self.root)
+        self.assertEqual(rc, 0)
+        self.assertIn("skipping archive-casing check", buf.getvalue())
+
+    def test_main_fails_and_renders_offenders(self):
+        # a seeded casing defect makes r.fails true: main prints the FAIL
+        # header plus the offender lines and returns 1 (lines 231-236).
+        import contextlib
+
+        bodies = dict(_CLEAN)
+        bodies["README.txt"] = "Edition: 2026-05-09\nThis archive mirrors the edition.\n"
+        _seed_identity(self.root)
+        _seed_zip(self.root, bodies)
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = vatc.main(self.root)
+        out = buf.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("FAIL:", out)
+        self.assertIn("archive-text-casing issue(s):", out)
+
+    def test_main_truncates_overflow_offenders(self):
+        # more than 50 offending lines exercises the "... and N more" tail
+        # (lines 234-235).
+        import contextlib
+
+        bodies = dict(_CLEAN)
+        shouting = "".join(f"This line number {n} shouts loudly here.\n" for n in range(60))
+        bodies["FILES.txt"] = shouting
+        _seed_identity(self.root)
+        _seed_zip(self.root, bodies)
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = vatc.main(self.root)
+        out = buf.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("more", out)
 
 
 if __name__ == "__main__":

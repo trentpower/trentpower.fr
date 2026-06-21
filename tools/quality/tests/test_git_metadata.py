@@ -82,6 +82,49 @@ class ExternalInterface(unittest.TestCase):
             rc = vgm.main(REPO_ROOT)
         self.assertEqual(rc, 0, msg=buf.getvalue())
 
+    def _run_main(self, root):
+        # capture both streams; main() renders failures to stderr and the
+        # green line to stdout.
+        import contextlib
+        import io
+
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            rc = vgm.main(root)
+        return rc, out.getvalue(), err.getvalue()
+
+    def test_main_fails_against_a_seeded_defect_fixture(self):
+        # main() builds Repo(root) internally, so pointing it at a fixture with
+        # a forbidden trailer exercises the FAIL-render branch and rc == 1.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _write(root, "docs/notes.md", f"summary\n\n{_COAUTHOR}: someone <x@y>\n")
+            rc, out, err = self._run_main(root)
+        self.assertEqual(rc, 1, msg=out + err)
+        self.assertIn("FAIL:", err)
+        self.assertIn("co-authored-by trailer", err)
+        self.assertEqual(out, "")
+
+    def test_main_green_against_a_clean_fixture(self):
+        # the clean-fixture path through main() prints the OK line to stdout.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _write(root, "public/index.html", "<p>a clean page</p>\n")
+            rc, out, err = self._run_main(root)
+        self.assertEqual(rc, 0, msg=out + err)
+        self.assertIn("OK:", out)
+
+    def test_main_truncates_when_over_thirty_fails(self):
+        # more than 30 fails exercises the truncation summary line.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            line = f"{_COAUTHOR}: someone <x@y>\n"
+            _write(root, "docs/many.md", line * 40)
+            rc, out, err = self._run_main(root)
+        self.assertEqual(rc, 1, msg=out + err)
+        self.assertIn("and", err)
+        self.assertIn("more", err)
+
 
 if __name__ == "__main__":
     unittest.main()

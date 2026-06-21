@@ -94,5 +94,61 @@ class ExternalInterface(unittest.TestCase):
         self.assertEqual(rc, 0, msg=buf.getvalue())
 
 
+class MainRendersFailures(unittest.TestCase):
+    """Drive main() over seeded-defect fixture repos — each defect class trips a
+    distinct FAIL-render branch. assert rc==1 plus the printed FAIL line."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = pathlib.Path(self._tmp.name)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def _run_main(self) -> tuple[int, str]:
+        import contextlib
+        import io
+
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = vsw.main(self.root)
+        return rc, buf.getvalue()
+
+    def test_main_fails_when_sw_missing(self):
+        # empty repo — no sw.js at all.
+        rc, out = self._run_main()
+        self.assertEqual(rc, 1)
+        self.assertIn("FAIL: sw.js missing", out)
+
+    def test_main_fails_when_literals_missing(self):
+        _write(self.root, vsw.SW_REL, "var X = 1;\n")
+        rc, out = self._run_main()
+        self.assertEqual(rc, 1)
+        self.assertIn("FAIL: sw.js missing CRITICAL_PRECACHE", out)
+
+    def test_main_fails_when_precache_empty(self):
+        _write(self.root, vsw.SW_REL, _sw([], []))
+        rc, out = self._run_main()
+        self.assertEqual(rc, 1)
+        self.assertIn("precache list is empty", out)
+
+    def test_main_renders_precache_issue(self):
+        # the dominant gap: a precache URL that does not resolve on disk.
+        _write(self.root, vsw.SW_REL, _sw(["/gone.css"], []))
+        rc, out = self._run_main()
+        self.assertEqual(rc, 1)
+        self.assertIn("precache issue(s)", out)
+        self.assertIn("missing on disk", out)
+
+    def test_main_truncates_overflow_of_failures(self):
+        # >30 failing URLs trips the "… and N more" truncation tail.
+        urls = [f"/missing-{i}.css" for i in range(35)]
+        _write(self.root, vsw.SW_REL, _sw(urls, []))
+        rc, out = self._run_main()
+        self.assertEqual(rc, 1)
+        self.assertIn("35 precache issue(s)", out)
+        self.assertIn("and 5 more", out)
+
+
 if __name__ == "__main__":
     unittest.main()

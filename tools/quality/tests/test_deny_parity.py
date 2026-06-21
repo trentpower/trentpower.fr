@@ -86,6 +86,27 @@ class Evaluate(unittest.TestCase):
             r.fails,
         )
 
+    def test_manifest_only_extension_fails(self):
+        # the manifest denies "bak" but .htaccess does not — the reverse drift,
+        # exercising the only_manifest reporting branch.
+        _make_fixture_repo(self.root, _EXTS, [*_EXTS, "bak"])
+        r = vdp.evaluate(self.repo)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("denied by the manifest but NOT by .htaccess" in f for f in r.fails),
+            r.fails,
+        )
+        self.assertTrue(any("bak" in f for f in r.fails), r.fails)
+
+    def test_missing_deny_list_raises(self):
+        # a fixture whose htaccess_config.py lacks DENY_EXTENSION_RULES makes the
+        # AST lookup raise SystemExit naming the missing symbol.
+        _write(self.root, vdp.HTACCESS_CONFIG_REL, "OTHER = []\n")
+        _write(self.root, vdp.EXPOSURE_MANIFEST_REL, _manifest_source(_EXTS))
+        with self.assertRaises(SystemExit) as ctx:
+            vdp.evaluate(self.repo)
+        self.assertIn("DENY_EXTENSION_RULES not found", str(ctx.exception))
+
 
 class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
@@ -98,6 +119,25 @@ class ExternalInterface(unittest.TestCase):
             rc = vdp.main(REPO_ROOT)
         # same RC as the recorded baseline (RC=0, green).
         self.assertEqual(rc, 0, msg=buf.getvalue() + err.getvalue())
+
+    def test_main_fails_over_a_drifting_fixture(self):
+        # main() points at a fixture repo whose two deny surfaces disagree; it
+        # must return rc=1 and render the disagreement to stderr.
+        import contextlib
+        import io
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _make_fixture_repo(root, _EXTS, ["php", "phar", "env", "sql"])
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err):
+                rc = vdp.main(root)
+
+        self.assertEqual(rc, 1)
+        out = err.getvalue()
+        self.assertIn("FAIL", out)
+        self.assertIn("two deny surfaces disagree", out)
+        self.assertIn("log", out)
 
 
 if __name__ == "__main__":

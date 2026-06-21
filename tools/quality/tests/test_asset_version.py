@@ -95,6 +95,15 @@ class Evaluate(unittest.TestCase):
         r = va.evaluate(self.repo, AV)
         self.assertTrue(r.no_av)
 
+    def test_missing_active_html_fails(self):
+        # seed metadata + sw.js coherent, then omit every active html file so the
+        # "missing active HTML" branch fires for each swept page.
+        _write(self.root, va.SITE_METADATA_REL, json.dumps({"asset_version": AV}))
+        _write(self.root, va.SW_REL, f"const CACHE='{AV}';\n")
+        r = va.evaluate(self.repo, AV)
+        self.assertFalse(r.ok)
+        self.assertTrue(any("missing active HTML" in f for f in r.fails), r.fails)
+
 
 class Recompute(unittest.TestCase):
     def setUp(self):
@@ -125,16 +134,91 @@ class Recompute(unittest.TestCase):
     def test_recompute_none_when_generator_absent(self):
         self.assertIsNone(va.recompute_asset_version(self.repo))
 
+    def _seed_canon(self, edition="2026-06-14"):
+        _write(self.root, "tools/config/identity_canonical.json", json.dumps({"edition": edition}))
+
+    def test_recompute_none_when_bundle_empty(self):
+        # generator + canon present but ASSET_BUNDLE is an empty literal.
+        _write(self.root, "tools/build/generate_site.py", "ASSET_BUNDLE = []\n")
+        self._seed_canon()
+        self.assertIsNone(va.recompute_asset_version(self.repo))
+
+    def test_recompute_none_when_edition_malformed(self):
+        # ASSET_BUNDLE valid but edition is not a YYYY-MM-DD date.
+        _write(self.root, "public/styles.css", "body{}\n")
+        _write(self.root, "tools/build/generate_site.py", 'ASSET_BUNDLE = ["styles.css"]\n')
+        self._seed_canon(edition="not-a-date")
+        self.assertIsNone(va.recompute_asset_version(self.repo))
+
+    def test_recompute_none_when_bundle_file_missing(self):
+        # bundle names a file that is not on disk.
+        _write(self.root, "tools/build/generate_site.py", 'ASSET_BUNDLE = ["styles.css"]\n')
+        self._seed_canon()
+        self.assertIsNone(va.recompute_asset_version(self.repo))
+
 
 class ExternalInterface(unittest.TestCase):
-    def test_main_passes_against_the_real_repo(self):
+    def _run_main(self, root):
         import contextlib
         import io
 
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
-            rc = va.main(REPO_ROOT)
-        self.assertEqual(rc, 0, msg=buf.getvalue())
+            rc = va.main(root)
+        return rc, buf.getvalue()
+
+    def test_main_passes_against_the_real_repo(self):
+        rc, out = self._run_main(REPO_ROOT)
+        self.assertEqual(rc, 0, msg=out)
+
+    def test_main_fails_and_prints_coherence_issues(self):
+        # build a failing fixture: metadata + sw.js coherent, but no generator
+        # (recompute returns None) and active html pages absent. main() takes the
+        # r.fails branch, prints the issue lines, and returns 1.
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        root = pathlib.Path(tmp.name)
+        _write(root, va.SITE_METADATA_REL, json.dumps({"asset_version": AV}))
+        _write(root, va.SW_REL, f"const CACHE='{AV}';\n")
+        rc, out = self._run_main(root)
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("asset-version coherence issue", out)
+        self.assertIn("cannot recompute asset_version", out)
+
+    def test_main_truncates_when_over_fifty_fails(self):
+        # every active html page references all swept assets without ?v=, so the
+        # fails list far exceeds 50 and main() emits the "… and N more" line.
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        root = pathlib.Path(tmp.name)
+        _write(root, va.SITE_METADATA_REL, json.dumps({"asset_version": AV}))
+        _write(root, va.SW_REL, f"const CACHE='{AV}';\n")
+        refs = "".join(f'<link href="{a}">' for a in va.SWEPT_ASSETS)
+        for rel in va.active_html_for_av():
+            _write(root, f"public/{rel}", refs)
+        # confirm the fixture actually exceeds the 50-line cap.
+        r = va.evaluate(va.Repo(root), AV)
+        self.assertGreater(len(r.fails), 50, "fixture must exceed truncation cap")
+        rc, out = self._run_main(root)
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("more", out)
+
+    def test_main_reports_site_metadata_missing(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        root = pathlib.Path(tmp.name)
+        rc, out = self._run_main(root)
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("site-metadata.json missing", out)
+
+    def test_main_reports_no_asset_version(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        root = pathlib.Path(tmp.name)
+        _write(root, va.SITE_METADATA_REL, json.dumps({}))
+        rc, out = self._run_main(root)
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("no asset_version", out)
 
 
 if __name__ == "__main__":

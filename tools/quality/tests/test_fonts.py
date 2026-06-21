@@ -85,6 +85,24 @@ class Evaluate(unittest.TestCase):
             any("ORPHAN: /fonts/orphan.woff2" in f for f in r.fails), r.fails
         )
 
+    def test_malformed_sw_manifest_fails(self):
+        # the service-worker precache list is not valid json.
+        _seed_pristine(self.root)
+        _write(self.root, "public/sw-cache-manifest.json", "{not json")
+        r = vf.evaluate(self.repo)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("sw-cache-manifest.json:" in f for f in r.fails), r.fails
+        )
+
+    def test_malformed_integrity_manifest_fails(self):
+        # the integrity manifest is not valid json.
+        _seed_pristine(self.root)
+        _write(self.root, "public/integrity.json", "{broken")
+        r = vf.evaluate(self.repo)
+        self.assertFalse(r.ok)
+        self.assertTrue(any("integrity.json:" in f for f in r.fails), r.fails)
+
 
 class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
@@ -95,6 +113,31 @@ class ExternalInterface(unittest.TestCase):
         with contextlib.redirect_stdout(buf):
             rc = vf.main(REPO_ROOT)
         self.assertEqual(rc, 0, msg=buf.getvalue())
+
+    def test_main_fails_over_a_failing_fixture(self):
+        # main() points at a fixture repo whose css references a font that was
+        # never shipped. it must return rc=1 and render the failure to stderr.
+        import contextlib
+        import io
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _seed_pristine(root)
+            _write(
+                root,
+                "public/styles.css",
+                "@font-face{src:url('/fonts/plex.woff2') format('woff2')}\n"
+                "@font-face{src:url('/fonts/missing.woff2') format('woff2')}\n",
+            )
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err):
+                rc = vf.main(root)
+
+        self.assertEqual(rc, 1)
+        out = err.getvalue()
+        self.assertIn("FAIL", out)
+        self.assertIn("✗", out)
+        self.assertIn("/fonts/missing.woff2", out)
 
 
 if __name__ == "__main__":

@@ -66,6 +66,40 @@ class ExternalInterface(unittest.TestCase):
             rc = vnda.main(REPO_ROOT)
         self.assertEqual(rc, 0, msg=buf.getvalue())
 
+    def test_main_fails_on_seeded_dated_asset(self):
+        # seed a fixture root with a public/ dir (passes the is_dir guard) plus a
+        # dated+hashed asset that the gate must flag, then exercise main()'s
+        # fail-render branch and assert it exits 1 with a printed fail line.
+        import contextlib
+        import io
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _write(root, "public/styles.2026-01-01.deadbeef.css", "body{}\n")
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vnda.main(root)
+        out = buf.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("FAIL", out)
+        self.assertIn("styles.2026-01-01.deadbeef.css", out)
+
+    def test_main_fails_when_public_is_not_a_directory(self):
+        # a root with no public/ dir trips the is_dir guard before evaluate() runs;
+        # main() must print a FAIL line and exit 1.
+        import contextlib
+        import io
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vnda.main(root)
+        out = buf.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("FAIL", out)
+        self.assertIn("not a directory", out)
+
 
 if __name__ == "__main__":
     unittest.main()

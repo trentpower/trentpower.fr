@@ -218,6 +218,143 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(r.ok)
         self.assertFalse(r.claimed_any)
 
+    def test_missing_pgp_key_fails_the_pgp_claim(self):
+        # control_pgp first checks the published key on disk; remove it and the
+        # PGP claim is reported unbacked with the "published key missing" detail.
+        (self.root / "public/.well-known/pgp-key.asc").unlink()
+        r = vcp.evaluate(self.repo, _base_data())
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any('"PGP"' in f and "published key missing" in f for f in r.parity_fails),
+            r.parity_fails,
+        )
+
+    def test_missing_reuse_toml_fails_the_reuse_claim(self):
+        # control_reuse first checks REUSE.toml on disk; remove it and the REUSE
+        # claim is reported unbacked with the "REUSE.toml is missing" detail.
+        (self.root / "REUSE.toml").unlink()
+        r = vcp.evaluate(self.repo, _base_data())
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any('"REUSE"' in f and "REUSE.toml is missing" in f for f in r.parity_fails),
+            r.parity_fails,
+        )
+
+    def test_stated_in_path_does_not_exist_fails(self):
+        # a stated_in path that is not on disk fails the integrity meta-check
+        # with the "does not exist" message (distinct from the outside-surface case).
+        data = _base_data()
+        data["claims"]["SLSA"]["stated_in"] = ["README.md", "NOPE.md"]
+        r = vcp.evaluate(self.repo, data)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("does not exist" in f and "NOPE.md" in f for f in r.meta_fails), r.meta_fails
+        )
+
+    def test_enforced_status_with_empty_verified_by_fails(self):
+        # status enforced demands a non-empty verified_by; an enforced claim with
+        # no bound control is an integrity failure.
+        data = _base_data()
+        data["claims"]["SBOM"]["verified_by"] = []
+        r = vcp.evaluate(self.repo, data)
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any('"SBOM"' in f and "verified_by is empty" in f for f in r.meta_fails), r.meta_fails
+        )
+
+
+class QuoteFirstLine(unittest.TestCase):
+    def test_quotes_the_first_matching_line_stripped(self):
+        text = "irrelevant\n  CycloneDX SBOM here  \nlater\n"
+        self.assertEqual(vcp._quote_first_line(text, "CycloneDX"), "CycloneDX SBOM here")
+
+    def test_returns_empty_when_token_absent(self):
+        # the no-match path: token not on any line yields the empty-string fallback.
+        self.assertEqual(vcp._quote_first_line("a\nb\nc\n", "ZZZ"), "")
+
+
+class MainRender(unittest.TestCase):
+    """Drive main()'s side-effecting render block over fixture repos: the
+    schema-error path, the FAIL path, and the no-claims OK path."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = pathlib.Path(self._tmp.name)
+        _make_fixture_repo(self.root)
+        # main() loads the map from disk + schema-validates, so a real schema and
+        # a serialised valid map must be on the fixture repo.
+        _write(
+            self.root,
+            "schemas/claims-map.schema.json",
+            (REPO_ROOT / "schemas" / "claims-map.schema.json").read_text(encoding="utf-8"),
+        )
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def _run_main(self):
+        import contextlib
+        import io
+
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = vcp.main(self.root)
+        return rc, buf.getvalue()
+
+    def _write_map(self, data):
+        import yaml
+
+        _write(self.root, "policy-data/claims-map.yml", yaml.safe_dump(data))
+
+    def test_main_schema_error_renders_fail_and_returns_1(self):
+        # a structurally invalid map fails schema validation: main() renders the
+        # schema-failure block and returns 1 before evaluate() runs.
+        data = _base_data()
+        del data["claims"]["SBOM"]["verified_by"]  # required key removed
+        self._write_map(data)
+        rc, out = self._run_main()
+        self.assertEqual(rc, 1)
+        self.assertIn("does not satisfy", out)
+
+    def test_main_parity_fail_renders_unbacked_block_and_returns_1(self):
+        # remove the osv-scanner step so the OSV claim is unbacked: main() renders
+        # the "unbacked supply-chain claim(s)" FAIL block and returns 1.
+        _write(self.root, ".github/workflows/pr-checks.yml", "steps:\n  - run: reuse lint\n")
+        self._write_map(_base_data())
+        rc, out = self._run_main()
+        self.assertEqual(rc, 1)
+        self.assertIn("unbacked supply-chain claim(s)", out)
+        self.assertIn("OSV", out)
+
+    def test_main_meta_fail_renders_integrity_block_and_returns_1(self):
+        # an orphan control is an integrity (meta) failure: main() renders the
+        # "claims-map integrity problem(s)" block and returns 1.
+        data = _base_data()
+        del data["claims"]["reproducib"]  # orphans control_reproducible
+        self._write_map(data)
+        rc, out = self._run_main()
+        self.assertEqual(rc, 1)
+        self.assertIn("integrity problem(s)", out)
+
+    def test_main_ruleset_note_rendered(self):
+        # a ruleset-enforced claim surfaces a NOTE line; the run still passes.
+        data = _base_data()
+        data["claims"]["OSV"]["enforced_at"] = ["ruleset"]
+        data["claims"]["OSV"]["release_blocking"] = True
+        self._write_map(data)
+        rc, out = self._run_main()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("NOTE:", out)
+
+    def test_main_no_claims_on_surface_renders_ok(self):
+        # a surface with no claimed tokens hits the "no supply-chain claims" OK
+        # branch and returns 0.
+        _write(self.root, "README.md", "nothing claimed here.\n")
+        self._write_map(_base_data())
+        rc, out = self._run_main()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("no supply-chain claims", out)
+
 
 class LoadMap(unittest.TestCase):
     def setUp(self):
@@ -253,6 +390,12 @@ class LoadMap(unittest.TestCase):
         self.assertEqual(errors, [])
         self.assertIsNotNone(out)
         self.assertIn("claims", out)
+
+    def test_missing_map_returns_missing_or_empty_error(self):
+        # no claims-map.yml on disk: load_map returns (None, ["...missing or empty"]).
+        out, errors = vcp.load_map(self.repo)
+        self.assertIsNone(out)
+        self.assertTrue(any("missing or empty" in e for e in errors), errors)
 
 
 class ExternalInterface(unittest.TestCase):

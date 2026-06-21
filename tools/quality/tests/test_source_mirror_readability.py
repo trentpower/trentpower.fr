@@ -96,6 +96,46 @@ class ExternalInterface(unittest.TestCase):
         # baseline RC is 0 (see .build/cmig-baseline/...readability.txt).
         self.assertEqual(rc, 0, msg=buf.getvalue())
 
+    def test_main_missing_source_dir_renders_dirmissing_fail(self):
+        # point main() at a repo with no /source/ directory: the DIRMISSING
+        # sentinel renders the single top-level FAIL line and returns 1.
+        import contextlib
+        import io
+
+        with tempfile.TemporaryDirectory() as tmp:
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vsmr.main(pathlib.Path(tmp))
+            out = buf.getvalue()
+        self.assertEqual(rc, 1)
+        self.assertIn("FAIL:", out)
+        self.assertIn("/source/ directory not found", out)
+        # the sentinel prefix is stripped from the rendered line.
+        self.assertNotIn("DIRMISSING:", out)
+
+    def test_main_itemised_fail_block_renders_issues(self):
+        # a present /source/ dir with a minified mirror drives the itemised
+        # "N issue(s)" FAIL block and returns 1.
+        import contextlib
+        import io
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _pristine(root)
+            _write(
+                root,
+                f"{vsmr.SOURCE_DIR_REL}/{vsmr.REMAPPED_MIRRORS[0]}",
+                "// authored source minified\n",
+            )
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vsmr.main(root)
+            out = buf.getvalue()
+        self.assertEqual(rc, 1)
+        self.assertIn("source-mirror-readability", out)
+        self.assertIn("issue(s)", out)
+        self.assertIn("likely minified", out)
+
 
 if __name__ == "__main__":
     sys.exit(unittest.main())

@@ -59,6 +59,15 @@ class Evaluate(unittest.TestCase):
         r = vl.evaluate(self.repo)
         self.assertTrue(r.ok, msg=r.fails)
 
+    def test_undecodable_file_is_skipped(self):
+        # a non-utf8 public file raises UnicodeDecodeError on read; the scan
+        # swallows it and moves on, leaving the tree clean.
+        target = self.root / "public" / "blob.json"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(b"\xff\xfe/home/trentpower/secret\n")
+        r = vl.evaluate(self.repo)
+        self.assertTrue(r.ok, msg=r.fails)
+
 
 class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
@@ -69,6 +78,23 @@ class ExternalInterface(unittest.TestCase):
         with contextlib.redirect_stdout(buf):
             rc = vl.main(REPO_ROOT)
         self.assertEqual(rc, 0, msg=buf.getvalue())
+
+    def test_main_fails_and_prints_on_leak_fixture(self):
+        import contextlib
+        import io
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            _write(root, "public/index.html", "<!-- /home/trentpower/Desktop/x -->\n")
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vl.main(root)
+        out = buf.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("FAIL", out)
+        self.assertIn("local-path leak", out)
+        self.assertIn("index.html:1", out)
 
 
 if __name__ == "__main__":

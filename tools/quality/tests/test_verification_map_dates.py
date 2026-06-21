@@ -9,7 +9,9 @@ Run:
     python3 -m unittest discover -s tools/quality/tests
 """
 
+import contextlib
 import datetime
+import io
 import pathlib
 import tempfile
 import unittest
@@ -18,8 +20,8 @@ TOOLS = pathlib.Path(__file__).resolve().parents[2]
 import _fixture  # noqa: E402
 
 _fixture.bootstrap()
-
 import validate_verification_map_dates as vm  # noqa: E402
+from _fixture import write as _write  # noqa: E402
 
 REPO_ROOT = TOOLS.parent
 NOW = datetime.datetime(2026, 6, 21, 12, 0, tzinfo=datetime.UTC)
@@ -74,13 +76,59 @@ class ExternalInterface(unittest.TestCase):
             self.assertEqual(text, "")
 
     def test_main_passes_against_the_real_repo(self):
-        import contextlib
-        import io
-
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             rc = vm.main(REPO_ROOT)
         self.assertEqual(rc, 0, msg=buf.getvalue())
+
+    def test_main_fails_on_stale_stamp(self):
+        # seed a fixture whose only stamp is far older than the 14-day window so
+        # main() must take the FAIL branch deterministically.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _write(root, vm.VERIFICATION_DATA_REL, _records("2026-01-01"))
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vm.main(repo_root=root, now=NOW)
+            out = buf.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("FAIL:", out)
+        self.assertIn("days old", out)
+
+    def test_main_truncates_overflow_fail_list(self):
+        # more than 20 stale stamps so the "… and N more" overflow line renders.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _write(root, vm.VERIFICATION_DATA_REL, _records(*["2026-01-01"] * 25))
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vm.main(repo_root=root, now=NOW)
+            out = buf.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("… and 5 more", out)
+
+    def test_main_skips_when_file_absent(self):
+        # empty fixture: the data file is absent, so main() prints the skip and exits 0.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vm.main(repo_root=root, now=NOW)
+            out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("absent — skipping", out)
+
+    def test_main_skips_when_no_records(self):
+        # file present but carries no validated entries: the no-records OK branch.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _write(root, vm.VERIFICATION_DATA_REL, "var DATA = [];")
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vm.main(repo_root=root, now=NOW)
+            out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("no validated entries", out)
 
 
 if __name__ == "__main__":

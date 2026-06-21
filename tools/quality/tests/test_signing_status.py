@@ -109,6 +109,57 @@ class Evaluate(unittest.TestCase):
             any("humans.txt: claims covered_by_manifest" in f for f in r.fails), r.fails
         )
 
+    def test_missing_on_disk_caught(self):
+        # delete classified artefacts entirely: the missing-on-disk branch fires
+        # before any per-class logic. deleting a covered_by_manifest file too
+        # exercises the leak check's "file absent → skip" guard.
+        _seed_pristine(self.root)
+        (self.root / "public/statement.txt").unlink()
+        (self.root / "public/humans.txt").unlink()
+        r = vss.evaluate(self.repo, self._ctx())
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("statement.txt: missing on disk" in f for f in r.fails), r.fails
+        )
+        self.assertTrue(
+            any("humans.txt: missing on disk" in f for f in r.fails), r.fails
+        )
+
+    def test_signature_carrier_orphan_target_caught(self):
+        # the lone signature_carrier (integrity.json.sig) targets the manifest.
+        # delete the manifest but keep its carrier on disk: the carrier now
+        # points at a missing target. (the carrier file itself is reseeded since
+        # the pristine seed treats integrity.json as the manifest body, not a
+        # carrier stub.)
+        _seed_pristine(self.root)
+        _write(self.root, "public/integrity.json.sig", "signature bytes")
+        (self.root / "public/integrity.json").unlink()
+        # no manifest on disk → empty file set; that is the correct Ctx here.
+        r = vss.evaluate(self.repo, self._ctx())
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("signature_carrier but target" in f for f in r.fails), r.fails
+        )
+
+    def test_covered_by_manifest_clearsign_leak_caught(self):
+        # a covered_by_manifest text file must not carry an inline clearsigned
+        # block — that is a hidden upgrade of its signing status (the leak check).
+        _seed_pristine(self.root)
+        _write(self.root, "public/humans.txt", _CLEARSIGN)
+        r = vss.evaluate(self.repo, self._ctx())
+        self.assertFalse(r.ok)
+        self.assertTrue(
+            any("contains a clearsigned block" in f for f in r.fails), r.fails
+        )
+
+    def test_no_manifest_yields_empty_ctx(self):
+        # load() with no integrity.json on disk yields an empty file set, exactly
+        # as the former _load_integrity_files() did.
+        ctx, errors = vss.load(self.repo)
+        self.assertEqual(errors, [])
+        self.assertIsNotNone(ctx)
+        self.assertEqual(ctx.integrity_files, set())
+
 
 class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
@@ -119,6 +170,27 @@ class ExternalInterface(unittest.TestCase):
         with contextlib.redirect_stdout(buf):
             rc = vss.main(REPO_ROOT)
         self.assertEqual(rc, 0, msg=buf.getvalue())
+
+    def test_main_renders_fail_on_seeded_defect(self):
+        # the FAIL-render adapter branch: seed a pristine fixture, then strip a
+        # directly_signed artefact's coverage so evaluate() fails. main() over
+        # that fixture root must print a FAIL line and return exit code 1.
+        import contextlib
+        import io
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _seed_pristine(root)
+            _write(root, "public/assertion.txt", "plain prose, no signature\n")
+
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vss.main(root)
+
+        out = buf.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("FAIL", out)
+        self.assertIn("signing-status mismatch", out)
 
 
 if __name__ == "__main__":
