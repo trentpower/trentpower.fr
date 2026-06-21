@@ -22,10 +22,20 @@ Allowlist:
 Exit 0 = green; exit 1 = block.
 
 Registered in tools/lib/checks.py (advisory tier).
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the scan runs over a fixture repo with no monkeypatching.
+`evaluate(repo)` is the pure compute path returning a Result; `main()` is the
+only adapter that prints/exits. Byte-identical to the former
+module-global PUBLIC_DIR walk.
 """
+
+from __future__ import annotations
 
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -38,7 +48,8 @@ sys.path.insert(
         / "lib"
     ),
 )
-from paths import PUBLIC_DIR  # noqa: E402
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
 # banned phrases — case-insensitive, word-boundary regexes.
 # `(?i)` not used so each pattern stays explicit.
@@ -90,18 +101,31 @@ def _is_excluded(rel: str) -> bool:
     return any(rel.startswith(p) for p in EXCLUDE_DIR_PREFIXES)
 
 
-def main() -> int:
-    fails: list[str] = []
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+# recursive public-tree walk — returns public-relative posix paths. the
+# "public/" prefix and recursive walk live here in the validator, not on Repo.
+def _public_glob(repo: Repo, pattern: str) -> list[str]:
+    prefix = "public/"
+    return [rel[len(prefix) :] for rel in repo.glob(f"{prefix}**/{pattern}")]
+
+
+def evaluate(repo: Repo) -> Result:
+    r = Result()
 
     for glob in SCAN_GLOBS:
-        for p in PUBLIC_DIR.rglob(glob):
-            if not p.is_file():
-                continue
-            rel = p.relative_to(PUBLIC_DIR).as_posix()
+        for rel in _public_glob(repo, glob):
             if _is_excluded(rel):
                 continue
             try:
-                text = p.read_text(encoding="utf-8", errors="strict")
+                text = repo.read(f"public/{rel}")
             except UnicodeDecodeError:
                 continue
             for line_num, line in enumerate(text.splitlines(), 1):
@@ -111,14 +135,23 @@ def main() -> int:
                     continue
                 for pat in BANNED_PATTERNS:
                     if pat.search(line):
-                        fails.append(f"{rel}:{line_num} matches /{pat.pattern}/ — {stripped[:100]}")
+                        r.fails.append(
+                            f"{rel}:{line_num} matches /{pat.pattern}/ — {stripped[:100]}"
+                        )
 
-    if fails:
-        print(f"FAIL: {len(fails)} authorship-language issue(s)", file=sys.stderr)
-        for f in fails[:30]:
+    return r
+
+
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    r = evaluate(repo)
+
+    if r.fails:
+        print(f"FAIL: {len(r.fails)} authorship-language issue(s)", file=sys.stderr)
+        for f in r.fails[:30]:
             print(f"  ✗ {f}", file=sys.stderr)
-        if len(fails) > 30:
-            print(f"  … and {len(fails) - 30} more", file=sys.stderr)
+        if len(r.fails) > 30:
+            print(f"  … and {len(r.fails) - 30} more", file=sys.stderr)
         print(file=sys.stderr)
         print("Reference wording:", file=sys.stderr)
         print('  "All content and code are reviewed manually before publication.', file=sys.stderr)
@@ -130,5 +163,5 @@ def main() -> int:
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())

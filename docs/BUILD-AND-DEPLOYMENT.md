@@ -102,7 +102,7 @@ below). Stage 14 exists only in `--public-release` runs.
 | Stage | Name                   | What it does                                                                                                                                                                                                                                    | What it produces                                           |
 | ----- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | 01    | PUBLICATION INTENT     | Interactive menu: create new edition / rebuild existing / check only / exit; records the edition date and a one-line note. TTY only; skipped when a mode flag is given.                                                                         | The run's mode, edition and note                           |
-| 02    | RENDER                 | Source-quality and QR-drift gates, copy compile, bilingual render, single-tree prune, repository-hygiene gate, font subsets (order below).                                                                                                      | The `/en-au/` + `/fr/` page trees and the language gate    |
+| 02    | RENDER                 | Source-quality gate, coverage ratchet (floors 90/90/85, fail-fast), QR-drift gate, copy compile, bilingual render, single-tree prune, repository-hygiene gate, font subsets (order below).                                                      | The `/en-au/` + `/fr/` page trees and the language gate    |
 | 03    | PREPARE PUBLIC BYTES   | Every generator that produces or sweeps public artefacts, ending in the source-mirror convergence loop (order below). `--editorial` adds the review exports here.                                                                               | All generated public files except the final manifest       |
 | 04    | SEAL                   | Final `generate_integrity.py` pass over the now-stable post-SRI tree.                                                                                                                                                                           | Final `integrity.json` (archives queued until approval)    |
 | 05    | VERIFY                 | `gate.py --skip-signature --all` (blocking, pre-signature) then `lint.py` (advisory, non-blocking). `--check` and `--no-sign` end here.                                                                                                         | Go / no-go verdict                                         |
@@ -128,16 +128,22 @@ This is where the original pipeline lives; the order is the contract.
 
 1. `tools/quality/quality.sh --check` — source quality gate
    (formatting / lint preflight on the authored source).
-2. `generate_qr.py --check` — QR drift gate.
-3. `copy/build_copy.py` — compile `content/en/*.yml` → the `en` subtree
+2. `tools/quality/coverage.sh` — coverage ratchet (the same script CI runs):
+   the unit suite under coverage, three enforced surfaces (floors 90/90/85).
+   A surface below floor — or any failing unit test — exits non-zero and **halts
+   the build here, before any public byte is generated**. `--skip-coverage`
+   skips it for local iteration only (refused for public builds). See
+   [`COVERAGE.md`](./COVERAGE.md).
+3. `generate_qr.py --check` — QR drift gate.
+4. `copy/build_copy.py` — compile `content/en/*.yml` → the `en` subtree
    of `tools/build/copy/strings.json` (resolves `{{ shared.x.y }}`
    refs, lints duplicates; the hand-curated `fr` subtree is preserved).
-4. `render_pages.py` — render the bilingual `/en-au/` + `/fr/` trees
+5. `render_pages.py` — render the bilingual `/en-au/` + `/fr/` trees
    and the `/` language gate from YAML through templates.
-5. `copy/prune_single_tree.py` — remove single-tree leftovers.
-6. `validate_repository_hygiene.py` — forbidden-artefact gate on
+6. `copy/prune_single_tree.py` — remove single-tree leftovers.
+7. `validate_repository_hygiene.py` — forbidden-artefact gate on
    `public/` (see file class 7).
-7. `build_font_subsets.py` — font subsets (non-blocking).
+8. `build_font_subsets.py` — font subsets (non-blocking).
 
 **Stage 03 — PREPARE PUBLIC BYTES**
 
@@ -177,7 +183,15 @@ This is where the original pipeline lives; the order is the contract.
 **Stage 04 — SEAL**
 
 A final `generate_integrity.py` pass re-hashes the now-stable post-SRI
-tree → `integrity.json`. In a full build the release archive is
+tree → `integrity.json`, then `assert_seal_immutable.py --record` records
+the sealed tree's hashes. **Nothing may mutate a public byte after the
+seal:** stage 07 re-runs `assert_seal_immutable.py --verify` before signing
+and refuses to sign a moved tree, so no public-byte generator can run
+between the seal and the signature. (There is no byte-fixpoint to converge
+to — see [ADR-0003](adr/0003-build-has-no-byte-fixpoint-convergence.md);
+the seal hashes whatever the final hand-unrolled tree is, and
+`validate_sri_coherence.py` checks the SRI statically rather than by
+re-running generators.) In a full build the release archive is
 deliberately queued until after publication approval (stage 08), so the
 archive embeds the signed manifest.
 
@@ -337,7 +351,7 @@ tools/quality/inline_checks.py          ← inline cross-cutting check functions
 tools/quality/validate_*.py         ← edition / bilingual / htaccess / hygiene validators
 tools/verify/validate_*.py          ← release / source-mirror / verification-data validators
 tools/release/deploy.sh                 ← build + commit + push convenience wrapper
-tools/release/deploy.sftp.lftp          ← manual emergency-deploy lftp recipe
+tools/release/deploy.sftp.lftp.template ← manual emergency-deploy lftp recipe (host/account from env; render with render_deploy_lftp.py)
 tools/quality/csp-hashes.sh             ← manual CSP-hash diagnostic helper
 ```
 
@@ -445,9 +459,13 @@ bash tools/release/deploy.sh --help         # usage
 ```
 
 For a true SFTP-from-this-machine emergency (GitHub or Actions
-unavailable), `tools/release/deploy.sftp.lftp` is a manual, staged lftp
-recipe; lftp prompts for the SFTP password interactively — nothing is
-stored.
+unavailable), `tools/release/deploy.sftp.lftp.template` is a manual,
+staged lftp recipe. The host + account are never committed: export
+`SFTP_USERNAME` and `SFTP_HOST` from your secret store and render the
+concrete (gitignored) recipe with
+`python3 tools/release/render_deploy_lftp.py`, then
+`cd public && lftp -f ../tools/release/deploy.sftp.lftp`. lftp prompts for
+the SFTP password interactively — nothing is stored.
 
 ---
 

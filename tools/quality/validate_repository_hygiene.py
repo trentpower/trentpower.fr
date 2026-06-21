@@ -8,19 +8,24 @@ diagnostics so the build aborts before a leak can be packaged, hashed,
 signed, or pushed.
 
 Run standalone:
-    python3 tools/validate_repository_hygiene.py            # scan public/
-    python3 tools/validate_repository_hygiene.py --path X   # scan X
+    python3 tools/quality/validate_repository_hygiene.py    # scan public/
 
 This is defence-in-depth: .gitignore stops files entering git, the
 public-exposure allow-list governs what is reachable over HTTP, and
 this gate is the last structural check on the bytes themselves.
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)`. The release-input tree (`public/`) is walked through `repo.root`,
+which is exactly what a fixture repo provides — no monkeypatching. `evaluate(repo)`
+is the compute path returning a Result; `main()` is the only adapter that
+prints/exits. Byte-identical to the former inline scan().
 """
 
 from __future__ import annotations
 
-import argparse
 import re
 import sys
+from dataclasses import dataclass, field
 from pathlib import Path
 
 sys.path.insert(
@@ -34,8 +39,9 @@ sys.path.insert(
         / "lib"
     ),
 )
-from paths import PUBLIC_DIR
-from redact import mask_secret
+from paths import REPO_ROOT  # noqa: E402
+from redact import mask_secret  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
 # ── directories never walked ────────────────────────────────────────
 #   integrity/releases/ holds frozen historical release bodies; their
@@ -125,9 +131,23 @@ def _excluded_dir(rel: str) -> bool:
     return any(rel == d or rel.startswith(d + "/") for d in EXCLUDE_DIRS)
 
 
-def scan(root: Path) -> list[str]:
-    """Return a sorted list of human-readable hygiene violations."""
-    fails: list[str] = []
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+def evaluate(repo: Repo) -> Result:
+    """Walk the release input tree (public/) and collect hygiene violations.
+
+    The scanned root is `repo.root / "public"`; for the production REPO_ROOT
+    this equals PUBLIC_DIR, so behaviour is byte-identical to the former scan()."""
+    r = Result()
+    fails = r.fails
+    root = repo.root / "public"
     for path in sorted(root.rglob("*")):
         rel = path.relative_to(root).as_posix()
         if _excluded_dir(rel):
@@ -164,29 +184,24 @@ def scan(root: Path) -> list[str]:
                         fails.append(
                             f"{rel}:{lineno}: possible {label} → {mask_secret(m.group(0))}"
                         )
-    return fails
+    return r
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser(description="strict repository hygiene gate")
-    ap.add_argument(
-        "--path",
-        type=Path,
-        default=PUBLIC_DIR,
-        help="release input tree to scan (default: public/)",
-    )
-    args = ap.parse_args()
-    root = args.path.resolve()
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    root = repo.root / "public"
 
+    # the scanning line prints the absolute scanned path; for the production
+    # repo_root this is identical to the former args.path.resolve() output.
     if not root.is_dir():
         print(f"FAIL: scan target does not exist: {root}")
         return 1
 
     print(f"repository-hygiene: scanning {root}")
-    fails = scan(root)
-    if fails:
-        print(f"FAIL: {len(fails)} hygiene violation(s):")
-        for f in fails:
+    r = evaluate(repo)
+    if r.fails:
+        print(f"FAIL: {len(r.fails)} hygiene violation(s):")
+        for f in r.fails:
             print(f"  ✗ {f}")
         print()
         print(
@@ -198,5 +213,5 @@ def main() -> int:
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())

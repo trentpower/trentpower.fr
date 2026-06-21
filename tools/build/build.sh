@@ -19,6 +19,7 @@
 #     bash tools/build.sh --public-release # full ceremony, then stage 14: flip the GitHub repo public
 #     bash tools/build.sh --yes-public    # pre-approve stage 14 (or env PUBLIC_RELEASE_APPROVED=1)
 #     bash tools/build.sh --no-push       # in the ship ritual, commit only — never push or deploy
+#     bash tools/build.sh --skip-coverage # dev only: skip the stage-02 coverage ratchet (refused for public builds)
 #     bash tools/build.sh --plain         # force the plain transcript even on a TTY
 #     bash tools/build.sh --ascii         # ascii markers ([ok]/[x]) instead of glyphs
 #     bash tools/build.sh --verbose       # echo each underlying command beneath its activity
@@ -55,6 +56,7 @@ VERBOSE=0
 PUBLIC_RELEASE=0
 PUBLIC_APPROVED="${PUBLIC_RELEASE_APPROVED:-0}"
 NO_PUSH=0
+SKIP_COVERAGE=0
 for arg in "$@"; do
   case "$arg" in
   --check)
@@ -75,6 +77,7 @@ for arg in "$@"; do
     ;;
   --yes-public) PUBLIC_APPROVED=1 ;;
   --no-push) NO_PUSH=1 ;;
+  --skip-coverage) SKIP_COVERAGE=1 ;;
   --editorial) EDITORIAL=1 ;;
   --plain) RENDER_FORCE="plain" ;;
   --ascii) ASCII=1 ;;
@@ -89,6 +92,13 @@ for arg in "$@"; do
     ;;
   esac
 done
+
+# --skip-coverage is a dev-only inner-loop affordance; a public build must always
+# enforce the coverage ratchet.
+if [ "$SKIP_COVERAGE" -eq 1 ] && { [ "$MODE" = "publiccheck" ] || [ "$PUBLIC_RELEASE" -eq 1 ]; }; then
+  echo "build.sh: --skip-coverage cannot be combined with a public build (--public-check/--public-release)" >&2
+  exit 2
+fi
 
 # TOOLS_DIR resolves to tools/ (this script lives in tools/build/); each python
 # script computes its own ROOT via tools/lib/paths.py, so cwd does not matter.
@@ -267,6 +277,44 @@ stage02_render() {
   t_stage 02 "RENDER" "Transform authored content into public pages."
   t_flow "content/" "templates/" "public/"
   step "Source quality gate" bash "$TOOLS_DIR/quality/quality.sh" --check
+  # Coverage ratchet — same script CI runs; exits non-zero below any floor, so a
+  # coverage regression (or a failing unit test) halts the build here, BEFORE any
+  # public byte is generated. .coverage + .build/coverage are gitignored. The
+  # measured test count + TEST COVERAGE % are surfaced for an operator decision,
+  # then the figure is synced into the badge + docs (sync_coverage.py).
+  if [ "$SKIP_COVERAGE" -eq 1 ]; then
+    t_say warn "$(t_mark warn) Coverage ratchet — SKIPPED (--skip-coverage, dev only)"
+  elif ! python3 -m coverage --version >/dev/null 2>&1; then
+    # coverage.py is the build machine's responsibility; the dedicated CI
+    # coverage job (pr-checks source-quality) is the authoritative gate. Skip
+    # rather than hard-fail in environments that do not install it (e.g. the
+    # publication-check / release build jobs).
+    t_say warn "$(t_mark warn) Coverage ratchet — SKIPPED (coverage.py not installed; enforced on the build host + the source-quality CI job)"
+  else
+    cov_log="$(mktemp)"
+    t_spin_start "Coverage ratchet · floors 90/90/85"
+    if bash "$TOOLS_DIR/quality/coverage.sh" >"$cov_log" 2>&1; then
+      t_spin_stop pass "Coverage ratchet · floors 90/90/85"
+    else
+      t_spin_stop fail "Coverage ratchet · floors 90/90/85"
+      sed 's/^/   /' "$cov_log" | tail -20
+      rm -f "$cov_log"
+      _fail "Coverage ratchet"
+    fi
+    cov_tests="$(grep -oE 'Ran [0-9]+ tests' "$cov_log" | grep -oE '[0-9]+' | head -1)"
+    rm -f "$cov_log"
+    cov_pct="$(python3 -c "import json;print(json.load(open('.build/coverage/coverage-summary.json'))['test_coverage_pct'])" 2>/dev/null || echo '?')"
+    t_say ink "$(t_mark pass) ${cov_tests:-?} unit tests passed · TEST COVERAGE ${cov_pct}% · floors 90/90/85 all green"
+    # operator gate — continue or cancel based on the numbers (auto-continues off-TTY)
+    t_menu "1=Continue the build" "2=Cancel the build"
+    case "$T_REPLY" in
+    2 | c | C | cancel | n | N | no)
+      t_say fail "$(t_mark fail) Build cancelled at coverage review — previous edition unaffected."
+      exit 1
+      ;;
+    esac
+    step "Sync coverage badge + docs" python3 "$TOOLS_DIR/badges/sync_coverage.py" --write
+  fi
   step "QR drift gate" python3 "$TOOLS_DIR/build/generate_qr.py" --check
   step "Compile copy (yaml → strings.json)" python3 "$TOOLS_DIR/build/copy/build_copy.py"
   step "Render bilingual pages (/en-au/ + /fr/ + gate)" python3 "$TOOLS_DIR/build/render_pages.py" --out "$PUBLIC_DIR"
@@ -331,6 +379,11 @@ stage04_seal() {
   local entries
   entries="$(count_manifest)"
   [ -n "$entries" ] && t_say ink_dim "   $(t_mark pass) Manifest hashes $(t_seg paper "$entries") entries"
+  # record a content snapshot of the just-sealed tree. the seal-immutability
+  # guard in stage 07 re-checks it just before signing, so no generator can move
+  # public bytes between seal and signature (see docs/adr/0003 + the publication
+  # rule it enforces). nothing must mutate public/ after this point.
+  step "Record seal snapshot" python3 "$TOOLS_DIR/build/assert_seal_immutable.py" --record
   if [ "$MODE" = "full" ]; then
     t_say ink_faint "   Release archive queued — built after publication approval (it signs the sealed bytes)."
   fi
@@ -518,6 +571,13 @@ stage07_approval() {
     t_say ink_dim "Non-interactive: signing with the published key (unattended build)."
   fi
   printf '\n'
+  # seal-immutability guard — the publication rule. the tree must be byte-for-byte
+  # what stage 04 sealed; if any generator (or stray edit) moved public bytes
+  # since the seal, the signature would cover something other than the manifest.
+  # refuse to sign a moved tree (see docs/adr/0003).
+  if ! python3 "$TOOLS_DIR/build/assert_seal_immutable.py" --verify; then
+    _fail "public bytes changed between seal and sign — refusing to sign"
+  fi
   t_spin_start "Signing publication…"
   local rc
   (

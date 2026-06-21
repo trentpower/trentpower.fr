@@ -22,12 +22,23 @@ out-of-band (Google Rich Results Test, validator.schema.org).
 
 Registered in tools/lib/checks.py (advisory tier).
 
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the whole gate runs over a fixture repo with no
+monkeypatching. `evaluate(repo)` is the pure compute path returning a Result;
+`main()` is the only adapter that prints/exits. The per-page check helpers take
+their inputs (the page-relative path and the file text) as parameters — no
+module-global path reads.
+
 Exit 0 = green; exit 1 = block.
 """
+
+from __future__ import annotations
 
 import json
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -40,7 +51,8 @@ sys.path.insert(
         / "lib"
     ),
 )
-from paths import PUBLIC_DIR  # noqa: E402
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
 # canonical entity ids. these are stable across editions.
 SITE_BASE = "https://trentpower.fr"
@@ -48,25 +60,6 @@ PERSON_ID = f"{SITE_BASE}/#trent-power"
 PERSON_IMG = f"{SITE_BASE}/#trent-power-image"
 WEBSITE_ID = f"{SITE_BASE}/#website"
 PROFILE_ID = f"{SITE_BASE}/#profile-page"
-
-
-# active html scanned for JSON-LD @graph correctness — discovered by
-# walk so the bilingual /en/ and /fr/ trees are covered. the dated
-# frozen-archive snapshots and the editorial review documents are
-# excluded.
-def _discover_active_html() -> list:
-    out = []
-    for p in sorted(PUBLIC_DIR.glob("**/*.html")):
-        rel = p.relative_to(PUBLIC_DIR).as_posix()
-        if re.match(r"integrity/releases/[^/]+/", rel):
-            continue
-        if rel.startswith("editorial/"):
-            continue
-        out.append(rel)
-    return out
-
-
-ACTIVE_HTML = _discover_active_html()
 
 # editions carry the full editorial @graph (person + WebSite + ProfilePage
 # + clienteling DefinedTerm in one block). the gate carries a modest
@@ -81,6 +74,23 @@ JSONLD_RE = re.compile(
     r'<script\s+type="application/ld\+json">(.*?)</script>',
     re.S,
 )
+
+
+# active html scanned for JSON-LD @graph correctness — discovered by
+# walk so the bilingual /en/ and /fr/ trees are covered. the dated
+# frozen-archive snapshots and the editorial review documents are
+# excluded.
+def _discover_active_html(repo: Repo) -> list[str]:
+    out: list[str] = []
+    prefix = "public/"
+    for full in repo.glob(f"{prefix}**/*.html"):
+        rel = full[len(prefix) :]
+        if re.match(r"integrity/releases/[^/]+/", rel):
+            continue
+        if rel.startswith("editorial/"):
+            continue
+        out.append(rel)
+    return out
 
 
 def _entity_ids_in(graph_or_obj) -> set[str]:
@@ -311,34 +321,65 @@ def _check_gate(rel: str, text: str) -> list[str]:
     return fails
 
 
-def main() -> int:
-    fails: list[str] = []
-    for rel in ACTIVE_HTML:
-        p = PUBLIC_DIR / rel
-        if not p.is_file():
-            fails.append(f"{rel}: missing")
-            continue
-        text = p.read_text(encoding="utf-8")
-        if rel in GATE_HTML:
-            fails.extend(_check_gate(rel, text))
-        elif rel in EDITION_HTML:
-            fails.extend(_check_homepage(rel, text))
-        else:
-            fails.extend(_check_other_page(rel, text))
+# ---------------------------------------------------------------------------
+# Result — the value that flows through the interface. evaluate() produces it;
+# main() renders it. tests assert on Result, never on stdout. `summary` carries
+# the green one-liner so the render stays a thin adapter.
+# ---------------------------------------------------------------------------
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+    warns: list[str] = field(default_factory=list)
+    summary: str = ""
 
-    if fails:
-        print(f"FAIL: {len(fails)} schema-graph issue(s)", file=sys.stderr)
-        for f in fails[:30]:
-            print(f"  ✗ {f}", file=sys.stderr)
-        if len(fails) > 30:
-            print(f"  … and {len(fails) - 30} more", file=sys.stderr)
-        return 1
-    print(
-        f"OK: schema graph — {len(ACTIVE_HTML)} HTML pages, "
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. one call, one Result, over the injected
+# Repo. this is the test surface.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo) -> Result:
+    r = Result()
+    active_html = _discover_active_html(repo)
+    for rel in active_html:
+        if not repo.is_file(f"public/{rel}"):
+            r.fails.append(f"{rel}: missing")
+            continue
+        text = repo.read(f"public/{rel}")
+        if rel in GATE_HTML:
+            r.fails.extend(_check_gate(rel, text))
+        elif rel in EDITION_HTML:
+            r.fails.extend(_check_homepage(rel, text))
+        else:
+            r.fails.extend(_check_other_page(rel, text))
+    r.summary = (
+        f"schema graph — {len(active_html)} HTML pages, "
         f"one consolidated @graph on /, single-block elsewhere"
     )
+    return r
+
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. evaluates, renders, returns exit code. the
+# only place stdout and exit codes live.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    r = evaluate(repo)
+
+    if r.fails:
+        print(f"FAIL: {len(r.fails)} schema-graph issue(s)", file=sys.stderr)
+        for f in r.fails[:30]:
+            print(f"  ✗ {f}", file=sys.stderr)
+        if len(r.fails) > 30:
+            print(f"  … and {len(r.fails) - 30} more", file=sys.stderr)
+        return 1
+    print(f"OK: {r.summary}")
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())

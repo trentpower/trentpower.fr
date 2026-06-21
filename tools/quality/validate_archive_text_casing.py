@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""tools/validate_archive_text_casing.py — ZIP orientation casing gate.
+"""validate_archive_text_casing.py — ZIP orientation casing gate.
 
 reads the current edition's release ZIP and confirms that the five
 in-memory orientation files exist with their ALLCAPS filenames and
@@ -18,12 +18,23 @@ casing rule:
 ZIP-only orientation files must NOT carry an inline PGP block —
 that would mis-classify them as directly-signed when they are
 class archive_only.
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)`. zipfile needs a real path, so the release ZIP is opened off
+`repo.root` (mirroring validate_hidden_artefacts); `load(repo)` resolves the ZIP
+path, `evaluate(repo, ctx)` holds the casing matrix and returns a Result, and
+`main()` is the only adapter that prints or exits. Byte-identical to the former
+module-global form.
 """
 
+from __future__ import annotations
+
 import io
+import json
 import re
 import sys
 import zipfile
+from dataclasses import dataclass, field
 from pathlib import Path
 
 sys.path.insert(
@@ -37,9 +48,11 @@ sys.path.insert(
         / "lib"
     ),
 )
-import json as _json
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
-from paths import IDENTITY_CANONICAL, PUBLIC_DIR  # noqa: E402
+# repo-relative location of the canonical edition pointer.
+IDENTITY_CANONICAL_REL = "tools/config/identity_canonical.json"
 
 EXPECTED_FILES = {
     "FILES.txt",
@@ -80,14 +93,6 @@ def _is_section_header(line: str) -> bool:
 
 # rule lines under a header (------ or ====== style).
 _RULE_LINE = re.compile(r"^[-=]{3,}\s*$")
-
-
-def _locate_release_zip() -> Path | None:
-    edition = _json.loads(IDENTITY_CANONICAL.read_text(encoding="utf-8")).get("edition", "")
-    if not edition:
-        return None
-    candidate = PUBLIC_DIR / "integrity" / "releases" / edition / f"trentpower-fr-{edition}.zip"
-    return candidate if candidate.is_file() else None
 
 
 def _is_preserve_token(tok: str) -> bool:
@@ -141,42 +146,96 @@ def _check_prose_line(line: str) -> list[str]:
     return bad
 
 
-def main() -> int:
-    zip_path = _locate_release_zip()
-    if zip_path is None:
-        print("  OK: no release ZIP yet — skipping archive-casing check")
-        return 0
+# ---------------------------------------------------------------------------
+# Ctx / Result — the values that flow through the interface. load() resolves the
+# release ZIP path (or None); evaluate() produces Result; main() renders it.
+# ---------------------------------------------------------------------------
+@dataclass(frozen=True)
+class Ctx:
+    zip_path: Path | None
 
-    fails: list[str] = []
-    with zipfile.ZipFile(zip_path) as zf:
+
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+    # carried so main() can reproduce the original OK text without re-deriving.
+    zip_name: str | None = None
+    skipped: bool = False
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+# ---------------------------------------------------------------------------
+# load — resolve the canonical edition's release ZIP path. zipfile needs a real
+# filesystem path, so this returns the path off repo.root (or None when there is
+# no ZIP yet, which is the skip case).
+# ---------------------------------------------------------------------------
+def load(repo: Repo) -> Ctx:
+    edition = ""
+    if repo.is_file(IDENTITY_CANONICAL_REL):
+        edition = json.loads(repo.read(IDENTITY_CANONICAL_REL)).get("edition", "")
+    if not edition:
+        return Ctx(zip_path=None)
+    candidate = (
+        repo.root / "public" / "integrity" / "releases" / edition / f"trentpower-fr-{edition}.zip"
+    )
+    return Ctx(zip_path=candidate if candidate.is_file() else None)
+
+
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. opens the ZIP off repo.root and applies the
+# casing matrix; returns a Result, never prints or exits.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo, ctx: Ctx) -> Result:
+    if ctx.zip_path is None:
+        return Result(skipped=True)
+
+    r = Result(zip_name=ctx.zip_path.name)
+    with zipfile.ZipFile(ctx.zip_path) as zf:
         names = set(zf.namelist())
         missing = EXPECTED_FILES - names
         if missing:
-            fails.append(f"missing orientation file(s) in archive: {sorted(missing)}")
+            r.fails.append(f"missing orientation file(s) in archive: {sorted(missing)}")
         for fname in sorted(EXPECTED_FILES & names):
             with zf.open(fname) as fp:
                 text = io.TextIOWrapper(fp, encoding="utf-8").read()
             if CLEARSIGN_HEADER in text:
-                fails.append(
+                r.fails.append(
                     f"{fname}: contains a clearsigned block — orientation "
                     f"files must be archive_only, not directly_signed."
                 )
             for line_num, line in enumerate(text.splitlines(), 1):
                 offenders = _check_prose_line(line)
                 if offenders:
-                    fails.append(f"{fname}:{line_num} uppercase tokens in prose: {offenders[:5]}")
+                    r.fails.append(f"{fname}:{line_num} uppercase tokens in prose: {offenders[:5]}")
+    return r
 
-    if fails:
-        print(f"  FAIL: {len(fails)} archive-text-casing issue(s):")
-        for f in fails[:50]:
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. builds the seam, evaluates, renders, returns
+# the exit code. the only place stdout and exit codes live.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    r = evaluate(repo, load(repo))
+
+    if r.skipped:
+        print("  OK: no release ZIP yet — skipping archive-casing check")
+        return 0
+
+    if r.fails:
+        print(f"  FAIL: {len(r.fails)} archive-text-casing issue(s):")
+        for f in r.fails[:50]:
             print(f"    {f}")
-        if len(fails) > 50:
-            print(f"    ... and {len(fails) - 50} more")
+        if len(r.fails) > 50:
+            print(f"    ... and {len(r.fails) - 50} more")
         return 1
 
-    print(f"  OK: archive orientation files match casing matrix ({zip_path.name}).")
+    print(f"  OK: archive orientation files match casing matrix ({r.zip_name}).")
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())

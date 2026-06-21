@@ -14,9 +14,10 @@
 ;   server-side file is left in place across deploys. This template
 ;   exists so the directive is recoverable from version control.
 ;
-; If the server file is ever lost, redeploy by hand:
-;   sftp ...@sftp.sd3.gpaas.net
-;   cd /vhosts/trentpower.fr/htdocs
+; If the server file is ever lost, redeploy by hand (host + user from your
+; secret store, never committed — see tools/release/render_deploy_lftp.py):
+;   sftp "$SFTP_USERNAME@$SFTP_HOST"
+;   cd "$SFTP_REMOTE_PATH"
 ;   put tools/server/user.ini.example .user.ini
 ;
 ; .htaccess in public/ already denies HTTP access to .user.ini at the

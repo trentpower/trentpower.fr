@@ -17,12 +17,19 @@ and asserts:
 
 Usage:
     python3 tools/validate_lang_gate.py [--root DIR]
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the whole gate runs over a fixture repo with no monkeypatching.
+`evaluate(repo, gate_rel)` is the pure compute path returning a Result; `main()`
+is the only adapter that reads argv, prints, and exits. The invariants,
+constants, and messages are lifted verbatim from the former inline scan.
 """
 
 from __future__ import annotations
 
 import re
 import sys
+from dataclasses import dataclass, field
 from pathlib import Path
 
 sys.path.insert(
@@ -36,23 +43,38 @@ sys.path.insert(
         / "lib"
     ),
 )
-from paths import PUBLIC_DIR  # noqa: E402
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
+
+# repo-relative location of the vestibule (resolved through the Repo seam).
+GATE_REL = "public/index.html"
+
+# the OK line printed verbatim when every invariant holds.
+OK_MESSAGE = (
+    "✓ language vestibule OK (index, self-canonical, hreflang,no auto-redirect, <a> choices)"
+)
 
 
-def main() -> int:
-    argv = sys.argv[1:]
-    root = PUBLIC_DIR
-    if "--root" in argv:
-        root = Path(argv[argv.index("--root") + 1]).resolve()
-    gate = root / "index.html"
-    if not gate.exists():
-        print(
-            f"✗ vestibule not found: {gate}\n  run: python3 tools/render_pages.py", file=sys.stderr
-        )
-        return 1
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+    # set when the vestibule file itself is absent — a load failure, not an
+    # invariant failure; main() renders it with the original run-hint message.
+    missing: str | None = None
 
-    html = gate.read_text(encoding="utf-8")
-    errors: list[str] = []
+    @property
+    def ok(self) -> bool:
+        return not self.fails and self.missing is None
+
+
+def evaluate(repo: Repo, gate_rel: str = GATE_REL) -> Result:
+    r = Result()
+    if not repo.is_file(gate_rel):
+        r.missing = gate_rel
+        return r
+
+    html = repo.read(gate_rel)
+    errors: list[str] = r.fails
 
     # the root / is the x-default edition gate — a legitimate indexable
     # entry point. the rich editorial graph lives on /en-au/ and /fr/.
@@ -94,14 +116,40 @@ def main() -> int:
     if not re.search(r'<a [^>]*href="/fr/"', html):
         errors.append("no <a href=/fr/> choice")
 
-    for e in errors:
-        print(f"  ✗ {e}", file=sys.stderr)
-    if errors:
-        print(f"\n✗ language vestibule: {len(errors)} error(s)", file=sys.stderr)
+    return r
+
+
+def main(repo_root: Path = REPO_ROOT) -> int:
+    argv = sys.argv[1:]
+    gate_rel = GATE_REL
+    if "--root" in argv:
+        # --root points at an arbitrary deployable tree; resolve its
+        # index.html relative to repo_root so the Repo seam can read it.
+        root = Path(argv[argv.index("--root") + 1]).resolve()
+        try:
+            gate_rel = (root / "index.html").relative_to(repo_root).as_posix()
+        except ValueError:
+            # outside the repo tree — read it directly via its own Repo root.
+            return _run(Repo(root), "index.html")
+    return _run(Repo(repo_root), gate_rel)
+
+
+def _run(repo: Repo, gate_rel: str) -> int:
+    r = evaluate(repo, gate_rel)
+    if r.missing is not None:
+        gate = repo.root / r.missing
+        print(
+            f"✗ vestibule not found: {gate}\n  run: python3 tools/render_pages.py", file=sys.stderr
+        )
         return 1
-    print("✓ language vestibule OK (index, self-canonical, hreflang,no auto-redirect, <a> choices)")
+    for e in r.fails:
+        print(f"  ✗ {e}", file=sys.stderr)
+    if r.fails:
+        print(f"\n✗ language vestibule: {len(r.fails)} error(s)", file=sys.stderr)
+        return 1
+    print(OK_MESSAGE)
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())

@@ -1,0 +1,38 @@
+# coverage.py config for the tools/ test suite.
+#
+# Targeted, not blanket: measure the policy-bearing Python (build, quality, lib,
+# verify), excluding the tests themselves and the thin gate/lint runners.
+#
+# coverage.sh reports THREE surfaces, each with its own target (the global tools/
+# number is not a target — generators get integration tests later, not now):
+#   1. convergence + seal (signing-critical)  → 90%+   [at ~98%]
+#   2. ADR-0002 validators                     → 90%+   [ongoing ratchet]
+#   3. broad quality-policy                    → 85%    [advisory]
+# Reports only for now — no fail-under; the blocking ratchet is wired per-surface
+# once each is at target (avoids coverage theatre for one-off wrappers).
+
+[run]
+branch = True
+source =
+    tools/build
+    tools/quality
+    tools/lib
+    tools/verify
+
+omit =
+    tools/quality/tests/*
+    tools/quality/gate.py
+    tools/quality/lint.py
+    */__pycache__/*
+    */site-packages/*
+
+[report]
+show_missing = True
+precision = 1
+skip_empty = True
+
+# html under the gitignored build-scratch dir (NOT reports/, which the
+# git-metadata gate scans — a coverage page of an AI-attribution validator would
+# otherwise render that validator's own pattern literals and trip the gate).
+[html]
+directory = .build/coverage/html

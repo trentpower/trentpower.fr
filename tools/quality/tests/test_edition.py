@@ -14,24 +14,19 @@ Run:
 
 import json
 import pathlib
-import sys
 import tempfile
 import unittest
 
 TOOLS = pathlib.Path(__file__).resolve().parents[2]
-for _sub in ("lib", "build", "quality", "verify"):
-    sys.path.insert(0, str(TOOLS / _sub))
+import _fixture  # noqa: E402
+
+_fixture.bootstrap()
 
 import validate_edition as ve  # noqa: E402
+from _fixture import write as _write  # noqa: E402
 
 REPO_ROOT = TOOLS.parent
 EDITION = "2026-06-18"
-
-
-def _write(root: pathlib.Path, rel: str, text: str) -> None:
-    p = root / rel
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(text, encoding="utf-8")
 
 
 def _make_fixture_repo(root: pathlib.Path) -> None:
@@ -107,6 +102,134 @@ class Evaluate(unittest.TestCase):
             any("verification-data.js" in f and "edition expected" in f for f in r.fails), r.fails
         )
 
+    def test_stale_document_edition_meta_fails(self):
+        # line 95 — <meta name="document-edition"> with a non-canonical value.
+        _write(
+            self.root,
+            "public/page.html",
+            '<meta name="document-edition" content="2020-01-01">\n',
+        )
+        r = ve.evaluate(self.repo, EDITION)
+        self.assertTrue(any("document-edition expected" in f for f in r.fails), r.fails)
+
+    def test_missing_active_html_file_reported(self):
+        # lines 126-127 — _active_html discovers a path that is no longer a file
+        # by the time evaluate re-reads it (a phantom glob entry). a Repo
+        # subclass injects the phantom so no frozen field is mutated.
+        class _PhantomRepo(ve.Repo):
+            def glob(self, pattern):
+                paths = list(super().glob(pattern))
+                if "public/**/*.html" in pattern:
+                    paths.append("public/phantom.html")
+                return paths
+
+        repo = _PhantomRepo(self.root)
+        r = ve.evaluate(repo, EDITION)
+        self.assertTrue(any("missing active HTML file" in f for f in r.fails), r.fails)
+
+    def test_site_metadata_nested_edition_id_date_mismatch_fails(self):
+        # line 140 — nested edition object whose id and date disagree.
+        _write(
+            self.root,
+            ve.SITE_META_REL,
+            json.dumps(
+                {
+                    "edition": {"id": EDITION, "date": "2020-01-01"},
+                    "asset_version": f"{EDITION}.1",
+                }
+            ),
+        )
+        r = ve.evaluate(self.repo, EDITION)
+        self.assertTrue(any("does not match edition.date" in f for f in r.fails), r.fails)
+
+    def test_site_metadata_missing_file_fails(self):
+        # line 154 — site-metadata.json absent entirely.
+        (self.root / ve.SITE_META_REL).unlink()
+        r = ve.evaluate(self.repo, EDITION)
+        self.assertTrue(any("site-metadata.json: file missing" in f for f in r.fails), r.fails)
+
+    def test_verify_modal_no_edition_literal_fails(self):
+        # line 160 — verify-modal.js present but with no `var EDITION` literal.
+        _write(self.root, ve.VERIFY_MODAL_REL, "// no edition here\n")
+        r = ve.evaluate(self.repo, EDITION)
+        self.assertTrue(
+            any("no `var EDITION = '...'` literal found" in f for f in r.fails), r.fails
+        )
+
+    def test_sw_no_cache_literal_fails(self):
+        # line 168 — sw.js present but with no `var CACHE` literal.
+        _write(self.root, ve.SW_REL, "// service worker without a cache name\n")
+        r = ve.evaluate(self.repo, EDITION)
+        self.assertTrue(any("no `var CACHE = '...'` literal found" in f for f in r.fails), r.fails)
+
+    def test_humans_txt_stale_last_reviewed_fails(self):
+        # line 186 — humans.txt last-reviewed date is stale.
+        _write(self.root, ve.HUMANS_REL, "Last reviewed: 2020-01-01\n")
+        r = ve.evaluate(self.repo, EDITION)
+        self.assertTrue(any("humans.txt: Last reviewed expected" in f for f in r.fails), r.fails)
+
+    def test_strings_invalid_json_is_swallowed_green(self):
+        # lines 197-198, 199->247 — strings.json that does not parse is treated
+        # as absent (sd = None) and does not contribute a failure.
+        _write(self.root, ve.STRINGS_REL, "{ this is not json")
+        r = ve.evaluate(self.repo, EDITION)
+        self.assertTrue(r.ok, msg=r.fails)
+
+    def test_strings_non_iso_edition_skips_localised_check(self):
+        # lines 204-205, 206->247 — a non-ISO edition makes strptime raise, so
+        # the localised-date walk is skipped and the stale string is not flagged.
+        _write(
+            self.root,
+            ve.STRINGS_REL,
+            json.dumps({"en": {"footer": "10 June 2020"}}),
+        )
+        r = ve.evaluate(self.repo, "not-a-real-date")
+        self.assertFalse(any("localised date" in f for f in r.fails), r.fails)
+
+    def test_strings_unknown_language_subtree_ignored(self):
+        # line 224 — a top-level key that is not a known locale is skipped.
+        _write(
+            self.root,
+            ve.STRINGS_REL,
+            json.dumps({"de": {"footer": "10 June 2020"}}),
+        )
+        r = ve.evaluate(self.repo, EDITION)
+        self.assertTrue(r.ok, msg=r.fails)
+
+    def test_strings_stale_localised_date_fails(self):
+        # line 234 — a localised date string in a known locale that is not the
+        # canonical edition's localised form.
+        _write(
+            self.root,
+            ve.STRINGS_REL,
+            json.dumps({"en": {"footer": "10 June 2020"}}),
+        )
+        r = ve.evaluate(self.repo, EDITION)
+        self.assertTrue(
+            any("localised date" in f and "10 June 2020" in f for f in r.fails), r.fails
+        )
+
+    def test_strings_stale_localised_date_inside_list_fails(self):
+        # lines 241-243 — the walk descends into lists of strings too.
+        _write(
+            self.root,
+            ve.STRINGS_REL,
+            json.dumps({"en": {"notes": ["fresh", "10 June 2020"]}}),
+        )
+        r = ve.evaluate(self.repo, EDITION)
+        self.assertTrue(any("notes[1]" in f and "localised date" in f for f in r.fails), r.fails)
+
+    def test_strings_ignored_prefix_is_not_flagged(self):
+        # the IGNORE_PREFIXES branch — release-card labels carry coincidental
+        # localised dates that reference frozen archives, so they are skipped.
+        _write(
+            self.root,
+            ve.STRINGS_REL,
+            json.dumps({"en": {"releases": {"detail": {"label": "10 June 2020"}}}}),
+        )
+        r = ve.evaluate(self.repo, EDITION)
+        self.assertTrue(r.ok, msg=r.fails)
+
 
 class Load(unittest.TestCase):
     def setUp(self):
@@ -138,6 +261,43 @@ class ExternalInterface(unittest.TestCase):
         with contextlib.redirect_stdout(buf):
             rc = ve.main(REPO_ROOT)
         self.assertEqual(rc, 0, msg=buf.getvalue())
+
+    def test_main_fails_and_prints_on_stale_fixture(self):
+        # lines 258-263 — main() over a fixture repo with a seeded stale
+        # data-edition reference returns 1 and prints the FAIL header plus the
+        # failing path.
+        import contextlib
+        import io
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _make_fixture_repo(root)
+            _write(root, "public/index.html", '<html data-edition="2020-01-01"></html>\n')
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = ve.main(root)
+            out = buf.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("FAIL:", out)
+        self.assertIn("edition-consistency issue", out)
+        self.assertIn("data-edition expected", out)
+
+    def test_main_fails_on_bad_canonical_edition(self):
+        # lines 254-256 — load() returns errors (non-ISO canonical edition), so
+        # main() prints each FAIL line to stderr and returns 1 before evaluate.
+        import contextlib
+        import io
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            _write(root, ve.CANONICAL_REL, json.dumps({"edition": "nope"}))
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err):
+                rc = ve.main(root)
+            out = err.getvalue()
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("FAIL:", out)
+        self.assertIn("YYYY-MM-DD", out)
 
 
 if __name__ == "__main__":

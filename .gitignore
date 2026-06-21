@@ -126,3 +126,10 @@ docs/pdf/fonts/*.woff2
 # Generated from README.pdf on every export; never shipped.
 docs/pdf/review/
 .coverage
+.coverage.*
+
+# Deploy SFTP recipe — the concrete file carries the host + account; it is
+# rendered locally from deploy.sftp.lftp.template (secrets stay in env) and is
+# never committed. See tools/release/render_deploy_lftp.py.
+tools/release/deploy.sftp.lftp
+*.lftp.local

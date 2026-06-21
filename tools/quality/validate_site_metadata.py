@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""tools/validate_site_metadata.py — canonical schema gate.
+"""validate_site_metadata.py — canonical schema gate.
 
 enforces the published shape of public/site-metadata.json. the
 schema is documented in docs/PUBLIC-ARTEFACT-CONVENTIONS.md.
@@ -25,10 +25,21 @@ required nested shapes:
 
 integrity.checksums url must resolve to a real file on disk at
 the path /SHA256SUMS (project root).
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the whole gate runs over a fixture repo with no monkeypatching.
+`load(repo)` reads + parses site-metadata.json; `evaluate(repo, data)` is pure
+(it applies the required-keys / forbidden-keys / nested-shape / value rules and
+returns a Result, never printing or raising); `main()` is the only adapter that
+prints and exits. Behaviour is byte-identical to the former inline gate.
 """
+
+from __future__ import annotations
 
 import json
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -41,9 +52,12 @@ sys.path.insert(
         / "lib"
     ),
 )
-from paths import PUBLIC_DIR  # noqa: E402
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
-SM_PATH = PUBLIC_DIR / "site-metadata.json"
+# repo-relative locations of the inputs (resolved through the Repo seam).
+SM_REL = "public/site-metadata.json"
+CHECKSUMS_REL = "public/SHA256SUMS"
 
 REQUIRED_TOP = {
     "type",
@@ -79,25 +93,49 @@ NESTED_REQUIRED = {
 }
 
 
-def main() -> int:
-    if not SM_PATH.is_file():
-        print(f"  FAIL: {SM_PATH} missing")
-        return 1
-    try:
-        data = json.loads(SM_PATH.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as e:
-        print(f"  FAIL: site-metadata.json invalid JSON ({e})")
-        return 1
+# ---------------------------------------------------------------------------
+# Result — the value that flows through the interface. evaluate() produces it;
+# main() renders it. tests assert on Result, never on stdout.
+# ---------------------------------------------------------------------------
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+    oks: list[str] = field(default_factory=list)
 
-    fails: list[str] = []
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+# ---------------------------------------------------------------------------
+# load — read + parse the input. returns (data, errors); never prints/exits.
+# the missing-file / invalid-JSON FAIL lines are part of the stdout contract,
+# so they are carried as errors and rendered by main() (to stdout).
+# ---------------------------------------------------------------------------
+def load(repo: Repo) -> tuple[dict | None, list[str]]:
+    if not repo.is_file(SM_REL):
+        return None, [f"{repo.root / SM_REL} missing"]
+    try:
+        data = json.loads(repo.read(SM_REL))
+    except json.JSONDecodeError as e:
+        return None, [f"site-metadata.json invalid JSON ({e})"]
+    return data, []
+
+
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. one call, one Result, over the injected
+# Repo + parsed data. this is the test surface.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo, data: dict) -> Result:
+    r = Result()
 
     keys = set(data.keys())
     missing = REQUIRED_TOP - keys
     if missing:
-        fails.append(f"missing required top-level keys: {sorted(missing)}")
+        r.fails.append(f"missing required top-level keys: {sorted(missing)}")
     forbidden_present = FORBIDDEN_TOP & keys
     if forbidden_present:
-        fails.append(
+        r.fails.append(
             f"forbidden top-level key(s) present: {sorted(forbidden_present)} — "
             f"the build inventory belongs in integrity.json + ASSET_BUNDLE, "
             f"not in site-metadata.json"
@@ -108,45 +146,66 @@ def main() -> int:
             continue  # already caught by REQUIRED_TOP missing above
         value = data[key]
         if not isinstance(value, dict):
-            fails.append(f"'{key}' must be an object, got {type(value).__name__}")
+            r.fails.append(f"'{key}' must be an object, got {type(value).__name__}")
             continue
         missing_nested = required - set(value.keys())
         if missing_nested:
-            fails.append(f"'{key}' missing nested keys: {sorted(missing_nested)}")
+            r.fails.append(f"'{key}' missing nested keys: {sorted(missing_nested)}")
 
     # type + schema_version exact-value gates
     if data.get("type") != "PersonalSiteMetadata":
-        fails.append(f"type must be 'PersonalSiteMetadata', got {data.get('type')!r}")
+        r.fails.append(f"type must be 'PersonalSiteMetadata', got {data.get('type')!r}")
     if data.get("schema_version") != "1.0":
-        fails.append(f"schema_version must be '1.0', got {data.get('schema_version')!r}")
+        r.fails.append(f"schema_version must be '1.0', got {data.get('schema_version')!r}")
 
     # language must be a list of locale strings
     lang = data.get("language")
     if not (isinstance(lang, list) and all(isinstance(x, str) for x in lang)):
-        fails.append(f"language must be a list of strings, got {lang!r}")
+        r.fails.append(f"language must be a list of strings, got {lang!r}")
 
     # checksums url must point at a real file on disk
     checksums_url = (data.get("integrity") or {}).get("checksums", "")
     if checksums_url.endswith("/SHA256SUMS"):
-        if not (PUBLIC_DIR / "SHA256SUMS").is_file():
-            fails.append(
+        if not repo.is_file(CHECKSUMS_REL):
+            r.fails.append(
                 "integrity.checksums points at /SHA256SUMS but "
                 "public/SHA256SUMS does not exist on disk"
             )
 
-    if fails:
-        print(f"  FAIL: {len(fails)} site-metadata.json issue(s):")
-        for f in fails:
+    if r.ok:
+        r.oks.append(
+            f"site-metadata.json schema_version "
+            f"{data.get('schema_version')}, {len(keys)} top-level keys, "
+            f"no forbidden keys, all nested shapes present."
+        )
+    return r
+
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. loads, evaluates, renders, returns exit
+# code. the only place stdout and exit codes live.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+
+    data, errors = load(repo)
+    if errors:
+        for e in errors:
+            print(f"  FAIL: {e}")
+        return 1
+
+    r = evaluate(repo, data)
+
+    if r.fails:
+        print(f"  FAIL: {len(r.fails)} site-metadata.json issue(s):")
+        for f in r.fails:
             print(f"    {f}")
         return 1
 
-    print(
-        f"  OK: site-metadata.json schema_version "
-        f"{data.get('schema_version')}, {len(keys)} top-level keys, "
-        f"no forbidden keys, all nested shapes present."
-    )
+    for line in r.oks:
+        print(f"  OK: {line}")
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())

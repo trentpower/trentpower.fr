@@ -16,12 +16,22 @@ Chromium in CI):
 
 Requires PyMuPDF (fitz); the docs PDF is binary, so text/box extraction needs
 it. CI installs it alongside jsonschema.
+
+Shape (deep module, small interface). The filesystem is the one injected seam:
+`Repo(root)` reads the landing-page HTML and the PDF bytes, and `.root` resolves
+the on-disk PDF path that fitz needs (it opens a file, not bytes). fitz and the
+dynamically-loaded layout validator stay direct imports — they are libraries,
+not seams. Compute (`evaluate`) returns a Result and never prints or exits;
+`main()` is the only side-effecting adapter, and it owns the fitz-absent
+environment precondition.
 """
 
 from __future__ import annotations
 
 import importlib.util
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -35,10 +45,15 @@ sys.path.insert(
     ),
 )
 from hashing import sri_sha256  # noqa: E402
-from paths import PUBLIC_DIR, TOOLS_DIR  # noqa: E402
+from paths import PUBLIC_DIR, REPO_ROOT, TOOLS_DIR  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
-DOC_DIR = PUBLIC_DIR / "documentation"
+# repo-relative locations of the inputs (resolved through the Repo seam).
+DOC_DIR_REL = "public/documentation"
 REQUIRED = ("index.html", "README.pdf", "README.txt")
+
+# kept for any caller that referenced the absolute documentation dir.
+DOC_DIR = PUBLIC_DIR / "documentation"
 
 # normalised substrings that must NOT appear in the published PDF. these are the
 # exact false claims corrected in this edition; their return is a regression.
@@ -60,7 +75,7 @@ def _normalise(text: str) -> str:
         "‑": "-",
         "–": "-",
         "—": "-",
-        " ": " ",
+        " ": " ",
     }
     for k, v in repl.items():
         text = text.replace(k, v)
@@ -75,19 +90,82 @@ def _load_layout_validator():
     return mod
 
 
-def main() -> int:
-    fails: list[str] = []
+# ---------------------------------------------------------------------------
+# Result — the value that flows through the interface. evaluate() produces it;
+# main() renders it. tests assert on Result, never on stdout.
+# ---------------------------------------------------------------------------
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. one call, one Result, over the injected
+# Repo. assumes fitz is importable (main() enforces that precondition first).
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo) -> Result:
+    r = Result()
 
     # 1 · presence
     for name in REQUIRED:
-        if not (DOC_DIR / name).is_file():
-            fails.append(f"missing public/documentation/{name}")
-    if fails:
-        for f in fails:
-            print(f"FAIL: {f}", file=sys.stderr)
-        return 1
+        if not repo.is_file(f"{DOC_DIR_REL}/{name}"):
+            r.fails.append(f"missing public/documentation/{name}")
+    if r.fails:
+        return r
 
-    pdf = DOC_DIR / "README.pdf"
+    pdf_rel = f"{DOC_DIR_REL}/README.pdf"
+    # fitz opens a file, not bytes — resolve the on-disk path off the seam root.
+    pdf = repo.root / pdf_rel
+
+    # 2 · layout
+    layout = _load_layout_validator()
+    findings = layout.analyse(pdf)
+    errors = [f for f in findings if f[0] == "ERROR"]
+    for _sev, pno, kind, msg in errors:
+        r.fails.append(f"layout p{pno} {kind}: {msg}")
+
+    # 3 · accuracy regression guard
+    import fitz
+
+    doc = fitz.open(pdf)
+    full = _normalise("\n".join(page.get_text() for page in doc))
+    doc.close()
+    for phrase in FORBIDDEN_PHRASES:
+        if _normalise(phrase) in full:
+            r.fails.append(f"forbidden stale claim present in README.pdf: {phrase!r}")
+
+    # 4 · coherence — landing page advertises the real PDF hash
+    sri = sri_sha256((repo.root / pdf_rel).read_bytes())
+    index_html = repo.read(f"{DOC_DIR_REL}/index.html")
+    if sri not in index_html:
+        r.fails.append(
+            f"index.html does not show the current README.pdf hash ({sri}); "
+            "re-run generate_documentation.py"
+        )
+
+    return r
+
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. enforces the fitz precondition, evaluates,
+# renders, returns exit code. the only place stdout and exit codes live.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+
+    # presence is checked inside evaluate, but the fitz precondition must hold
+    # before evaluate can extract text. mirror the original ordering: presence
+    # first, then fitz, then the rest — so a missing file still wins.
+    for name in REQUIRED:
+        if not repo.is_file(f"{DOC_DIR_REL}/{name}"):
+            r = evaluate(repo)  # re-derives the same presence fails
+            for f in r.fails:
+                print(f"FAIL: {f}", file=sys.stderr)
+            return 1
 
     try:
         import fitz  # noqa: F401
@@ -99,34 +177,9 @@ def main() -> int:
         )
         return 1
 
-    # 2 · layout
-    layout = _load_layout_validator()
-    findings = layout.analyse(pdf)
-    errors = [f for f in findings if f[0] == "ERROR"]
-    for _sev, pno, kind, msg in errors:
-        fails.append(f"layout p{pno} {kind}: {msg}")
-
-    # 3 · accuracy regression guard
-    import fitz
-
-    doc = fitz.open(pdf)
-    full = _normalise("\n".join(page.get_text() for page in doc))
-    doc.close()
-    for phrase in FORBIDDEN_PHRASES:
-        if _normalise(phrase) in full:
-            fails.append(f"forbidden stale claim present in README.pdf: {phrase!r}")
-
-    # 4 · coherence — landing page advertises the real PDF hash
-    sri = sri_sha256(pdf.read_bytes())
-    index_html = (DOC_DIR / "index.html").read_text(encoding="utf-8")
-    if sri not in index_html:
-        fails.append(
-            f"index.html does not show the current README.pdf hash ({sri}); "
-            "re-run generate_documentation.py"
-        )
-
-    if fails:
-        for f in fails:
+    r = evaluate(repo)
+    if r.fails:
+        for f in r.fails:
             print(f"FAIL: {f}", file=sys.stderr)
         return 1
 
@@ -134,5 +187,5 @@ def main() -> int:
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     raise SystemExit(main())

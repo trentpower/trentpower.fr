@@ -31,7 +31,6 @@ from __future__ import annotations
 import argparse
 import json
 import shutil
-import subprocess
 import sys
 import tarfile
 import tempfile
@@ -44,6 +43,7 @@ sys.path.insert(0, str(_TOOLS / "quality"))
 
 from check_report import SCHEMA_VERSION, atomic_write_json, utc_now_iso  # noqa: E402
 from paths import REPO_ROOT  # noqa: E402
+from proc import Proc  # noqa: E402  (shared subprocess evidence seam)
 from validate_repository_hygiene import (  # noqa: E402
     SECRET_PATTERNS,
     TEXT_SUFFIXES,
@@ -66,10 +66,8 @@ REPORT_PATH = REPO_ROOT / "reports" / "checks" / "last-secret-scan.json"
 HISTORY_EXEMPT_BASENAMES = {"pgp-key.asc", "pgp-key.asc.txt"}
 
 
-def _git(*args: str) -> str:
-    return subprocess.run(
-        ["git", *args], cwd=REPO_ROOT, capture_output=True, text=True, check=True
-    ).stdout
+def _git(proc: Proc, *args: str) -> str:
+    return proc.run(["git", *args], cwd=REPO_ROOT).stdout
 
 
 def find_gitleaks() -> Path | None:
@@ -82,7 +80,7 @@ def find_gitleaks() -> Path | None:
     return None
 
 
-def install_gitleaks() -> Path | None:
+def install_gitleaks() -> Path | None:  # pragma: no cover - network + binary download
     """Download the gitleaks release tarball, verify its sha256, install to ~/.local/bin."""
     import hashlib
 
@@ -118,14 +116,12 @@ def install_gitleaks() -> Path | None:
         return None
 
 
-def run_gitleaks(binary: Path) -> tuple[list[dict], str]:
+def run_gitleaks(proc: Proc, binary: Path) -> tuple[list[dict], str]:
     """Full-history scan over every ref. Returns (findings, version)."""
-    version = subprocess.run(
-        [str(binary), "version"], capture_output=True, text=True
-    ).stdout.strip()
+    version = proc.run([str(binary), "version"]).stdout.strip()
     with tempfile.TemporaryDirectory() as td:
         report = Path(td) / "gitleaks.json"
-        proc = subprocess.run(
+        result = proc.run(
             [
                 str(binary),
                 "detect",
@@ -138,12 +134,10 @@ def run_gitleaks(binary: Path) -> tuple[list[dict], str]:
                 str(report),
                 "--no-banner",
             ],
-            capture_output=True,
-            text=True,
         )
         # exit 0 = clean, 1 = leaks found; anything else is an engine error.
-        if proc.returncode not in (0, 1):
-            raise RuntimeError(f"gitleaks failed: {proc.stderr.strip()[:400]}")
+        if result.returncode not in (0, 1):
+            raise RuntimeError(f"gitleaks failed: {result.stderr.strip()[:400]}")
         raw = json.loads(report.read_text()) if report.is_file() else []
     findings = [
         {
@@ -158,10 +152,10 @@ def run_gitleaks(binary: Path) -> tuple[list[dict], str]:
     return findings, version
 
 
-def scan_tracked_tree() -> list[dict]:
+def scan_tracked_tree(proc: Proc) -> list[dict]:
     """Content pass over tracked text files using the hygiene gate's patterns."""
     findings: list[dict] = []
-    tracked = _git("ls-files", "-z").split("\0")
+    tracked = _git(proc, "ls-files", "-z").split("\0")
     for rel in tracked:
         if not rel:
             continue
@@ -189,17 +183,15 @@ def scan_tracked_tree() -> list[dict]:
     return findings
 
 
-def scan_history_fallback() -> list[dict]:
+def scan_history_fallback(proc: Proc) -> list[dict]:
     """Delegate the history sweep to the repo's own scanner (strict mode)."""
-    proc = subprocess.run(
+    result = proc.run(
         [sys.executable, str(_TOOLS / "verify" / "scan_git_history.py"), "--strict"],
         cwd=REPO_ROOT,
-        capture_output=True,
-        text=True,
     )
-    if proc.returncode == 0:
+    if result.returncode == 0:
         return []
-    lines = [ln.strip() for ln in proc.stdout.splitlines() if ln.strip()]
+    lines = [ln.strip() for ln in result.stdout.splitlines() if ln.strip()]
     return [
         {
             "rule": "scan_git_history finding",
@@ -212,33 +204,36 @@ def scan_history_fallback() -> list[dict]:
     ]
 
 
-def main() -> int:
+def main(proc: Proc | None = None) -> int:
     ap = argparse.ArgumentParser(description="full-history secret scan")
     ap.add_argument("--install", action="store_true", help="download gitleaks if missing")
     ap.add_argument("--json", type=Path, default=REPORT_PATH, help="report output path")
     args = ap.parse_args()
 
+    if proc is None:
+        proc = Proc()
+
     binary = find_gitleaks()
-    if binary is None and args.install:
+    if binary is None and args.install:  # pragma: no cover - network install path
         print("secret-scan: installing gitleaks…")
         binary = install_gitleaks()
 
     findings: list[dict] = []
     if binary is not None:
         print(f"secret-scan: engine gitleaks at {binary}")
-        gl_findings, version = run_gitleaks(binary)
+        gl_findings, version = run_gitleaks(proc, binary)
         engine = f"gitleaks {version or GITLEAKS_VERSION}"
         findings.extend(gl_findings)
     else:
         print("secret-scan: gitleaks unavailable — falling back to scan_git_history.py")
         engine = "scan_git_history-fallback"
-        findings.extend(scan_history_fallback())
+        findings.extend(scan_history_fallback(proc))
 
-    tree_findings = scan_tracked_tree()
+    tree_findings = scan_tracked_tree(proc)
     findings.extend(tree_findings)
 
-    head = _git("rev-parse", "HEAD").strip()
-    refs = len(_git("for-each-ref", "--format=%(refname)").splitlines())
+    head = _git(proc, "rev-parse", "HEAD").strip()
+    refs = len(_git(proc, "for-each-ref", "--format=%(refname)").splitlines())
     status = "failed" if findings else "passed"
     report = {
         "schema_version": SCHEMA_VERSION,
@@ -265,5 +260,5 @@ def main() -> int:
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())

@@ -9,9 +9,7 @@ SVG stays well-formed XML. See docs/FUZZING.md for scope and rationale.
 """
 
 import html
-import pathlib
 import re
-import sys
 import unittest
 
 # parses only SVG produced in-process by colophon_svg — never untrusted
@@ -19,12 +17,11 @@ import unittest
 import xml.etree.ElementTree as ET
 from datetime import date
 
+import _fixture  # noqa: E402
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-_TOOLS = pathlib.Path(__file__).resolve().parents[2]
-for _sub in ("lib", "build", "quality", "verify", "release", "badges"):
-    sys.path.insert(0, str(_TOOLS / _sub))
+_fixture.bootstrap("release", "badges")
 
 from dates import human_date  # noqa: E402
 from generate_badges import colophon_svg, esc  # noqa: E402

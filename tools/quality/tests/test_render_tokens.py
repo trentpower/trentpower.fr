@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 """Tests for the {{ }} token engine in tools/build/render_pages.py."""
 
-import pathlib
-import sys
 import unittest
 
-_TOOLS = pathlib.Path(__file__).resolve().parents[2]
-for _sub in ("lib", "build", "quality", "verify", "release"):
-    sys.path.insert(0, str(_TOOLS / _sub))
+import _fixture  # noqa: E402
+
+_fixture.bootstrap("release")
 
 from render_pages import RenderError, substitute  # noqa: E402
 

@@ -12,13 +12,13 @@ Run:
 """
 
 import pathlib
-import sys
 import tempfile
 import unittest
 
 TOOLS = pathlib.Path(__file__).resolve().parents[2]
-for _sub in ("lib", "build", "quality", "verify"):
-    sys.path.insert(0, str(TOOLS / _sub))
+import _fixture  # noqa: E402
+
+_fixture.bootstrap()
 
 import validate_home_anchors as vha  # noqa: E402
 
@@ -41,12 +41,6 @@ def _good_index() -> str:
 
 def _good_styles() -> str:
     return "".join(f"#{s} {{ scroll-margin-top: 5rem; }}\n" for s in vha.SECTION_IDS)
-
-
-def _write(root: pathlib.Path, rel: str, text: str) -> None:
-    p = root / rel
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(text, encoding="utf-8")
 
 
 class PureChecks(unittest.TestCase):
@@ -75,6 +69,28 @@ class PureChecks(unittest.TestCase):
 
     def test_app_js_clean_is_ok(self):
         self.assertEqual(vha.check_app_js("const x = 1;\n"), [])
+
+    def test_app_js_preventdefault_in_anchor_handler_banned(self):
+        # a click handler targeting a[href^="#"] that calls preventDefault.
+        js = (
+            'document.addEventListener("click", function (e) {\n'
+            "  const a = e.target.closest('a[href^=\"#\"]');\n"
+            "  if (a) { e.preventDefault(); }\n"
+            "});\n"
+        )
+        errs = vha.check_app_js(js)
+        self.assertTrue(any("preventDefault" in e for e in errs), errs)
+
+    def test_app_js_scrollto_in_anchor_handler_banned(self):
+        # scrollTo( inside the same nav-anchor handler is also forbidden.
+        js = (
+            'el.addEventListener("click", function () {\n'
+            "  const a = q('a[href^=\"#\"]');\n"
+            "  window.scrollTo(0, 0);\n"
+            "});\n"
+        )
+        errs = vha.check_app_js(js)
+        self.assertTrue(any("scrollTo(" in e for e in errs), errs)
 
     def test_styles_good_is_clean(self):
         self.assertEqual(vha.check_styles_css(_good_styles()), [])
@@ -115,6 +131,26 @@ class Evaluate(unittest.TestCase):
         r = vha.evaluate(self.repo)
         self.assertTrue(any("styles.css" in e for e in r.errors), r.errors)
 
+    def test_missing_index_html_reported(self):
+        (self.root / "public/fr/index.html").unlink()
+        r = vha.evaluate(self.repo)
+        self.assertTrue(any("missing file: public/fr/index.html" in e for e in r.errors), r.errors)
+
+    def test_missing_js_module_reported(self):
+        (self.root / "public/js/reveal.js").unlink()
+        r = vha.evaluate(self.repo)
+        self.assertTrue(any("missing file: public/js/reveal.js" in e for e in r.errors), r.errors)
+
+    def test_all_js_modules_missing_skips_app_js_scan(self):
+        # when every js successor is absent, the combined scan is skipped (the
+        # 200->203 false branch); the only errors are the three missing-file ones.
+        for name in ("js/theme.js", "sw-register.js", "js/reveal.js"):
+            (self.root / "public" / name).unlink()
+        r = vha.evaluate(self.repo)
+        missing = [e for e in r.errors if "missing file:" in e]
+        self.assertEqual(len(missing), 3, r.errors)
+        self.assertFalse(any("scrollIntoView" in e for e in r.errors), r.errors)
+
 
 class ExternalInterface(unittest.TestCase):
     def test_main_passes_against_the_real_repo(self):
@@ -125,6 +161,34 @@ class ExternalInterface(unittest.TestCase):
         with contextlib.redirect_stdout(buf):
             rc = vha.main(REPO_ROOT)
         self.assertEqual(rc, 0, msg=buf.getvalue())
+
+    def test_main_fails_and_renders_issues_over_a_broken_fixture(self):
+        # build a green fixture, inject a scroll-hijack defect, then drive main()
+        # over it and assert the FAIL-render branch prints and returns 1.
+        import contextlib
+        import io
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            for rel in _FILES:
+                dst = root / "public" / rel
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                dst.write_text(
+                    (REPO_ROOT / "public" / rel).read_text(encoding="utf-8"),
+                    encoding="utf-8",
+                )
+            theme = root / "public/js/theme.js"
+            theme.write_text(
+                "el.scrollIntoView();\n" + theme.read_text(encoding="utf-8"), encoding="utf-8"
+            )
+
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vha.main(root)
+            out = buf.getvalue()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("FAIL: home-anchors", out)
+        self.assertIn("scrollIntoView", out)
 
 
 if __name__ == "__main__":

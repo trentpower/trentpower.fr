@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 """Tests for tools/lib/urls.py and tools/lib/redact.py."""
 
-import pathlib
-import sys
 import unittest
 
-_TOOLS = pathlib.Path(__file__).resolve().parents[2]
-for _sub in ("lib", "build", "quality", "verify", "release"):
-    sys.path.insert(0, str(_TOOLS / _sub))
+import _fixture  # noqa: E402
+
+_fixture.bootstrap("release")
 
 from redact import mask_secret  # noqa: E402
 from urls import host_matches, url_host  # noqa: E402

@@ -103,7 +103,9 @@ jobs:
         run: |
           set -eu
           sudo apt-get update
-          sudo apt-get install -y shellcheck
+          # python3-pil lets validate_images validate PNG dimensions in the real-repo
+          # test (it hard-fails without Pillow); the other build jobs install it too.
+          sudo apt-get install -y shellcheck python3-pil
           # ruff arrives hash-pinned via pip (replaces the unpinned
           # astral.sh curl|sh installer); hypothesis backs the fuzz tests.
           python3 -m pip install --break-system-packages --quiet --require-hashes -r .github/requirements/source-quality.txt
@@ -116,8 +118,19 @@ jobs:
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Install Node dev tools
         run: npm ci
+      - name: Restore licensed font binaries (verified against signed manifest)
+        # audit_htaccess's real-repo + coherent-fixture tests assert the .htaccess
+        # font allow-rules match files on disk; fonts are gitignored (fetched, not
+        # committed), so without this the tests see a "dead rule".
+        run: python3 tools/build/fetch_licensed_fonts.py
       - name: Unit + property-based tests (hypothesis fuzz)
         run: python3 -m unittest discover -s tools/quality/tests -p 'test_*.py' -v
+      - name: Coverage ratchet (enforced — convergence/seal 90, ADR-0002 90, broad 85)
+        run: |
+          python3 -m pip install --break-system-packages --quiet --require-hashes -r .github/requirements/coverage.txt
+          bash tools/quality/coverage.sh
+      - name: Coverage badge + docs in sync with the measured figure
+        run: python3 tools/badges/sync_coverage.py --check
       - name: Source quality (enforced)
         env:
           QUALITY_ENFORCE: '1'

@@ -24,7 +24,6 @@ from __future__ import annotations
 
 import argparse
 import re
-import subprocess
 import sys
 from pathlib import Path
 
@@ -51,8 +50,13 @@ sys.path.insert(
         / "quality"
     ),
 )
+from proc import Proc  # noqa: E402  (shared subprocess evidence seam)
 from redact import mask_secret  # noqa: E402
 from validate_repository_hygiene import SECRET_PATTERNS  # noqa: E402
+
+# this tool lives at tools/verify/scan_git_history.py, so the repo root is two
+# directories up; main() resolves it once and threads it through the seam.
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 # local-path / private-artefact tells that should never enter public history.
 # kept high-signal: filename mentions of ssh keys and bare ip addresses are
@@ -64,6 +68,46 @@ PATH_PATTERNS = [
 ]
 IP_PATTERN = (re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b"), "bare IPv4 (verify host/secret)")
 
+# Acknowledged history findings: the secret/path scanners and their own test
+# fixtures MUST embed secret- and path-shaped strings to define their patterns
+# and exercise detection — those are synthetic, not real leaks. History cannot be
+# rewritten (no-force-push rule), so they are acknowledged here, scoped tightly to
+# (file basename -> the exact labels that file legitimately carries). A real secret
+# in any other file — or any non-listed label in a listed file — still reports.
+# Add an entry only for a finding you have personally confirmed is synthetic.
+HISTORY_ALLOW = {
+    "scan_git_history.py": {
+        "private key block",
+        "exported private pgp key",
+        "aws access key id",
+        "absolute /home/ path",
+    },
+    "test_scan_git_history.py": {
+        "aws access key id",
+        "inline credential assignment",
+        "private key block",
+        "exported private pgp key",
+    },
+    "secret_scan.py": {"aws access key id", "inline credential assignment"},
+    "test_secret_scan.py": {"aws access key id", "inline credential assignment"},
+    "validate_repository_hygiene.py": {"inline credential assignment"},
+    "test_repository_hygiene.py": {"inline credential assignment"},
+    "validate_local_path_leakage.py": {"absolute /home/ path"},
+    "test_local_path_leakage.py": {"absolute /home/ path"},
+    "inline_checks.py": {"absolute /home/ path"},
+    "test_page_provenance.py": {"absolute /home/ path"},
+    # the deploy lftp recipe (since scrubbed to a template + env renderer) once held
+    # the server's /home/ deploy directory — a path, not the credential. Removal
+    # needs a history rewrite; the credential itself is rotated out-of-band.
+    "deploy.sftp.lftp": {"absolute /home/ path"},
+}
+
+
+def _acknowledged(path: str, label: str) -> bool:
+    """True if this (file, finding) is a documented synthetic false positive."""
+    return label in HISTORY_ALLOW.get(path.rsplit("/", 1)[-1], frozenset())
+
+
 # filenames whose mere presence anywhere in history is a finding.
 FORBIDDEN_BASENAMES = re.compile(
     r"(?:^|/)(?:\.env(?:\.[A-Za-z0-9_-]+)?|\.htpasswd|\.gate_credentials|"
@@ -74,14 +118,10 @@ FORBIDDEN_SUFFIXES = re.compile(r"\.(?:sqlite3?|db|pem|key|totp_key|asc)$")
 ASC_ALLOW = re.compile(r"(?:^|/)pgp-key\.asc$|(?:^|/)attribution\.sig$")
 
 
-def _git(args: list[str]) -> str:
-    return subprocess.run(
-        ["git", *args],
-        capture_output=True,
-        text=True,
-        errors="replace",  # history holds binaries / non-utf8 blobs
-        cwd=Path(__file__).resolve().parents[2],
-    ).stdout
+def _git(proc, root: Path, args: list[str]) -> str:
+    # the git crossing goes through the injected Proc seam; behaviour is the same
+    # captured stdout as the bare subprocess.run it replaced.
+    return proc.run(["git", *args], cwd=root).stdout
 
 
 # binary / heavy generated trees: excluded from the line-level patch scan
@@ -102,13 +142,15 @@ _PATCH_EXCLUDES = [
 ]
 
 
-def scan_added_content(max_lines: int, include_ips: bool = False) -> list[str]:
+def scan_added_content(proc, root: Path, max_lines: int, include_ips: bool = False) -> list[str]:
     """Scan every added (+) line across all history for secret/path tells."""
     findings: list[str] = []
     path_patterns = PATH_PATTERNS + ([IP_PATTERN] if include_ips else [])
     # one big patch stream over all refs; rename detection off for speed.
     patch = _git(
-        ["log", "--all", "--no-color", "-p", "--no-renames", "-U0", "--", ".", *_PATCH_EXCLUDES]
+        proc,
+        root,
+        ["log", "--all", "--no-color", "-p", "--no-renames", "-U0", "--", ".", *_PATCH_EXCLUDES],
     )
     commit = "?"
     path = "?"
@@ -129,22 +171,24 @@ def scan_added_content(max_lines: int, include_ips: bool = False) -> list[str]:
         body = line[1:]
         for pat, label in SECRET_PATTERNS:
             m = pat.search(body)
-            if m:
+            if m and not _acknowledged(path, label):
                 # masked value, never the secret itself: a short prefix +
                 # sha-256 fingerprint to correlate the same value across
                 # commits without re-leaking it into the terminal or ci log.
                 findings.append(f"{commit} {path}: {label} [{mask_secret(m.group(0))}]")
         for pat, label in path_patterns:
-            if pat.search(body):
+            if pat.search(body) and not _acknowledged(path, label):
                 findings.append(f"{commit} {path}: {label}")
     return findings
 
 
-def scan_filenames() -> list[str]:
+def scan_filenames(proc, root: Path) -> list[str]:
     """Flag any path that ever existed in history matching forbidden names."""
     findings: list[str] = []
     names = set(
-        _git(["log", "--all", "--pretty=format:", "--name-only", "--no-renames"]).split("\n")
+        _git(proc, root, ["log", "--all", "--pretty=format:", "--name-only", "--no-renames"]).split(
+            "\n"
+        )
     )
     for name in sorted(n for n in names if n):
         if FORBIDDEN_BASENAMES.search(name):
@@ -161,12 +205,14 @@ def main(argv=None) -> int:
     ap.add_argument("--ips", action="store_true", help="also flag bare IPv4s (noisy)")
     args = ap.parse_args(argv)
 
-    if not (Path(__file__).resolve().parents[2] / ".git").exists():
+    proc = Proc()
+    root = REPO_ROOT
+    if not (root / ".git").exists():
         print("scan_git_history: not a git repo (nothing to scan).")
         return 0
 
-    content = scan_added_content(args.max, include_ips=args.ips)
-    files = scan_filenames()
+    content = scan_added_content(proc, root, args.max, include_ips=args.ips)
+    files = scan_filenames(proc, root)
     # de-duplicate while preserving order.
     seen: set[str] = set()
     findings = [f for f in content + files if not (f in seen or seen.add(f))]
@@ -186,5 +232,5 @@ def main(argv=None) -> int:
     return 1 if args.strict else 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     raise SystemExit(main())

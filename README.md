@@ -5,6 +5,7 @@
 [![SLSA: Build L3](metadata/badges/slsa-build-l3.svg)](docs/PROVENANCE.md)
 [![OpenSSF: Best Practices · Silver](metadata/badges/openssf-best-practices.svg)](https://www.bestpractices.dev/en/projects/13182/gold)
 [![OpenSSF Baseline: v2026.02.19 · L2](metadata/badges/openssf-baseline.svg)](https://www.bestpractices.dev/en/projects/13182/baseline-3)
+[![Test Coverage: 94%](metadata/badges/coverage.svg)](docs/COVERAGE.md)
 [![REUSE: Compliant](metadata/badges/reuse-compliant.svg)](https://api.reuse.software/info/github.com/trentpower/trentpower.fr)
 
 `trentpower.fr` is a static, bilingual, source-verifiable personal publication.

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """validate_html_correctness.py — block obvious structural HTML defects
-in the 13 active deployed pages.
+in the active deployed pages.
 
 Checks
 - mismatched heading open/close tags (e.g. <h3>…</h2>)
@@ -19,40 +19,36 @@ Checks
 Scoped narrowly: parser-level structural defects only. No
 attribute-ordering preferences, no whitespace policing, no semantic
 opinions. Quiet on success, precise on failure.
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the whole gate runs over a fixture repo with no
+monkeypatching. `evaluate(repo)` is the pure compute path returning a Result;
+`main()` is the only adapter that prints/exits. The `_Validator(HTMLParser)`
+subclass and the per-page parse logic are unchanged — `validate_page` takes the
+HTML text (read through the seam), not a path.
 """
 
 from __future__ import annotations
 
-import pathlib
 import re
 import sys
+from dataclasses import dataclass, field
 from html.parser import HTMLParser
+from pathlib import Path
 
-ROOT = pathlib.Path(__file__).resolve().parents[2] / "public"
-
-
-# every active .html under public/ — discovered by walk so the
-# bilingual /en/ and /fr/ trees are covered. excluded:
-#   - the dated frozen-archive snapshots under integrity/releases/<ed>/
-#   - the generated editorial review documents under editorial/
-#   - the source-view reader shells (/source/view/, /en/source/view/,
-#     /fr/source/voir/) — JS-driven app shells whose heading is
-#     rendered at runtime, so they carry no static <h1> by design.
-def _discover_active_pages() -> list:
-    out = []
-    for p in sorted(ROOT.glob("**/*.html")):
-        rel = p.relative_to(ROOT).as_posix()
-        if re.match(r"integrity/releases/[^/]+/", rel):
-            continue
-        if rel.startswith("editorial/"):
-            continue
-        if re.search(r"(^|/)source/(view|voir)/index\.html$", rel):
-            continue
-        out.append(rel)
-    return out
-
-
-ACTIVE_PAGES = _discover_active_pages()
+sys.path.insert(
+    0,
+    str(
+        next(
+            _a
+            for _a in __import__("pathlib").Path(__file__).resolve().parents
+            if _a.name == "tools"
+        )
+        / "lib"
+    ),
+)
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
 HEADING_TAGS = {"h1", "h2", "h3", "h4", "h5", "h6"}
 VOID_TAGS = {
@@ -71,6 +67,28 @@ VOID_TAGS = {
     "track",
     "wbr",
 }
+
+
+# every active .html under public/ — discovered by walk so the
+# bilingual /en/ and /fr/ trees are covered. excluded:
+#   - the dated frozen-archive snapshots under integrity/releases/<ed>/
+#   - the generated editorial review documents under editorial/
+#   - the source-view reader shells (/source/view/, /en/source/view/,
+#     /fr/source/voir/) — JS-driven app shells whose heading is
+#     rendered at runtime, so they carry no static <h1> by design.
+def _discover_active_pages(repo: Repo) -> list[str]:
+    out: list[str] = []
+    prefix = "public/"
+    for full in repo.glob(f"{prefix}**/*.html"):
+        rel = full[len(prefix) :]
+        if re.match(r"integrity/releases/[^/]+/", rel):
+            continue
+        if rel.startswith("editorial/"):
+            continue
+        if re.search(r"(^|/)source/(view|voir)/index\.html$", rel):
+            continue
+        out.append(rel)
+    return out
 
 
 class _Validator(HTMLParser):
@@ -217,8 +235,7 @@ class _Validator(HTMLParser):
         return self.errors
 
 
-def validate_page(path: pathlib.Path) -> list[str]:
-    text = path.read_text(encoding="utf-8", errors="replace")
+def validate_page(text: str) -> list[str]:
     # strip JSON-LD <script> bodies — they contain `</…>` only as json
     # strings and htmlparser handles them, but json `<` chars inside
     # body text can still trip strict heading detection. safer to
@@ -231,30 +248,66 @@ def validate_page(path: pathlib.Path) -> list[str]:
     return v.finish()
 
 
-def main() -> int:
-    if not ROOT.is_dir():
-        print(f"FAIL: public root not found at {ROOT}")
-        return 1
-    failures: list[tuple[str, str]] = []
-    for rel in ACTIVE_PAGES:
-        path = ROOT / rel
-        if not path.is_file():
-            failures.append((rel, "missing"))
+# ---------------------------------------------------------------------------
+# Result — the value that flows through the interface. evaluate() produces it;
+# main() renders it. tests assert on Result, never on stdout. `summary` carries
+# the green one-liner's page count so the render stays a thin adapter.
+# ---------------------------------------------------------------------------
+@dataclass
+class Result:
+    fails: list[tuple[str, str]] = field(default_factory=list)
+    warns: list[str] = field(default_factory=list)
+    page_count: int = 0
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. one call, one Result, over the injected
+# Repo. this is the test surface.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo) -> Result:
+    r = Result()
+    active_pages = _discover_active_pages(repo)
+    r.page_count = len(active_pages)
+    for rel in active_pages:
+        prel = f"public/{rel}"
+        if not repo.is_file(prel):
+            r.fails.append((rel, "missing"))
             continue
-        for err in validate_page(path):
-            failures.append((rel, err))
-    if failures:
-        print(f"  FAIL: html-correctness — {len(failures)} issue(s):")
-        for rel, err in failures[:40]:
+        text = repo.read(prel)
+        for err in validate_page(text):
+            r.fails.append((rel, err))
+    return r
+
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. evaluates, renders, returns exit code. the
+# only place stdout and exit codes live.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    public_root = repo_root / "public"
+    if not public_root.is_dir():
+        print(f"FAIL: public root not found at {public_root}")
+        return 1
+
+    r = evaluate(repo)
+
+    if r.fails:
+        print(f"  FAIL: html-correctness — {len(r.fails)} issue(s):")
+        for rel, err in r.fails[:40]:
             print(f"    {rel}: {err}")
-        if len(failures) > 40:
-            print(f"    … {len(failures) - 40} more")
+        if len(r.fails) > 40:
+            print(f"    … {len(r.fails) - 40} more")
         return 1
     print(
-        f"  OK: html-correctness — {len(ACTIVE_PAGES)} active pages parse cleanly with no structural defects"
+        f"  OK: html-correctness — {r.page_count} active pages parse cleanly with no structural defects"
     )
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())

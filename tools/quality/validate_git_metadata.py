@@ -23,10 +23,20 @@ in reports/historical-commit-attribution-report.txt.
 Exit 0 = green; exit 1 = block.
 
 Registered in tools/lib/checks.py (blocking tier).
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the scan runs over a fixture repo with no monkeypatching.
+`evaluate(repo)` is the pure compute path returning a Result; `main()` is the
+only adapter that prints/exits. The scan order, root set, file filters,
+allowlist, and messages are lifted verbatim from the former inline gate.
 """
+
+from __future__ import annotations
 
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -40,6 +50,7 @@ sys.path.insert(
     ),
 )
 from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
 # forbidden patterns. Trailer-shaped lines are anchored at line-start
 # so prose mentioning the words "co-authored" elsewhere does not trip
@@ -79,19 +90,19 @@ SCAN_GLOBS = [
     "*.xml",
 ]
 
-# roots scanned. .github/ included so any future workflow that might
-# reference forbidden vendor names trips the gate.
+# roots scanned, repo-relative. .github/ included so any future workflow
+# that might reference forbidden vendor names trips the gate.
 SCAN_ROOTS = [
-    REPO_ROOT / "public",
-    REPO_ROOT / "tools",
-    REPO_ROOT / "templates",
-    REPO_ROOT / "docs",
-    REPO_ROOT / ".github",
-    REPO_ROOT / "reports",
+    "public",
+    "tools",
+    "templates",
+    "docs",
+    ".github",
+    "reports",
 ]
 
 # files the gate explicitly tolerates. each entry is a path relative
-# to REPO_ROOT. the allowlist is small and explicit — every entry is
+# to the repo root. the allowlist is small and explicit — every entry is
 # either the gate itself (contains the patterns as regex source) or a
 # repo-record file that names the patterns by design.
 ALLOWLIST_RELATIVE = {
@@ -113,18 +124,37 @@ def _is_frozen(rel: str) -> bool:
     return bool(FROZEN_PREFIX.match(rel))
 
 
-def main() -> int:
-    fails: list[str] = []
-    scanned = 0
+# ---------------------------------------------------------------------------
+# Result — the value that flows through the interface. evaluate() produces it;
+# main() renders it. tests assert on Result, never on stdout.
+# ---------------------------------------------------------------------------
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+    scanned: int = 0
 
-    for root in SCAN_ROOTS:
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+# ---------------------------------------------------------------------------
+# evaluate — the pure compute path. one call, one Result, over the injected
+# Repo. walks the repo-relative scan roots in the original order (per root,
+# per glob, rglob), preserving the exact file set and scan count.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo) -> Result:
+    r = Result()
+
+    for root_rel in SCAN_ROOTS:
+        root = repo.root / root_rel
         if not root.is_dir():
             continue
         for glob in SCAN_GLOBS:
             for p in root.rglob(glob):
                 if not p.is_file():
                     continue
-                rel = p.relative_to(REPO_ROOT).as_posix()
+                rel = p.relative_to(repo.root).as_posix()
                 if rel in ALLOWLIST_RELATIVE:
                     continue
                 if _is_frozen(rel):
@@ -133,32 +163,43 @@ def main() -> int:
                     text = p.read_text(encoding="utf-8", errors="strict")
                 except UnicodeDecodeError:
                     continue
-                scanned += 1
+                r.scanned += 1
                 for label, pat in FORBIDDEN_PATTERNS:
                     for m in pat.finditer(text):
                         line_no = text.count("\n", 0, m.start()) + 1
                         # show the offending line, trimmed.
                         line_text = text.splitlines()[line_no - 1].strip()[:120]
-                        fails.append(f"{rel}:{line_no} [{label}] — {line_text}")
+                        r.fails.append(f"{rel}:{line_no} [{label}] — {line_text}")
 
-    if fails:
+    return r
+
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. evaluates, renders, returns exit code.
+# the only place stdout and exit codes live.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    r = evaluate(repo)
+
+    if r.fails:
         print(
-            f"FAIL: {len(fails)} AI/model attribution issue(s) ({scanned} files scanned)",
+            f"FAIL: {len(r.fails)} AI/model attribution issue(s) ({r.scanned} files scanned)",
             file=sys.stderr,
         )
-        for f in fails[:30]:
+        for f in r.fails[:30]:
             print(f"  ✗ {f}", file=sys.stderr)
-        if len(fails) > 30:
-            print(f"  … and {len(fails) - 30} more", file=sys.stderr)
+        if len(r.fails) > 30:
+            print(f"  … and {len(r.fails) - 30} more", file=sys.stderr)
         print(file=sys.stderr)
         print("AI/model attribution belongs in docs/AUTHORSHIP-STATEMENT.md", file=sys.stderr)
         print("and humans.txt only — never in commit metadata, generated", file=sys.stderr)
         print("repo material, source mirrors, or public file headers.", file=sys.stderr)
         return 1
 
-    print(f"OK: no AI/model attribution metadata in working tree ({scanned} files scanned)")
+    print(f"OK: no AI/model attribution metadata in working tree ({r.scanned} files scanned)")
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())

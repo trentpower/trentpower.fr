@@ -23,21 +23,41 @@ their provenance record). The generated editorial review exports are
 not public pages and are skipped for the record requirement, but are
 still scanned for forbidden fragments.
 
-Usage: validate_page_provenance.py [public-dir]
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the whole gate runs over a fixture repo with no monkeypatching.
+`load(repo)` reads + validates the canonical identity; `evaluate(repo, ctx)` is
+the pure compute path returning a Result (it never prints or exits); `main()` is
+the only adapter that prints and exits. Behaviour is byte-identical to the
+former PUBLIC_DIR-walking script.
+
+Usage: validate_page_provenance.py
 Quiet on success, precise on failure.
 """
 
 from __future__ import annotations
 
 import json
-import pathlib
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
-_TOOLS = pathlib.Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(_TOOLS / "lib"))
+sys.path.insert(
+    0,
+    str(
+        next(
+            _a
+            for _a in __import__("pathlib").Path(__file__).resolve().parents
+            if _a.name == "tools"
+        )
+        / "lib"
+    ),
+)
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
-from paths import IDENTITY_CANONICAL, PUBLIC_DIR  # noqa: E402
+# repo-relative location of the canonical identity (resolved through the seam).
+IDENTITY_CANONICAL_REL = "tools/config/identity_canonical.json"
 
 RECORD_RE = re.compile(
     r'<script type="application/json" id="tp-page-record">(.*?)</script>',
@@ -88,27 +108,71 @@ def _locale_ok(rel: str, source_path: str) -> bool:
     return source_path.startswith("content/en/")
 
 
-def main() -> int:
-    root = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else PUBLIC_DIR
-    if not root.is_dir():
-        print(f"  FAIL: page-provenance — public root not found at {root}")
-        return 1
+# named accessors over the shared Repo seam. the public-tree knowledge (the
+# "public/" prefix, the recursive html walk) lives here in the validator.
+def _read_public(repo: Repo, prel: str) -> str:
+    return repo.read(f"public/{prel}")
 
-    with open(IDENTITY_CANONICAL, encoding="utf-8") as f:
-        canon = json.load(f)
-    repo = canon.get("repository", {})
-    repo_url, branch = repo.get("url", ""), repo.get("branch", "")
+
+def _public_html(repo: Repo) -> list[str]:
+    """public-relative posix paths of every .html under public/, sorted."""
+    prefix = "public/"
+    return [rel[len(prefix) :] for rel in repo.glob(f"{prefix}**/*.html")]
+
+
+# ---------------------------------------------------------------------------
+# Ctx / Result — the values that flow through the interface. load() produces
+# Ctx (or errors); evaluate() produces Result; main() renders it. tests assert
+# on Result, never on stdout.
+# ---------------------------------------------------------------------------
+@dataclass(frozen=True)
+class Ctx:
+    repo_url: str
+    branch: str
+    edition: str
+    base_url: str
+
+
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+    oks: list[str] = field(default_factory=list)
+    checked: int = 0
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+# ---------------------------------------------------------------------------
+# load — read + validate the canonical identity. returns (ctx, errors); never
+# prints/exits. mirrors the original main()'s up-front canonical checks.
+# ---------------------------------------------------------------------------
+def load(repo: Repo) -> tuple[Ctx | None, list[str]]:
+    if not (repo.root / "public").is_dir():
+        return None, [f"public root not found at {repo.root / 'public'}"]
+    canon = json.loads(repo.read(IDENTITY_CANONICAL_REL))
+    repo_block = canon.get("repository", {})
+    repo_url, branch = repo_block.get("url", ""), repo_block.get("branch", "")
     edition = canon.get("edition", "")
     base_url = canon.get("url", "").rstrip("/")
     if not (repo_url and branch and edition and base_url):
-        print("  FAIL: page-provenance — identity_canonical.json missing repository/edition/url")
-        return 1
+        return None, ["identity_canonical.json missing repository/edition/url"]
+    return Ctx(repo_url=repo_url, branch=branch, edition=edition, base_url=base_url), []
 
-    fails: list[str] = []
+
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. one call, one Result, over the injected
+# Repo. this is the test surface. lifted verbatim from the original main() loop.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo, ctx: Ctx) -> Result:
+    r = Result()
+    repo_url, branch, edition, base_url = ctx.repo_url, ctx.branch, ctx.edition, ctx.base_url
+    fails = r.fails
+
     checked = 0
-    for path in sorted(root.rglob("*.html")):
-        rel = str(path.relative_to(root)).replace("\\", "/")
-        text = path.read_text(encoding="utf-8")
+    for rel in _public_html(repo):
+        text = _read_public(repo, rel)
 
         for frag in FORBIDDEN_FRAGMENTS:
             if frag in text:
@@ -157,16 +221,36 @@ def main() -> int:
         if tp and (tp.startswith(("/", "~")) or ".." in tp):
             fails.append(f"{rel}: templatePath {tp!r} is not repository-relative")
 
-    if fails:
-        print(f"  FAIL: page-provenance — {len(fails)} finding(s) across {checked} pages:")
-        for f_ in fails[:40]:
-            print(f"    {f_}")
-        if len(fails) > 40:
-            print(f"    … {len(fails) - 40} more")
+    r.checked = checked
+    r.oks.append(f"page-provenance — {checked} pages carry one coherent record each")
+    return r
+
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. loads, evaluates, renders, returns exit
+# code. the only place stdout and exit codes live; reproduces the original
+# OK/FAIL text contract exactly.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+
+    ctx, errors = load(repo)
+    if errors:
+        for e in errors:
+            print(f"  FAIL: page-provenance — {e}")
         return 1
-    print(f"  OK: page-provenance — {checked} pages carry one coherent record each")
+
+    r = evaluate(repo, ctx)
+    if r.fails:
+        print(f"  FAIL: page-provenance — {len(r.fails)} finding(s) across {r.checked} pages:")
+        for f_ in r.fails[:40]:
+            print(f"    {f_}")
+        if len(r.fails) > 40:
+            print(f"    … {len(r.fails) - 40} more")
+        return 1
+    print(f"  OK: {r.oks[0]}")
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())

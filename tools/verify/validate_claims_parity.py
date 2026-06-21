@@ -34,7 +34,6 @@ from __future__ import annotations
 import fnmatch
 import inspect
 import json
-import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -62,6 +61,7 @@ sys.path.insert(
         / "lib"
     ),
 )
+import checks as checks_registry  # noqa: E402  (the deploy-check registry interface)
 from paths import REPO_ROOT  # noqa: E402
 from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
@@ -72,7 +72,6 @@ RELEASE_YML_REL = ".github/workflows/release.yml"
 PRCHECKS_YML_REL = ".github/workflows/pr-checks.yml"
 SCORECARD_YML_REL = ".github/workflows/scorecard.yml"
 BUILD_SH_REL = "tools/build/build.sh"
-CHECKS_REGISTRY_REL = "tools/lib/checks.py"
 PGP_KEY_REL = "public/.well-known/pgp-key.asc"
 REUSE_TOML_REL = "REUSE.toml"
 CLAIMS_MAP_REL = "policy-data/claims-map.yml"
@@ -81,10 +80,6 @@ CLAIMS_SCHEMA_REL = "schemas/claims-map.schema.json"
 
 def _release_yml(repo: Repo) -> str:
     return repo.read(RELEASE_YML_REL)
-
-
-def _checks_registry(repo: Repo) -> str:
-    return repo.read(CHECKS_REGISTRY_REL)
 
 
 # ---------------------------------------------------------------------------
@@ -121,15 +116,12 @@ def control_pgp(repo: Repo) -> tuple[bool, str]:
     check registered as a blocking gate in checks.py."""
     if not repo.is_file(PGP_KEY_REL):
         return False, f"published key missing: {PGP_KEY_REL}"
-    src = _checks_registry(repo)
-    # the gpg check must be registered as blocking (_B). bind to gpg's OWN
-    # Check entry: name, then its single description string, then the tier as
-    # the next positional arg. anchoring on that string (not a DOTALL `.*?`)
-    # stops the match from sliding past a downgraded gpg entry into a later
-    # check's _B — which would mask exactly the regression this gate detects.
-    registered = re.search(r'Check\(\s*"gpg"\s*,\s*"(?:[^"\\]|\\.)*"\s*,\s*_B\b', src) is not None
-    if not registered:
-        return False, "the gpg signature check is not registered as blocking (_B) in checks.py"
+    # the gpg check must be registered as blocking. ask the registry through its
+    # interface; a downgraded, removed or renamed gpg check returns False here
+    # (is_blocking returns False for any non-blocking or absent id), which is
+    # exactly the regression this gate detects.
+    if not checks_registry.is_blocking("gpg"):
+        return False, "the gpg signature check is not registered as blocking in checks.py"
     return True, ""
 
 
@@ -304,14 +296,11 @@ def _meta_checks(repo: Repo, data: dict, surface_rel: set[str]) -> tuple[list[st
                         f'claim "{token}": release_blocking + enforced_at pr-gate requires a '
                         "pr_gate_check naming the blocking checks.py id"
                     )
-                else:
-                    src = _checks_registry(repo)
-                    pat = rf'Check\(\s*"{re.escape(gate_id)}"\s*,\s*"(?:[^"\\]|\\.)*"\s*,\s*_B\b'
-                    if not re.search(pat, src):
-                        fails.append(
-                            f'claim "{token}": pr_gate_check "{gate_id}" is not registered as '
-                            "blocking (_B) in checks.py"
-                        )
+                elif not checks_registry.is_blocking(gate_id):
+                    fails.append(
+                        f'claim "{token}": pr_gate_check "{gate_id}" is not registered as '
+                        "blocking in checks.py"
+                    )
             if "ruleset" in ea:
                 notes.append(
                     f'claim "{token}" is enforced at ruleset level — confirm it is a '
@@ -406,5 +395,5 @@ def main(repo_root: Path = REPO_ROOT) -> int:
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())

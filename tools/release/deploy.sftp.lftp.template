@@ -1,16 +1,18 @@
-# trentpower.fr — public Gandi Simple Hosting SFTP deploy
+# trentpower.fr — SFTP deploy recipe TEMPLATE (no secrets tracked).
 #
-# Manual lftp recipe — staged put-by-put, kept for diagnostic and
-# emergency-deploy use. The everyday deploy paths are:
-#   • local:  /tmp/lftp_deploy.sh      (mirror with --no-perms, parallel)
-#   • CI:     .github/workflows/deploy.yml  (manual workflow_dispatch)
+# The host + account are NEVER committed. ${SFTP_USERNAME} and ${SFTP_HOST}
+# come from the environment (the same secret names the CI deploy uses); the
+# password is always prompted interactively by lftp, never stored.
 #
-# Run from /home/trentpower/Desktop/trentpower.fr/public/:
-#     lftp -f ../tools/release/deploy.sftp.lftp
+# Render the concrete (gitignored) recipe, then run it:
+#     export SFTP_USERNAME=…  SFTP_HOST=…          # from your secret store
+#     python3 tools/release/render_deploy_lftp.py  # -> tools/release/deploy.sftp.lftp
+#     cd public && lftp -f ../tools/release/deploy.sftp.lftp
+# or skip the file and pass the user inline:
+#     cd public && lftp -u "$SFTP_USERNAME" "sftp://$SFTP_HOST" -f ../tools/release/deploy.sftp.lftp
 #
-# lftp will prompt for the SFTP password interactively (not stored, not
-# echoed to shell history). To use a different user, edit the `open` line
-# below or override with `lftp -u USER sftp://HOST -f ../tools/release/deploy.sftp.lftp`.
+# Manual, staged put-by-put — diagnostic / emergency use. Everyday deploy is
+# CI (.github/workflows/deploy.yml, manual workflow_dispatch, production secrets).
 #
 # Order matters: assets must land before HTML that references ?v=<new>
 # so Varnish does not cache 404s for the new query strings, and the SRI
@@ -21,7 +23,7 @@ set net:timeout 60
 set net:max-retries 2
 set net:reconnect-interval-base 5
 
-open -u "ab4cf384-0600-11f1-9712-00163e816020" sftp://sftp.sd3.gpaas.net
+open -u "${SFTP_USERNAME}" sftp://${SFTP_HOST}
 
 # ── Stage 1: Assets ──
 # every file listed in ASSET_BUNDLE (tools/build/generate_site.py) must

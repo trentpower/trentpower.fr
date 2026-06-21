@@ -11,14 +11,23 @@ public files (see generate_source_view.MIRROR). This script enforces:
 
 Exit 0 = mirror tree is faithful.
 Exit 1 = at least one drift; failing paths are printed.
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the whole gate runs over a fixture repo with no monkeypatching.
+`load(repo)` reads the generator's MIRROR map (or returns an error); `evaluate`
+is the pure compute path returning a Result; `main()` is the only adapter that
+prints/exits and reproduces the original stdout contract.
 """
+
+from __future__ import annotations
 
 import fnmatch
 import importlib.util
 import json
-import pathlib
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 # dated rebuild companion regexes shared by the source-mirror exempt
 # rules. matches /integrity/releases/<edition>/<prefix>-YYYY-MM-DD.<ext>
@@ -92,7 +101,14 @@ sys.path.insert(
 import routes as _routes  # noqa: E402
 from hashing import sha256_b64  # noqa: E402
 from paths import PUBLIC_DIR as ROOT  # noqa: E402
+from paths import REPO_ROOT  # noqa: E402
 from paths import TOOLS_DIR as _TOOLS_DIR  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
+
+# repo-relative location of the public tree, resolved through the Repo seam.
+# the public-tree knowledge (the "public/" prefix) and the /source/ mirror
+# subtree under it live here in the validator, not on Repo.
+PUBLIC_REL = "public"
 
 SOURCE_DIR = ROOT / "source"
 # generate_source_view.py lives in tools/ alongside this validator
@@ -170,20 +186,76 @@ def _import_mirror():
     )
 
 
-def main() -> int:
-    if not GENERATOR.exists():
-        print(f"FAIL: {GENERATOR} not found", file=sys.stderr)
-        return 1
-    mirror, mirror_map, banner_css, banner_js, htaccess_transform = _import_mirror()
+# ---------------------------------------------------------------------------
+# Ctx / Result — the values that flow through the interface. load() produces
+# Ctx (or errors); evaluate() produces Result; main() renders it. tests assert
+# on Result, never on stdout.
+# ---------------------------------------------------------------------------
+@dataclass(frozen=True)
+class Ctx:
+    mirror: list
+    mirror_map: dict
+    banner_css: bytes
+    banner_js: bytes
+    htaccess_transform: object
 
-    fails: list[str] = []
+
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+    warns: list[str] = field(default_factory=list)
+    # carries the OK summary line so main() can reproduce the original stdout.
+    summary: str = ""
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+# ---------------------------------------------------------------------------
+# load — import the generator's MIRROR map. returns (ctx, errors); never
+# prints/exits.
+# ---------------------------------------------------------------------------
+def load(repo: Repo) -> tuple[Ctx | None, list[str]]:
+    if not GENERATOR.exists():
+        return None, [f"{GENERATOR} not found"]
+    mirror, mirror_map, banner_css, banner_js, htaccess_transform = _import_mirror()
+    return (
+        Ctx(
+            mirror=mirror,
+            mirror_map=mirror_map,
+            banner_css=banner_css,
+            banner_js=banner_js,
+            htaccess_transform=htaccess_transform,
+        ),
+        [],
+    )
+
+
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. one call, one Result, over the injected
+# Repo. this is the test surface. all byte reads / tree walks go through
+# repo.root; text reads go through repo.read.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo, ctx: Ctx) -> Result:
+    mirror = ctx.mirror
+    mirror_map = ctx.mirror_map
+    banner_css = ctx.banner_css
+    banner_js = ctx.banner_js
+    htaccess_transform = ctx.htaccess_transform
+
+    root = repo.root / PUBLIC_REL
+    source_dir = repo.root / "public" / "source"
+
+    r = Result()
+    fails = r.fails
 
     # 0: required-mirror gate — fail explicitly if a trust-page mirror
     # is missing, before any byte-comparison work. catches the case
     # where mirror itself was edited to drop a required entry.
     expected_names_set = {dst for _, dst in mirror}
     for required in sorted(REQUIRED_MIRRORS):
-        on_disk = (SOURCE_DIR / required).is_file()
+        on_disk = (source_dir / required).is_file()
         in_mirror = required in expected_names_set
         if not on_disk:
             fails.append(
@@ -201,8 +273,8 @@ def main() -> int:
     # bytes.
     expected_names = {dst for _, dst in mirror}
     for src, dst in mirror:
-        sp = ROOT / src
-        dp = SOURCE_DIR / dst
+        sp = root / src
+        dp = source_dir / dst
         if not sp.is_file():
             fails.append(f"MISSING SOURCE: {src} (referenced by mirror entry → {dst})")
             continue
@@ -211,7 +283,7 @@ def main() -> int:
             continue
         authored = mirror_map.get(dst)
         if authored is not None:
-            ap = pathlib.Path(authored)
+            ap = Path(authored)
             if not ap.is_file():
                 fails.append(f"AUTHORED-SOURCE MISSING: {ap} (expected for mirror source/{dst})")
                 continue
@@ -252,7 +324,7 @@ def main() -> int:
     # against the array on disk.
     image_mirror_names: set[str] = set()
     image_mirror_records: list[dict] = []
-    smf_path = SOURCE_DIR / "source-manifest.json"
+    smf_path = source_dir / "source-manifest.json"
     if smf_path.exists():
         try:
             sm = json.loads(smf_path.read_text(encoding="utf-8"))
@@ -267,11 +339,11 @@ def main() -> int:
     # since mirrors now preserve the live tree's directory structure;
     # nested paths like /source/privacy/index.html.txt must be walked
     # by rglob rather than iterdir).
-    if SOURCE_DIR.is_dir():
-        for fp in sorted(SOURCE_DIR.rglob("*")):
+    if source_dir.is_dir():
+        for fp in sorted(source_dir.rglob("*")):
             if not fp.is_file():
                 continue
-            rel = fp.relative_to(SOURCE_DIR).as_posix()
+            rel = fp.relative_to(source_dir).as_posix()
             if rel in expected_names:
                 continue
             if rel in SELF_GENERATED:
@@ -286,8 +358,8 @@ def main() -> int:
     for rec in image_mirror_records:
         live_rel = rec["live_path"].lstrip("/")
         mirror_rel = rec["name"]
-        live_p = ROOT / live_rel
-        mirror_p = SOURCE_DIR / mirror_rel
+        live_p = root / live_rel
+        mirror_p = source_dir / mirror_rel
         if not live_p.is_file():
             fails.append(
                 f"IMAGE MIRROR: live file {live_rel} missing (mirror exists at source/{mirror_rel})"
@@ -305,7 +377,7 @@ def main() -> int:
             )
 
     # 4: source-manifest.json self-consistency for every entry
-    smf = SOURCE_DIR / "source-manifest.json"
+    smf = source_dir / "source-manifest.json"
     if smf.exists():
         try:
             sm = json.loads(smf.read_text(encoding="utf-8"))
@@ -320,7 +392,7 @@ def main() -> int:
             # stale mirror is caught regardless of which day the gate runs.)
             for entry in sm.get("files", []):
                 name = entry.get("name", "")
-                mp = SOURCE_DIR / name
+                mp = source_dir / name
                 if not mp.is_file():
                     fails.append(f"manifest: source/{name} listed but missing on disk")
                     continue
@@ -356,11 +428,11 @@ def main() -> int:
     # /source/source/ is forbidden. the source page is its own entry
     # point; a self-mirror under /source/source/index.html.txt would
     # re-introduce the recursive layer the brief specifically rules out.
-    recursive_root = SOURCE_DIR / "source"
+    recursive_root = source_dir / "source"
     if recursive_root.exists():
         for fp in sorted(recursive_root.rglob("*")):
             if fp.is_file():
-                rel = fp.relative_to(SOURCE_DIR).as_posix()
+                rel = fp.relative_to(source_dir).as_posix()
                 fails.append(
                     f"RECURSIVE SOURCE: source/{rel} (paths under "
                     f"source/source/ are forbidden by the publication brief)"
@@ -382,10 +454,10 @@ def main() -> int:
     mirrored_live_paths = {src for src, _ in mirror}
     image_mirror_live_paths = {rec["live_path"].lstrip("/") for rec in image_mirror_records}
     # walk the public tree and check completeness.
-    for fp in sorted(ROOT.rglob("*")):
+    for fp in sorted(root.rglob("*")):
         if not fp.is_file():
             continue
-        rel = fp.relative_to(ROOT).as_posix()
+        rel = fp.relative_to(root).as_posix()
         # skip the /source/ subtree (its contents are mirrors).
         if rel.startswith("source/"):
             continue
@@ -442,18 +514,37 @@ def main() -> int:
             f"and is not listed in tools/source-mirror-exclusions.json)"
         )
 
-    if fails:
-        print(f"FAIL: {len(fails)} source-mirror issue(s):")
-        for f in fails:
-            print(f"  {f}")
-        return 1
-
-    print(
+    r.summary = (
         f"OK: source mirrors — {len(mirror)} text + {len(image_mirror_records)} "
         f"image, {len(exclusions)} exclusion(s); manifest + completeness gate green"
     )
+    return r
+
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. loads, evaluates, renders, returns exit
+# code. the only place stdout and exit codes live.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+
+    ctx, errors = load(repo)
+    if errors:
+        for e in errors:
+            print(f"FAIL: {e}", file=sys.stderr)
+        return 1
+
+    r = evaluate(repo, ctx)
+
+    if r.fails:
+        print(f"FAIL: {len(r.fails)} source-mirror issue(s):")
+        for f in r.fails:
+            print(f"  {f}")
+        return 1
+
+    print(r.summary)
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())
