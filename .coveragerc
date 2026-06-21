@@ -26,5 +26,8 @@ show_missing = True
 precision = 1
 skip_empty = True
 
+# html under the gitignored build-scratch dir (NOT reports/, which the
+# git-metadata gate scans — a coverage page of an AI-attribution validator would
+# otherwise render that validator's own pattern literals and trip the gate).
 [html]
-directory = reports/coverage/html
+directory = .build/coverage/html
