@@ -36,7 +36,6 @@
     "length-zero-no-unit": null,
     "color-function-alias-notation": null,
     "property-no-deprecated": null,
-    "declaration-property-value-keyword-no-deprecated": null,
-    "no-invalid-position-declaration": null
+    "declaration-property-value-keyword-no-deprecated": null
   }
 }

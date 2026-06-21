@@ -3,6 +3,21 @@
 # Canonical source: https://trentpower.fr/changelog.txt
 
 
+2026-06-21 — A dropped style declaration restored on the verify slip (Edition 2026-06-21)
+----------------------------------------------------------------------------------------
+A small correctness edition. One CSS custom property was written just
+outside the rule that used it, so browsers discarded it and the torn
+deckle edge along the top of the verification slip sized from a fallback
+rather than the intended six pixels.
+
+  • The --paper-edge-height property now lives inside the .verify-card
+    rule on /en-au/verify/ and /fr/verifier/, so the deckle mask renders
+    exactly as specified.
+  • The lint rule that caught this — stylelint's
+    no-invalid-position-declaration — is switched back on so a stray
+    declaration cannot slip past the source gate again.
+
+
 2026-06-14 — Repository housekeeping; the record stays the record (Edition 2026-06-14)
 ---------------------------------------------------------------------------------
 A consolidation edition. The pages a visitor reads are unchanged; the

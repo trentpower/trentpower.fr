@@ -58,7 +58,7 @@ no content requires javascript to read.
 authorship statement: /.well-known/attribution.txt
 security policy:      /.well-known/security.txt
 acknowledgements:     /security/acknowledgments/
-last reviewed: 2026-06-14
+last reviewed: 2026-06-21
 
 
 /* thanks */

@@ -1,0 +1,10 @@
+{
+  "schema": "trentpower.edition-builds.v1",
+  "edition": "2026-06-21",
+  "canonical": {
+    "build_date": "2026-06-21",
+    "zip_sha256": "sha256-o0gZjQRGD6V398ahunfNm+glmr4KDkRy+uDbEv618jU=",
+    "tar_gz_sha256": "sha256-tMPxG0OvgIEPyDPHxf6bX1ZFtRkF33rfQ7/vzeXZplw="
+  },
+  "rebuilds": []
+}

@@ -1,9 +1,9 @@
 {
   "schema": "https://trentpower.fr/sw-cache-manifest.json",
   "site": "https://trentpower.fr",
-  "cache_name": "tp-2026-06-14.8eb5797d-495e9bcf-edition-2026-05-17-editorial-cohesion-rev1",
-  "edition": "2026-06-14",
-  "asset_version": "2026-06-14.8eb5797d",
+  "cache_name": "tp-2026-06-21.fc5b8e9b-351a32ea-edition-2026-05-17-editorial-cohesion-rev1",
+  "edition": "2026-06-21",
+  "asset_version": "2026-06-21.fc5b8e9b",
   "release_tag": "edition-2026-05-17-editorial-cohesion-rev1",
   "critical": [
     "/",
