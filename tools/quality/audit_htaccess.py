@@ -9,6 +9,14 @@ Complements the existing validators by reporting things they don't:
   - a single "audit numbers" line for the build report
 
 Exit 0 = green; non-zero on any drift.
+
+Shape (deep module, small interface). The external interface is `main() -> int`
+plus the audit-numbers + OK/FAIL text contract. The filesystem is the injected
+`Repo(root)` seam, so the whole gate runs through `evaluate(repo) -> Result`
+over a fixture repo with no monkeypatching. Compute (`evaluate`) is separate
+from render (`main`): the former returns a Result and never prints or exits; the
+latter is the only side-effecting adapter. The audit summary numbers ride on the
+Result so main() renders them without re-walking the tree.
 """
 
 from __future__ import annotations
@@ -19,6 +27,8 @@ import os
 import re
 import sys
 import textwrap
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -43,8 +53,8 @@ sys.path.insert(
         / "build"
     ),
 )
-import htaccess_config as cfg
-from generate_htaccess import (
+import htaccess_config as cfg  # noqa: E402
+from generate_htaccess import (  # noqa: E402
     CSP_BEGIN,
     CSP_END,
     EXPOSURE_BEGIN,
@@ -52,19 +62,21 @@ from generate_htaccess import (
     _render_csp_block,
     _render_exposure_block,
 )
-from hashing import sri_sha256
-from paths import PUBLIC_DIR, TOOLS_DIR
-from script_blocks import iter_script_blocks
+from hashing import sri_sha256  # noqa: E402
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
+from script_blocks import iter_script_blocks  # noqa: E402
 
-HTACCESS = PUBLIC_DIR / ".htaccess"
-MANIFEST = TOOLS_DIR / "config" / "public-exposure.json"
+# repo-relative locations of the inputs (resolved through the Repo seam).
+HTACCESS_REL = "public/.htaccess"
+MANIFEST_REL = "tools/config/public-exposure.json"
 
 
-def _read_htaccess() -> str:
-    if not HTACCESS.is_file():
-        print(f"FAIL: {HTACCESS} not found", file=sys.stderr)
-        sys.exit(1)
-    return HTACCESS.read_text(encoding="utf-8")
+def _read_htaccess(repo: Repo) -> str | None:
+    """text of public/.htaccess, or None if it is missing."""
+    if not repo.is_file(HTACCESS_REL):
+        return None
+    return repo.read(HTACCESS_REL)
 
 
 def _check_markers(text: str) -> list[str]:
@@ -163,7 +175,7 @@ _INLINE_SCRIPT_PAGES = [
 ]
 
 
-def _check_csp_hash_freshness() -> tuple[list[str], int]:
+def _check_csp_hash_freshness(repo: Repo) -> tuple[list[str], int]:
     """Hash every inline <script> body in the listed pages; confirm
     each hash appears in CSP_INLINE_HASHES_GLOBAL ∪ ..._SOURCE_VIEW_DELTA."""
     declared = {h for h, _ in cfg.CSP_INLINE_HASHES_GLOBAL}
@@ -171,10 +183,10 @@ def _check_csp_hash_freshness() -> tuple[list[str], int]:
     issues: list[str] = []
     hashed = 0
     for rel in _INLINE_SCRIPT_PAGES:
-        fp = PUBLIC_DIR / rel
-        if not fp.is_file():
+        prel = f"public/{rel}"
+        if not repo.is_file(prel):
             continue
-        html = fp.read_text(encoding="utf-8", errors="replace")
+        html = repo.read(prel)
         for blk in iter_script_blocks(html):
             if not blk.is_executable():
                 continue  # external script or data block — CSP hash irrelevant.
@@ -188,7 +200,7 @@ def _check_csp_hash_freshness() -> tuple[list[str], int]:
     return issues, hashed
 
 
-def _release_completeness() -> tuple[list[str], int]:
+def _release_completeness(repo: Repo) -> tuple[list[str], int]:
     """Per-edition snapshot: count signed artefacts under each release dir.
 
     The brief's "release artefact completeness" line — a quick summary
@@ -199,8 +211,10 @@ def _release_completeness() -> tuple[list[str], int]:
     tree instead of SHA256SUMS; that shape is grandfathered.
     """
     issues: list[str] = []
-    releases = PUBLIC_DIR / "integrity" / "releases"
-    if not releases.is_dir():
+    releases_prefix = "public/integrity/releases"
+    # discover edition subdirectories by their index.html / artefacts on disk.
+    members = repo.glob(f"{releases_prefix}/**/*")
+    if not members:
         return issues, 0
     # Pre-signature gate (build.sh stage 05): the in-flight edition's archives
     # are built post-signature (stage 08), so defer that edition's SHA256SUMS/.sig
@@ -209,36 +223,40 @@ def _release_completeness() -> tuple[list[str], int]:
     current_edition = ""
     if pre_archive:
         try:
-            current_edition = json.loads(
-                (PUBLIC_DIR / "integrity.json").read_text(encoding="utf-8")
-            ).get("edition", "")
+            current_edition = json.loads(repo.read("public/integrity.json")).get("edition", "")
         except (OSError, ValueError):
             current_edition = ""
+    # collect immediate child directory names under releases/ (the edition dirs).
+    prefix = f"{releases_prefix}/"
+    edition_names: set[str] = set()
+    for rel in members:
+        tail = rel[len(prefix) :]
+        first = tail.split("/", 1)[0]
+        if first:
+            edition_names.add(first)
     edition_count = 0
-    for sub in sorted(releases.iterdir()):
-        if not sub.is_dir():
-            continue
-        if not re.match(r"^\d{4}-\d{2}(-\d{2})?$", sub.name):
+    for name in sorted(edition_names):
+        if not re.match(r"^\d{4}-\d{2}(-\d{2})?$", name):
             continue
         edition_count += 1
-        if sub.name == "2026-02":
+        if name == "2026-02":
             # legacy shape: integrity.json + assets/ instead of SHA256SUMS.
             for required in ("integrity.json", "integrity.json.sig", "index.html"):
-                if not (sub / required).is_file():
-                    issues.append(f"edition {sub.name} missing {required}")
+                if not repo.is_file(f"{prefix}{name}/{required}"):
+                    issues.append(f"edition {name} missing {required}")
             continue
-        if pre_archive and sub.name == current_edition:
+        if pre_archive and name == current_edition:
             # in-flight edition: index.html exists now; archives come post-signature.
             required_set = ("index.html",)
         else:
             required_set = ("SHA256SUMS", "SHA256SUMS.sig", "index.html")
         for required in required_set:
-            if not (sub / required).is_file():
-                issues.append(f"edition {sub.name} missing {required}")
+            if not repo.is_file(f"{prefix}{name}/{required}"):
+                issues.append(f"edition {name} missing {required}")
     return issues, edition_count
 
 
-def _candidate_urls_for_dead_rule_scan() -> list[str]:
+def _candidate_urls_for_dead_rule_scan(repo: Repo) -> list[str]:
     """Build the URL set a mod_rewrite rule could plausibly match.
 
     Per-directory .htaccess strips the leading slash before matching;
@@ -248,25 +266,23 @@ def _candidate_urls_for_dead_rule_scan() -> list[str]:
     """
     urls: list[str] = []
     dirs: set[str] = set()
-    for fp in PUBLIC_DIR.rglob("*"):
-        if not fp.is_file():
-            continue
-        rel = fp.relative_to(PUBLIC_DIR).as_posix()
+    prefix = "public/"
+    for repo_rel in repo.glob("public/**/*"):
+        rel = repo_rel[len(prefix) :]
         if rel == ".htaccess":
             continue
         urls.append(rel)
         # also register every ancestor directory, in both `foo/` and
         # `foo` shapes, so allow patterns like `integrity/releases/
         # YYYY-MM-DD/?$` can match the directory form mod_dir resolves.
-        parent = fp.parent
-        while parent != PUBLIC_DIR:
-            d = parent.relative_to(PUBLIC_DIR).as_posix()
+        parts = rel.split("/")[:-1]
+        for i in range(1, len(parts) + 1):
+            d = "/".join(parts[:i])
             dirs.add(d)
             dirs.add(d + "/")
-            parent = parent.parent
     urls.extend(sorted(dirs))
-    if MANIFEST.is_file():
-        data = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    if repo.is_file(MANIFEST_REL):
+        data = json.loads(repo.read(MANIFEST_REL))
         for route in data.get("public_routes", []):
             r = route.lstrip("/")
             if not r:
@@ -277,12 +293,12 @@ def _candidate_urls_for_dead_rule_scan() -> list[str]:
     return urls
 
 
-def _check_dead_allow_rules() -> tuple[list[str], int]:
+def _check_dead_allow_rules(repo: Repo) -> tuple[list[str], int]:
     """Each allow pattern that matches zero candidate URLs is reported
     unless declared in ALLOW_RULE_FORWARD_LOOK."""
     issues: list[str] = []
     excused = 0
-    candidates = _candidate_urls_for_dead_rule_scan()
+    candidates = _candidate_urls_for_dead_rule_scan(repo)
     forward_look = getattr(cfg, "ALLOW_RULE_FORWARD_LOOK", {})
     for heading, rules in cfg.ALLOW_RULE_FAMILIES:
         for pat in rules:
@@ -304,14 +320,47 @@ def _count_lines(text: str) -> int:
     return text.count("\n") + (0 if text.endswith("\n") else 1)
 
 
-def main() -> int:
-    text = _read_htaccess()
+# ---------------------------------------------------------------------------
+# Result — the value that flows through the interface. evaluate() produces it;
+# main() renders it. tests assert on Result, never on stdout. the audit summary
+# numbers ride alongside the issue list so the render half does not re-walk.
+# ---------------------------------------------------------------------------
+@dataclass
+class Result:
+    issues: list[tuple[str, str]] = field(default_factory=list)
+    n_allow_rules: int = 0
+    n_allow_families: int = 0
+    n_deny_rules: int = 0
+    n_hashed: int = 0
+    n_editions: int = 0
+    n_excused: int = 0
+    n_lines: int = 0
+    htaccess_missing: bool = False
+
+    @property
+    def ok(self) -> bool:
+        return not self.issues and not self.htaccess_missing
+
+    @property
+    def fails(self) -> list[str]:
+        """rendered failure lines, one per issue (for assertion ergonomics)."""
+        return [f"[{label}] {msg}" for label, msg in self.issues]
+
+
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. one call, one Result, over the injected
+# Repo. this is the test surface.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo) -> Result:
+    text = _read_htaccess(repo)
+    if text is None:
+        return Result(htaccess_missing=True)
 
     issues_markers = _check_markers(text)
     issues_freshness = _check_generated_freshness(text)
-    issues_hashes, n_hashed = _check_csp_hash_freshness()
-    issues_releases, n_editions = _release_completeness()
-    issues_dead, n_excused = _check_dead_allow_rules()
+    issues_hashes, n_hashed = _check_csp_hash_freshness(repo)
+    issues_releases, n_editions = _release_completeness(repo)
+    issues_dead, n_excused = _check_dead_allow_rules(repo)
 
     all_issues = (
         [("markers", i) for i in issues_markers]
@@ -327,19 +376,43 @@ def main() -> int:
         len(cfg.DENY_PATH_RULES) + len(cfg.DENY_EXTENSION_RULES) + len(cfg.DENY_DIRECTORY_RULES)
     )
 
-    print(
-        "  htaccess audit: "
-        f"{n_allow_rules} allow rules in {n_allow_families} families, "
-        f"{n_deny_rules} deny rules, "
-        f"{n_hashed} inline scripts hashed, "
-        f"{n_editions} release editions, "
-        f"{n_excused} forward-look excused, "
-        f"{_count_lines(text)} lines"
+    return Result(
+        issues=all_issues,
+        n_allow_rules=n_allow_rules,
+        n_allow_families=n_allow_families,
+        n_deny_rules=n_deny_rules,
+        n_hashed=n_hashed,
+        n_editions=n_editions,
+        n_excused=n_excused,
+        n_lines=_count_lines(text),
     )
 
-    if all_issues:
-        print(f"FAIL: {len(all_issues)} htaccess audit issue(s):")
-        for label, msg in all_issues:
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. evaluates, renders, returns exit code.
+# the only place stdout and exit codes live.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    r = evaluate(repo)
+
+    if r.htaccess_missing:
+        print(f"FAIL: {repo_root / HTACCESS_REL} not found", file=sys.stderr)
+        return 1
+
+    print(
+        "  htaccess audit: "
+        f"{r.n_allow_rules} allow rules in {r.n_allow_families} families, "
+        f"{r.n_deny_rules} deny rules, "
+        f"{r.n_hashed} inline scripts hashed, "
+        f"{r.n_editions} release editions, "
+        f"{r.n_excused} forward-look excused, "
+        f"{r.n_lines} lines"
+    )
+
+    if r.issues:
+        print(f"FAIL: {len(r.issues)} htaccess audit issue(s):")
+        for label, msg in r.issues:
             print(f"  [{label}] {msg}")
         return 1
 
@@ -347,5 +420,5 @@ def main() -> int:
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())
