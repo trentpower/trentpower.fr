@@ -28,12 +28,20 @@ after "ASSET_VERSION coherence"), and runnable standalone:
 Exit 0 = clean active tree.
 Exit 1 = at least one dated asset on disk outside the frozen-archive
 exemption; offending paths are printed with their matched date+hash.
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the whole gate runs over a fixture repo with no monkeypatching.
+`evaluate(repo)` is the pure compute path returning a Result; `main()` is the
+only adapter that prints/exits. Behaviour is byte-identical to the former
+inline validate_no_dated_assets().
 """
 
 from __future__ import annotations
 
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -46,7 +54,8 @@ sys.path.insert(
         / "lib"
     ),
 )
-from paths import PUBLIC_DIR as ROOT  # noqa: E402
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
 # the dated+hashed shape the refactor eliminated. matches
 # `<anything>.YYYY-MM-DD.<shorthash>.css|js`. shorthash is hex,
@@ -60,43 +69,49 @@ _DATED_ASSET_RE = re.compile(r"\.(?P<date>\d{4}-\d{2}-\d{2})\.(?P<hash>[0-9a-f]{
 EXCLUDE_PREFIX = "integrity/releases/"
 
 
-def validate_no_dated_assets() -> tuple[int, int]:
-    """Walk public/ and return (error_count, warning_count).
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
 
-    Errors: every dated+hashed CSS/JS path outside the frozen-archive
-    exemption. Warnings: none (this gate is binary).
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+def evaluate(repo: Repo) -> Result:
+    """Walk public/ and accumulate every dated+hashed CSS/JS path outside the
+    frozen-archive exemption into the Result. This gate is binary — no warnings.
     """
-    fails: list[str] = []
-    if not ROOT.is_dir():
-        print(f"  FAIL: {ROOT} not a directory")
-        return 1, 0
-    for fp in sorted(ROOT.rglob("*")):
-        if not fp.is_file():
-            continue
-        rel = fp.relative_to(ROOT).as_posix()
+    r = Result()
+    prefix = "public/"
+    for full in repo.glob(f"{prefix}**/*"):
+        rel = full[len(prefix) :]
         if rel.startswith(EXCLUDE_PREFIX):
             continue
         m = _DATED_ASSET_RE.search(rel)
         if m:
-            fails.append(f"{rel} (matched date={m.group('date')} hash={m.group('hash')})")
+            r.fails.append(f"{rel} (matched date={m.group('date')} hash={m.group('hash')})")
+    return r
 
-    if fails:
-        print(f"  FAIL: {len(fails)} dated CSS/JS asset(s) in active public tree:")
-        for f in fails:
+
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    if not (repo_root / "public").is_dir():
+        print(f"  FAIL: {repo_root / 'public'} not a directory")
+        return 1
+    r = evaluate(repo)
+    if r.fails:
+        print(f"  FAIL: {len(r.fails)} dated CSS/JS asset(s) in active public tree:")
+        for f in r.fails:
             print(f"    {f}")
         print(
             "       these filenames must converge on the clean-name + "
             "?v=YYYY-MM-DD.<hash> pattern; run "
             "tools/prune_legacy_versioned_assets.py to clear stale files."
         )
-        return len(fails), 0
+        return 1
     print("  OK: no dated CSS/JS in active public tree (frozen archives exempt)")
-    return 0, 0
-
-
-def main() -> int:
-    errors, _warnings = validate_no_dated_assets()
-    return 1 if errors else 0
+    return 0
 
 
 if __name__ == "__main__":
