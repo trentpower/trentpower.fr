@@ -148,5 +148,5 @@ def main(repo_root: Path = REPO_ROOT) -> int:
     return 1
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     raise SystemExit(main())

@@ -149,5 +149,5 @@ def _run(repo: Repo, gate_rel: str) -> int:
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())
