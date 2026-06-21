@@ -33,15 +33,35 @@ Allowlist
 - public/source/source-manifest.json — internal manifest metadata
 
 Quiet on success, precise on failure.
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the scan runs over a fixture repo with no monkeypatching.
+`evaluate(repo)` is the pure compute path returning a Result; `main()` is the
+only adapter that prints/exits. Public-tree knowledge (the "public/" prefix,
+recursive walks) lives here in the validator, not on Repo, and the rendered
+findings stay public-relative for byte-identical output.
 """
 
 from __future__ import annotations
 
-import pathlib
 import re
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
-ROOT = pathlib.Path(__file__).resolve().parents[2] / "public"
+sys.path.insert(
+    0,
+    str(
+        next(
+            _a
+            for _a in __import__("pathlib").Path(__file__).resolve().parents
+            if _a.name == "tools"
+        )
+        / "lib"
+    ),
+)
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
 STRICT_TOKENS = [
     "tools/",
@@ -132,12 +152,27 @@ FRAGMENT_ALLOWLIST: dict[str, set[str]] = {
 }
 
 
-def relpath(p: pathlib.Path) -> str:
-    return str(p.relative_to(ROOT)).replace("\\", "/")
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails
 
 
-def scan_file(path: pathlib.Path) -> list[tuple[int, str, str]]:
-    rel = relpath(path)
+# named accessor over the shared Repo seam. the public-tree knowledge (the
+# "public/" prefix, recursive walks) lives here in the validator, not on Repo.
+def _public_files(repo: Repo) -> list[str]:
+    """public-relative posix paths of every file under public/, sorted —
+    the recursive walk the original gate ran with ROOT.rglob('*')."""
+    prefix = "public/"
+    return [rel[len(prefix) :] for rel in repo.glob(f"{prefix}**/*")]
+
+
+def scan_file(repo: Repo, rel: str) -> list[tuple[int, str, str]]:
+    """scan one public-relative file for strict tokens. returns
+    (line_no, token, line) findings; honours the allowlists verbatim."""
     if rel in ALLOWLIST_RELATIVE:
         return []
     if any(rel.startswith(pref) for pref in ALLOWLIST_PREFIXES):
@@ -148,7 +183,7 @@ def scan_file(path: pathlib.Path) -> list[tuple[int, str, str]]:
     if rel.endswith((".sig", ".sha256", ".asc", ".gz", ".zip", ".docx", ".pdf")):
         return []
     try:
-        text = path.read_text(encoding="utf-8")
+        text = repo.read(f"public/{rel}")
     except UnicodeDecodeError:
         return []
     findings: list[tuple[int, str, str]] = []
@@ -167,24 +202,36 @@ def scan_file(path: pathlib.Path) -> list[tuple[int, str, str]]:
     return findings
 
 
-def main() -> int:
-    if not ROOT.is_dir():
-        print(f"FAIL: public root not found at {ROOT}")
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. one call, one Result, over the injected
+# Repo. this is the test surface; it never prints or exits.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo) -> Result:
+    r = Result()
+    for rel in _public_files(repo):
+        if not rel.endswith(SCAN_SUFFIXES):
+            continue
+        for line_no, tok, line in scan_file(repo, rel):
+            r.fails.append(f"    {rel}:{line_no} → {tok!r} in: {line[:140]}")
+    return r
+
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. evaluates, renders, returns exit code.
+# the only place stdout and exit codes live. reproduces the original output.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+    if not (repo_root / "public").is_dir():
+        print(f"FAIL: public root not found at {repo_root / 'public'}")
         return 1
-    failures: list[tuple[str, int, str, str]] = []
-    for path in sorted(ROOT.rglob("*")):
-        if not path.is_file():
-            continue
-        if not str(path).endswith(SCAN_SUFFIXES):
-            continue
-        for line_no, tok, line in scan_file(path):
-            failures.append((relpath(path), line_no, tok, line))
-    if failures:
-        print(f"  FAIL: public-comment-hygiene — {len(failures)} leak(s):")
-        for rel, line_no, tok, line in failures[:40]:
-            print(f"    {rel}:{line_no} → {tok!r} in: {line[:140]}")
-        if len(failures) > 40:
-            print(f"    … {len(failures) - 40} more")
+    r = evaluate(repo)
+    if r.fails:
+        print(f"  FAIL: public-comment-hygiene — {len(r.fails)} leak(s):")
+        for line in r.fails[:40]:
+            print(line)
+        if len(r.fails) > 40:
+            print(f"    … {len(r.fails) - 40} more")
         return 1
     print("  OK: public-comment-hygiene — no internal-name leaks in deployed assets")
     return 0
