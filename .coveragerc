@@ -1,0 +1,30 @@
+# coverage.py config for the tools/ test suite.
+#
+# Targeted, not blanket: measure the policy-bearing Python (build, quality, lib,
+# verify), excluding the tests themselves and the thin gate/lint runners. Reports
+# only for now — no fail-under here; the ratchet is applied per-surface by the
+# coverage scripts once the migrated structure is measured (avoids coverage
+# theatre for one-off wrappers).
+
+[run]
+branch = True
+source =
+    tools/build
+    tools/quality
+    tools/lib
+    tools/verify
+
+omit =
+    tools/quality/tests/*
+    tools/quality/gate.py
+    tools/quality/lint.py
+    */__pycache__/*
+    */site-packages/*
+
+[report]
+show_missing = True
+precision = 1
+skip_empty = True
+
+[html]
+directory = reports/coverage/html
