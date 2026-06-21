@@ -19,22 +19,36 @@ _fixture.bootstrap("badges")
 import sync_coverage as sc  # noqa: E402
 
 
-def _seed(root: Path, pct: int) -> None:
-    """Write a coherent fixture at TEST COVERAGE = pct%."""
+def _seed(root: Path, pct: int, files: int = 67, funcs: int = 1063) -> None:
+    """Write a coherent fixture at TEST COVERAGE = pct% with inventory files/funcs."""
     (root / ".build" / "coverage").mkdir(parents=True, exist_ok=True)
     (root / "docs").mkdir(parents=True, exist_ok=True)
     (root / "metadata" / "badges").mkdir(parents=True, exist_ok=True)
     sc.SUMMARY_PATH.write_text(
-        json.dumps({"test_coverage_pct": pct, "surface": "unit-testable-logic"}), encoding="utf-8"
+        json.dumps(
+            {
+                "test_coverage_pct": pct,
+                "surface": "unit-testable-logic",
+                "test_files": files,
+                "test_functions": funcs,
+            }
+        ),
+        encoding="utf-8",
     )
     sc.BADGES_JSON.write_text(
         json.dumps({"marks": [{"id": "coverage", "label": "Test Coverage", "value": f"{pct}%"}]}),
         encoding="utf-8",
     )
     sc.README.write_text(
-        f"[![Test Coverage: {pct}%](metadata/badges/coverage.svg)]\n", encoding="utf-8"
+        f"[![Test Coverage: {pct}%](metadata/badges/coverage.svg)]\n"
+        f"The suite is **{funcs:,}** unit-test functions across **{files:,}** files.\n",
+        encoding="utf-8",
     )
-    sc.COVERAGE_DOC.write_text(f"> **Current figure: {pct}%** — auto-derived.\n", encoding="utf-8")
+    sc.COVERAGE_DOC.write_text(
+        f"> **Current figure: {pct}%** — auto-derived.\n"
+        f"**{files:,}** unit-test files / **{funcs:,}** test functions.\n",
+        encoding="utf-8",
+    )
     sc.COVERAGE_SVG.write_text(
         sc.generate_badges.colophon_svg("Test Coverage", f"{pct}%"), encoding="utf-8"
     )
@@ -60,12 +74,31 @@ class SyncCoverage(unittest.TestCase):
         self.assertEqual(sc.main(["--check"]), 0)
 
     def test_seeded_defect_fails_check(self):
-        # measured 94 but every location still says 90 → drift on all four
-        _seed(Path(self._tmp.name), 90)
-        sc.SUMMARY_PATH.write_text(json.dumps({"test_coverage_pct": 94}), encoding="utf-8")
+        # fixture stale on every surface (90%, inventory 1/1) but measured is
+        # 94% / 67 files / 1,063 functions → drift on all seven owned locations.
+        _seed(Path(self._tmp.name), 90, files=1, funcs=1)
+        sc.SUMMARY_PATH.write_text(
+            json.dumps({"test_coverage_pct": 94, "test_files": 67, "test_functions": 1063}),
+            encoding="utf-8",
+        )
         drift = sc.check(94)
-        self.assertEqual(len(drift), 4, drift)
+        self.assertEqual(len(drift), 7, drift)
         self.assertEqual(sc.main(["--check"]), 1)
+
+    def test_write_repairs_inventory(self):
+        _seed(Path(self._tmp.name), 94, files=1, funcs=1)
+        sc.SUMMARY_PATH.write_text(
+            json.dumps({"test_coverage_pct": 94, "test_files": 67, "test_functions": 1063}),
+            encoding="utf-8",
+        )
+        sc.write(94)
+        self.assertIn(
+            "**1,063** unit-test functions across **67** files",
+            sc.README.read_text(encoding="utf-8"),
+        )
+        self.assertIn("**67** unit-test files", sc.COVERAGE_DOC.read_text(encoding="utf-8"))
+        self.assertIn("**1,063** test functions", sc.COVERAGE_DOC.read_text(encoding="utf-8"))
+        self.assertEqual(sc.check(94), [])
 
     def test_write_repairs_drift(self):
         _seed(Path(self._tmp.name), 90)

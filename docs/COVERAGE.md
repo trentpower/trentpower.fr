@@ -32,6 +32,16 @@ This is **not** a global `tools/` percentage and should never be read as one —
 global number is dragged down by one-shot build generators that earn integration
 tests, not unit tests (see exclusions).
 
+## Test inventory
+
+The suite is currently **67** unit-test files / **1,063** test functions under
+`tools/quality/tests/`, run with stdlib `unittest` and property-based cases on
+Hypothesis. Both counts are **source-derived**: `coverage.sh` recounts the
+directory in the same run that measures coverage and writes the numbers into
+`.build/coverage/coverage-summary.json`; `sync_coverage.py` propagates them into
+this page and into the README, and CI fails a PR that changes the suite size but
+leaves the counts stale (the same machinery that keeps the percentage honest).
+
 ## Source of truth, and where reports land
 
 - The authoritative measurement is the **coverage.py JSON** at

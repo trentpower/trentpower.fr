@@ -85,6 +85,14 @@ COVERAGE_PROCESS_START=.coveragerc bash tools/build/build.sh --check
 coverage combine && coverage report --omit='*/score-ledger/*'
 ```
 
+The assurance documentation is itself verified, not just asserted: the blocking
+`docs_freshness` and `docs_links` gates (`tools/quality/validate_docs_freshness.py`,
+`tools/quality/validate_docs_links.py`) fail the build and CI when the docs make a
+stale machine-checkable claim — a repo path that no longer exists, a coverage or
+test-inventory figure out of lock-step with the measurement, a canonical command
+that drifts from `metadata/docs/commands.json`, or a broken internal link. A claim
+in this file or its siblings cannot quietly rot while the repository moves on.
+
 ## Residual risks, stated
 
 - **Single maintainer.** One person writes and reviews everything.

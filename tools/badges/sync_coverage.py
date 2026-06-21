@@ -6,13 +6,17 @@ The number is NOT hand-set. `tools/quality/coverage.sh` measures the
 unit-testable-logic surface (tools/quality + tools/lib + tools/verify, excluding
 tests/gate/lint — the same set as its enforced "broad" floor, NOT the raw global
 which counts the integration-tested build generators) and writes the integer
-percentage to `.build/coverage/coverage-summary.json`. This tool reads that figure
-and propagates it to the four places the number lives:
+percentage — plus the source-derived suite size (test files + test functions) —
+to `.build/coverage/coverage-summary.json`. This tool reads those figures and
+propagates them to the places the numbers live:
 
   1. metadata/badges/badges.json   — the `coverage` mark's value
   2. metadata/badges/coverage.svg  — regenerated from badges.json
-  3. README.md                     — the badge alt text `Test Coverage: N%`
-  4. docs/COVERAGE.md              — the `Current figure: N%` line
+  3. README.md                     — the badge alt text `Test Coverage: N%` and
+                                     the `**N** unit-test functions across **N** files` line
+  4. docs/COVERAGE.md              — the `Current figure: N%` line and the
+                                     test-inventory counts (`**N** unit-test files`,
+                                     `**N,NNN** test functions`)
 
 All other coverage prose is referential (no hard-coded digits), so nothing else
 drifts. `build.sh` runs `--write` (auto-update); CI runs `--check` (drift gate).
@@ -42,16 +46,25 @@ COVERAGE_DOC = REPO_ROOT / "docs" / "COVERAGE.md"
 
 README_RE = re.compile(r"Test Coverage: \d+%")
 DOC_RE = re.compile(r"Current figure: \d+%")
+# the test-inventory counts (source-derived in coverage.sh; gated here).
+README_INV_RE = re.compile(r"\*\*[\d,]+\*\* unit-test functions across \*\*[\d,]+\*\* files")
+FILES_RE = re.compile(r"\*\*[\d,]+\*\* unit-test files")
+FUNCS_RE = re.compile(r"\*\*[\d,]+\*\* test functions")
 
 
-def measured_pct() -> int:
-    """The integer figure the pipeline measured. Raises if coverage has not run."""
+def measured() -> dict:
+    """The figures the pipeline measured. Raises if coverage has not run."""
     if not SUMMARY_PATH.is_file():
         raise SystemExit(
             f"sync_coverage: {SUMMARY_PATH.relative_to(REPO_ROOT)} missing — "
             "run `bash tools/quality/coverage.sh` first."
         )
-    return int(json.loads(SUMMARY_PATH.read_text(encoding="utf-8"))["test_coverage_pct"])
+    return json.loads(SUMMARY_PATH.read_text(encoding="utf-8"))
+
+
+def measured_pct() -> int:
+    """The integer coverage figure the pipeline measured."""
+    return int(measured()["test_coverage_pct"])
 
 
 def write(pct: int) -> list[str]:
@@ -73,15 +86,26 @@ def write(pct: int) -> list[str]:
         COVERAGE_SVG.write_text(svg, encoding="utf-8")
         changed.append("metadata/badges/coverage.svg")
 
+    m = measured()
+    files, funcs = int(m["test_files"]), int(m["test_functions"])
     for path, rx, repl, label in (
         (README, README_RE, f"Test Coverage: {pct}%", "README.md"),
+        (
+            README,
+            README_INV_RE,
+            f"**{funcs:,}** unit-test functions across **{files:,}** files",
+            "README.md",
+        ),
         (COVERAGE_DOC, DOC_RE, f"Current figure: {pct}%", "docs/COVERAGE.md"),
+        (COVERAGE_DOC, FILES_RE, f"**{files:,}** unit-test files", "docs/COVERAGE.md"),
+        (COVERAGE_DOC, FUNCS_RE, f"**{funcs:,}** test functions", "docs/COVERAGE.md"),
     ):
         text = path.read_text(encoding="utf-8")
         new = rx.sub(repl, text)
         if new != text:
             path.write_text(new, encoding="utf-8")
-            changed.append(label)
+            if label not in changed:
+                changed.append(label)
     return changed
 
 
@@ -103,6 +127,20 @@ def check(pct: int) -> list[str]:
     svg = COVERAGE_SVG.read_text(encoding="utf-8") if COVERAGE_SVG.is_file() else ""
     if f"Test Coverage: {pct}%" not in svg:
         drift.append(f"coverage.svg does not render {pct}%")
+
+    m = measured()
+    files, funcs = int(m["test_files"]), int(m["test_functions"])
+    readme = README.read_text(encoding="utf-8")
+    if f"**{funcs:,}** unit-test functions across **{files:,}** files" not in readme:
+        drift.append(
+            f"README.md inventory is not '**{funcs:,}** unit-test functions "
+            f"across **{files:,}** files'"
+        )
+    doc = COVERAGE_DOC.read_text(encoding="utf-8")
+    if f"**{files:,}** unit-test files" not in doc:
+        drift.append(f"docs/COVERAGE.md inventory is not '**{files:,}** unit-test files'")
+    if f"**{funcs:,}** test functions" not in doc:
+        drift.append(f"docs/COVERAGE.md inventory is not '**{funcs:,}** test functions'")
     return drift
 
 

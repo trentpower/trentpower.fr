@@ -64,7 +64,33 @@ PUB_PCT="$(python3 -m coverage report \
   --include="tools/quality/*.py,tools/lib/*.py,tools/verify/*.py" \
   --omit="tools/quality/tests/*,tools/quality/gate.py,tools/quality/lint.py" \
   --format=total)"
-python3 -c "import json,sys;p=float(sys.argv[1]);open('.build/coverage/coverage-summary.json','w').write(json.dumps({'test_coverage_pct':round(p),'surface':'unit-testable-logic','raw':round(p,2)})+'\n')" "$PUB_PCT"
+# Source-derive the suite size in the same run, so the documented inventory
+# (README.md + docs/COVERAGE.md, gated by tools/badges/sync_coverage.py) cannot
+# drift from what is actually in tools/quality/tests/.
+python3 - "$PUB_PCT" <<'PY'
+import json, re, sys
+from pathlib import Path
+
+pct = float(sys.argv[1])
+tests = Path("tools/quality/tests")
+files = sorted(tests.glob("test_*.py"))
+fn_re = re.compile(r"^\s*def test_", re.MULTILINE)
+funcs = sum(len(fn_re.findall(f.read_text(encoding="utf-8"))) for f in files)
+
+Path(".build/coverage/coverage-summary.json").write_text(
+    json.dumps(
+        {
+            "test_coverage_pct": round(pct),
+            "surface": "unit-testable-logic",
+            "raw": round(pct, 2),
+            "test_files": len(files),
+            "test_functions": funcs,
+        }
+    )
+    + "\n",
+    encoding="utf-8",
+)
+PY
 echo
 echo "json: .build/coverage/coverage.json · html: .build/coverage/html/index.html"
 echo "summary: .build/coverage/coverage-summary.json · TEST COVERAGE ${PUB_PCT}% (unit-testable-logic)"
