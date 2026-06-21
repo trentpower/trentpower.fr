@@ -14,12 +14,20 @@ asserts the migration's search/machine-readability contract:
 
 Usage:
     python3 tools/validate_bilingual_html.py [--root DIR]
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the whole gate runs over a fixture repo with no monkeypatching.
+`evaluate(repo, tree_prefix)` is the pure compute path returning a Result; `main()`
+is the only adapter that reads argv, prints, and exits. The per-page invariants,
+patterns, page set (from the routes library) and messages are lifted verbatim
+from the former inline scan.
 """
 
 from __future__ import annotations
 
 import re
 import sys
+from dataclasses import dataclass, field
 from pathlib import Path
 
 sys.path.insert(
@@ -33,20 +41,13 @@ sys.path.insert(
         / "lib"
     ),
 )
-from paths import PUBLIC_DIR  # noqa: E402
-
-sys.path.insert(
-    0,
-    str(
-        next(
-            _a
-            for _a in __import__("pathlib").Path(__file__).resolve().parents
-            if _a.name == "tools"
-        )
-        / "lib"
-    ),
-)
 import routes as routemap  # noqa: E402
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
+
+# the rendered tree lives under public/ in the repo; the Repo seam reads
+# "<tree_prefix>/<route_output>". --root points the prefix at an arbitrary tree.
+TREE_PREFIX = "public"
 
 RUNTIME_I18N = [
     re.compile(r"window\.I18N"),
@@ -57,34 +58,36 @@ RUNTIME_I18N = [
 ]
 
 
-def _read(p: Path) -> str:
-    return p.read_text(encoding="utf-8", errors="replace")
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+    # set when the rendered tree itself is absent — a load failure, not an
+    # invariant failure; main() renders it with the original run-hint message.
+    missing: str | None = None
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails and self.missing is None
 
 
-def main() -> int:
-    argv = sys.argv[1:]
-    root = PUBLIC_DIR
-    if "--root" in argv:
-        root = Path(argv[argv.index("--root") + 1]).resolve()
-    if not root.exists():
-        print(
-            f"✗ rendered tree not found: {root}\n  run: python3 tools/render_pages.py",
-            file=sys.stderr,
-        )
-        return 1
+def evaluate(repo: Repo, tree_prefix: str = TREE_PREFIX) -> Result:
+    r = Result()
+    if not (repo.root / tree_prefix).exists():
+        r.missing = tree_prefix
+        return r
 
     base = routemap.base_url()
-    errors: list[str] = []
+    errors: list[str] = r.fails
 
     # 1 — bilingual completeness + per-page invariants
     for key in routemap.route_keys():
         for lang in routemap.languages():
             rel = routemap.route_output(key, lang)
-            path = root / rel
-            if not path.exists():
+            tree_rel = f"{tree_prefix}/{rel}" if tree_prefix else rel
+            if not repo.is_file(tree_rel):
                 errors.append(f"missing rendered page: {rel}")
                 continue
-            html = _read(path)
+            html = repo.read(tree_rel)
             canonical = base + routemap.route_path(key, lang)
 
             m = re.search(r'<link rel="canonical" href="([^"]+)"', html)
@@ -110,10 +113,37 @@ def main() -> int:
                 if pat.search(html):
                     errors.append(f"{rel}: runtime-i18n leak /{pat.pattern}/")
 
-    for e in errors:
+    return r
+
+
+def main(repo_root: Path = REPO_ROOT) -> int:
+    argv = sys.argv[1:]
+    if "--root" in argv:
+        # --root points at an arbitrary deployable tree; resolve it relative
+        # to repo_root so the Repo seam reads "<prefix>/<route_output>".
+        root = Path(argv[argv.index("--root") + 1]).resolve()
+        try:
+            prefix = root.relative_to(repo_root).as_posix()
+        except ValueError:
+            # outside the repo tree — read it directly via its own Repo root.
+            return _run(Repo(root), "")
+        return _run(Repo(repo_root), prefix)
+    return _run(Repo(repo_root), TREE_PREFIX)
+
+
+def _run(repo: Repo, tree_prefix: str) -> int:
+    r = evaluate(repo, tree_prefix)
+    if r.missing is not None:
+        tree = repo.root / r.missing
+        print(
+            f"✗ rendered tree not found: {tree}\n  run: python3 tools/render_pages.py",
+            file=sys.stderr,
+        )
+        return 1
+    for e in r.fails:
         print(f"  ✗ {e}", file=sys.stderr)
-    if errors:
-        print(f"\n✗ bilingual HTML: {len(errors)} error(s)", file=sys.stderr)
+    if r.fails:
+        print(f"\n✗ bilingual HTML: {len(r.fails)} error(s)", file=sys.stderr)
         return 1
     n = len(routemap.route_keys()) * len(routemap.languages())
     print(f"✓ bilingual HTML OK ({n} pages: canonical, hreflang, lang, no runtime i18n)")
