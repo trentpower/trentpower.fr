@@ -33,6 +33,14 @@ class ProductionProc(unittest.TestCase):
         self.assertEqual(r.returncode, 3)
         self.assertIn("oops", r.stderr)
 
+    def test_non_utf8_output_decodes_tolerantly(self):
+        # git history (e.g. `git log -p`) can carry non-UTF-8 bytes; the seam must
+        # decode tolerantly rather than raising UnicodeDecodeError, which would
+        # crash the secret/history scan instead of reporting findings.
+        r = Proc().run(["sh", "-c", r"printf '\377'"])
+        self.assertEqual(r.returncode, 0)
+        self.assertIn("�", r.stdout)  # the 0xff byte became U+FFFD, not a crash
+
 
 class Fake(unittest.TestCase):
     def test_handler_decides_outcome_and_calls_recorded(self):

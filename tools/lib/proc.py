@@ -62,5 +62,10 @@ class Proc:
             env=dict(env) if env is not None else None,
             capture_output=True,
             text=True,
+            # tolerant decode: git history (e.g. `git log -p`) can carry non-UTF-8
+            # bytes in text-like blobs; strict decoding would raise UnicodeDecodeError
+            # and crash the secret/history scan instead of reporting. Matches the
+            # errors="replace" the scanners used before this seam existed.
+            errors="replace",
         )
         return ProcResult(returncode=p.returncode, stdout=p.stdout, stderr=p.stderr)
