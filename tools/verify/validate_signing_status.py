@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""tools/validate_signing_status.py — trust-claim accuracy gate.
+"""validate_signing_status.py — trust-claim accuracy gate.
 
 every public artefact is assigned a signing class. this validator
 refuses to ship when a file's actual cryptographic coverage does
@@ -17,10 +17,24 @@ classes:
 
 artefacts not in the classification table are ignored — this gate
 only enforces what is declared, never speculates.
+
+Shape (deep module, small interface). The filesystem is the one injected seam —
+`Repo(root)` — so the whole gate runs over a fixture repo with no
+monkeypatching. `load(repo)` reads the one config input (integrity.json's file
+set) into a Ctx; `evaluate(repo, ctx)` is the pure compute path returning a
+Result and never prints or exits; `main()` is the only adapter that prints and
+exits. Behaviour is byte-identical to the former direct-PUBLIC_DIR
+implementation.
+
+Exit 0 = every artefact matches its declared signing class. Exit 1 = a mismatch.
 """
+
+from __future__ import annotations
 
 import json
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 
 sys.path.insert(
     0,
@@ -33,7 +47,8 @@ sys.path.insert(
         / "lib"
     ),
 )
-from paths import PUBLIC_DIR  # noqa: E402
+from paths import REPO_ROOT  # noqa: E402
+from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 
 # (relative path under public/, class). order is documentation;
 # the validator does not depend on it.
@@ -75,23 +90,76 @@ SELF_EVIDENCING = {
 CLEARSIGN_HEADER = b"-----BEGIN PGP SIGNED MESSAGE-----"
 
 
-def _load_integrity_files() -> set[str]:
-    p = PUBLIC_DIR / "integrity.json"
-    if not p.exists():
-        return set()
-    data = json.loads(p.read_text(encoding="utf-8"))
-    return set((data.get("files") or {}).keys())
+# named accessors over the shared Repo seam. the public-tree knowledge (the
+# "public/" prefix) lives here in the validator, not on Repo.
+def _public_rel(rel: str) -> str:
+    return f"public/{rel}"
 
 
-def main() -> int:
-    integrity_files = _load_integrity_files()
-    fails: list[str] = []
-    oks = 0
+def _read_public_bytes(repo: Repo, rel: str) -> bytes:
+    """raw bytes of public/<rel> — the clearsign-header check is byte-level,
+    not text, so it must not go through utf-8 decoding."""
+    return (repo.root / _public_rel(rel)).read_bytes()
+
+
+def _public_is_file(repo: Repo, rel: str) -> bool:
+    return repo.is_file(_public_rel(rel))
+
+
+def _strip_suffix(rel: str) -> str:
+    """drop the final ".sig" suffix from a signature-carrier path
+    (mirrors Path.with_suffix(""))."""
+    return rel[: -len(Path(rel).suffix)] if Path(rel).suffix else rel
+
+
+def _add_sig_suffix(rel: str) -> str:
+    """paired-sig name for a file (mirrors with_suffix(suffix + ".sig"))."""
+    return rel + ".sig"
+
+
+# ---------------------------------------------------------------------------
+# Ctx / Result — the values that flow through the interface. load() produces
+# Ctx (or errors); evaluate() produces Result; main() renders it. tests assert
+# on Result, never on stdout.
+# ---------------------------------------------------------------------------
+@dataclass(frozen=True)
+class Ctx:
+    integrity_files: set[str]
+
+
+@dataclass
+class Result:
+    fails: list[str] = field(default_factory=list)
+    oks: int = 0
+
+    @property
+    def ok(self) -> bool:
+        return not self.fails
+
+
+# ---------------------------------------------------------------------------
+# load — read + parse the one input (integrity.json's file set). returns
+# (ctx, errors); never prints/exits. a missing manifest yields an empty set,
+# exactly as the former _load_integrity_files() did.
+# ---------------------------------------------------------------------------
+def load(repo: Repo) -> tuple[Ctx | None, list[str]]:
+    if not _public_is_file(repo, "integrity.json"):
+        return Ctx(integrity_files=set()), []
+    data = json.loads(repo.read(_public_rel("integrity.json")))
+    return Ctx(integrity_files=set((data.get("files") or {}).keys())), []
+
+
+# ---------------------------------------------------------------------------
+# evaluate — the compute interface. one call, one Result, over the injected
+# Repo + Ctx. this is the test surface.
+# ---------------------------------------------------------------------------
+def evaluate(repo: Repo, ctx: Ctx) -> Result:
+    r = Result()
+    integrity_files = ctx.integrity_files
 
     for rel, klass in CLASSIFICATION:
-        path = PUBLIC_DIR / rel
-        if not path.is_file():
-            fails.append(f"{rel}: missing on disk (declared as {klass})")
+        if not _public_is_file(repo, rel):
+            r.fails.append(f"{rel}: missing on disk (declared as {klass})")
             continue
 
         if klass == "directly_signed":
@@ -99,16 +167,16 @@ def main() -> int:
             # ".sig" file. paired-sig form is what integrity.json uses;
             # clearsigned form is what assertion.txt / statement.txt
             # use. either is fine, both must verify externally.
-            has_inline = CLEARSIGN_HEADER in path.read_bytes()
-            sig_path = path.with_suffix(path.suffix + ".sig")
-            has_paired = sig_path.is_file()
+            has_inline = CLEARSIGN_HEADER in _read_public_bytes(repo, rel)
+            sig_rel = _add_sig_suffix(rel)
+            has_paired = _public_is_file(repo, sig_rel)
             if not (has_inline or has_paired):
-                fails.append(
+                r.fails.append(
                     f"{rel}: claims directly_signed but has neither inline "
-                    f"PGP block nor paired {sig_path.name}"
+                    f"PGP block nor paired {Path(sig_rel).name}"
                 )
             else:
-                oks += 1
+                r.oks += 1
 
         elif klass == "covered_by_manifest":
             # integrity.json itself is the manifest — it can't list
@@ -116,24 +184,26 @@ def main() -> int:
             # because asset_version changes it post-hashing. these two
             # are accepted on a self-evidencing basis.
             if rel in ("integrity.json", "site-metadata.json"):
-                oks += 1
+                r.oks += 1
                 continue
             if rel not in integrity_files:
-                fails.append(
+                r.fails.append(
                     f"{rel}: claims covered_by_manifest but is not a key in integrity.json"
                 )
             else:
-                oks += 1
+                r.oks += 1
 
         elif klass == "signature_carrier":
-            target = path.with_suffix("")  # strip ".sig"
-            if not target.is_file():
-                fails.append(f"{rel}: signature_carrier but target {target.name} missing")
+            target_rel = _strip_suffix(rel)  # strip ".sig"
+            if not _public_is_file(repo, target_rel):
+                r.fails.append(
+                    f"{rel}: signature_carrier but target {Path(target_rel).name} missing"
+                )
             else:
-                oks += 1
+                r.oks += 1
 
         else:
-            fails.append(f"{rel}: unknown class '{klass}'")
+            r.fails.append(f"{rel}: unknown class '{klass}'")
 
     # leak check: no file declared "covered_by_manifest" should also
     # contain a clearsigned block — that would be a hidden upgrade of
@@ -141,15 +211,14 @@ def main() -> int:
     for rel, klass in CLASSIFICATION:
         if klass != "covered_by_manifest":
             continue
-        path = PUBLIC_DIR / rel
-        if not path.is_file():
+        if not _public_is_file(repo, rel):
             continue
         # only check text-like files
-        if path.suffix not in (".txt", ".json", ".webmanifest", ""):
+        if Path(rel).suffix not in (".txt", ".json", ".webmanifest", ""):
             continue
         try:
-            if CLEARSIGN_HEADER in path.read_bytes():
-                fails.append(
+            if CLEARSIGN_HEADER in _read_public_bytes(repo, rel):
+                r.fails.append(
                     f"{rel}: classified covered_by_manifest but contains "
                     f"a clearsigned block — promote to directly_signed "
                     f"or remove the inline signature."
@@ -157,13 +226,31 @@ def main() -> int:
         except OSError:
             continue
 
-    if fails:
-        print(f"  FAIL: {len(fails)} signing-status mismatch(es):")
-        for f in fails:
+    return r
+
+
+# ---------------------------------------------------------------------------
+# main — the side-effecting adapter. loads, evaluates, renders, returns exit
+# code. the only place stdout and exit codes live.
+# ---------------------------------------------------------------------------
+def main(repo_root: Path = REPO_ROOT) -> int:
+    repo = Repo(repo_root)
+
+    ctx, errors = load(repo)
+    if errors or ctx is None:
+        for e in errors:
+            print(f"  FAIL: {e}")
+        return 1
+
+    r = evaluate(repo, ctx)
+
+    if r.fails:
+        print(f"  FAIL: {len(r.fails)} signing-status mismatch(es):")
+        for f in r.fails:
             print(f"    {f}")
         return 1
 
-    print(f"  OK: {oks} artefact(s) match their declared signing class.")
+    print(f"  OK: {r.oks} artefact(s) match their declared signing class.")
     return 0
 
 
