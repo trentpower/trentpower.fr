@@ -92,9 +92,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/assertion.txt", "plain prose, no signature\n")
         r = vss.evaluate(self.repo, self._ctx())
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("assertion.txt: claims directly_signed" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("assertion.txt: claims directly_signed" in f for f in r.fails), r.fails)
 
     def test_covered_by_manifest_class_mismatch_caught(self):
         # drop a covered_by_manifest artefact from integrity.json's file set:
@@ -118,12 +116,8 @@ class Evaluate(unittest.TestCase):
         (self.root / "public/humans.txt").unlink()
         r = vss.evaluate(self.repo, self._ctx())
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("statement.txt: missing on disk" in f for f in r.fails), r.fails
-        )
-        self.assertTrue(
-            any("humans.txt: missing on disk" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("statement.txt: missing on disk" in f for f in r.fails), r.fails)
+        self.assertTrue(any("humans.txt: missing on disk" in f for f in r.fails), r.fails)
 
     def test_signature_carrier_orphan_target_caught(self):
         # the lone signature_carrier (integrity.json.sig) targets the manifest.
@@ -137,9 +131,7 @@ class Evaluate(unittest.TestCase):
         # no manifest on disk → empty file set; that is the correct Ctx here.
         r = vss.evaluate(self.repo, self._ctx())
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("signature_carrier but target" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("signature_carrier but target" in f for f in r.fails), r.fails)
 
     def test_covered_by_manifest_clearsign_leak_caught(self):
         # a covered_by_manifest text file must not carry an inline clearsigned
@@ -148,9 +140,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/humans.txt", _CLEARSIGN)
         r = vss.evaluate(self.repo, self._ctx())
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("contains a clearsigned block" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("contains a clearsigned block" in f for f in r.fails), r.fails)
 
     def test_no_manifest_yields_empty_ctx(self):
         # load() with no integrity.json on disk yields an empty file set, exactly

@@ -29,8 +29,7 @@ EDITION = "2026-05-09"
 # a footer language-link rule that satisfies the L4 touch-target invariant via
 # the legacy min-width/min-height:44px form.
 FOOTER_LANG_RULE = (
-    ".site-footer__language a, .site-footer__language button "
-    "{ min-width: 44px; min-height: 44px; }"
+    ".site-footer__language a, .site-footer__language button { min-width: 44px; min-height: 44px; }"
 )
 # a cite-btn rule that satisfies the L8 invariant.
 CITE_BTN_RULE = ".cite-btn { min-height: 44px; }"
@@ -141,9 +140,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vli.evaluate(self.repo, EDITION)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("Service-Worker-Allowed" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("Service-Worker-Allowed" in f for f in r.fails), r.fails)
 
     def test_missing_js_bundle_caught(self):
         # defect (L2): one behaviour-scoped bundle is absent on disk.
@@ -170,9 +167,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/.htaccess", "# nothing about sw.js here\n")
         r = vli.evaluate(self.repo, EDITION)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("no <FilesMatch sw.js> block" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("no <FilesMatch sw.js> block" in f for f in r.fails), r.fails)
 
     def test_htaccess_missing_content_type_caught(self):
         # defect (L3): the block omits the explicit Content-Type directive.
@@ -180,15 +175,11 @@ class Evaluate(unittest.TestCase):
         _write(
             self.root,
             "public/.htaccess",
-            '<FilesMatch "^sw\\.js$">\n'
-            "  Header set Service-Worker-Allowed /\n"
-            "</FilesMatch>\n",
+            '<FilesMatch "^sw\\.js$">\n  Header set Service-Worker-Allowed /\n</FilesMatch>\n',
         )
         r = vli.evaluate(self.repo, EDITION)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("missing explicit Content-Type" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("missing explicit Content-Type" in f for f in r.fails), r.fails)
 
     def test_missing_styles_css_caught(self):
         # defect (L4): styles.css absent — the footer touch-target rule is
@@ -197,21 +188,15 @@ class Evaluate(unittest.TestCase):
         (self.root / "public" / "styles.css").unlink()
         r = vli.evaluate(self.repo, EDITION)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any(f == "L4: styles.css missing" for f in r.fails), r.fails
-        )
+        self.assertTrue(any(f == "L4: styles.css missing" for f in r.fails), r.fails)
 
     def test_footer_lang_rule_absent_caught(self):
         # defect (L4): styles.css present but has no footer language-link rule.
         self._seed_clean()
-        _write(
-            self.root, "public/styles.css", ".some-other-rule { color: red; }\n"
-        )
+        _write(self.root, "public/styles.css", ".some-other-rule { color: red; }\n")
         r = vli.evaluate(self.repo, EDITION)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("no footer language-link rule" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("no footer language-link rule" in f for f in r.fails), r.fails)
 
     def test_footer_lang_rule_undersized_caught(self):
         # defect (L4): the footer rule exists but neither the 44px box nor a
@@ -224,9 +209,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vli.evaluate(self.repo, EDITION)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("needs touch-target ≥ 44px" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("needs touch-target ≥ 44px" in f for f in r.fails), r.fails)
 
     def test_footer_lang_rule_padding_satisfies(self):
         # green path (L4): a padding-block ≥ 12px alone satisfies the bar.
@@ -249,9 +232,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vli.evaluate(self.repo, EDITION)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any(f.startswith("L8:") and "min-height" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any(f.startswith("L8:") and "min-height" in f for f in r.fails), r.fails)
 
     def test_cite_btn_absent_is_not_applicable(self):
         # green path (L8): no .cite-btn rule at all is treated as not-applicable.
@@ -276,9 +257,7 @@ class Evaluate(unittest.TestCase):
         (self.root / "public" / "verify" / "verification-data.js").unlink()
         r = vli.evaluate(self.repo, EDITION)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("verification-data.js missing" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("verification-data.js missing" in f for f in r.fails), r.fails)
 
     def test_verification_data_alias_empty_caught(self):
         # defect (L5): the alias exists but is zero-length.
@@ -286,9 +265,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/verify/verification-data.js", "")
         r = vli.evaluate(self.repo, EDITION)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("verification-data.js is empty" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("verification-data.js is empty" in f for f in r.fails), r.fails)
 
     def test_verification_data_dated_sibling_caught(self):
         # defect (L5): a dated verification-data sibling lingers in the tree.
@@ -300,9 +277,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vli.evaluate(self.repo, EDITION)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("dated verification-data sibling" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("dated verification-data sibling" in f for f in r.fails), r.fails)
 
     def test_missing_index_caught(self):
         # defect (L6 + L7): index.html absent — both homepage checks fire.
@@ -325,9 +300,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vli.evaluate(self.repo, EDITION)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("close with </h2>" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("close with </h2>" in f for f in r.fails), r.fails)
 
     def test_too_many_font_preloads_caught(self):
         # defect (L6): the homepage preloads more than three first-paint fonts.
@@ -337,9 +310,7 @@ class Evaluate(unittest.TestCase):
         _write(
             self.root,
             "public/index.html",
-            "<!doctype html><html><head>\n"
-            + links
-            + "\n</head><body></body></html>\n",
+            "<!doctype html><html><head>\n" + links + "\n</head><body></body></html>\n",
         )
         r = vli.evaluate(self.repo, EDITION)
         self.assertFalse(r.ok)
@@ -362,9 +333,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vli.evaluate(self.repo, EDITION)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any(f.startswith("L9:") and "url(data:" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any(f.startswith("L9:") and "url(data:" in f for f in r.fails), r.fails)
 
 
 class Load(unittest.TestCase):

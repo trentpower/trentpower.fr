@@ -77,8 +77,7 @@ def _scan_targets(repo: Repo) -> list[tuple[str, str]]:
             for rel in sorted(
                 p
                 for p in repo.glob("tools/*/*.py")
-                if p.split("/")[-2] in _PY_PILLARS
-                and p.split("/")[-1] not in _PY_SKIP
+                if p.split("/")[-2] in _PY_PILLARS and p.split("/")[-1] not in _PY_SKIP
             ):
                 out.append((kind, rel))
         else:
@@ -167,8 +166,7 @@ def main(repo_root: Path = REPO_ROOT) -> int:
         )
         return 1
     print(
-        f"OK: lowercase-comments — {r.files_scanned} file(s) scanned; "
-        "all comment prose lowercase"
+        f"OK: lowercase-comments — {r.files_scanned} file(s) scanned; all comment prose lowercase"
     )
     return 0
 

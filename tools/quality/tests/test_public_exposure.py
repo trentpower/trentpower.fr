@@ -185,10 +185,7 @@ class PureHelpers(unittest.TestCase):
         self.assertEqual(urls, {"/keep.css"})
 
     def test_extract_urls_data_src_and_srcset(self):
-        html = (
-            '<img data-src="/lazy.png">'
-            '<img srcset="/a.png 1x, /b.png 2x">'
-        )
+        html = '<img data-src="/lazy.png"><img srcset="/a.png 1x, /b.png 2x">'
         urls = vpe.extract_urls(html)
         self.assertIn("/lazy.png", urls)
         self.assertIn("/a.png", urls)
@@ -246,7 +243,9 @@ class EvaluateExtra(unittest.TestCase):
         r = vpe.evaluate(self.repo, m, pre_archive=True)
         self.assertFalse(r.ok)
         self.assertTrue(
-            any("MISSING-ARTEFACT" in f and "edition.zip" in f for f in self._steps(r)["html links"]),
+            any(
+                "MISSING-ARTEFACT" in f and "edition.zip" in f for f in self._steps(r)["html links"]
+            ),
             r.step_results,
         )
 

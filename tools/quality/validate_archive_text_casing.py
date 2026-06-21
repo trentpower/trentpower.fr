@@ -209,9 +209,7 @@ def evaluate(repo: Repo, ctx: Ctx) -> Result:
             for line_num, line in enumerate(text.splitlines(), 1):
                 offenders = _check_prose_line(line)
                 if offenders:
-                    r.fails.append(
-                        f"{fname}:{line_num} uppercase tokens in prose: {offenders[:5]}"
-                    )
+                    r.fails.append(f"{fname}:{line_num} uppercase tokens in prose: {offenders[:5]}")
     return r
 
 

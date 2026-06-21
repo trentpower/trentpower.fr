@@ -146,9 +146,9 @@ def scan_filenames(proc, root: Path) -> list[str]:
     """Flag any path that ever existed in history matching forbidden names."""
     findings: list[str] = []
     names = set(
-        _git(
-            proc, root, ["log", "--all", "--pretty=format:", "--name-only", "--no-renames"]
-        ).split("\n")
+        _git(proc, root, ["log", "--all", "--pretty=format:", "--name-only", "--no-renames"]).split(
+            "\n"
+        )
     )
     for name in sorted(n for n in names if n):
         if FORBIDDEN_BASENAMES.search(name):

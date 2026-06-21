@@ -18,12 +18,12 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-cd "$ROOT"
+cd "$ROOT" || exit 1
 mkdir -p .build/coverage .build/covsub
 
 # subprocess capture: every python3 child auto-starts coverage in parallel mode.
-printf 'import coverage\ncoverage.process_startup()\n' > .build/covsub/sitecustomize.py
-cat > .build/coveragerc-global <<'EOF'
+printf 'import coverage\ncoverage.process_startup()\n' >.build/covsub/sitecustomize.py
+cat >.build/coveragerc-global <<'EOF'
 [run]
 branch = True
 parallel = True
@@ -50,7 +50,10 @@ export COVERAGE_FILE="$ROOT/.build/cov/.coverage"
 python3 -m coverage erase
 rm -rf "$ROOT/.build/cov"/.coverage* 2>/dev/null || true
 
-run() { echo "  • $*"; "$@" >/dev/null 2>&1 || echo "    (non-zero — captured anyway)"; }
+run() {
+  echo "  • $*"
+  "$@" >/dev/null 2>&1 || echo "    (non-zero — captured anyway)"
+}
 
 echo "→ unit suite under coverage"
 python3 -m coverage run --parallel-mode --rcfile="$RC" -m unittest discover -s tools/quality/tests >/dev/null 2>&1 || true
@@ -62,8 +65,8 @@ run bash tools/build/build.sh --check --editorial
 
 echo "→ residual standalone generators (not run by the build)"
 for g in _build_og_images _generate_architecture_svgs build_font_subsets \
-         detect_edition_changes generate_qr generate_claims_md fetch_licensed_fonts; do
-  [ -f "tools/build/$g.py" ] && run python3 "tools/build/$g.py" || true
+  detect_edition_changes generate_qr generate_claims_md fetch_licensed_fonts; do
+  if [ -f "tools/build/$g.py" ]; then run python3 "tools/build/$g.py" || true; fi
 done
 
 echo "→ full gate WITH signature (covers inline_checks.check_gpg)"
@@ -84,5 +87,7 @@ git clean -fdq public/ metadata/ 2>/dev/null || true
 # so git clean -fd would miss them; the validators walk the filesystem).
 find "$ROOT" -path "$ROOT/.git" -prune -o -name '.coverage.*' -print -delete >/dev/null 2>&1 || true
 # known mtime artifact: a build leaves integrity.json newer than its .sig.
-touch public/integrity.json 2>/dev/null && sleep 1.1 && touch public/integrity.json.sig 2>/dev/null || true
+touch public/integrity.json 2>/dev/null || true
+sleep 1.1
+touch public/integrity.json.sig 2>/dev/null || true
 echo "  restored: $(git status --porcelain public/ metadata/ tools/config/ | wc -l) dirty"

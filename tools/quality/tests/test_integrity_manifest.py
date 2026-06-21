@@ -66,7 +66,9 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(any("missing required entry for styles.css" in f for f in r.fails), r.fails)
 
     def test_listed_but_missing_on_disk_fails(self):
-        _write(self.root, vim.MANIFEST_REL, json.dumps({"files": {"gone.html": "sha256-x"}}).encode())
+        _write(
+            self.root, vim.MANIFEST_REL, json.dumps({"files": {"gone.html": "sha256-x"}}).encode()
+        )
         r = vim.evaluate(self.repo, [])
         self.assertFalse(r.ok)
         self.assertTrue(any("listed but missing on disk" in f for f in r.fails), r.fails)

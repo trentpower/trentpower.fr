@@ -81,9 +81,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vi.evaluate(self.repo, ["index.html"])
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("expected 1200×630" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("expected 1200×630" in f for f in r.fails), r.fails)
 
     def test_missing_declared_image_fails(self):
         # a seeded defect that needs no PIL: a declared root icon is absent ->
@@ -93,18 +91,14 @@ class Evaluate(unittest.TestCase):
         # no root /<fn> copies written, and no OG dir.
         r = vi.evaluate(self.repo, [])
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("missing root icon" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("missing root icon" in f for f in r.fails), r.fails)
 
     def test_missing_og_and_icons_dirs_fail(self):
         # neither canonical tree exists -> both dir-existence branches fire.
         r = vi.evaluate(self.repo, [])
         self.assertFalse(r.ok)
         self.assertTrue(any("missing canonical OG dir" in f for f in r.fails), r.fails)
-        self.assertTrue(
-            any("missing canonical icons dir" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("missing canonical icons dir" in f for f in r.fails), r.fails)
         self.assertEqual(r.png_count, 0)
 
     @unittest.skipUnless(_PILImage is not None, "Pillow not installed")
@@ -170,8 +164,7 @@ class Evaluate(unittest.TestCase):
         _write(
             self.root,
             "public/bad.html",
-            '<meta property="og:image" '
-            'content="https://trentpower.fr/images/social/old.png">',
+            '<meta property="og:image" content="https://trentpower.fr/images/social/old.png">',
         )
         r = vi.evaluate(self.repo, ["bad.html"])
         self.assertFalse(r.ok)
@@ -186,8 +179,7 @@ class Evaluate(unittest.TestCase):
         _write(
             self.root,
             "public/bad.html",
-            '<meta property="og:image" '
-            'content="https://trentpower.fr/images/og/home-og.webp">',
+            '<meta property="og:image" content="https://trentpower.fr/images/og/home-og.webp">',
         )
         r = vi.evaluate(self.repo, ["bad.html"])
         self.assertFalse(r.ok)
@@ -219,9 +211,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/images/og/y.avif", "avif")
         r = vi.evaluate(self.repo, [])
         self.assertFalse(r.ok)
-        self.assertEqual(
-            sum("derivative without master PNG" in f for f in r.fails), 2, r.fails
-        )
+        self.assertEqual(sum("derivative without master PNG" in f for f in r.fails), 2, r.fails)
 
     def test_missing_canonical_icon_fail(self):
         # root copy exists but the /images/icons/ canonical is absent.
@@ -230,9 +220,7 @@ class Evaluate(unittest.TestCase):
             _write(self.root, f"public/{fn}", f"icon:{fn}")
         r = vi.evaluate(self.repo, [])
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("missing canonical icon" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("missing canonical icon" in f for f in r.fails), r.fails)
 
     def test_icon_byte_mismatch_fail(self):
         # root and canonical icons exist but differ -> the byte-equality fail.
@@ -283,9 +271,7 @@ class ExternalInterface(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp)
-            _save_png(
-                root, "public/images/og/lonely.png", vi.CANONICAL_W, vi.CANONICAL_H
-            )
+            _save_png(root, "public/images/og/lonely.png", vi.CANONICAL_W, vi.CANONICAL_H)
             for fn in vi.ROOT_ICON_FILES:
                 body = f"icon:{fn}"
                 _write(root, f"public/{fn}", body)

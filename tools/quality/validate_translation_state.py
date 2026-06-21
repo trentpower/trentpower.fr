@@ -128,9 +128,7 @@ def evaluate(ctx: Ctx, release: bool = False) -> Result:
             msg = f"{rel}: source_hash stale — EN source changed since translation"
             (r.fails if release else r.warns).append(msg)
         if release and status not in RELEASE_OK:
-            r.fails.append(
-                f"{rel}: status {status!r} not release-ready (need human-reviewed)"
-            )
+            r.fails.append(f"{rel}: status {status!r} not release-ready (need human-reviewed)")
 
     if not r.fails:
         r.oks.append(

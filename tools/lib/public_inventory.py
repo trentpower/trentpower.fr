@@ -81,6 +81,7 @@ def error_page_outputs() -> list:
         for err in ("403.html", "404.html", "500.html", "maintenance.html")
     ]
 
+
 # ─── stylesheets ────────────────────────────────────────────────
 # screen + print. print stylesheet is shared by every trust-page
 # print sheet so it must be offline-available.

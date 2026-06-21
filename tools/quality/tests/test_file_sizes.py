@@ -163,26 +163,20 @@ class Evaluate(unittest.TestCase):
         (self.root / "public/file-metadata.json").unlink()
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("file-metadata.json: file missing" in e for e in r.errors), r.errors
-        )
+        self.assertTrue(any("file-metadata.json: file missing" in e for e in r.errors), r.errors)
 
     def test_file_metadata_invalid_json_errors(self):
         _write(self.root, "public/file-metadata.json", "{not json")
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("file-metadata.json: invalid JSON" in e for e in r.errors), r.errors
-        )
+        self.assertTrue(any("file-metadata.json: invalid JSON" in e for e in r.errors), r.errors)
 
     def test_file_metadata_files_not_a_dict_errors(self):
         # a truthy non-dict `files` (empty list is falsy and treated as {}).
         self._set_meta({"files": [1, 2]})
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("missing 'files' dict" in e for e in r.errors), r.errors
-        )
+        self.assertTrue(any("missing 'files' dict" in e for e in r.errors), r.errors)
 
     # ── source-manifest.json structural defects ────────────────────
 
@@ -213,9 +207,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("'files' is not a list" in e for e in r.errors), r.errors
-        )
+        self.assertTrue(any("'files' is not a list" in e for e in r.errors), r.errors)
 
     def test_source_manifest_live_path_missing_on_disk_errors(self):
         _write(
@@ -269,9 +261,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("size_human=" in e and "expected" in e for e in r.errors), r.errors
-        )
+        self.assertTrue(any("size_human=" in e and "expected" in e for e in r.errors), r.errors)
 
     def test_source_manifest_mirror_missing_on_disk_errors(self):
         _write(
@@ -316,9 +306,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("mirror_bytes=" in e for e in r.errors), r.errors
-        )
+        self.assertTrue(any("mirror_bytes=" in e for e in r.errors), r.errors)
 
     def test_source_manifest_mirror_size_human_mismatch_errors(self):
         mirror = "mirror\n"
@@ -367,9 +355,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vfs.evaluate(self.repo)
         self.assertTrue(r.ok, msg=r.errors)
-        self.assertTrue(
-            any("source-manifest.json: 1 entries" in o for o in r.oks), r.oks
-        )
+        self.assertTrue(any("source-manifest.json: 1 entries" in o for o in r.oks), r.oks)
 
     # ── verify/verification-data.js structural defects ─────────────
 
@@ -381,9 +367,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("could not locate" in e for e in r.errors), r.errors
-        )
+        self.assertTrue(any("could not locate" in e for e in r.errors), r.errors)
 
     def test_verification_data_invalid_json_errors(self):
         _write(
@@ -393,22 +377,17 @@ class Evaluate(unittest.TestCase):
         )
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("not valid JSON" in e for e in r.errors), r.errors
-        )
+        self.assertTrue(any("not valid JSON" in e for e in r.errors), r.errors)
 
     def test_verification_data_path_missing_on_disk_errors(self):
         _write(
             self.root,
             "public/verify/verification-data.js",
-            'window.TP_VERIFICATION_MAP = '
-            '{"/gone":{"size_bytes":1,"path":"/gone.html"}};\n',
+            'window.TP_VERIFICATION_MAP = {"/gone":{"size_bytes":1,"path":"/gone.html"}};\n',
         )
         r = vfs.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("gone.html missing on disk" in e for e in r.errors), r.errors
-        )
+        self.assertTrue(any("gone.html missing on disk" in e for e in r.errors), r.errors)
 
     def test_verification_data_non_dict_and_pathless_records_skipped(self):
         # a non-dict record and a record with no resolvable path are both
@@ -427,9 +406,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vfs.evaluate(self.repo)
         self.assertTrue(r.ok, msg=r.errors)
-        self.assertTrue(
-            any("verification-data.js: 3 routes" in o for o in r.oks), r.oks
-        )
+        self.assertTrue(any("verification-data.js: 3 routes" in o for o in r.oks), r.oks)
 
 
 # the real-repo smoke needs a fully-built public/ tree; the font subsets are

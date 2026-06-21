@@ -92,9 +92,7 @@ class Evaluate(unittest.TestCase):
     def test_missing_robots_meta_is_caught(self):
         # strip the index,follow robots meta — the vestibule is the
         # indexable x-default gate, so its absence must fail.
-        defective = PRISTINE_GATE.replace(
-            '<meta name="robots" content="index, follow">', ""
-        )
+        defective = PRISTINE_GATE.replace('<meta name="robots" content="index, follow">', "")
         r = self._evaluate(defective)
         self.assertTrue(any("missing <meta robots" in f for f in r.fails), r.fails)
 
@@ -114,25 +112,17 @@ class Evaluate(unittest.TestCase):
             "",
         )
         r = self._evaluate(defective)
-        self.assertTrue(
-            any("does not read localStorage" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("does not read localStorage" in f for f in r.fails), r.fails)
 
     def test_missing_en_au_choice_is_caught(self):
         # remove the english <a> choice — the vestibule must offer a real link.
-        defective = PRISTINE_GATE.replace(
-            '<a href="/en-au/" data-lang-choice="en">English</a>', ""
-        )
+        defective = PRISTINE_GATE.replace('<a href="/en-au/" data-lang-choice="en">English</a>', "")
         r = self._evaluate(defective)
-        self.assertTrue(
-            any("no <a href=/en-au/" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("no <a href=/en-au/" in f for f in r.fails), r.fails)
 
     def test_missing_fr_choice_is_caught(self):
         # remove the french <a> choice — the vestibule must offer a real link.
-        defective = PRISTINE_GATE.replace(
-            '<a href="/fr/" data-lang-choice="fr">Français</a>', ""
-        )
+        defective = PRISTINE_GATE.replace('<a href="/fr/" data-lang-choice="fr">Français</a>', "")
         r = self._evaluate(defective)
         self.assertTrue(any("no <a href=/fr/" in f for f in r.fails), r.fails)
 

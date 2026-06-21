@@ -42,9 +42,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/styles.2026-01-01.deadbeef.css", "body{}\n")
         r = vnda.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("styles.2026-01-01.deadbeef.css" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("styles.2026-01-01.deadbeef.css" in f for f in r.fails), r.fails)
 
     def test_frozen_archive_dated_asset_is_exempt(self):
         _write(

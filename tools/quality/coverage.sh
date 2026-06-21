@@ -16,9 +16,9 @@ cd "$ROOT"
 mkdir -p .build/coverage
 
 # per-surface floors (the ratchet). raise these as coverage climbs; never lower.
-SEAL_MIN=90    # convergence + seal — signing-critical (currently ~98%)
-ADR_MIN=90     # ADR-0002 validators (currently ~98%)
-BROAD_MIN=85   # broad quality-policy (currently ~94%)
+SEAL_MIN=90  # convergence + seal — signing-critical (currently ~98%)
+ADR_MIN=90   # ADR-0002 validators (currently ~98%)
+BROAD_MIN=85 # broad quality-policy (currently ~94%)
 
 python3 -m coverage erase
 python3 -m coverage run --branch -m unittest discover -s tools/quality/tests
@@ -28,22 +28,31 @@ fail=0
 echo
 echo "── (1) convergence + seal · signing-critical · floor ${SEAL_MIN}% ──"
 python3 -m coverage report --fail-under="$SEAL_MIN" \
-  --include="tools/build/assert_seal_immutable.py,tools/quality/validate_sri_coherence.py,tools/lib/proc.py,tools/lib/repo.py,tools/lib/hashing.py" \
-  || { echo "  ✗ below ${SEAL_MIN}% floor"; fail=1; }
+  --include="tools/build/assert_seal_immutable.py,tools/quality/validate_sri_coherence.py,tools/lib/proc.py,tools/lib/repo.py,tools/lib/hashing.py" ||
+  {
+    echo "  ✗ below ${SEAL_MIN}% floor"
+    fail=1
+  }
 
 echo
 echo "── (2) ADR-0002 validators · floor ${ADR_MIN}% ──"
 python3 -m coverage report --fail-under="$ADR_MIN" \
   --include="tools/quality/validate_*.py,tools/verify/validate_*.py" \
-  --omit="tools/quality/tests/*" \
-  || { echo "  ✗ below ${ADR_MIN}% floor"; fail=1; }
+  --omit="tools/quality/tests/*" ||
+  {
+    echo "  ✗ below ${ADR_MIN}% floor"
+    fail=1
+  }
 
 echo
 echo "── (3) broad quality-policy · floor ${BROAD_MIN}% ──"
 python3 -m coverage report --fail-under="$BROAD_MIN" \
   --include="tools/quality/*.py,tools/lib/*.py,tools/verify/*.py" \
-  --omit="tools/quality/tests/*,tools/quality/gate.py,tools/quality/lint.py" \
-  || { echo "  ✗ below ${BROAD_MIN}% floor"; fail=1; }
+  --omit="tools/quality/tests/*,tools/quality/gate.py,tools/quality/lint.py" ||
+  {
+    echo "  ✗ below ${BROAD_MIN}% floor"
+    fail=1
+  }
 
 python3 -m coverage json -o .build/coverage/coverage.json
 python3 -m coverage html

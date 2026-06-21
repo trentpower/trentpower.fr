@@ -38,6 +38,7 @@ PUBLIC_FILE = "hello.txt"
 MIRROR_NAME = "hello.txt.txt"
 BODY = b"hello mirror\n"
 
+
 # REQUIRED_MIRRORS is a hard global gate (the trust-system pages must always
 # have a mirror). a coherent green fixture must therefore satisfy every
 # required mirror too: each gets a live public file, a byte-matching mirror,
@@ -120,9 +121,7 @@ class Evaluate(unittest.TestCase):
         _fixture.write_bytes(self.root, f"public/source/{MIRROR_NAME}", b"tampered\n")
         r = vsm.evaluate(self.repo, _ctx())
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any(f.startswith(f"DRIFT: {PUBLIC_FILE} ") for f in r.fails), r.fails
-        )
+        self.assertTrue(any(f.startswith(f"DRIFT: {PUBLIC_FILE} ") for f in r.fails), r.fails)
 
     def test_missing_required_mirror_fails(self):
         # seeded defect: a required trust-system mirror is removed from disk.
@@ -140,18 +139,14 @@ class Evaluate(unittest.TestCase):
         _fixture.write_bytes(self.root, "public/orphan.txt", b"no mirror\n")
         r = vsm.evaluate(self.repo, _ctx())
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any(f.startswith("COMPLETENESS: orphan.txt") for f in r.fails), r.fails
-        )
+        self.assertTrue(any(f.startswith("COMPLETENESS: orphan.txt") for f in r.fails), r.fails)
 
     def test_extra_unlisted_mirror_fails(self):
         # seeded defect: a *.txt under /source/ that is not in MIRROR.
         _fixture.write_bytes(self.root, "public/source/stray.txt", b"x\n")
         r = vsm.evaluate(self.repo, _ctx())
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any(f.startswith("EXTRA: source/stray.txt") for f in r.fails), r.fails
-        )
+        self.assertTrue(any(f.startswith("EXTRA: source/stray.txt") for f in r.fails), r.fails)
 
 
 class EvaluateUncoveredBranches(unittest.TestCase):
@@ -193,19 +188,14 @@ class EvaluateUncoveredBranches(unittest.TestCase):
         _fixture.write_bytes(self.root, "public/source/ghost.txt.txt", BODY)
         r = vsm.evaluate(self.repo, ctx)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any(f.startswith("MISSING SOURCE: ghost.txt") for f in r.fails), r.fails
-        )
+        self.assertTrue(any(f.startswith("MISSING SOURCE: ghost.txt") for f in r.fails), r.fails)
 
     def test_required_mirror_on_disk_but_untracked_fails(self):
         # seeded defect: a required mirror exists on disk but is dropped from the
         # MIRROR map → the REQUIRED MIRROR UNTRACKED arm (line 265). build a Ctx
         # whose mirror omits one required pair while leaving its file in place.
         required = sorted(vsm.REQUIRED_MIRRORS)[0]
-        kept = [
-            p for p in [(PUBLIC_FILE, MIRROR_NAME), *_required_pairs()]
-            if p[1] != required
-        ]
+        kept = [p for p in [(PUBLIC_FILE, MIRROR_NAME), *_required_pairs()] if p[1] != required]
         ctx = vsm.Ctx(
             mirror=kept,
             mirror_map={},
@@ -216,10 +206,7 @@ class EvaluateUncoveredBranches(unittest.TestCase):
         r = vsm.evaluate(self.repo, ctx)
         self.assertFalse(r.ok)
         self.assertTrue(
-            any(
-                f.startswith(f"REQUIRED MIRROR UNTRACKED: source/{required}")
-                for f in r.fails
-            ),
+            any(f.startswith(f"REQUIRED MIRROR UNTRACKED: source/{required}") for f in r.fails),
             r.fails,
         )
 
@@ -238,9 +225,7 @@ class EvaluateUncoveredBranches(unittest.TestCase):
         _fixture.write_bytes(self.root, "public/source/asset.css.txt", BODY)
         r = vsm.evaluate(self.repo, ctx)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any(f.startswith("AUTHORED-SOURCE MISSING:") for f in r.fails), r.fails
-        )
+        self.assertTrue(any(f.startswith("AUTHORED-SOURCE MISSING:") for f in r.fails), r.fails)
 
     def test_authored_mirror_byte_drift_fails(self):
         # seeded defect: an authored-source mirror exists but the mirror bytes
@@ -281,9 +266,7 @@ class EvaluateUncoveredBranches(unittest.TestCase):
         # add a manifest record so the on-disk mirror isn't flagged EXTRA.
         self._add_manifest_record("asset.css.txt", banner + authored)
         r = vsm.evaluate(self.repo, ctx)
-        self.assertTrue(
-            all("asset.css.txt" not in f or "AUTHORED" in f for f in r.fails)
-        )
+        self.assertTrue(all("asset.css.txt" not in f or "AUTHORED" in f for f in r.fails))
         self.assertFalse(any("asset.css.txt" in f for f in r.fails), r.fails)
 
     def test_htaccess_transform_applied(self):
@@ -343,9 +326,7 @@ class EvaluateUncoveredBranches(unittest.TestCase):
         self._add_manifest_record("page.html.txt", mirror)
         r = vsm.evaluate(self.repo, ctx)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any(f.startswith("DRIFT: page.html") for f in r.fails), r.fails
-        )
+        self.assertTrue(any(f.startswith("DRIFT: page.html") for f in r.fails), r.fails)
 
     def test_manifest_invalid_json_fails(self):
         # seeded defect: source-manifest.json is not valid JSON → both the
@@ -365,9 +346,7 @@ class EvaluateUncoveredBranches(unittest.TestCase):
         self._add_manifest_record("phantom.txt", BODY)
         r = vsm.evaluate(self.repo, _ctx())
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("listed but missing on disk" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("listed but missing on disk" in f for f in r.fails), r.fails)
 
     def test_manifest_mirror_bytes_mismatch_fails(self):
         # seeded defect: manifest mirror_bytes disagrees with the on-disk
@@ -416,10 +395,9 @@ class EvaluateUncoveredBranches(unittest.TestCase):
     def test_image_mirror_live_missing_fails(self):
         # seeded defect: an images record whose live file is absent → the
         # "live file ... missing" arm (lines 364-366).
-        self._set_images([
-            {"name": "images/logo.svg.txt", "live_path": "/images/logo.svg",
-             "sha256": "x" * 20}
-        ])
+        self._set_images(
+            [{"name": "images/logo.svg.txt", "live_path": "/images/logo.svg", "sha256": "x" * 20}]
+        )
         _fixture.write_bytes(self.root, "public/source/images/logo.svg.txt", BODY)
         r = vsm.evaluate(self.repo, _ctx())
         self.assertFalse(r.ok)
@@ -428,10 +406,9 @@ class EvaluateUncoveredBranches(unittest.TestCase):
     def test_image_mirror_file_missing_fails(self):
         # seeded defect: live image present but the mirror file is absent →
         # the "mirror source/... missing" arm (lines 369-370).
-        self._set_images([
-            {"name": "images/logo.svg.txt", "live_path": "/images/logo.svg",
-             "sha256": "x" * 20}
-        ])
+        self._set_images(
+            [{"name": "images/logo.svg.txt", "live_path": "/images/logo.svg", "sha256": "x" * 20}]
+        )
         _fixture.write_bytes(self.root, "public/images/logo.svg", BODY)
         r = vsm.evaluate(self.repo, _ctx())
         self.assertFalse(r.ok)
@@ -447,10 +424,15 @@ class EvaluateUncoveredBranches(unittest.TestCase):
 
         _fixture.write_bytes(self.root, "public/images/logo.svg", b"<svg/>\n")
         _fixture.write_bytes(self.root, "public/source/images/logo.svg.txt", BODY)
-        self._set_images([
-            {"name": "images/logo.svg.txt", "live_path": "/images/logo.svg",
-             "sha256": "WRONGHASHVALUEHERE=="}
-        ])
+        self._set_images(
+            [
+                {
+                    "name": "images/logo.svg.txt",
+                    "live_path": "/images/logo.svg",
+                    "sha256": "WRONGHASHVALUEHERE==",
+                }
+            ]
+        )
         r = vsm.evaluate(self.repo, _ctx())
         self.assertFalse(r.ok)
         self.assertTrue(any("manifest sha256" in f for f in r.fails), r.fails)
@@ -466,10 +448,15 @@ class EvaluateUncoveredBranches(unittest.TestCase):
         body = b"<svg/>\n"
         _fixture.write_bytes(self.root, "public/images/logo.svg", body)
         _fixture.write_bytes(self.root, "public/source/images/logo.svg.txt", BODY)
-        self._set_images([
-            {"name": "images/logo.svg.txt", "live_path": "/images/logo.svg",
-             "sha256": sha256_b64(body)}
-        ])
+        self._set_images(
+            [
+                {
+                    "name": "images/logo.svg.txt",
+                    "live_path": "/images/logo.svg",
+                    "sha256": sha256_b64(body),
+                }
+            ]
+        )
         r = vsm.evaluate(self.repo, _ctx())
         self.assertFalse(any("IMAGE MIRROR" in f for f in r.fails), r.fails)
         self.assertFalse(any("EXTRA: source/images/logo.svg.txt" in f for f in r.fails), r.fails)

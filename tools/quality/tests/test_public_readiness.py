@@ -202,9 +202,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, ".gitattributes", "*.png binary\n")
         r = vpr.evaluate(self.repo, _green_proc())
         self.assertFalse(r.ok)
-        self.assertIn(
-            ".gitattributes lost the public/** linguist-generated marker", r.fails
-        )
+        self.assertIn(".gitattributes lost the public/** linguist-generated marker", r.fails)
 
     def test_forbidden_filename_tracked_caught(self):
         # a tracked file whose basename is in FORBIDDEN_NAMES (e.g. an .env file).
@@ -241,18 +239,14 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/fonts/mono.woff2", "binary-ish")
         r = vpr.evaluate(self.repo, _green_proc())
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("font on disk but not declared" in f for f in r.fails), msg=r.fails
-        )
+        self.assertTrue(any("font on disk but not declared" in f for f in r.fails), msg=r.fails)
 
     def test_declared_font_missing_on_disk_caught(self):
         # the manifest declares a font that is not present on disk.
         (self.root / "public/fonts/serif.woff2").unlink()
         r = vpr.evaluate(self.repo, _green_proc())
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("declared font missing on disk" in f for f in r.fails), msg=r.fails
-        )
+        self.assertTrue(any("declared font missing on disk" in f for f in r.fails), msg=r.fails)
 
     def test_internal_record_tracked_caught(self):
         # an internal process record that must stay untracked is reported tracked.
@@ -320,9 +314,7 @@ class FullMode(unittest.TestCase):
         self._write_scan(status="failed")
         r = vpr.evaluate(self.repo, self._full_proc(), full=True)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("secret scan status is 'failed'" in f for f in r.fails), msg=r.fails
-        )
+        self.assertTrue(any("secret scan status is 'failed'" in f for f in r.fails), msg=r.fails)
 
     def test_full_scanned_commit_is_ancestor_passes(self):
         # scanned commit differs from HEAD but is an ancestor (merge-base rc 0).
@@ -335,9 +327,7 @@ class FullMode(unittest.TestCase):
         self._write_scan(scanned_commit="b" * 40)
         r = vpr.evaluate(self.repo, self._full_proc(ancestor_rc=1), full=True)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("unrelated commit" in f for f in r.fails), msg=r.fails
-        )
+        self.assertTrue(any("unrelated commit" in f for f in r.fails), msg=r.fails)
 
     def test_full_stale_scan_caught(self):
         # a scan older than secret_scan_max_age_days (7) is flagged.
@@ -353,9 +343,7 @@ class FullMode(unittest.TestCase):
         self._write_scan(generated_at="not-a-timestamp")
         r = vpr.evaluate(self.repo, self._full_proc(), full=True)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("no parseable timestamp" in f for f in r.fails), msg=r.fails
-        )
+        self.assertTrue(any("no parseable timestamp" in f for f in r.fails), msg=r.fails)
 
 
 class ExternalInterface(unittest.TestCase):
@@ -381,9 +369,11 @@ class ExternalInterface(unittest.TestCase):
         def handler(argv, cwd, env):
             return proc_result(0, "")
 
-        with mock.patch.object(sys, "argv", ["validate_public_readiness.py"]), mock.patch.object(
-            vpr, "Proc", lambda: FakeProc(handler)
-        ), mock.patch("sys.stdout", new=__import__("io").StringIO()) as out:
+        with (
+            mock.patch.object(sys, "argv", ["validate_public_readiness.py"]),
+            mock.patch.object(vpr, "Proc", lambda: FakeProc(handler)),
+            mock.patch("sys.stdout", new=__import__("io").StringIO()) as out,
+        ):
             rc = vpr.main(root)
         self.assertEqual(rc, 1)
         printed = out.getvalue()

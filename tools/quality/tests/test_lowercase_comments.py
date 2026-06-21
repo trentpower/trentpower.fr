@@ -62,8 +62,7 @@ class Evaluate(unittest.TestCase):
         self.assertFalse(r.ok)
         self.assertTrue(
             any(
-                f.startswith("tools/quality/sample_tool.py:2:")
-                and "uppercase comment prose" in f
+                f.startswith("tools/quality/sample_tool.py:2:") and "uppercase comment prose" in f
                 for f in r.fails
             ),
             msg=r.fails,

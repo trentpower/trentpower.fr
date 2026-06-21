@@ -193,7 +193,7 @@ class LegacyRedirects(unittest.TestCase):
         rename = hc._RENAME_REDIRECT_RULES
         # the /en/ cut-over rules come first, the renames last.
         self.assertEqual(combined[: len(lang)], lang)
-        self.assertEqual(combined[-len(rename):], rename)
+        self.assertEqual(combined[-len(rename) :], rename)
 
     def test_versioned_asset_redirects_match_dated_shapes(self):
         rules = hc.LEGACY_VERSIONED_ASSET_REDIRECTS
@@ -203,9 +203,7 @@ class LegacyRedirects(unittest.TestCase):
         self.assertNotRegex("fonts-full.css", font_pat)
         verify_pat, verify_target = rules[1]
         self.assertEqual(verify_target, "/verify/verification-data.js")
-        self.assertRegex(
-            "verify/verification-data.2026-02-01.deadbeef.js", verify_pat
-        )
+        self.assertRegex("verify/verification-data.2026-02-01.deadbeef.js", verify_pat)
 
 
 class DenyRules(unittest.TestCase):
@@ -334,12 +332,8 @@ class AllowFamilies(unittest.TestCase):
     def test_bilingual_family_embeds_route_rules(self):
         # the public-routes family is built from _bilingual_route_allow_rules.
         family = dict(hc.ALLOW_RULE_FAMILIES)
-        bilingual_heading = next(
-            h for h, _ in hc.ALLOW_RULE_FAMILIES if "bilingual" in h
-        )
-        self.assertEqual(
-            family[bilingual_heading], hc._bilingual_route_allow_rules()
-        )
+        bilingual_heading = next(h for h, _ in hc.ALLOW_RULE_FAMILIES if "bilingual" in h)
+        self.assertEqual(family[bilingual_heading], hc._bilingual_route_allow_rules())
 
     def test_root_and_error_pages_match(self):
         family = dict(hc.ALLOW_RULE_FAMILIES)
@@ -349,9 +343,7 @@ class AllowFamilies(unittest.TestCase):
         self.assertTrue(any(re.fullmatch(p, "404.html") for p in patterns))
 
     def test_forward_look_keys_exist_in_families(self):
-        all_patterns = {
-            p for _, pats in hc.ALLOW_RULE_FAMILIES for p in pats
-        }
+        all_patterns = {p for _, pats in hc.ALLOW_RULE_FAMILIES for p in pats}
         for key in hc.ALLOW_RULE_FORWARD_LOOK:
             self.assertIn(key, all_patterns)
 

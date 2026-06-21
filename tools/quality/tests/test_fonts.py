@@ -71,9 +71,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vf.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("MISSING: /fonts/plex-bold.woff2" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("MISSING: /fonts/plex-bold.woff2" in f for f in r.fails), r.fails)
 
     def test_orphan_font_on_disk_fails(self):
         # A font ships but nothing references it.
@@ -81,9 +79,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/fonts/orphan.woff2", "ORPHANBYTES")
         r = vf.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("ORPHAN: /fonts/orphan.woff2" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("ORPHAN: /fonts/orphan.woff2" in f for f in r.fails), r.fails)
 
     def test_malformed_sw_manifest_fails(self):
         # the service-worker precache list is not valid json.
@@ -91,9 +87,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/sw-cache-manifest.json", "{not json")
         r = vf.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("sw-cache-manifest.json:" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("sw-cache-manifest.json:" in f for f in r.fails), r.fails)
 
     def test_malformed_integrity_manifest_fails(self):
         # the integrity manifest is not valid json.

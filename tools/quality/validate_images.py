@@ -164,22 +164,14 @@ def evaluate(repo: Repo, active_html: list | None = None) -> Result:
                 if fmt != "PNG":
                     fails.append(f"{pub}: not a PNG (format={fmt})")
                 if (w, h) != (CANONICAL_W, CANONICAL_H):
-                    fails.append(
-                        f"{pub}: {w}×{h} (expected {CANONICAL_W}×{CANONICAL_H})"
-                    )
+                    fails.append(f"{pub}: {w}×{h} (expected {CANONICAL_W}×{CANONICAL_H})")
                 if mode in ("RGBA", "LA", "PA"):
-                    fails.append(
-                        f"{pub}: alpha channel present (mode={mode}) — flatten to RGB"
-                    )
+                    fails.append(f"{pub}: alpha channel present (mode={mode}) — flatten to RGB")
             sz = repo.size(png)
             if sz > FAIL_BYTES:
-                fails.append(
-                    f"{pub}: {sz} bytes exceeds {FAIL_BYTES}-byte hard limit"
-                )
+                fails.append(f"{pub}: {sz} bytes exceeds {FAIL_BYTES}-byte hard limit")
             elif sz > WARN_BYTES:
-                warnings.append(
-                    f"{pub}: {sz} bytes exceeds {WARN_BYTES}-byte soft limit"
-                )
+                warnings.append(f"{pub}: {sz} bytes exceeds {WARN_BYTES}-byte soft limit")
 
     # ── 2. og:image refs in active html ─────────────────────────
     og_image_re = re.compile(r'<meta\s+property="og:image"\s+content="([^"]+)"', re.IGNORECASE)
@@ -223,8 +215,7 @@ def evaluate(repo: Repo, active_html: list | None = None) -> Result:
             if name in ALLOWLIST_UNREFERENCED:
                 continue
             warnings.append(
-                f"{_public_rel(png)}: canonical PNG not "
-                f"referenced by any og:image in active HTML"
+                f"{_public_rel(png)}: canonical PNG not referenced by any og:image in active HTML"
             )
 
     # ── 4. derivative orphans ───────────────────────────────────

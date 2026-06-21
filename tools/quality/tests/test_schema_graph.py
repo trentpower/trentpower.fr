@@ -33,9 +33,7 @@ GATE_ID = f"{SITE_BASE}/#language-gate"
 
 def _page(jsonld_bodies: list[str]) -> str:
     """wrap one or more raw json-ld block bodies in a minimal html page."""
-    head = "".join(
-        f'<script type="application/ld+json">{b}</script>' for b in jsonld_bodies
-    )
+    head = "".join(f'<script type="application/ld+json">{b}</script>' for b in jsonld_bodies)
     return f"<!doctype html><html><head>{head}</head><body></body></html>\n"
 
 
@@ -122,9 +120,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/verify/index.html", _page([one, one]))
         r = vsg.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("at most ONE inline JSON-LD block" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("at most ONE inline JSON-LD block" in f for f in r.fails), r.fails)
 
     def test_malformed_jsonld_fails(self):
         # defect 2: a page whose JSON-LD block does not parse.
@@ -155,9 +151,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/fr/index.html", _edition_page("fr"))
         r = vsg.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("editorial entities belong" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("editorial entities belong" in f for f in r.fails), r.fails)
 
     def test_edition_missing_required_entity_fails(self):
         # an edition @graph missing the Person entity is a defect.
@@ -179,9 +173,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/fr/index.html", _edition_page("fr"))
         r = vsg.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any(f"missing entity with @id {PERSON_ID}" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any(f"missing entity with @id {PERSON_ID}" in f for f in r.fails), r.fails)
 
     def test_frozen_release_pages_excluded(self):
         # frozen archive snapshots are not scanned, even if malformed.
@@ -194,7 +186,6 @@ class Evaluate(unittest.TestCase):
         r = vsg.evaluate(self.repo)
         self.assertTrue(r.ok, msg=r.fails)
 
-
     def test_edition_no_page_level_block(self):
         # an edition page carrying only a FAQPage block has no @graph block.
         _write(self.root, "public/index.html", GATE_PAGE)
@@ -203,9 +194,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/fr/index.html", _edition_page("fr"))
         r = vsg.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("no @graph / page-level JSON-LD found" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("no @graph / page-level JSON-LD found" in f for f in r.fails), r.fails)
 
     def test_edition_two_non_faq_blocks_fails(self):
         # an edition with two separate non-FAQ page blocks violates the
@@ -252,9 +241,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/fr/index.html", _edition_page("fr"))
         r = vsg.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("missing `@graph` array" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("missing `@graph` array" in f for f in r.fails), r.fails)
 
     def test_edition_profilepage_wrong_mainentity_and_ispartof(self):
         # ProfilePage with mainEntity / isPartOf pointing at the wrong ids.
@@ -277,12 +264,8 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/fr/index.html", _edition_page("fr"))
         r = vsg.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("ProfilePage: mainEntity.@id should be" in f for f in r.fails), r.fails
-        )
-        self.assertTrue(
-            any("ProfilePage: isPartOf.@id should be" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("ProfilePage: mainEntity.@id should be" in f for f in r.fails), r.fails)
+        self.assertTrue(any("ProfilePage: isPartOf.@id should be" in f for f in r.fails), r.fails)
 
     def test_edition_website_wrong_publisher(self):
         # WebSite.publisher pointing at the wrong id on an edition page.
@@ -309,9 +292,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/fr/index.html", _edition_page("fr"))
         r = vsg.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("WebSite: publisher.@id should be" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("WebSite: publisher.@id should be" in f for f in r.fails), r.fails)
 
     def test_edition_duplicate_entity_type(self):
         # two Person entities in the same @graph is a duplicate-definition defect.
@@ -335,9 +316,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/fr/index.html", _edition_page("fr"))
         r = vsg.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("Person defined 2 times" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("Person defined 2 times" in f for f in r.fails), r.fails)
 
     def test_inner_webpage_wrong_ispartof_and_about(self):
         # an inner WebPage referencing the wrong website + person ids.
@@ -387,12 +366,8 @@ class Evaluate(unittest.TestCase):
             any("TechArticle: publisher.@id should reference" in f for f in r.fails),
             r.fails,
         )
-        self.assertTrue(
-            any("TechArticle: missing headline" in f for f in r.fails), r.fails
-        )
-        self.assertTrue(
-            any("missing datePublished/dateModified" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("TechArticle: missing headline" in f for f in r.fails), r.fails)
+        self.assertTrue(any("missing datePublished/dateModified" in f for f in r.fails), r.fails)
 
     def test_inner_malformed_block_fails(self):
         # an inner page whose single block does not parse (continue path).
@@ -437,9 +412,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/fr/index.html", _edition_page("fr"))
         r = vsg.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("no @graph / page-level JSON-LD found" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("no @graph / page-level JSON-LD found" in f for f in r.fails), r.fails)
 
     def test_gate_missing_graph_array_fails(self):
         # a "/" gate top-level block that is not an @graph array.
@@ -448,9 +421,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/fr/index.html", _edition_page("fr"))
         r = vsg.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("missing `@graph` array" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("missing `@graph` array" in f for f in r.fails), r.fails)
 
     def test_gate_missing_website_and_gate_entities(self):
         # a "/" gate @graph missing both the WebSite and the language-gate page.
@@ -462,9 +433,7 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(
             any(f"missing WebSite with @id {WEBSITE_ID}" in f for f in r.fails), r.fails
         )
-        self.assertTrue(
-            any(f"missing WebPage with @id {GATE_ID}" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any(f"missing WebPage with @id {GATE_ID}" in f for f in r.fails), r.fails)
 
     def test_gate_languagegate_wrong_ispartof(self):
         # gate WebPage isPartOf points at the wrong website id.
@@ -505,9 +474,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/fr/index.html", _edition_page("fr"))
         r = vsg.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("WebSite: publisher.@id should be" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("WebSite: publisher.@id should be" in f for f in r.fails), r.fails)
 
     def test_inner_block_other_type_is_tolerated(self):
         # an inner page whose single block is neither WebPage nor TechArticle
@@ -559,9 +526,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/fr/index.html", _edition_page("fr"))
         r = vsg.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("carries" in f and "non-stub keys" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("carries" in f and "non-stub keys" in f for f in r.fails), r.fails)
 
 
 class EntityIdsHelper(unittest.TestCase):

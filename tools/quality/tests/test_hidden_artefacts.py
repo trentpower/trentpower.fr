@@ -78,15 +78,21 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(any("forbidden directory" in f for f in r.fails), r.fails)
 
     def test_font_binary_in_release_zip_flagged(self):
-        _zip(self.root, "public/integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip",
-             ["index.html", "fonts/x.woff2"])
+        _zip(
+            self.root,
+            "public/integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip",
+            ["index.html", "fonts/x.woff2"],
+        )
         r = vh.evaluate(self.repo)
         self.assertFalse(r.ok)
         self.assertTrue(any("font binary inside" in f for f in r.fails), r.fails)
 
     def test_clean_release_zip_green(self):
-        _zip(self.root, "public/integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip",
-             ["index.html", "styles.css"])
+        _zip(
+            self.root,
+            "public/integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip",
+            ["index.html", "styles.css"],
+        )
         r = vh.evaluate(self.repo)
         self.assertTrue(r.ok, msg=r.fails)
 
@@ -112,14 +118,18 @@ class Evaluate(unittest.TestCase):
     def test_non_date_release_folder_skipped(self):
         # a folder under releases/ that is not YYYY-MM-DD must not be scanned;
         # the font binary it hides stays unreported (line 125 + 121->138).
-        _zip(self.root, "public/integrity/releases/draft/trentpower-fr-draft.zip",
-             ["fonts/x.woff2"])
+        _zip(
+            self.root, "public/integrity/releases/draft/trentpower-fr-draft.zip", ["fonts/x.woff2"]
+        )
         r = vh.evaluate(self.repo)
         self.assertTrue(r.ok, msg=r.fails)
 
     def test_stale_stylesheet_in_release_zip_flagged(self):
-        _zip(self.root, "public/integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip",
-             ["index.html", "assets/styles.v3.css"])
+        _zip(
+            self.root,
+            "public/integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip",
+            ["index.html", "assets/styles.v3.css"],
+        )
         r = vh.evaluate(self.repo)
         self.assertFalse(r.ok)
         self.assertTrue(any("stale stylesheet inside" in f for f in r.fails), r.fails)
@@ -127,9 +137,11 @@ class Evaluate(unittest.TestCase):
     def test_unreadable_zip_is_a_finding(self):
         # a file with a .zip name that is not a valid archive must surface as a
         # finding rather than crash the scan (lines 135-136).
-        _write(self.root,
-               "public/integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip",
-               "not actually a zip")
+        _write(
+            self.root,
+            "public/integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip",
+            "not actually a zip",
+        )
         r = vh.evaluate(self.repo)
         self.assertFalse(r.ok)
         self.assertTrue(any("could not read" in f for f in r.fails), r.fails)

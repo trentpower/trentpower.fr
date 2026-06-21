@@ -65,7 +65,6 @@ class Evaluate(unittest.TestCase):
         self.assertEqual(r.fails, [])  # not a sink failure
         self.assertIn("public/.htaccess", r.stale)
 
-
     def test_missing_scan_file_caught(self):
         # leave one SCAN_FILE absent; _scan_file reports it as missing rather
         # than reading it (covers the FILE MISSING early return).

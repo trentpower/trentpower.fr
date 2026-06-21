@@ -117,13 +117,9 @@ def evaluate(repo: Repo) -> Result:
     only_manifest = sorted(manifest - htaccess)
     r.fails.append("deny-extension parity — the two deny surfaces disagree.")
     if only_htaccess:
-        r.fails.append(
-            f"  denied by .htaccess but NOT by the manifest: {', '.join(only_htaccess)}"
-        )
+        r.fails.append(f"  denied by .htaccess but NOT by the manifest: {', '.join(only_htaccess)}")
     if only_manifest:
-        r.fails.append(
-            f"  denied by the manifest but NOT by .htaccess: {', '.join(only_manifest)}"
-        )
+        r.fails.append(f"  denied by the manifest but NOT by .htaccess: {', '.join(only_manifest)}")
     r.fails.append(
         "  Remediation: add the missing extension(s) to whichever list lacks them —\n"
         "  DENY_EXTENSION_RULES in htaccess_config.py (alternation group) and\n"

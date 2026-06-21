@@ -74,7 +74,7 @@ class PureChecks(unittest.TestCase):
         # a click handler targeting a[href^="#"] that calls preventDefault.
         js = (
             'document.addEventListener("click", function (e) {\n'
-            '  const a = e.target.closest(\'a[href^="#"]\');\n'
+            "  const a = e.target.closest('a[href^=\"#\"]');\n"
             "  if (a) { e.preventDefault(); }\n"
             "});\n"
         )
@@ -178,7 +178,9 @@ class ExternalInterface(unittest.TestCase):
                     encoding="utf-8",
                 )
             theme = root / "public/js/theme.js"
-            theme.write_text("el.scrollIntoView();\n" + theme.read_text(encoding="utf-8"), encoding="utf-8")
+            theme.write_text(
+                "el.scrollIntoView();\n" + theme.read_text(encoding="utf-8"), encoding="utf-8"
+            )
 
             buf = io.StringIO()
             with contextlib.redirect_stdout(buf):

@@ -60,9 +60,7 @@ class Evaluate(unittest.TestCase):
     def test_mismatched_heading_caught(self):
         # defect 1: a heading opened as <h2> closed as </h3>.
         bad = (
-            "<!doctype html><html><head></head><body>"
-            "<h1>Title</h1><h2>Section</h3>"
-            "</body></html>\n"
+            "<!doctype html><html><head></head><body><h1>Title</h1><h2>Section</h3></body></html>\n"
         )
         _write(self.root, "public/index.html", bad)
         r = vhc.evaluate(self.repo)
@@ -104,9 +102,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/index.html", bad)
         r = vhc.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("exactly one visible <h1>" in err for _rel, err in r.fails), r.fails
-        )
+        self.assertTrue(any("exactly one visible <h1>" in err for _rel, err in r.fails), r.fails)
 
     def test_frozen_archive_pages_excluded(self):
         # dated frozen-archive snapshots are not scanned, even if defective.
@@ -133,7 +129,6 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(r.ok, msg=r.fails)
         self.assertEqual(r.page_count, 1)
 
-
     def test_h1_inside_aria_hidden_caught(self):
         # an <h1> inside an aria-hidden="true" subtree is banned (print-only
         # titles must be <p>). also leaves zero visible <h1>.
@@ -153,17 +148,11 @@ class Evaluate(unittest.TestCase):
 
     def test_heading_close_with_no_open_caught(self):
         # a stray </h2> with no matching open tag.
-        bad = (
-            "<!doctype html><html><head></head><body>"
-            "<h1>Title</h1></h2>"
-            "</body></html>\n"
-        )
+        bad = "<!doctype html><html><head></head><body><h1>Title</h1></h2></body></html>\n"
         _write(self.root, "public/index.html", bad)
         r = vhc.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("with no matching open" in err for _rel, err in r.fails), r.fails
-        )
+        self.assertTrue(any("with no matching open" in err for _rel, err in r.fails), r.fails)
 
     def test_anchor_with_aria_label_is_clean(self):
         # an icon-only anchor that declares aria-label is allowed — exercises

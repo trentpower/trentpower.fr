@@ -140,9 +140,7 @@ class Evaluate(unittest.TestCase):
             ),
         )
         r = ve.evaluate(self.repo, EDITION)
-        self.assertTrue(
-            any("does not match edition.date" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("does not match edition.date" in f for f in r.fails), r.fails)
 
     def test_site_metadata_missing_file_fails(self):
         # line 154 — site-metadata.json absent entirely.
@@ -162,17 +160,13 @@ class Evaluate(unittest.TestCase):
         # line 168 — sw.js present but with no `var CACHE` literal.
         _write(self.root, ve.SW_REL, "// service worker without a cache name\n")
         r = ve.evaluate(self.repo, EDITION)
-        self.assertTrue(
-            any("no `var CACHE = '...'` literal found" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("no `var CACHE = '...'` literal found" in f for f in r.fails), r.fails)
 
     def test_humans_txt_stale_last_reviewed_fails(self):
         # line 186 — humans.txt last-reviewed date is stale.
         _write(self.root, ve.HUMANS_REL, "Last reviewed: 2020-01-01\n")
         r = ve.evaluate(self.repo, EDITION)
-        self.assertTrue(
-            any("humans.txt: Last reviewed expected" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("humans.txt: Last reviewed expected" in f for f in r.fails), r.fails)
 
     def test_strings_invalid_json_is_swallowed_green(self):
         # lines 197-198, 199->247 — strings.json that does not parse is treated
@@ -190,9 +184,7 @@ class Evaluate(unittest.TestCase):
             json.dumps({"en": {"footer": "10 June 2020"}}),
         )
         r = ve.evaluate(self.repo, "not-a-real-date")
-        self.assertFalse(
-            any("localised date" in f for f in r.fails), r.fails
-        )
+        self.assertFalse(any("localised date" in f for f in r.fails), r.fails)
 
     def test_strings_unknown_language_subtree_ignored(self):
         # line 224 — a top-level key that is not a known locale is skipped.
@@ -225,9 +217,7 @@ class Evaluate(unittest.TestCase):
             json.dumps({"en": {"notes": ["fresh", "10 June 2020"]}}),
         )
         r = ve.evaluate(self.repo, EDITION)
-        self.assertTrue(
-            any("notes[1]" in f and "localised date" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("notes[1]" in f and "localised date" in f for f in r.fails), r.fails)
 
     def test_strings_ignored_prefix_is_not_flagged(self):
         # the IGNORE_PREFIXES branch — release-card labels carry coincidental

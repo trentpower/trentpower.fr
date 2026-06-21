@@ -50,7 +50,9 @@ def main() -> int:
         return 2
     OUTPUT.write_text(rendered, encoding="utf-8")
     # never echo the rendered values; just confirm the write.
-    print(f"  OK: rendered {OUTPUT.name} ({OUTPUT.stat().st_size} bytes) — gitignored, do not commit")
+    print(
+        f"  OK: rendered {OUTPUT.name} ({OUTPUT.stat().st_size} bytes) — gitignored, do not commit"
+    )
     return 0
 
 

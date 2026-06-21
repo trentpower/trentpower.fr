@@ -107,7 +107,9 @@ def evaluate(repo: Repo) -> Result:
     for d in FORBIDDEN_DIRS:
         for p in public.rglob(d):
             if p.is_dir():
-                r.fails.append(f"forbidden directory under public/: {p.relative_to(public).as_posix()}")
+                r.fails.append(
+                    f"forbidden directory under public/: {p.relative_to(public).as_posix()}"
+                )
 
     for p in public.rglob("__MACOSX"):
         if p.is_dir():

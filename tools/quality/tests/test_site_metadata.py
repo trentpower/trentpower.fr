@@ -183,7 +183,10 @@ class Evaluate(unittest.TestCase):
         )
         # the shape loop must not also emit an 'edition' object/nested error.
         self.assertFalse(
-            any("'edition' must be an object" in f or "'edition' missing nested" in f for f in r.fails),
+            any(
+                "'edition' must be an object" in f or "'edition' missing nested" in f
+                for f in r.fails
+            ),
             r.fails,
         )
 

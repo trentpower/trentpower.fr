@@ -128,9 +128,7 @@ class SeededRepo:
             "required": ["title"],
             "additionalProperties": True,
         }
-        (self.schema_dir / f"{stem}.schema.json").write_text(
-            json.dumps(schema), encoding="utf-8"
-        )
+        (self.schema_dir / f"{stem}.schema.json").write_text(json.dumps(schema), encoding="utf-8")
 
     def write_page(self, lang, stem, body):
         d = self.en_pages if lang == "en" else self.fr_pages
@@ -140,9 +138,7 @@ class SeededRepo:
         (self.template_pages / f"{name}.html").write_text("<html></html>", encoding="utf-8")
 
     def write_routes(self, routes):
-        self.routes_json.write_text(
-            json.dumps({"routes": routes}), encoding="utf-8"
-        )
+        self.routes_json.write_text(json.dumps({"routes": routes}), encoding="utf-8")
 
 
 class ContentBranches(unittest.TestCase):

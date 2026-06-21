@@ -47,14 +47,8 @@ def _record(rel: str, source_path: str = "content/en/index.yml") -> str:
         "edition": EDITION,
         "generated": True,
     }
-    comment = (
-        "<!-- provenance · page record · generated from the public source repository -->"
-    )
-    block = (
-        '<script type="application/json" id="tp-page-record">'
-        + json.dumps(rec)
-        + "</script>"
-    )
+    comment = "<!-- provenance · page record · generated from the public source repository -->"
+    block = '<script type="application/json" id="tp-page-record">' + json.dumps(rec) + "</script>"
     return f"<!doctype html>\n<html>{comment}\n{block}\n</html>\n"
 
 
@@ -101,7 +95,9 @@ class Evaluate(unittest.TestCase):
         self.assertEqual(errors, [])
         r = vpp.evaluate(self.repo, ctx)
         self.assertFalse(r.ok)
-        self.assertTrue(any("orphan/index.html: expected 1 tp-page-record" in f for f in r.fails), r.fails)
+        self.assertTrue(
+            any("orphan/index.html: expected 1 tp-page-record" in f for f in r.fails), r.fails
+        )
 
     def test_duplicate_record_is_caught(self):
         _make_fixture_repo(self.root)
@@ -112,7 +108,9 @@ class Evaluate(unittest.TestCase):
         self.assertEqual(errors, [])
         r = vpp.evaluate(self.repo, ctx)
         self.assertFalse(r.ok)
-        self.assertTrue(any("dup/index.html: expected 1 tp-page-record" in f for f in r.fails), r.fails)
+        self.assertTrue(
+            any("dup/index.html: expected 1 tp-page-record" in f for f in r.fails), r.fails
+        )
 
     def test_local_path_leak_is_caught(self):
         _make_fixture_repo(self.root)
@@ -124,16 +122,18 @@ class Evaluate(unittest.TestCase):
         self.assertEqual(errors, [])
         r = vpp.evaluate(self.repo, ctx)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("forbidden fragment '/home/'" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("forbidden fragment '/home/'" in f for f in r.fails), r.fails)
 
     def test_missing_public_root_is_a_load_error(self):
         _write(
             self.root,
             vpp.IDENTITY_CANONICAL_REL,
             json.dumps(
-                {"repository": {"url": REPO_URL, "branch": BRANCH}, "edition": EDITION, "url": BASE_URL}
+                {
+                    "repository": {"url": REPO_URL, "branch": BRANCH},
+                    "edition": EDITION,
+                    "url": BASE_URL,
+                }
             ),
         )
         ctx, errors = vpp.load(self.repo)
@@ -171,29 +171,21 @@ class EvaluateBranches(unittest.TestCase):
             "generated": True,
         }
         rec.update(overrides)
-        comment = (
-            "<!-- provenance · page record · generated from the public source repository -->"
-        )
+        comment = "<!-- provenance · page record · generated from the public source repository -->"
         block = (
-            '<script type="application/json" id="tp-page-record">'
-            + json.dumps(rec)
-            + "</script>"
+            '<script type="application/json" id="tp-page-record">' + json.dumps(rec) + "</script>"
         )
         _write(self.root, f"public/{rel}", f"<!doctype html>\n<html>{comment}\n{block}\n</html>\n")
 
     def test_invalid_json_record_is_caught(self):
-        comment = (
-            "<!-- provenance · page record · generated from the public source repository -->"
-        )
+        comment = "<!-- provenance · page record · generated from the public source repository -->"
         block = '<script type="application/json" id="tp-page-record">{not json}</script>'
         _write(self.root, "public/bad/index.html", f"<html>{comment}\n{block}\n</html>\n")
         r = self._eval()
         self.assertTrue(any("not valid JSON" in f for f in r.fails), r.fails)
 
     def test_missing_required_keys_is_caught(self):
-        comment = (
-            "<!-- provenance · page record · generated from the public source repository -->"
-        )
+        comment = "<!-- provenance · page record · generated from the public source repository -->"
         block = (
             '<script type="application/json" id="tp-page-record">'
             + json.dumps({"canonical": f"{BASE_URL}/m/index.html"})
@@ -334,9 +326,7 @@ class Load(unittest.TestCase):
         )
         ctx, errors = vpp.load(self.repo)
         self.assertIsNone(ctx)
-        self.assertTrue(
-            any("missing repository/edition/url" in e for e in errors), errors
-        )
+        self.assertTrue(any("missing repository/edition/url" in e for e in errors), errors)
 
 
 if __name__ == "__main__":

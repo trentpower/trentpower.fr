@@ -188,9 +188,7 @@ def evaluate(repo: Repo) -> Result:
 
     # the retired `tp-i18n` policy name must be absent everywhere.
     r.stale = [
-        rel
-        for rel in RETIRED_SCAN
-        if repo.is_file(rel) and RETIRED_POLICY in repo.read(rel)
+        rel for rel in RETIRED_SCAN if repo.is_file(rel) and RETIRED_POLICY in repo.read(rel)
     ]
     if r.stale:
         return r

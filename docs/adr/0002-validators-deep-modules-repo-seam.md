@@ -54,7 +54,7 @@ the review gate when adding or touching a validator.
       fixture that fails** — proving the rule catches the bad case it guards.
 - [ ] After migration, CLI **output and exit code are behaviour-identical** to
       the pre-migration validator (capture a baseline first; diff it).
-- [ ] Any dependency that is *not* the filesystem — subprocess, network, a
+- [ ] Any dependency that is _not_ the filesystem — subprocess, network, a
       binary-only library (PIL, PyMuPDF), or in-place mutation — is taken through
       its **own injected seam** (e.g. `Proc` in `tools/lib/proc.py`) or explicitly
       **deferred** with a noted reason, never reached for directly inside

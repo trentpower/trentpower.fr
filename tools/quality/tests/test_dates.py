@@ -263,11 +263,7 @@ class Evaluate(unittest.TestCase):
             self.root,
             vd.DATE_OVERRIDES_REL,
             json.dumps(
-                {
-                    "lastmod": {
-                        "/integrity.json.sig": {"date": "2026-06-10", "reason": "excluded"}
-                    }
-                }
+                {"lastmod": {"/integrity.json.sig": {"date": "2026-06-10", "reason": "excluded"}}}
             ),
         )
         r = vd.evaluate(self.repo, self._ctx(), NOW)

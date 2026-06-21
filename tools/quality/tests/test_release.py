@@ -219,9 +219,7 @@ class SecurityTxtExpires(unittest.TestCase):
 
     def test_expires_inside_window_fails(self):
         # an Expires only a few days out is inside the 60-day cushion.
-        soon = (
-            dt.datetime.now(dt.UTC) + dt.timedelta(days=5)
-        ).strftime("%Y-%m-%dT%H:%M:%SZ")
+        soon = (dt.datetime.now(dt.UTC) + dt.timedelta(days=5)).strftime("%Y-%m-%dT%H:%M:%SZ")
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp)
             _write(root, "public/.well-known/security.txt", f"Expires: {soon}\n")
@@ -533,9 +531,7 @@ class ExclusionManifestSignature(unittest.TestCase):
     def test_no_release_dir_is_ok(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp)
-            rc, lines = vr.check_exclusion_manifest_signature(
-                Repo(root), FakeProc(_gpg_ok_handler)
-            )
+            rc, lines = vr.check_exclusion_manifest_signature(Repo(root), FakeProc(_gpg_ok_handler))
             self.assertEqual(rc, 0)
             self.assertIn("nothing to verify", "\n".join(lines))
 
@@ -543,9 +539,7 @@ class ExclusionManifestSignature(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp)
             (root / f"public/integrity/releases/{EDITION}").mkdir(parents=True)
-            rc, lines = vr.check_exclusion_manifest_signature(
-                Repo(root), FakeProc(_gpg_ok_handler)
-            )
+            rc, lines = vr.check_exclusion_manifest_signature(Repo(root), FakeProc(_gpg_ok_handler))
             self.assertEqual(rc, 0)
             self.assertIn("predates phase 1", "\n".join(lines))
 
@@ -639,9 +633,7 @@ class ExclusionLiveCross(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp)
             rel = f"public/integrity/releases/{EDITION}"
-            exclusions = [
-                {"path": f"miss{i}.js", "live_sha256": "sha256-x"} for i in range(14)
-            ]
+            exclusions = [{"path": f"miss{i}.js", "live_sha256": "sha256-x"} for i in range(14)]
             _write(root, f"{rel}/EXCLUDED_FILES.json", _json({"exclusions": exclusions}))
             _write(root, "public/integrity.json", _json({"files": {}}))
             rc, lines = vr.check_exclusion_live_sha256_cross(Repo(root))

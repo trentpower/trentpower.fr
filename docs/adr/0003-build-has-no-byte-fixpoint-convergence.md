@@ -24,13 +24,13 @@ files were still churning, driven by `inject_source_sha_footer`. The cause is
 - the `/source/*.txt` mirrors are copies of HTML that the SRI/footer/`?v=` sweeps
   keep changing, so the mirror chases the HTML by one pass forever.
 
-The build does not *resolve* these to byte-stability. It runs each generator
+The build does not _resolve_ these to byte-stability. It runs each generator
 enough times to make the cross-references **internally consistent for the
 validators**, and `validate_source_mirrors` **canonicalizes the residual**
 (strips SRI + footer-hash differences before its byte-equality check). The signed
 `integrity.json` is correct because stage 04 hashes whatever the final tree is —
-not because the tree stopped moving. "Convergence" here means *validator-coherent*,
-not *byte-stable*.
+not because the tree stopped moving. "Convergence" here means _validator-coherent_,
+not _byte-stable_.
 
 A true-fixpoint driver would therefore either never terminate or demand
 redesigning the footer/mirror/`verification-data` feedback to be genuinely
@@ -43,9 +43,9 @@ The unrolled stage-03 sequence stays. Instead of chasing a fixpoint that does no
 exist, the two real risks the review surfaced are addressed by **static checks**,
 no re-running of generators:
 
-- **`tools/build/assert_seal_immutable.py`** pins the publication rule that *no
+- **`tools/build/assert_seal_immutable.py`** pins the publication rule that _no
   generator may mutate public bytes between the stage-04 seal and the stage-07
-  signature* — it snapshots the tree at seal and re-asserts byte-identity just
+  signature_ — it snapshots the tree at seal and re-asserts byte-identity just
   before signing, refusing to sign a moved tree.
 - **`tools/quality/validate_sri_coherence.py`** statically verifies every
   `integrity="sha384-…"` attribute matches the hash of the asset it references —

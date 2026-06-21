@@ -73,7 +73,9 @@ class Evaluate(unittest.TestCase):
         _fixture.write(self.root, "public/print.css", "@media print{}")
         # print.css referenced WITHOUT integrity must not fail.
         _fixture.write(
-            self.root, "public/index.html", '<link rel="stylesheet" href="/print.css" media="print">'
+            self.root,
+            "public/index.html",
+            '<link rel="stylesheet" href="/print.css" media="print">',
         )
         r = vsc.evaluate(self.repo)
         self.assertTrue(r.ok, msg=r.fails)
@@ -91,7 +93,9 @@ class Evaluate(unittest.TestCase):
 
     def test_missing_asset_fails(self):
         _fixture.write(
-            self.root, "public/index.html", '<link rel="stylesheet" href="/gone.css" integrity="sha384-x">'
+            self.root,
+            "public/index.html",
+            '<link rel="stylesheet" href="/gone.css" integrity="sha384-x">',
         )
         r = vsc.evaluate(self.repo)
         self.assertFalse(r.ok)

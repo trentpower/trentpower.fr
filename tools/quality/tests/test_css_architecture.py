@@ -151,9 +151,7 @@ class PureChecksExtra(unittest.TestCase):
     def test_styles_selector_outside_layer_fails_l2(self):
         text = CANON + ".loose { color: red; }\n"
         errs = css.check_styles(text)
-        self.assertTrue(
-            any(e.startswith("L2") and "outside any @layer" in e for e in errs), errs
-        )
+        self.assertTrue(any(e.startswith("L2") and "outside any @layer" in e for e in errs), errs)
 
     # -- check_styles L4 hex colour in property value is NOT an id ------
     def test_styles_hex_colour_value_is_not_id_selector(self):
@@ -244,9 +242,7 @@ class ExternalInterface(unittest.TestCase):
             for rel in (css.STYLES_REL, css.PRINT_REL, css.FONTS_REL):
                 dst = root / rel
                 dst.parent.mkdir(parents=True, exist_ok=True)
-                dst.write_text(
-                    (REPO_ROOT / rel).read_text(encoding="utf-8"), encoding="utf-8"
-                )
+                dst.write_text((REPO_ROOT / rel).read_text(encoding="utf-8"), encoding="utf-8")
             styles = root / css.STYLES_REL
             styles.write_text(
                 "@import url(x.css);\n" + styles.read_text(encoding="utf-8"),

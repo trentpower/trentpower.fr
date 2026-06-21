@@ -62,7 +62,9 @@ class Evaluate(unittest.TestCase):
 
     def test_allowlisted_file_not_flagged(self):
         # the authorship statement is allowed to name the bare vendor terms.
-        _write(self.root, "docs/AUTHORSHIP-STATEMENT.md", f"We use {_CLAUDE_CODE} and {_CHATGPT}.\n")
+        _write(
+            self.root, "docs/AUTHORSHIP-STATEMENT.md", f"We use {_CLAUDE_CODE} and {_CHATGPT}.\n"
+        )
         r = vgm.evaluate(self.repo)
         self.assertTrue(r.ok, msg=r.fails)
 

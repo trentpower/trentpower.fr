@@ -61,9 +61,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/styles.css", "body{background:url(images/logo.svg)}\n")
         r = vnoi.evaluate(self.repo, self._ctx())
         self.assertTrue(r.ok, msg=r.fails)
-        self.assertTrue(
-            any("every image under /images/ is referenced" in o for o in r.oks), r.oks
-        )
+        self.assertTrue(any("every image under /images/ is referenced" in o for o in r.oks), r.oks)
 
     def test_seeded_orphan_image_is_caught(self):
         # referenced image keeps the corpus non-trivial; orphan is referenced
@@ -87,7 +85,6 @@ class Evaluate(unittest.TestCase):
         r = vnoi.evaluate(self.repo, self._ctx())
         self.assertFalse(r.ok)
         self.assertTrue(any("/images/lonely.png" in f for f in r.fails), r.fails)
-
 
     def test_no_images_directory_is_green(self):
         # a repo with no public/images dir at all short-circuits to OK.

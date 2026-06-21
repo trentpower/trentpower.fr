@@ -126,9 +126,7 @@ class Evaluate(unittest.TestCase):
         (self.root / "public/js/theme.js").unlink()
         r = vnr.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("missing file: public/js/theme.js" in e for e in r.errors), r.errors
-        )
+        self.assertTrue(any("missing file: public/js/theme.js" in e for e in r.errors), r.errors)
 
     def test_missing_index_edition_reported(self):
         # drop one language edition homepage (evaluate line 211).
@@ -144,9 +142,7 @@ class Evaluate(unittest.TestCase):
         (self.root / "public/styles.css").unlink()
         r = vnr.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("missing file: public/styles.css" in e for e in r.errors), r.errors
-        )
+        self.assertTrue(any("missing file: public/styles.css" in e for e in r.errors), r.errors)
 
     def test_all_js_modules_missing_skips_check(self):
         # when every js successor is absent the combined list stays empty,
@@ -155,9 +151,7 @@ class Evaluate(unittest.TestCase):
             (self.root / f"public/{name}").unlink()
         r = vnr.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertEqual(
-            sum(1 for e in r.errors if e.startswith("missing file: public/")), 3
-        )
+        self.assertEqual(sum(1 for e in r.errors if e.startswith("missing file: public/")), 3)
         # no app.js forbidden-pattern errors surface, only the three missings.
         self.assertFalse(any("forbidden pattern" in e for e in r.errors), r.errors)
 
@@ -171,15 +165,13 @@ class Evaluate(unittest.TestCase):
         )
         r = vnr.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("nav-links markup is back" in e for e in r.errors), r.errors
-        )
+        self.assertTrue(any("nav-links markup is back" in e for e in r.errors), r.errors)
 
     def test_missing_masthead_in_index_breaks(self):
         # strip the nav-mark masthead anchor (check_index_html line 114).
         p = self.root / "public/en-au/index.html"
         text = p.read_text(encoding="utf-8")
-        scrubbed = re.sub(r'<a[^>]*\bnav-mark\b[^>]*>.*?</a>', "", text, flags=re.S)
+        scrubbed = re.sub(r"<a[^>]*\bnav-mark\b[^>]*>.*?</a>", "", text, flags=re.S)
         self.assertNotEqual(scrubbed, text, "fixture had no nav-mark anchor to remove")
         p.write_text(scrubbed, encoding="utf-8")
         r = vnr.evaluate(self.repo)
@@ -195,9 +187,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vnr.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("styles.css:" in e and ".nav-links" in e for e in r.errors), r.errors
-        )
+        self.assertTrue(any("styles.css:" in e and ".nav-links" in e for e in r.errors), r.errors)
 
     def test_injected_nav_toggle_selector_in_styles_src_breaks(self):
         # nav-toggle selector outside comments in the authored css

@@ -80,9 +80,7 @@ class Evaluate(unittest.TestCase):
         self._seed(pdf_text="connect-src 'none'")
         r = vd.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("forbidden stale claim" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("forbidden stale claim" in f for f in r.fails), r.fails)
 
     def test_hash_incoherence_caught(self):
         # landing page advertises a hash that does not match the PDF bytes.
@@ -126,9 +124,7 @@ class Evaluate(unittest.TestCase):
         )
         r = vd.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("edge-clip" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("edge-clip" in f for f in r.fails), r.fails)
 
 
 @unittest.skipUnless(_fitz is not None, "PyMuPDF not installed")

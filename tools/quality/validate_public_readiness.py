@@ -88,8 +88,18 @@ _DEPLOY_SCAN_ALLOWLIST = frozenset(
     }
 )
 _DEPLOY_SCAN_SUFFIXES = (
-    ".lftp", ".sh", ".yml", ".yaml", ".md", ".txt", ".py", ".json", ".cfg",
-    ".ini", ".toml", ".example",
+    ".lftp",
+    ".sh",
+    ".yml",
+    ".yaml",
+    ".md",
+    ".txt",
+    ".py",
+    ".json",
+    ".cfg",
+    ".ini",
+    ".toml",
+    ".example",
 )
 
 

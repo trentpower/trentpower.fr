@@ -50,7 +50,9 @@ from repo import Repo  # noqa: E402  (shared filesystem evidence seam)
 GATE_REL = "public/index.html"
 
 # the OK line printed verbatim when every invariant holds.
-OK_MESSAGE = "✓ language vestibule OK (index, self-canonical, hreflang,no auto-redirect, <a> choices)"
+OK_MESSAGE = (
+    "✓ language vestibule OK (index, self-canonical, hreflang,no auto-redirect, <a> choices)"
+)
 
 
 @dataclass

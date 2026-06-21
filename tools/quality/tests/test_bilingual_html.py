@@ -72,7 +72,9 @@ class Evaluate(unittest.TestCase):
 
     def test_runtime_i18n_leak_is_caught(self):
         p = self.root / "public" / self.first_rel
-        html = p.read_text(encoding="utf-8").replace("</body>", "<script>window.I18N={}</script></body>")
+        html = p.read_text(encoding="utf-8").replace(
+            "</body>", "<script>window.I18N={}</script></body>"
+        )
         p.write_text(html, encoding="utf-8")
         r = vbh.evaluate(self.repo)
         self.assertFalse(r.ok)
@@ -95,11 +97,12 @@ class Evaluate(unittest.TestCase):
         self.assertEqual(r.fails, [])
         self.assertEqual(r.missing, vbh.TREE_PREFIX)
 
-
     def test_missing_canonical_is_caught(self):
         # drop the canonical link entirely -> "no canonical" branch.
         p = self.root / "public" / self.first_rel
-        html = re.sub(r'<link rel="canonical" href="[^"]+"', "", p.read_text(encoding="utf-8"), count=1)
+        html = re.sub(
+            r'<link rel="canonical" href="[^"]+"', "", p.read_text(encoding="utf-8"), count=1
+        )
         p.write_text(html, encoding="utf-8")
         r = vbh.evaluate(self.repo)
         self.assertFalse(r.ok)
@@ -117,17 +120,23 @@ class Evaluate(unittest.TestCase):
         p.write_text(html, encoding="utf-8")
         r = vbh.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(any("canonical" in f and "!=" in f and self.first_rel in f for f in r.fails), r.fails)
+        self.assertTrue(
+            any("canonical" in f and "!=" in f and self.first_rel in f for f in r.fails), r.fails
+        )
 
     def test_missing_hreflang_is_caught(self):
         # drop one reciprocal hreflang link -> "missing hreflang" branch.
         p = self.root / "public" / self.first_rel
         url = next(iter(routemap.hreflang_cluster(self.first_key).items()))[1]
-        html = p.read_text(encoding="utf-8").replace(f'href="{url}"', 'href="https://example.invalid/dropped"')
+        html = p.read_text(encoding="utf-8").replace(
+            f'href="{url}"', 'href="https://example.invalid/dropped"'
+        )
         p.write_text(html, encoding="utf-8")
         r = vbh.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(any("missing hreflang" in f and self.first_rel in f for f in r.fails), r.fails)
+        self.assertTrue(
+            any("missing hreflang" in f and self.first_rel in f for f in r.fails), r.fails
+        )
 
 
 class ExternalInterface(unittest.TestCase):

@@ -54,9 +54,7 @@ def _snapshot_path(repo_root: Path) -> Path:
 def moved_paths(sealed: dict, current: dict) -> list[str]:
     """Pure compare: sorted list of rels that differ between the seal snapshot
     and the current one — added, removed, or content-changed."""
-    return sorted(
-        rel for rel in set(sealed) | set(current) if sealed.get(rel) != current.get(rel)
-    )
+    return sorted(rel for rel in set(sealed) | set(current) if sealed.get(rel) != current.get(rel))
 
 
 def record(repo_root: Path = REPO_ROOT) -> int:
@@ -81,9 +79,7 @@ def verify(repo_root: Path = REPO_ROOT) -> int:
         return 0
     print(f"  FAIL: {len(moved)} file(s) MUTATED between seal and sign — DO NOT SIGN:")
     for rel in moved:
-        state = (
-            "added" if rel not in sealed else "removed" if rel not in current else "changed"
-        )
+        state = "added" if rel not in sealed else "removed" if rel not in current else "changed"
         print(f"    {rel} ({state})")
     print(
         "       a generator ran after stage 04 seal; the signature would cover "

@@ -260,9 +260,7 @@ def _check_versioned_verification_data(repo: Repo, edition: str, fails: list) ->
     # them here too so the L5 message names the offender directly.
     dated_pat = re.compile(rf"^verification-data\.{re.escape(edition)}\.[a-f0-9]+\.js$")
     siblings = repo.glob("public/verify/verification-data.*.js")
-    stale = sorted(
-        rel for rel in siblings if dated_pat.match(rel.rsplit("/", 1)[-1])
-    )
+    stale = sorted(rel for rel in siblings if dated_pat.match(rel.rsplit("/", 1)[-1]))
     if stale:
         names = [rel.rsplit("/", 1)[-1] for rel in stale]
         _fail(

@@ -61,9 +61,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/leak.json", 'api_key = "supersecretvalue123"')
         r = vrh.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("inline credential assignment" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("inline credential assignment" in f for f in r.fails), r.fails)
 
     def test_published_pgp_key_skipped(self):
         # the *public* pgp key carries a PRIVATE KEY-shaped header in practice
@@ -80,9 +78,7 @@ class Evaluate(unittest.TestCase):
         _write(self.root, "public/private/notes.html", "<p>internal</p>")
         r = vrh.evaluate(self.repo)
         self.assertFalse(r.ok)
-        self.assertTrue(
-            any("forbidden path fragment 'private/'" in f for f in r.fails), r.fails
-        )
+        self.assertTrue(any("forbidden path fragment 'private/'" in f for f in r.fails), r.fails)
 
     def test_undecodable_text_file_skipped(self):
         # a file with a text suffix but non-utf-8 bytes raises UnicodeDecodeError
@@ -110,9 +106,7 @@ class ExternalInterface(unittest.TestCase):
         self.assertEqual(rc, 0, msg=buf.getvalue())
         out = buf.getvalue()
         self.assertIn("OK: no forbidden artefacts in release inputs", out)
-        self.assertIn(
-            f"repository-hygiene: scanning {REPO_ROOT / 'public'}", out
-        )
+        self.assertIn(f"repository-hygiene: scanning {REPO_ROOT / 'public'}", out)
 
     def test_main_fails_and_renders_violations(self):
         # seed a forbidden artefact in a fixture public/ tree, then drive main()
@@ -136,9 +130,7 @@ class ExternalInterface(unittest.TestCase):
             rc = vrh.main(self.root)
         out = buf.getvalue()
         self.assertEqual(rc, 1, msg=out)
-        self.assertIn(
-            f"FAIL: scan target does not exist: {self.root / 'public'}", out
-        )
+        self.assertIn(f"FAIL: scan target does not exist: {self.root / 'public'}", out)
 
 
 if __name__ == "__main__":

@@ -105,7 +105,7 @@ def main(repo_root: Path = REPO_ROOT) -> int:
     # the directory-missing case is a single top-level FAIL line, not the
     # itemised "N issue(s)" block; carried as a sentinel-prefixed fail.
     if r.fails and r.fails[0].startswith("DIRMISSING:"):
-        print(f"FAIL: {r.fails[0][len('DIRMISSING:'):]}")
+        print(f"FAIL: {r.fails[0][len('DIRMISSING:') :]}")
         return 1
     if r.fails:
         print(f"  FAIL: source-mirror-readability — {len(r.fails)} issue(s):")

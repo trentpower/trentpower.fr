@@ -67,9 +67,7 @@ class ParseAllowlist(unittest.TestCase):
             "{ key: 'tp-last-edition', storage: 'local', prefix: false }\n"
             "];\n"
         )
-        self.assertEqual(
-            vsk.parse_allowlist(src), [("tp-last-edition", False, "local")]
-        )
+        self.assertEqual(vsk.parse_allowlist(src), [("tp-last-edition", False, "local")])
 
 
 class Approved(unittest.TestCase):
