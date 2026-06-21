@@ -570,7 +570,7 @@ REGISTRY: list[Check] = [
         _B,
         _COR,
         "edition is not newer than the topmost changelog entry",
-        function=pdc.check_changelog_freshness,
+        command=_script("validate_changelog.py"),
     ),
     Check(
         "routes_json_drift",
