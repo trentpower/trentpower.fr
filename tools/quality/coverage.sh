@@ -47,8 +47,18 @@ python3 -m coverage report --fail-under="$BROAD_MIN" \
 
 python3 -m coverage json -o .build/coverage/coverage.json
 python3 -m coverage html
+
+# Published TEST COVERAGE figure: the unit-testable-logic surface (same include/omit
+# as surface 3 above) — NOT the raw global, which counts the integration-tested build
+# generators. This single number drives the badge + docs (tools/badges/sync_coverage.py).
+PUB_PCT="$(python3 -m coverage report \
+  --include="tools/quality/*.py,tools/lib/*.py,tools/verify/*.py" \
+  --omit="tools/quality/tests/*,tools/quality/gate.py,tools/quality/lint.py" \
+  --format=total)"
+python3 -c "import json,sys;p=float(sys.argv[1]);open('.build/coverage/coverage-summary.json','w').write(json.dumps({'test_coverage_pct':round(p),'surface':'unit-testable-logic','raw':round(p,2)})+'\n')" "$PUB_PCT"
 echo
 echo "json: .build/coverage/coverage.json · html: .build/coverage/html/index.html"
+echo "summary: .build/coverage/coverage-summary.json · TEST COVERAGE ${PUB_PCT}% (unit-testable-logic)"
 
 if [ "$fail" -ne 0 ]; then
   echo "FAIL: a coverage surface dropped below its floor (see ✗ above)."

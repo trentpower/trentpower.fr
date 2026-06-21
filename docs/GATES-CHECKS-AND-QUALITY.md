@@ -98,8 +98,59 @@ Tests live in `tools/quality/tests/test_<name>.py` and cross `evaluate()` /
 `load()` over a fixture repo, asserting on the returned `Result` (not stdout).
 Pure sub-checks (e.g. the CSS or anchor `check_*` functions that take text and
 return errors) are exercised directly. Add a validator → add its test file in
-the same shape. Validators not yet migrated to this shape are being converted
-incrementally; the pattern above is the target for any new or touched gate.
+the same shape. The shared fixture helpers live in
+`tools/quality/tests/_fixture.py`. Two principles govern every validator test:
+
+> **Clean fixture passes / seeded defect fails.** Each validator carries at least
+> one pristine fixture repo that must pass and one fixture with a seeded defect
+> that must fail. A test that only proves the happy path proves nothing about the
+> gate.
+
+> **Coverage should prove meaningful behaviour, not simply touch lines.** A line
+> executed by a test that asserts nothing about it is not covered in any useful
+> sense.
+
+The full ADR-0002 compliance checklist is in
+[ADR-0002](adr/0002-validators-deep-modules-repo-seam.md). Of the validators,
+42 live under `tools/quality/validate_*.py` and 6 under
+`tools/verify/validate_*.py`; the shape above is the target for any new or touched
+gate, and the few not yet migrated are being converted incrementally.
+
+### Layers of checking — what runs when
+
+These are distinct and easy to confuse:
+
+- **Unit tests** (`tools/quality/tests/`, `unittest` + Hypothesis) — cross
+  `evaluate()` over fixtures. There is no standalone unit-test build step, but they
+  execute under the coverage ratchet below, so a failing test halts both the build
+  and CI.
+- **Coverage ratchet** (`tools/quality/coverage.sh`) — measures three enforced
+  surfaces over the unit suite; reports land in `.build/coverage/` (gitignored,
+  local-only, never deployed). It runs in **two** places: `build.sh` stage 02
+  (required step, fail-fast before any public byte) and the **`source-quality`**
+  job of `pr-checks.yml`. A surface below its floor exits non-zero and **halts the
+  build / fails that job**. Because merges to `preprod`/`main` require the PR checks
+  green and a deploy ships from `main`, **a coverage regression blocks both the
+  build and the merge a deploy ships from** — the floor is deploy-gating at build
+  time and at merge time. (`build.sh --skip-coverage` skips the build-time check
+  for local iteration only; it is refused for public builds.) The headline figure
+  is the `TEST COVERAGE` badge; see [`COVERAGE.md`](./COVERAGE.md). Its number is
+  **auto-derived** — `coverage.sh` writes the measured figure to
+  `.build/coverage/coverage-summary.json` and `tools/badges/sync_coverage.py`
+  propagates it to `badges.json`, the SVG, the README alt text and `COVERAGE.md`
+  (`--write` in the build, `--check` in CI). The blocking **`local_badges`** gate
+  (`tools/badges/validate_badges.py`) additionally fails if a badge SVG drifts from
+  the generator, so a stale percentage cannot ship.
+- **Validators / gate checks** (`gate.py` over the registry in §3) — inspect the
+  built tree; blocking ones are the site's public promises.
+- **Public-readiness checks** (`validate_public_readiness.py`, `--full`) — repo
+  posture before going public: licences, no private-claim drift, **no tracked
+  deploy-metadata or secrets** (the scan allow-lists only the env-placeholder
+  carriers `deploy.sftp.lftp.template`, `render_deploy_lftp.py`, and
+  `deploy.yml`), and a fresh clean-history `secret_scan.py` report.
+- **Smoke test** (post-deploy) — re-fetch the live site and re-verify the
+  signature.
+- **Build checks** — the gate run inside `build.sh` stages 05/08.
 
 ### What is blocking vs advisory
 
@@ -151,14 +202,24 @@ signature + source mirrors prove.
 
 `build.sh` re-runs `generate_integrity`, `generate_sri`,
 `generate_verification_map`, `generate_source_view` and `generate_file_metadata`
-a few times each. This resolves a real dependency cycle: HTML bytes → SRI → HTML;
-and `verification-data.js` carries the sizes/source-hashes of files that shift as
-the tree settles. The build brute-forces to a fixed point. `validate_file_sizes`
-and `validate_dates` are the gate checks that _prove_ convergence was reached.
-The loop is intentional and gated; flattening it is a known future option (move
-the volatile data to a fetched JSON generated once at the end) but carries
-Verify-surface risk and is not required for any guarantee — the current design is
-already signed and correct.
+a fixed number of times each. This resolves a real dependency cycle: HTML bytes →
+SRI → HTML; and `verification-data.js` carries the sizes/source-hashes of files
+that shift as the tree settles.
+
+There is **no byte-fixpoint to loop to** — see
+[ADR-0003](adr/0003-build-has-no-byte-fixpoint-convergence.md). A
+loop-until-stable driver was prototyped and rejected: interlocking circular
+dependencies (integrity → verification-data → `?v=<hash>` → HTML → integrity; and
+the footer source-sha → HTML → `/source` mirror → footer) mean consecutive builds
+never go byte-identical. So the build does **hand-unrolled fixed passes** to reach
+a _validator-coherent_ tree (not a byte-stable one), and the signed
+`integrity.json` is correct because stage 04 hashes whatever the final tree is.
+
+Two static checks guard this without re-running generators:
+`validate_sri_coherence` (every SRI attribute equals the SHA-384 of its asset) and
+`assert_seal_immutable` (no public byte mutates between the seal at stage 04 and
+the signature at stage 07). `validate_file_sizes` and `validate_dates` confirm the
+declared passes left the tree coherent.
 
 ### Deploy workflow (summary)
 

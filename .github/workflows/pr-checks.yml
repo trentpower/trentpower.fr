@@ -122,6 +122,8 @@ jobs:
         run: |
           python3 -m pip install --break-system-packages --quiet --require-hashes -r .github/requirements/coverage.txt
           bash tools/quality/coverage.sh
+      - name: Coverage badge + docs in sync with the measured figure
+        run: python3 tools/badges/sync_coverage.py --check
       - name: Source quality (enforced)
         env:
           QUALITY_ENFORCE: '1'

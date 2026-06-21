@@ -126,8 +126,8 @@
     },
     {
       "id": "coverage",
-      "label": "Coverage",
-      "value": "93%",
+      "label": "Test Coverage",
+      "value": "94%",
       "filename": "coverage.svg",
       "href": "docs/COVERAGE.md",
       "scope": "docs"

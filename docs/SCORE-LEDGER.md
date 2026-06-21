@@ -12,6 +12,36 @@ Lives under `tools/score-ledger/`.
 
 ---
 
+## Retention and coverage treatment (intentional)
+
+Score-ledger **remains in this repository for now** — the decision is
+deliberate. It documents and supports the repository's quality-score history,
+and removing it would discard that trust evidence. No migration to
+`private.trentpower.fr` is decided; the code stays here.
+
+What is tracked vs local-only:
+
+- **Code is tracked** in git (the CLI, `lib`, `db`, `compare`, `report`,
+  `triage`, `validators/`, `config.yml`).
+- **Data, reports, and keys are local-only** and gitignored (`data/`,
+  `reports/`, `config.local.yml`) — see [Local-only data + reports](#local-only-data--reports-gitignored).
+
+How coverage treats it:
+
+- Score-ledger is **excluded from the `TEST COVERAGE` metric** (see
+  [`docs/COVERAGE.md`](COVERAGE.md)). It is a live-site network audit tool that
+  hits external services (W3C, SSL Labs, PageSpeed) against the deployed site, so
+  unit-test coverage of its modules is not meaningful. The four coverage
+  `--source` trees in `tools/quality/coverage.sh` do not include
+  `tools/score-ledger/`.
+- This is **not** a way to inflate the coverage number by hiding untested code.
+  Its one repo-coupled seam — the signed-`TESTRESULTS.txt` export path — **is**
+  unit-tested (`tools/quality/tests/test_score_ledger_export.py`). The rest is
+  validated by running it against the live site and reading the reports, not by
+  unit tests.
+
+---
+
 ## Purpose — time-series scoring, not a verdict
 
 For each run it records, per target URL:
