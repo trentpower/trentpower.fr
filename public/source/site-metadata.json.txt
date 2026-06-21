@@ -10,9 +10,9 @@
     "fr"
   ],
   "edition": {
-    "id": "2026-06-14",
+    "id": "2026-06-21",
     "label": "June 2026",
-    "date": "2026-06-14"
+    "date": "2026-06-21"
   },
   "author": {
     "name": "Trent Power",
@@ -52,7 +52,7 @@
     "attestations": "https://trentpower.fr/attestations.json"
   },
   "citation": {
-    "text": "Trent Power. Personal Site. Paris, France. Edition 2026-06-14. trentpower.fr",
+    "text": "Trent Power. Personal Site. Paris, France. Edition 2026-06-21. trentpower.fr",
     "format": "plain-text"
   },
   "license": {
@@ -65,5 +65,5 @@
     "security": "https://trentpower.fr/.well-known/security.txt",
     "attestations": "https://trentpower.fr/attestations.json"
   },
-  "asset_version": "2026-06-14.8eb5797d"
+  "asset_version": "2026-06-21.fc5b8e9b"
 }

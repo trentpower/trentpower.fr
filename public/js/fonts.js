@@ -23,7 +23,7 @@ mark();
 if (document.querySelector('link[data-tp-fonts-full]')) return;
 var link = document.createElement('link');
 link.rel = 'stylesheet';
-link.href = '/fonts-full.css?v=2026-06-14.8eb5797d';
+link.href = '/fonts-full.css?v=2026-06-21.fc5b8e9b';
 link.setAttribute('data-tp-fonts-full', '');
 function paintFlip() {
 if (typeof requestAnimationFrame === 'function') {
