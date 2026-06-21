@@ -118,6 +118,10 @@ jobs:
         run: npm ci
       - name: Unit + property-based tests (hypothesis fuzz)
         run: python3 -m unittest discover -s tools/quality/tests -p 'test_*.py' -v
+      - name: Coverage ratchet (enforced — convergence/seal 90, ADR-0002 90, broad 85)
+        run: |
+          python3 -m pip install --break-system-packages --quiet --require-hashes -r .github/requirements/coverage.txt
+          bash tools/quality/coverage.sh
       - name: Source quality (enforced)
         env:
           QUALITY_ENFORCE: '1'
