@@ -3,377 +3,425 @@
 [![Signed: PGP](metadata/badges/signed-pgp.svg)](https://trentpower.fr/en-au/verify/)
 [![Integrity: SHA-256](metadata/badges/integrity-sha256.svg)](https://trentpower.fr/integrity.json)
 [![SLSA: Build L3](metadata/badges/slsa-build-l3.svg)](docs/PROVENANCE.md)
-[![OpenSSF: Best Practices · Silver](metadata/badges/openssf-best-practices.svg)](https://www.bestpractices.dev/en/projects/13182/gold)
-[![OpenSSF Baseline: v2026.02.19 · L2](metadata/badges/openssf-baseline.svg)](https://www.bestpractices.dev/en/projects/13182/baseline-3)
+[![OpenSSF: Best Practices](metadata/badges/openssf-best-practices.svg)](https://www.bestpractices.dev/en/projects/13182/gold)
+[![OpenSSF Baseline](metadata/badges/openssf-baseline.svg)](https://www.bestpractices.dev/en/projects/13182/baseline-3)
 [![Test Coverage: 96%](metadata/badges/coverage.svg)](docs/COVERAGE.md)
 [![REUSE: Compliant](metadata/badges/reuse-compliant.svg)](https://api.reuse.software/info/github.com/trentpower/trentpower.fr)
 
-`trentpower.fr` is a static, bilingual, source-verifiable personal publication.
+`trentpower.fr` is a static, bilingual, source-verifiable personal publication
 
-It is generated from local source, published as static files, and accompanied
-by signed integrity records, source mirrors, and per-edition release archives so
-that each edition can be independently checked.
+It treats a website as a public record: generated from local source, published as static files, signed, archived and made independently checkable
 
-**Live:** <https://trentpower.fr>
-**Source:** <https://github.com/trentpower/trentpower.fr>
+**Live:** [https://trentpower.fr](https://trentpower.fr)
+**Source:** [https://github.com/trentpower/trentpower.fr](https://github.com/trentpower/trentpower.fr)
 
-> **Why this repository is public:** the site claims to be verifiable — signed
-> manifests, source mirrors, release archives. Those claims only mean something
-> if the source that produces them can be inspected. The repository is the
-> deployment source too: what is deployed is exactly what is committed under
-> `public/`. (`public/` history makes the clone heavy — a few GiB — by design.)
+## What this is
 
-> **Reading the docs:** a print-ready editorial edition of the whole
-> documentation, readable by technical and non-technical readers alike, is at
-> [`README.pdf`](README.pdf). Its source lives in [`docs/pdf/`](docs/pdf/).
+This repository contains the source, generated public output, verification records and release machinery for `trentpower.fr`
 
----
+It is:
 
-## Publication record
+* A static personal publication, not a framework app
+* Bilingual, with `/en-au/` and `/fr/` authored editions
+* Privacy-first, with no analytics, cookies, trackers or third-party page-load requests
+* Source-verifiable, with public source mirrors and per-page provenance
+* Signed, with a PGP signature over the public integrity manifest
+* Editioned, with frozen release archives for each public edition
+* Tested, with quality and verification tooling covered by source-derived unit-test metrics
 
-Every claim below is something you can check yourself, not a badge to take on faith.
+The repository is deliberately public because the site makes verifiability claims. Those claims only mean something if the source, generated files, manifest, signatures, release archives and checks can be inspected
 
-| What                   | Status                                            | Verify                                                                                                                  |
-| ---------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Integrity manifest     | every published file hashed (SHA-256), PGP-signed | [`/integrity.json`](https://trentpower.fr/integrity.json) + `.sig`; [docs](docs/TRUST-AND-VERIFICATION.md)              |
-| Build provenance       | SLSA build-track Level 3 (Sigstore + Rekor)       | `gh attestation verify trentpower-fr-<edition>-site.tar.gz --repo trentpower/trentpower.fr`; [docs](docs/PROVENANCE.md) |
-| Signed releases        | signed `edition/*` tags + GitHub Releases         | [Releases](https://github.com/trentpower/trentpower.fr/releases); [docs](docs/PROVENANCE.md)                            |
-| SBOM                   | CycloneDX, build toolchain, per release           | Release assets; [docs](docs/REPRODUCIBILITY.md)                                                                         |
-| Reproducible build     | byte-deterministic archives                       | [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md)                                                                      |
-| Licensing              | REUSE 3.3; MIT (code) + CC-BY-SA-4.0 (content)    | [`REUSE.toml`](REUSE.toml), [`LICENSES/`](LICENSES/), [NOTICE.md](NOTICE.md)                                            |
-| Best practices         | OpenSSF Baseline (Silver)                         | [bestpractices.dev/projects/13182](https://www.bestpractices.dev/projects/13182)                                        |
-| Supply-chain posture   | OpenSSF Scorecard (a dashboard, not a medal)      | [scorecard.dev](https://scorecard.dev/viewer/?uri=github.com/trentpower/trentpower.fr)                                  |
-| Security policy        | coordinated disclosure, 14-day response           | [SECURITY.md](SECURITY.md)                                                                                              |
-| Privacy                | no analytics, cookies, or third-party assets      | [docs/SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md)                                                            |
-| Continuous integration | PR checks · publication check · deploy            | [Actions](https://github.com/trentpower/trentpower.fr/actions)                                                          |
-| Claims ledger          | every public claim bound to a passing control     | [docs/CLAIMS.md](docs/CLAIMS.md) (generated from `policy-data/claims-map.yml`); `make policy`                           |
+## Why this repository is public
 
-The fastest single check — confirm the live site is signed by the published key:
+The site does not ask the reader to trust the surface alone
+
+It publishes the record underneath:
+
+* The source used to generate the site
+* The generated public files under `public/`
+* The SHA-256 manifest for those files
+* The detached PGP signature for the manifest
+* The source mirrors exposed on the live site
+* The release archives attached to each edition
+* The checks that guard privacy, integrity, provenance and public claims
+
+`public/` is tracked intentionally. It is the deployed web root and part of the audit trail
+
+This also makes the clone heavier than a normal static-site repository. That is a trade-off made deliberately so the published bytes remain visible in Git history
+
+## What can be verified
+
+Every item below is intended to be checkable, not taken on faith
+
+| Claim                               | How to check                                                         |
+| ----------------------------------- | -------------------------------------------------------------------- |
+| Published files are recorded        | `public/integrity.json` hashes every public file                     |
+| Manifest is signed                  | `public/integrity.json.sig` verifies against the published PGP key   |
+| Pages expose their source           | Per-page records and source mirrors are generated during build       |
+| Releases are archived               | Frozen edition archives live under `public/integrity/releases/`      |
+| Build provenance is available       | Release artefacts include SLSA build-track provenance                |
+| SBOM is published                   | Release assets include CycloneDX build-toolchain SBOMs               |
+| Licensing is machine-readable       | REUSE 3.3, `REUSE.toml`, `LICENSES/`, `NOTICE.md`                    |
+| Privacy claims are checked          | No analytics, cookies, trackers or third-party page-load assets      |
+| Public claims are controlled        | `policy-data/claims-map.yml` maps claims to passing controls         |
+| Documentation freshness is checked  | Stale paths, stale figures and broken internal links are gated       |
+| Coverage figures are source-derived | `sync_coverage.py` keeps badges and docs aligned to measured results |
+
+## Quick proof
+
+Verify the live integrity manifest against the published public key:
 
 ```sh
 curl -fsS https://trentpower.fr/integrity.json      -o integrity.json
 curl -fsS https://trentpower.fr/integrity.json.sig  -o integrity.json.sig
 curl -fsS https://trentpower.fr/.well-known/pgp-key.asc | gpg --import
-gpg --verify integrity.json.sig integrity.json      # expect: Good signature
+gpg --verify integrity.json.sig integrity.json
 ```
 
----
+Expected result:
 
-## Principles
+```text
+Good signature from "Trent POWER <trent@trentpower.fr>"
+```
 
-- **Static by default.** HTML, CSS, and vanilla JavaScript. No frameworks,
-  bundlers, transpilers, or runtime dependencies.
-- **Privacy-first.** No analytics, cookies, advertising identifiers,
-  cross-site tracking, or third-party requests on page load. Browser storage
-  stays same-origin and is limited to visitor-controlled preferences and the
-  offline cache; the storage itself is never sent anywhere.
-- **Verifiable.** Every public byte is captured in a SHA-256 manifest, signed
-  with PGP, and exposed per-page at `/verify/`.
-- **Bilingual authored editions.** `/en-au/` (English) and `/fr/` (French);
-  English is the authored record and French is curated by hand. `/` is a
-  lightweight language gate.
-- **Deterministic build.** `bash tools/build/build.sh` produces byte-identical output
-  across consecutive runs on the same machine (modulo PGP signature timestamps);
-  independent off-machine reproduction is a stated goal, not yet a claim.
-- **No LLM in the release path.** Language models may assist drafting and
-  development, but the build → sign → verify → deploy pipeline runs with no AI,
-  model, or external API dependency.
+Published fingerprint:
 
-## Architecture
+```text
+A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263
+```
 
-The site is built as two static authored trees plus a root language gate:
+For an isolated-keyring verification flow, see [docs/TRUST-AND-VERIFICATION.md](docs/TRUST-AND-VERIFICATION.md)
 
-- `/en-au/`: English authored edition
-- `/fr/`: French authored edition
-- `/`: lightweight language gate
+## What is intentionally not included
 
-Content is authored in YAML and rendered through templates into static files;
-trust surfaces (integrity manifest, source mirrors, release archives, verify /
-integrity / source pages) are regenerated on every build. There is no runtime
-CMS, no database, and no analytics.
+The repository excludes anything that would weaken the public record, violate licensing or make the site dependent on opaque runtime services
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+* No analytics
+* No cookies
+* No advertising identifiers
+* No third-party scripts
+* No third-party fonts loaded at runtime
+* No CDN page-load dependencies
+* No CMS
+* No database
+* No framework runtime
+* No bundled dependency trees
+* No private keys
+* No credentials
+* No server secrets
+* No LLM, AI API or model dependency in the release path
+
+Language models may assist drafting or development, but no AI system participates in the build, signing, verification or deployment pipeline
+
+## Licensed fonts
+
+The repository intentionally excludes licensed font binaries
+
+The Klim Type Foundry fonts are served live under a commercial licence that permits use on `trentpower.fr` but does not permit redistribution in this repository
+
+A fresh clone must restore them before full release checks can pass:
+
+```sh
+python3 tools/build/fetch_licensed_fonts.py
+```
+
+The restore process verifies the downloaded files against the signed public integrity record. Missing fonts in a fresh clone or source archive are expected diagnostics, not corruption
+
+## Check your local environment
+
+Run this first after a fresh clone or extracted source archive:
+
+```sh
+make doctor
+```
+
+`make doctor` reports whether the local tree can run full, partial, archive-only or blocked checks
+
+It checks:
+
+* Git metadata
+* Licensed font presence
+* Python dependencies
+* Hypothesis
+* Node and npm
+* `node_modules/`
+* GPG
+* Whether full release checks are available
+* Whether archive-safe checks are available
+
+Source archives do not contain `.git` metadata, so Git-dependent checks cannot prove their claims in archive mode. `make doctor` names those limits clearly instead of failing with stack traces
+
+A future `make bootstrap` command is planned as a companion setup path
+
+## Common commands
+
+```sh
+make doctor          # inspect local environment
+make test            # run unit tests
+make gate            # run blocking release gates
+make lint            # run advisory quality checks
+make verify          # verify release integrity and signatures
+make policy          # check public claims against declared controls
+make release-check   # rebuild and check for drift
+```
+
+Fresh clone setup:
+
+```sh
+python3 tools/build/fetch_licensed_fonts.py
+npm install
+python3 -m pip install --require-hashes -r .github/requirements/source-quality.txt
+```
+
+Build and check:
+
+```sh
+bash tools/build/build.sh --check
+bash tools/build/build.sh
+```
+
+## Build model
+
+The site is generated locally from authored source into `public/`
+
+The pipeline:
+
+1. Reads content, route data and identity configuration
+2. Renders the English and French static trees
+3. Generates the root language gate
+4. Generates source mirrors and per-page provenance records
+5. Builds the service worker and static assets
+6. Hashes the public tree into `integrity.json`
+7. Signs the manifest with PGP
+8. Builds per-edition release archives
+9. Runs the blocking quality gate
+
+The build is deterministic on the same machine, excluding expected PGP signature timestamp variation. Independent off-machine reproduction is a goal and is documented with its current limits
+
+See [docs/BUILD-AND-DEPLOYMENT.md](docs/BUILD-AND-DEPLOYMENT.md)
 
 ## Repository structure
 
 ```text
-content/              Authored content (YAML) and the route registry
-templates/            JS build inputs (app.template.js, cite.template.js)
-styles/               Authored design source CSS (styles.src.css, print.src.css)
-tools/                The pipeline, split into responsibility pillars:
-  ├── build/          Creates the site (generators, renderers, build.sh, copy/)
-  ├── quality/        Stops a bad release (gate.py, lint.py, validate_*)
-  ├── verify/         Proves the release is genuine (read-only checks)
-  ├── release/        Makes it public (archives, seal, deploy.sh)
-  ├── config/         Declared facts (identity, public-exposure, overrides)
-  ├── lib/            Shared across pillars (paths.py, checks.py)
-  ├── score-ledger/   Local-only live-site audit tool (not a deploy gate)
-  └── visual/         Repo-presentation + visual QA proofing (not a deploy gate)
-public/               Generated public output, the live web root (tracked)
-docs/                 Project documentation
-.github/              Workflows (deploy, PR + publication checks), issue forms, ownership
+content/              Authored content and route data
+templates/            HTML and JavaScript templates
+styles/               Authored CSS sources
+tools/                Build, quality, verification, release and shared tooling
+tools/build/          Site generation, rendering, copying and build ceremony
+tools/quality/        Blocking gates, validators, linting and diagnostics
+tools/verify/         Read-only verification checks
+tools/release/        Release archive and deployment helpers
+tools/config/         Declared identity, exposure and policy facts
+tools/lib/            Shared primitives, paths, repository and process seams
+tools/score-ledger/   Local live-site audit ledger, not a deploy gate
+tools/visual/         Visual QA and repository presentation tooling
+public/               Generated public output, tracked deliberately
+docs/                 Architecture, trust, operations and policy documentation
+.github/              Workflows, issue forms, ownership and CI configuration
+metadata/             Badges, exclusions and publication metadata
+security/             Security artefacts, VEX and related records
 ```
 
-`public/` is intentionally tracked: the deployed bytes are part of the trust
-story (they are what the signed `integrity.json` attests to).
+## Architecture
 
-## Requirements
+The site is built as three static surfaces:
 
-- Python 3 and Bash for the build pipeline.
-- GnuPG for signing and verification.
-- Optional dev tooling (Ruff, ShellCheck, Prettier, Stylelint) for the advisory
-  quality checks. Missing local tools skip cleanly; CI installs the full set.
+* `/en-au/`, English authored edition
+* `/fr/`, French authored edition
+* `/`, lightweight language gate
 
-## Check your local environment
+Content is authored in YAML and rendered through templates into static HTML. Trust surfaces are regenerated on every build: integrity manifest, source mirrors, release archives, verify pages, source pages and documentation indexes
 
-```sh
-make doctor    # full / partial / archive / blocked — what this tree can run
-```
+There is no runtime CMS, no database and no analytics layer
 
-Run this first after a fresh clone or an extracted source archive. It inspects
-the local environment and reports — without running the build, tests or gate —
-whether the repo can run **full**, **partial**, **archive**-only, or is
-**blocked**, naming each missing piece and the command that restores it. Missing
-licensed fonts and absent `.git` metadata (a source archive carries none) are
-expected diagnostics, not errors: the licensed fonts are restored locally with
-`python3 tools/build/fetch_licensed_fonts.py`, and git-dependent gates are simply
-named as unavailable in archive mode. (A `make bootstrap` companion that performs
-the restores is planned, not yet implemented.)
-
-## Build
-
-```sh
-python3 tools/build/fetch_licensed_fonts.py   # fresh clone only: restore the
-                                              # licensed fonts from the live host,
-                                              # verified against integrity.json
-bash tools/build/build.sh --check    # build + run the deploy gate, no re-signing
-bash tools/build/build.sh            # full signed release build
-```
-
-The pipeline sweeps identity / edition / asset-version / CSP values, emits the
-bilingual trees and the language gate, generates the service worker, hashes the
-tree into `integrity.json`, mirrors source under `/source/`, signs the manifest,
-builds per-edition release archives, then runs the gate.
-
-See [docs/BUILD-AND-DEPLOYMENT.md](docs/BUILD-AND-DEPLOYMENT.md).
-
-## Checks
-
-```sh
-python3 tools/quality/gate.py --all    # blocking, deploy-gating checks
-python3 tools/quality/lint.py          # advisory quality checks
-```
-
-The gate is two-tier: `gate.py` runs the **blocking** security and correctness
-checks (a failure blocks deploy); `lint.py` runs **advisory** quality checks.
-Both draw from the registry in `tools/lib/checks.py`, which combines the
-`validate_*` scripts with the inline checks in `tools/quality/inline_checks.py`.
-
-The suite is **1,163** unit-test functions across **77** files — both counts are
-source-derived by `coverage.sh` and held in lock-step here by
-`sync_coverage.py --check` (a PR that changes the suite size but leaves these
-numbers stale fails CI). See [docs/COVERAGE.md](docs/COVERAGE.md).
-
-Documentation freshness is build-blocking. Public claims about tests, coverage,
-badges, gates, signing, integrity, byte convergence and deployment must match the
-repository state. The quality gate checks key documentation for stale paths, stale
-badge/coverage values, broken internal links and contradictory claims.
-
-See [docs/GATES-CHECKS-AND-QUALITY.md](docs/GATES-CHECKS-AND-QUALITY.md).
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 ## Editing content
 
+Edit authored content, not generated public output:
+
 ```sh
-# Edit authored content (YAML); English regenerates, French is hand-edited
-$EDITOR content/en/...           # source for the English edition
-$EDITOR content/fr/...           # hand-edited French edition
-
-# Edit JS behaviour: NEVER edit the generated public/*.js directly
-$EDITOR templates/app.template.js
-$EDITOR templates/cite.template.js
-
-bash tools/build/build.sh        # rebuild; every derived surface updates in lockstep
+$EDITOR content/en/...
+$EDITOR content/fr/...
+bash tools/build/build.sh
 ```
 
-See [docs/CONTENT-MODEL.md](docs/CONTENT-MODEL.md).
+Edit templates and source assets, not generated files:
+
+```sh
+$EDITOR templates/...
+$EDITOR styles/...
+bash tools/build/build.sh
+```
+
+Do not hand-edit generated files under `public/` unless the documentation for that surface explicitly says so
+
+See [docs/CONTENT-MODEL.md](docs/CONTENT-MODEL.md)
+
+## Quality and coverage
+
+The quality system is split into blocking and advisory layers
+
+```sh
+python3 tools/quality/gate.py --all
+python3 tools/quality/lint.py
+```
+
+`gate.py` runs deploy-blocking checks for security, integrity, provenance, routes, source mirrors, public exposure and documentation freshness
+
+`lint.py` runs advisory quality checks
+
+The unit-test suite is source-derived and synchronised into badges and documentation. The suite is **1,163** unit-test functions across **77** files — both counts are source-derived and kept in lock-step with the measurement by `sync_coverage.py`. Coverage figures are updated by tooling, not hand-edited
+
+See:
+
+* [docs/GATES-CHECKS-AND-QUALITY.md](docs/GATES-CHECKS-AND-QUALITY.md)
+* [docs/COVERAGE.md](docs/COVERAGE.md)
 
 ## Trust model
 
 Each public edition is backed by:
 
-- `integrity.json`: SHA-256 of every public file
-- `integrity.json.sig`: detached PGP signature of the manifest
-- a published public key at `/.well-known/pgp-key.asc`
-- byte-equal source mirrors under `/source/`
-- per-edition signed release archives under `/integrity/releases/<YYYY-MM-DD>/`
-- per-page verification records at `/verify/`
+* `integrity.json`, SHA-256 record of public files
+* `integrity.json.sig`, detached PGP signature
+* Published public key at `/.well-known/pgp-key.asc`
+* Per-page provenance records
+* Byte-equal source mirrors under `/source/`
+* Frozen release archives under `/integrity/releases/<edition>/`
+* Release provenance and SBOM artefacts
+* Claims ledger binding public claims to checks
 
-Anyone can verify the live manifest in an isolated keyring:
+The system is designed to make public claims inspectable. It does not claim that trust is magic or absolute
 
-```sh
-tmpdir="$(mktemp -d)"; chmod 700 "$tmpdir"; export GNUPGHOME="$tmpdir"
-ts=$(date +%s)
-curl -fsS "https://trentpower.fr/.well-known/pgp-key.asc?ts=$ts" | gpg --import
-curl -fsS "https://trentpower.fr/integrity.json?ts=$ts"     -o integrity.json
-curl -fsS "https://trentpower.fr/integrity.json.sig?ts=$ts" -o integrity.json.sig
-gpg --verify integrity.json.sig integrity.json
-unset GNUPGHOME; rm -rf "$tmpdir" integrity.json integrity.json.sig
-```
+It proves:
 
-Expected: `Good signature from "Trent POWER <trent@trentpower.fr>"`, fingerprint
-`A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263`.
+* The signed manifest verifies against the published public key
+* Public files match their recorded hashes
+* Generated source mirrors correspond to public pages
+* Public claims are tied to declared controls
+* Release artefacts have documented provenance where present
+* The current edition can be checked through the documented process
 
-See [docs/TRUST-AND-VERIFICATION.md](docs/TRUST-AND-VERIFICATION.md).
+It does not prove:
+
+* That a private key has never been compromised
+* That GitHub or hosting infrastructure is infallible
+* That every historical third-party claim remains true forever
+* That independent off-machine bit-for-bit reproduction is fully solved
+* That coverage alone proves correctness
+
+See [docs/TRUST-AND-VERIFICATION.md](docs/TRUST-AND-VERIFICATION.md)
 
 ## Page provenance
 
-Each generated page includes a quiet provenance record at the end of `<head>`,
-set in the head's own design language: a one-line section comment followed by
-a pretty-printed JSON block (`<script type="application/json"
-id="tp-page-record">`) that is readable by humans and validation tooling
-alike — canonical URL, repository, source path, template and edition:
+Each generated page includes a quiet provenance record in `<head>`
 
-```json
-{
-  "canonical": "https://trentpower.fr/en-au/security/",
-  "sourceRepository": "https://github.com/trentpower/trentpower.fr",
-  "sourcePath": "content/en/pages/security.yml",
-  "sourceUrl": "https://github.com/trentpower/trentpower.fr/blob/main/content/en/pages/security.yml",
-  "edition": "2026-06-14",
-  "generated": true,
-  "templatePath": "templates/pages/security.html"
-}
-```
+The record identifies:
 
-`sourcePath` is the honest authored input — the content YAML for rendered
-pages, the generator module for machine-assembled surfaces (`/tests/`,
-`/documentation/`, the `/source/` catalogue and reader). `sourceUrl` is derived
-as `repository.url + "/blob/" + repository.branch + "/" + sourcePath` from the
-`repository` block in `tools/config/identity_canonical.json`, which is the
-single source of truth alongside the edition date. Local build paths are
-deliberately excluded: the public GitHub repository is the only source
-location exposed in production HTML.
+* Canonical URL
+* Source repository
+* Source path
+* Source URL
+* Edition
+* Template path
+* Whether the page was generated
 
-The record is injected by `tools/build/generate_provenance.py` during the
-build (never hand-pasted), and the blocking gate
-`tools/quality/validate_page_provenance.py` proves that every active page
-carries exactly one coherent record, that canonical URLs match real routes,
-that French pages point at French sources, and that no local or private path
-fragment appears anywhere in public bytes. Frozen release snapshots under
-`/integrity/releases/<edition>/` are sealed historical bytes and keep their
-provenance in `release.json` instead.
+The record is injected during build, never hand-pasted. The blocking gate verifies that active pages carry one coherent record, that canonical URLs match real routes, that French pages point to French sources and that no local or private path appears in public bytes
+
+Frozen release snapshots keep their provenance in release metadata rather than being rewritten
 
 ## Privacy
 
-No cookies, no advertising identifiers, no cross-site tracking, no third-party
-requests on page load, no analytics or tracking pixels. Browser storage stays
-within the same origin and is limited to visitor-controlled preferences
-(language, appearance), first-visit markers, and the service-worker offline
-cache; none of it is ever transmitted, and `/local/` enumerates every key the
-visitor can clear. A strict Content Security Policy (`default-src 'none'`,
-hashed inline JSON-LD only), cross-origin isolation, and HSTS back the posture;
-`/.well-known/security.txt` and `/privacy/` make it machine-checkable.
+The site makes a narrow privacy promise:
 
-See [docs/SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md).
+* No analytics
+* No cookies
+* No advertising identifiers
+* No cross-site tracking
+* No third-party page-load requests
+* No tracking pixels
+* No data collection form
+* No external runtime dependency
+
+Browser storage is same-origin only and limited to visitor-controlled preferences, first-visit markers and the offline cache. `/local/` enumerates the keys a visitor can clear
+
+A strict Content Security Policy, HSTS and security headers support this posture
+
+See [docs/SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md)
 
 ## Deployment
 
-Deployment is static and SFTP-based via GitHub Actions. The runner does **not**
-rebuild and **does not hold the PGP key**: it re-verifies `integrity.json.sig`
-against the committed public key, uploads exactly the bytes already in `public/`
-(a non-deleting two-pass mirror), then runs a post-deploy smoke test.
+Production deployment is manual and static
 
-Secrets are configured in the repository, never committed:
-`SFTP_HOST`, `SFTP_USERNAME`, `SFTP_PASSWORD`, `SFTP_REMOTE_PATH`, and (optional)
-`SFTP_KNOWN_HOSTS` for SSH host-key pinning.
+The GitHub Actions runner does not rebuild the site and does not hold the PGP private key. It re-verifies the committed `integrity.json.sig`, uploads the already-committed bytes in `public/`, then runs a post-deploy smoke test
 
-See [docs/BUILD-AND-DEPLOYMENT.md](docs/BUILD-AND-DEPLOYMENT.md).
+Deployment currently uses SFTP with repository secrets:
+
+```text
+SFTP_HOST
+SFTP_USERNAME
+SFTP_PASSWORD
+SFTP_REMOTE_PATH
+SFTP_KNOWN_HOSTS
+```
+
+`SFTP_KNOWN_HOSTS` is recommended for SSH host-key pinning. Moving production deployment from password-based SFTP to SSH key authentication is a hardening roadmap item. Production should remain manually promoted, not auto-deployed on every push to `main`
+
+See:
+
+* [docs/BUILD-AND-DEPLOYMENT.md](docs/BUILD-AND-DEPLOYMENT.md)
+* [docs/SECRETS-AND-KEY-MANAGEMENT.md](docs/SECRETS-AND-KEY-MANAGEMENT.md)
 
 ## Documentation
 
-Full documentation lives in [`docs/`](docs/README.md):
+Start with:
 
-- [ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- [BUILD-AND-DEPLOYMENT.md](docs/BUILD-AND-DEPLOYMENT.md)
-- [GATES-CHECKS-AND-QUALITY.md](docs/GATES-CHECKS-AND-QUALITY.md)
-- [TRUST-AND-VERIFICATION.md](docs/TRUST-AND-VERIFICATION.md)
-- [SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md)
-- [CONTENT-MODEL.md](docs/CONTENT-MODEL.md)
-- [OPERATIONS.md](docs/OPERATIONS.md)
-- [INCIDENT-RESPONSE.md](docs/INCIDENT-RESPONSE.md)
-- [SCORE-LEDGER.md](docs/SCORE-LEDGER.md)
-- [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md)
-- [GITHUB-ENVIRONMENTS.md](docs/GITHUB-ENVIRONMENTS.md)
-- [GITHUB-RULESETS.md](docs/GITHUB-RULESETS.md)
-- [PROVENANCE.md](docs/PROVENANCE.md)
-- [SECRETS-AND-KEY-MANAGEMENT.md](docs/SECRETS-AND-KEY-MANAGEMENT.md)
-- [CODE-REVIEW.md](docs/CODE-REVIEW.md)
+* [docs/README.md](docs/README.md), documentation map
+* [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), how the system is shaped
+* [docs/TRUST-AND-VERIFICATION.md](docs/TRUST-AND-VERIFICATION.md), how verification works
+* [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md), what can be reproduced and how
+* [docs/PROVENANCE.md](docs/PROVENANCE.md), release provenance and attestations
+* [docs/GATES-CHECKS-AND-QUALITY.md](docs/GATES-CHECKS-AND-QUALITY.md), checks and gates
+* [docs/SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md), privacy and security posture
+* [docs/OPERATIONS.md](docs/OPERATIONS.md), maintainer operations
+* [docs/CLAIMS.md](docs/CLAIMS.md), public claims and controls
+* [docs/COVERAGE.md](docs/COVERAGE.md), measured test surface
 
-## Support
+A print-ready editorial documentation edition is available at [README.pdf](README.pdf). Its source lives in [docs/pdf/](docs/pdf/)
 
-The current edition is the supported one. Each new edition supersedes the
-previous one; it never rewrites it. Earlier editions remain published as frozen,
-redistributable archives under
-[`public/integrity/releases/`](public/integrity/releases/), kept so the record
-stays verifiable, not maintained.
+## Support and security
 
-Security updates follow the same lifecycle: only the latest edition receives
-fixes. Once an edition is superseded it is immutable and is not patched. A
-security-relevant correction ships as a new edition and is noted in the
-[changelog](https://trentpower.fr/changelog.txt); see [SECURITY.md](SECURITY.md)
-for how to report an issue and the response timeframe.
+The current edition is the supported edition. Earlier editions remain published as frozen archives so the record stays verifiable, but they are not patched
 
-## What is intentionally not included
+Security-relevant corrections ship as new editions and are noted in the changelog
 
-- No frameworks, bundlers, transpilers, or runtime dependencies.
-- No analytics, tracking, cookies, or advertising identifiers. (Browser storage
-  is limited to visitor-controlled preferences and the offline cache; see
-  Privacy.)
-- No third-party scripts, fonts, or CDN resources; all assets are same-origin.
-- No inline JavaScript or CSS.
-- No build-time non-determinism.
-- No LLM, AI API, or model dependency anywhere in the release pipeline.
+Report security issues through:
 
-## What is excluded from the repository, and why
+* [SECURITY.md](SECURITY.md)
+* `/.well-known/security.txt`
 
-- **Licensed typefaces.** The Klim Type Foundry fonts are served live under a
-  commercial licence that prohibits redistribution, so they are not in the
-  tree. `metadata/repo-exclusions.json` declares each one with the SRI digest
-  of the live binary; `tools/build/fetch_licensed_fonts.py` restores them on a
-  fresh checkout, verified against the signed `integrity.json`.
-- **Private operational surfaces.** Keys, credentials, server configuration,
-  and operator working notes never enter git; the policy and its enforcement
-  are documented in [docs/PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md).
-- **Dependency trees.** `node_modules/` and Python virtualenvs are
-  regenerated from the committed manifests, never committed.
+The project commits to coordinated disclosure and a documented response timeframe
 
 ## Authorship
 
-Content and code are reviewed manually before publication; no automated
-publishing occurs. Full statement: [docs/AUTHORSHIP-STATEMENT.md](docs/AUTHORSHIP-STATEMENT.md).
+This is a single-author publication by Trent Power
+
+Content and code are reviewed manually before publication. No automated publishing occurs, and no AI system participates in the build, signing, verification or deployment path
+
+See [docs/AUTHORSHIP-STATEMENT.md](docs/AUTHORSHIP-STATEMENT.md)
 
 ## Citing
 
-The repository is citable as a publication system via
-[`CITATION.cff`](CITATION.cff) — GitHub's "Cite this repository" button
-reads it directly. Versions are edition dates (currently `2026-06-14`),
-matching the `edition` field of the signed `integrity.json`. Code falls
-under MIT, content under CC BY-SA 4.0; see Licensing below.
+The repository is citable as a publication system through [CITATION.cff](CITATION.cff). GitHub's "Cite this repository" button reads it directly
+
+Versions are edition dates and align with the `edition` field of the signed `integrity.json`
 
 ## Licensing
 
-Code in this repository is licensed under the MIT License. See
-[`LICENSE`](LICENSE).
+Code is licensed under the MIT License. See [LICENSE](LICENSE)
 
-Editorial content, documentation, images and publication text are licensed
-separately under CC BY-SA 4.0. See [`CONTENT-RIGHTS.md`](CONTENT-RIGHTS.md).
-Attribution: Trent Power, trentpower.fr, plus the canonical URL of the
-reused page.
+Editorial content, documentation, images and publication text are licensed under CC BY-SA 4.0. See [CONTENT-RIGHTS.md](CONTENT-RIGHTS.md)
 
-Third-party notices, where applicable, are listed in
-[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md);
-[NOTICE.md](NOTICE.md) is the map of what falls under which licence.
+Third-party notices are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). [NOTICE.md](NOTICE.md) maps which materials fall under which licence
 
-The Klim typefaces are licensed to neither — they are commercially licensed
-for serving on trentpower.fr only and are excluded from the tree; see
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+The Klim typefaces are commercially licensed for serving on `trentpower.fr` only and are excluded from the repository
