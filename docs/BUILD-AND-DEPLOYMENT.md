@@ -107,7 +107,7 @@ below). Stage 14 exists only in `--public-release` runs.
 | Stage | Name                   | What it does                                                                                                                                                                                                                                    | What it produces                                           |
 | ----- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | 01    | PUBLICATION INTENT     | Interactive menu: create new edition / rebuild existing / check only / exit; records the edition date and a one-line note. TTY only; skipped when a mode flag is given.                                                                         | The run's mode, edition and note                           |
-| 02    | RENDER                 | Source-quality gate, coverage ratchet (floors 90/90/85, fail-fast), documentation-freshness + links gates (fail-fast), QR-drift gate, copy compile, bilingual render, single-tree prune, repository-hygiene gate, font subsets (order below).   | The `/en-au/` + `/fr/` page trees and the language gate    |
+| 02    | RENDER                 | Source-quality gate, coverage ratchet (floors 95/95/95, fail-fast), documentation-freshness + links gates (fail-fast), QR-drift gate, copy compile, bilingual render, single-tree prune, repository-hygiene gate, font subsets (order below).   | The `/en-au/` + `/fr/` page trees and the language gate    |
 | 03    | PREPARE PUBLIC BYTES   | Every generator that produces or sweeps public artefacts, ending in the source-mirror convergence loop (order below). `--editorial` adds the review exports here.                                                                               | All generated public files except the final manifest       |
 | 04    | SEAL                   | Final `generate_integrity.py` pass over the now-stable post-SRI tree.                                                                                                                                                                           | Final `integrity.json` (archives queued until approval)    |
 | 05    | VERIFY                 | `gate.py --skip-signature --all` (blocking, pre-signature) then `lint.py` (advisory, non-blocking). `--check` and `--no-sign` end here.                                                                                                         | Go / no-go verdict                                         |
@@ -134,7 +134,7 @@ This is where the original pipeline lives; the order is the contract.
 1. `tools/quality/quality.sh --check` — source quality gate
    (formatting / lint preflight on the authored source).
 2. `tools/quality/coverage.sh` — coverage ratchet (the same script CI runs):
-   the unit suite under coverage, three enforced surfaces (floors 90/90/85).
+   the unit suite under coverage, three enforced surfaces (floors 95/95/95).
    A surface below floor — or any failing unit test — exits non-zero and **halts
    the build here, before any public byte is generated**. `--skip-coverage`
    skips it for local iteration only (refused for public builds). See

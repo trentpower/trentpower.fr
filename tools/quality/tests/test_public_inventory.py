@@ -53,5 +53,39 @@ class ErrorPageOutputs(unittest.TestCase):
                 self.assertIn(f"{lang_seg}/{doc}", errs)
 
 
+class UrlToDiskPath(unittest.TestCase):
+    def test_root_is_index(self):
+        self.assertEqual(pi.url_to_disk_path("/"), "index.html")
+
+    def test_directory_url_gets_index_html(self):
+        self.assertEqual(pi.url_to_disk_path("/privacy/"), "privacy/index.html")
+
+    def test_file_url_maps_relative(self):
+        self.assertEqual(pi.url_to_disk_path("/verify/verify.js"), "verify/verify.js")
+        self.assertEqual(pi.url_to_disk_path("/404.html"), "404.html")
+
+    def test_must_be_absolute(self):
+        with self.assertRaises(ValueError):
+            pi.url_to_disk_path("relative/path")
+
+
+class PrecachePaths(unittest.TestCase):
+    def test_all_is_critical_plus_optional(self):
+        self.assertEqual(
+            pi.all_precache_paths(),
+            pi.critical_precache_paths() + pi.optional_precache_paths(),
+        )
+
+    def test_critical_holds_core_surfaces(self):
+        crit = pi.critical_precache_paths()
+        self.assertIn("/manifest.webmanifest", crit)
+        self.assertIn("/favicon.svg", crit)
+
+    def test_optional_excludes_manifest_and_favicon(self):
+        opt = pi.optional_precache_paths()
+        self.assertNotIn("/manifest.webmanifest", opt)
+        self.assertNotIn("/favicon.svg", opt)
+
+
 if __name__ == "__main__":
     unittest.main()
