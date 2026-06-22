@@ -21,13 +21,13 @@ This repository contains the source, generated public output, verification recor
 
 It is:
 
-* A static personal publication, not a framework app
-* Bilingual, with `/en-au/` and `/fr/` authored editions
-* Privacy-first, with no analytics, cookies, trackers or third-party page-load requests
-* Source-verifiable, with public source mirrors and per-page provenance
-* Signed, with a PGP signature over the public integrity manifest
-* Editioned, with frozen release archives for each public edition
-* Tested, with quality and verification tooling covered by source-derived unit-test metrics
+- A static personal publication, not a framework app
+- Bilingual, with `/en-au/` and `/fr/` authored editions
+- Privacy-first, with no analytics, cookies, trackers or third-party page-load requests
+- Source-verifiable, with public source mirrors and per-page provenance
+- Signed, with a PGP signature over the public integrity manifest
+- Editioned, with frozen release archives for each public edition
+- Tested, with quality and verification tooling covered by source-derived unit-test metrics
 
 The repository is deliberately public because the site makes verifiability claims. Those claims only mean something if the source, generated files, manifest, signatures, release archives and checks can be inspected
 
@@ -37,13 +37,13 @@ The site does not ask the reader to trust the surface alone
 
 It publishes the record underneath:
 
-* The source used to generate the site
-* The generated public files under `public/`
-* The SHA-256 manifest for those files
-* The detached PGP signature for the manifest
-* The source mirrors exposed on the live site
-* The release archives attached to each edition
-* The checks that guard privacy, integrity, provenance and public claims
+- The source used to generate the site
+- The generated public files under `public/`
+- The SHA-256 manifest for those files
+- The detached PGP signature for the manifest
+- The source mirrors exposed on the live site
+- The release archives attached to each edition
+- The checks that guard privacy, integrity, provenance and public claims
 
 `public/` is tracked intentionally. It is the deployed web root and part of the audit trail
 
@@ -96,20 +96,20 @@ For an isolated-keyring verification flow, see [docs/TRUST-AND-VERIFICATION.md](
 
 The repository excludes anything that would weaken the public record, violate licensing or make the site dependent on opaque runtime services
 
-* No analytics
-* No cookies
-* No advertising identifiers
-* No third-party scripts
-* No third-party fonts loaded at runtime
-* No CDN page-load dependencies
-* No CMS
-* No database
-* No framework runtime
-* No bundled dependency trees
-* No private keys
-* No credentials
-* No server secrets
-* No LLM, AI API or model dependency in the release path
+- No analytics
+- No cookies
+- No advertising identifiers
+- No third-party scripts
+- No third-party fonts loaded at runtime
+- No CDN page-load dependencies
+- No CMS
+- No database
+- No framework runtime
+- No bundled dependency trees
+- No private keys
+- No credentials
+- No server secrets
+- No LLM, AI API or model dependency in the release path
 
 Language models may assist drafting or development, but no AI system participates in the build, signing, verification or deployment pipeline
 
@@ -139,15 +139,15 @@ make doctor
 
 It checks:
 
-* Git metadata
-* Licensed font presence
-* Python dependencies
-* Hypothesis
-* Node and npm
-* `node_modules/`
-* GPG
-* Whether full release checks are available
-* Whether archive-safe checks are available
+- Git metadata
+- Licensed font presence
+- Python dependencies
+- Hypothesis
+- Node and npm
+- `node_modules/`
+- GPG
+- Whether full release checks are available
+- Whether archive-safe checks are available
 
 Source archives do not contain `.git` metadata, so Git-dependent checks cannot prove their claims in archive mode. `make doctor` names those limits clearly instead of failing with stack traces
 
@@ -226,9 +226,9 @@ security/             Security artefacts, VEX and related records
 
 The site is built as three static surfaces:
 
-* `/en-au/`, English authored edition
-* `/fr/`, French authored edition
-* `/`, lightweight language gate
+- `/en-au/`, English authored edition
+- `/fr/`, French authored edition
+- `/`, lightweight language gate
 
 Content is authored in YAML and rendered through templates into static HTML. Trust surfaces are regenerated on every build: integrity manifest, source mirrors, release archives, verify pages, source pages and documentation indexes
 
@@ -275,40 +275,40 @@ The unit-test suite is source-derived and synchronised into badges and documenta
 
 See:
 
-* [docs/GATES-CHECKS-AND-QUALITY.md](docs/GATES-CHECKS-AND-QUALITY.md)
-* [docs/COVERAGE.md](docs/COVERAGE.md)
+- [docs/GATES-CHECKS-AND-QUALITY.md](docs/GATES-CHECKS-AND-QUALITY.md)
+- [docs/COVERAGE.md](docs/COVERAGE.md)
 
 ## Trust model
 
 Each public edition is backed by:
 
-* `integrity.json`, SHA-256 record of public files
-* `integrity.json.sig`, detached PGP signature
-* Published public key at `/.well-known/pgp-key.asc`
-* Per-page provenance records
-* Byte-equal source mirrors under `/source/`
-* Frozen release archives under `/integrity/releases/<edition>/`
-* Release provenance and SBOM artefacts
-* Claims ledger binding public claims to checks
+- `integrity.json`, SHA-256 record of public files
+- `integrity.json.sig`, detached PGP signature
+- Published public key at `/.well-known/pgp-key.asc`
+- Per-page provenance records
+- Byte-equal source mirrors under `/source/`
+- Frozen release archives under `/integrity/releases/<edition>/`
+- Release provenance and SBOM artefacts
+- Claims ledger binding public claims to checks
 
 The system is designed to make public claims inspectable. It does not claim that trust is magic or absolute
 
 It proves:
 
-* The signed manifest verifies against the published public key
-* Public files match their recorded hashes
-* Generated source mirrors correspond to public pages
-* Public claims are tied to declared controls
-* Release artefacts have documented provenance where present
-* The current edition can be checked through the documented process
+- The signed manifest verifies against the published public key
+- Public files match their recorded hashes
+- Generated source mirrors correspond to public pages
+- Public claims are tied to declared controls
+- Release artefacts have documented provenance where present
+- The current edition can be checked through the documented process
 
 It does not prove:
 
-* That a private key has never been compromised
-* That GitHub or hosting infrastructure is infallible
-* That every historical third-party claim remains true forever
-* That independent off-machine bit-for-bit reproduction is fully solved
-* That coverage alone proves correctness
+- That a private key has never been compromised
+- That GitHub or hosting infrastructure is infallible
+- That every historical third-party claim remains true forever
+- That independent off-machine bit-for-bit reproduction is fully solved
+- That coverage alone proves correctness
 
 See [docs/TRUST-AND-VERIFICATION.md](docs/TRUST-AND-VERIFICATION.md)
 
@@ -318,13 +318,13 @@ Each generated page includes a quiet provenance record in `<head>`
 
 The record identifies:
 
-* Canonical URL
-* Source repository
-* Source path
-* Source URL
-* Edition
-* Template path
-* Whether the page was generated
+- Canonical URL
+- Source repository
+- Source path
+- Source URL
+- Edition
+- Template path
+- Whether the page was generated
 
 The record is injected during build, never hand-pasted. The blocking gate verifies that active pages carry one coherent record, that canonical URLs match real routes, that French pages point to French sources and that no local or private path appears in public bytes
 
@@ -334,14 +334,14 @@ Frozen release snapshots keep their provenance in release metadata rather than b
 
 The site makes a narrow privacy promise:
 
-* No analytics
-* No cookies
-* No advertising identifiers
-* No cross-site tracking
-* No third-party page-load requests
-* No tracking pixels
-* No data collection form
-* No external runtime dependency
+- No analytics
+- No cookies
+- No advertising identifiers
+- No cross-site tracking
+- No third-party page-load requests
+- No tracking pixels
+- No data collection form
+- No external runtime dependency
 
 Browser storage is same-origin only and limited to visitor-controlled preferences, first-visit markers and the offline cache. `/local/` enumerates the keys a visitor can clear
 
@@ -369,23 +369,23 @@ SFTP_KNOWN_HOSTS
 
 See:
 
-* [docs/BUILD-AND-DEPLOYMENT.md](docs/BUILD-AND-DEPLOYMENT.md)
-* [docs/SECRETS-AND-KEY-MANAGEMENT.md](docs/SECRETS-AND-KEY-MANAGEMENT.md)
+- [docs/BUILD-AND-DEPLOYMENT.md](docs/BUILD-AND-DEPLOYMENT.md)
+- [docs/SECRETS-AND-KEY-MANAGEMENT.md](docs/SECRETS-AND-KEY-MANAGEMENT.md)
 
 ## Documentation
 
 Start with:
 
-* [docs/README.md](docs/README.md), documentation map
-* [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), how the system is shaped
-* [docs/TRUST-AND-VERIFICATION.md](docs/TRUST-AND-VERIFICATION.md), how verification works
-* [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md), what can be reproduced and how
-* [docs/PROVENANCE.md](docs/PROVENANCE.md), release provenance and attestations
-* [docs/GATES-CHECKS-AND-QUALITY.md](docs/GATES-CHECKS-AND-QUALITY.md), checks and gates
-* [docs/SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md), privacy and security posture
-* [docs/OPERATIONS.md](docs/OPERATIONS.md), maintainer operations
-* [docs/CLAIMS.md](docs/CLAIMS.md), public claims and controls
-* [docs/COVERAGE.md](docs/COVERAGE.md), measured test surface
+- [docs/README.md](docs/README.md), documentation map
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), how the system is shaped
+- [docs/TRUST-AND-VERIFICATION.md](docs/TRUST-AND-VERIFICATION.md), how verification works
+- [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md), what can be reproduced and how
+- [docs/PROVENANCE.md](docs/PROVENANCE.md), release provenance and attestations
+- [docs/GATES-CHECKS-AND-QUALITY.md](docs/GATES-CHECKS-AND-QUALITY.md), checks and gates
+- [docs/SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md), privacy and security posture
+- [docs/OPERATIONS.md](docs/OPERATIONS.md), maintainer operations
+- [docs/CLAIMS.md](docs/CLAIMS.md), public claims and controls
+- [docs/COVERAGE.md](docs/COVERAGE.md), measured test surface
 
 A print-ready editorial documentation edition is available at [README.pdf](README.pdf). Its source lives in [docs/pdf/](docs/pdf/)
 
@@ -397,8 +397,8 @@ Security-relevant corrections ship as new editions and are noted in the changelo
 
 Report security issues through:
 
-* [SECURITY.md](SECURITY.md)
-* `/.well-known/security.txt`
+- [SECURITY.md](SECURITY.md)
+- `/.well-known/security.txt`
 
 The project commits to coordinated disclosure and a documented response timeframe
 
