@@ -6,7 +6,11 @@
 
 PY := python3
 
-.PHONY: help doctor test test-fast coverage diff-coverage gate lint verify release-check integrity sbom privacy-check provenance-check claims policy
+.PHONY: help doctor preflight test test-fast coverage diff-coverage gate lint verify release-check integrity sbom privacy-check provenance-check claims policy
+
+# base ref the changed-line ratchet diffs against in `make preflight`; override
+# for a preprod-targeted branch: `make preflight PREFLIGHT_BASE=origin/preprod`.
+PREFLIGHT_BASE ?= origin/main
 
 help: ## list the available targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | sort | \
@@ -26,6 +30,31 @@ coverage: ## run the suite under coverage + enforce the surface floors (single p
 
 diff-coverage: ## gate coverage of changed lines vs origin/main (needs a prior `make coverage`)
 	$(PY) tools/quality/diff_coverage.py --base origin/main
+
+preflight: ## run every locally-runnable CI check in order (green here ⇒ green in CI)
+	@echo "▸ format + lint  · quality.sh (ruff/shfmt/shellcheck/prettier/eslint/stylelint)"
+	@QUALITY_ENFORCE=1 bash tools/quality/quality.sh --check
+	@echo "▸ fast tier      · seam guard"
+	@$(PY) tools/quality/tests/run_fast.py
+	@echo "▸ coverage       · floors + counts (single pass)"
+	@bash tools/quality/coverage.sh
+	@echo "▸ diff coverage  · changed lines vs $(PREFLIGHT_BASE)"
+	@$(PY) tools/quality/diff_coverage.py --base $(PREFLIGHT_BASE)
+	@echo "▸ badge + docs    · lock-step with the measurement"
+	@$(PY) tools/badges/sync_coverage.py --check
+	@echo "▸ docs freshness + links"
+	@$(PY) tools/quality/validate_docs_freshness.py
+	@$(PY) tools/quality/validate_docs_links.py
+	@echo "▸ secret scan + repo hygiene"
+	@$(PY) tools/verify/scan_git_history.py --strict
+	@$(PY) tools/quality/validate_repository_hygiene.py
+	@echo "▸ advisory lint   (non-blocking)"
+	-@$(PY) tools/quality/lint.py
+	@echo "▸ blocking gate   · gate.py"
+	@$(PY) tools/quality/gate.py
+	@echo ""
+	@echo "✓ preflight green — every locally-runnable CI check passed"
+	@echo "  CI-only, NOT run here: sca (osv-scanner + network), reuse (pip tool), release-gate (full build + fonts)"
 
 gate: ## run the deploy-blocking gate (security + correctness checks)
 	$(PY) tools/quality/gate.py

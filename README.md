@@ -271,7 +271,7 @@ python3 tools/quality/lint.py
 
 `lint.py` runs advisory quality checks
 
-The unit-test suite is source-derived and synchronised into badges and documentation. The suite is **1,164** unit-test functions across **77** files — both counts are source-derived and kept in lock-step with the measurement by `sync_coverage.py`. Coverage figures are updated by tooling, not hand-edited
+The unit-test suite is source-derived and synchronised into badges and documentation. The suite is **1,169** unit-test functions across **77** files — both counts are source-derived and kept in lock-step with the measurement by `sync_coverage.py`. Coverage figures are updated by tooling, not hand-edited
 
 See:
 
