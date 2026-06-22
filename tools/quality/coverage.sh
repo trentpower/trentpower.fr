@@ -22,8 +22,10 @@ cd "$ROOT"
 mkdir -p .build/coverage
 
 # per-surface floors (the ratchet). raise these as coverage climbs; never lower.
-SEAL_MIN=90  # convergence + seal — signing-critical (currently ~98%)
-ADR_MIN=90   # ADR-0002 validators (currently ~98%)
+# uniform 95% floor across all three surfaces (measured 97.7 / 97.3 / 96.0, so
+# each keeps margin above its floor). raise as coverage climbs; never lower.
+SEAL_MIN=95  # convergence + seal — signing-critical (currently ~98%)
+ADR_MIN=95   # ADR-0002 validators (currently ~97%)
 BROAD_MIN=95 # broad quality-policy (currently ~96%)
 
 python3 -m coverage erase

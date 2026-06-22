@@ -63,6 +63,17 @@ class ParseChangedLines(unittest.TestCase):
         diff = f"diff --git a/{P} b/{P}\n--- /dev/null\n+++ b/{P}\n@@ -0,0 +1,2 @@\n+a\n+b\n"
         self.assertEqual(dc.parse_changed_lines(diff)[P], {1, 2})
 
+    def test_no_newline_marker_does_not_shift_line_numbers(self):
+        # git emits "\ No newline at end of file" between the -/+ records when a
+        # file lacks a trailing newline; it must not advance the line counter.
+        diff = (
+            f"diff --git a/{P} b/{P}\n--- a/{P}\n+++ b/{P}\n"
+            "@@ -5 +5 @@\n-old\n\\ No newline at end of file\n+new\n"
+            "\\ No newline at end of file\n"
+        )
+        # the added line is line 5, not 6.
+        self.assertEqual(dc.parse_changed_lines(diff)[P], {5})
+
 
 class Scope(unittest.TestCase):
     def test_in_scope_paths(self):

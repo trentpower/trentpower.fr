@@ -109,6 +109,11 @@ def parse_changed_lines(diff_text: str) -> dict[str, set[int]]:
             continue
         if line.startswith("--- ") or line.startswith("diff --git") or line.startswith("index "):
             continue
+        if line.startswith("\\"):
+            # "\ No newline at end of file" — refers to the preceding -/+ line and
+            # consumes no new-file line number; advancing here would shift the
+            # following added line one too high and slip an uncovered change past.
+            continue
         m = _HUNK_RE.match(line)
         if m:
             newno = int(m.group(1))

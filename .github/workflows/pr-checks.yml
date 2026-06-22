@@ -131,7 +131,7 @@ jobs:
         # cheap, fast-failing: blocks real subprocess/network for the unit tier so
         # a test that bypasses the injected seam fails here before the slower run.
         run: python3 tools/quality/tests/run_fast.py
-      - name: Unit + property tests + coverage ratchet (single pass — seal/ADR/broad 90/90/85)
+      - name: Unit + property tests + coverage ratchet (single pass — seal/ADR/broad 95/95/95)
         # coverage.sh runs the whole suite UNDER coverage (set -euo pipefail → a
         # test failure aborts before the floor reports), so this one pass is both
         # the test gate and the coverage gate — no separate bare unittest run.

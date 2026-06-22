@@ -34,7 +34,7 @@ tests, not unit tests (see exclusions).
 
 ## Test inventory
 
-The suite is currently **77** unit-test files / **1,163** test functions under
+The suite is currently **77** unit-test files / **1,164** test functions under
 `tools/quality/tests/`, run with stdlib `unittest` and property-based cases on
 Hypothesis. Both counts are **source-derived**: `coverage.sh` recounts the
 directory in the same run that measures coverage and writes the numbers into
@@ -61,9 +61,9 @@ that `pr-checks.yml` fails below (via the hash-pinned `coverage==7.14.1` in
 
 | surface                                           | floor | typical |
 | ------------------------------------------------- | ----- | ------- |
-| convergence + seal (signing-critical)             | 90%   | ~98%    |
-| ADR-0002 validators                               | 90%   | ~98%    |
-| broad quality-policy (validators + libs + verify) | 85%   | ~94%    |
+| convergence + seal (signing-critical)             | 95%   | ~98%    |
+| ADR-0002 validators                               | 95%   | ~97%    |
+| broad quality-policy (validators + libs + verify) | 95%   | ~96%    |
 
 ### The floor is deploy-blocking — enforced in both the build and CI
 
