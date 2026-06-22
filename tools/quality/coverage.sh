@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 # coverage.sh — three focused coverage surfaces, ENFORCED (the ratchet).
 #
+# This is the SINGLE test+coverage pass: it runs the whole unit suite under
+# coverage (line below), so `set -euo pipefail` makes a failing test abort here
+# before any floor report. CI and build.sh stage 02 rely on it alone — there is
+# no separate bare `unittest` run. `make test` stays for the fast local loop.
+#
 # The global tools/ number is meaningless as a target — it is dragged down by
 # one-shot build generators that earn integration tests later, not unit tests
 # now. So measure three surfaces that DO matter, each with a floor it must not
 # drop below. A surface below its floor fails the script (exit 1) so CI can gate
-# on it. JSON + HTML land under .build/ (gitignored, outside the git-metadata
-# scan roots).
+# on it. The per-file map in .build/coverage/coverage.json additionally feeds the
+# changed-line ratchet (tools/quality/diff_coverage.py). JSON + HTML land under
+# .build/ (gitignored, outside the git-metadata scan roots).
 #
 #   bash tools/quality/coverage.sh
 set -euo pipefail
@@ -18,7 +24,7 @@ mkdir -p .build/coverage
 # per-surface floors (the ratchet). raise these as coverage climbs; never lower.
 SEAL_MIN=90  # convergence + seal — signing-critical (currently ~98%)
 ADR_MIN=90   # ADR-0002 validators (currently ~98%)
-BROAD_MIN=85 # broad quality-policy (currently ~94%)
+BROAD_MIN=95 # broad quality-policy (currently ~96%)
 
 python3 -m coverage erase
 python3 -m coverage run --branch -m unittest discover -s tools/quality/tests

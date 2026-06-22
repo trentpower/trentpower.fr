@@ -6,14 +6,26 @@
 
 PY := python3
 
-.PHONY: help test gate lint verify release-check integrity sbom privacy-check provenance-check claims policy
+.PHONY: help doctor test test-fast coverage diff-coverage gate lint verify release-check integrity sbom privacy-check provenance-check claims policy
 
 help: ## list the available targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | sort | \
 		awk -F':.*## ' '{printf "  make %-14s %s\n", $$1, $$2}'
 
-test: ## run the unit + property (hypothesis) test suite
+doctor: ## check the local environment (full / partial / archive / blocked)
+	bash tools/quality/doctor.sh
+
+test: ## run the unit + property (hypothesis) test suite (fast, no coverage)
 	$(PY) -m unittest discover -s tools/quality/tests -p 'test_*.py' -v
+
+test-fast: ## run the fast unit tier with the seam guard (blocks real subprocess/network)
+	$(PY) tools/quality/tests/run_fast.py
+
+coverage: ## run the suite under coverage + enforce the surface floors (single pass)
+	bash tools/quality/coverage.sh
+
+diff-coverage: ## gate coverage of changed lines vs origin/main (needs a prior `make coverage`)
+	$(PY) tools/quality/diff_coverage.py --base origin/main
 
 gate: ## run the deploy-blocking gate (security + correctness checks)
 	$(PY) tools/quality/gate.py

@@ -5,7 +5,7 @@
 [![SLSA: Build L3](metadata/badges/slsa-build-l3.svg)](docs/PROVENANCE.md)
 [![OpenSSF: Best Practices · Silver](metadata/badges/openssf-best-practices.svg)](https://www.bestpractices.dev/en/projects/13182/gold)
 [![OpenSSF Baseline: v2026.02.19 · L2](metadata/badges/openssf-baseline.svg)](https://www.bestpractices.dev/en/projects/13182/baseline-3)
-[![Test Coverage: 94%](metadata/badges/coverage.svg)](docs/COVERAGE.md)
+[![Test Coverage: 96%](metadata/badges/coverage.svg)](docs/COVERAGE.md)
 [![REUSE: Compliant](metadata/badges/reuse-compliant.svg)](https://api.reuse.software/info/github.com/trentpower/trentpower.fr)
 
 `trentpower.fr` is a static, bilingual, source-verifiable personal publication.
@@ -124,6 +124,22 @@ story (they are what the signed `integrity.json` attests to).
 - Optional dev tooling (Ruff, ShellCheck, Prettier, Stylelint) for the advisory
   quality checks. Missing local tools skip cleanly; CI installs the full set.
 
+## Check your local environment
+
+```sh
+make doctor    # full / partial / archive / blocked — what this tree can run
+```
+
+Run this first after a fresh clone or an extracted source archive. It inspects
+the local environment and reports — without running the build, tests or gate —
+whether the repo can run **full**, **partial**, **archive**-only, or is
+**blocked**, naming each missing piece and the command that restores it. Missing
+licensed fonts and absent `.git` metadata (a source archive carries none) are
+expected diagnostics, not errors: the licensed fonts are restored locally with
+`python3 tools/build/fetch_licensed_fonts.py`, and git-dependent gates are simply
+named as unavailable in archive mode. (A `make bootstrap` companion that performs
+the restores is planned, not yet implemented.)
+
 ## Build
 
 ```sh
@@ -153,7 +169,7 @@ checks (a failure blocks deploy); `lint.py` runs **advisory** quality checks.
 Both draw from the registry in `tools/lib/checks.py`, which combines the
 `validate_*` scripts with the inline checks in `tools/quality/inline_checks.py`.
 
-The suite is **1,064** unit-test functions across **67** files — both counts are
+The suite is **1,163** unit-test functions across **77** files — both counts are
 source-derived by `coverage.sh` and held in lock-step here by
 `sync_coverage.py --check` (a PR that changes the suite size but leaves these
 numbers stale fails CI). See [docs/COVERAGE.md](docs/COVERAGE.md).

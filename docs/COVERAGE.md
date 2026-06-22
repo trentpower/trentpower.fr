@@ -4,7 +4,7 @@ The `TEST COVERAGE` badge reports unit-test coverage of the project's own
 **unit-testable logic** — not a global all-scripts figure. The number is
 **measured by the build, not hand-set**, and is reproducible from source.
 
-> **Current figure: 94%** — auto-derived by the pipeline from the
+> **Current figure: 96%** — auto-derived by the pipeline from the
 > unit-testable-logic surface (defined below). The build writes this figure into
 > the badge and this page; CI fails a PR that leaves it stale.
 
@@ -34,7 +34,7 @@ tests, not unit tests (see exclusions).
 
 ## Test inventory
 
-The suite is currently **67** unit-test files / **1,064** test functions under
+The suite is currently **77** unit-test files / **1,163** test functions under
 `tools/quality/tests/`, run with stdlib `unittest` and property-based cases on
 Hypothesis. Both counts are **source-derived**: `coverage.sh` recounts the
 directory in the same run that measures coverage and writes the numbers into
