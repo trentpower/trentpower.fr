@@ -279,6 +279,16 @@ class EnvSeam(unittest.TestCase):
         self.assertIsNotNone(e.which("python3"))
         self.assertIsNone(e.which("a_binary_that_does_not_exist_xyz"))
 
+    def test_real_env_has_module_swallows_probe_errors(self):
+        from env import Env
+
+        e = Env()
+        # find_spec raises (not returns None) for a dotted name whose parent is
+        # absent and for a relative name; the seam must swallow it and report
+        # not-importable rather than propagate the ImportError.
+        self.assertFalse(e.has_module("nonexistent_parent_xyz.child"))
+        self.assertFalse(e.has_module(".rel"))
+
 
 if __name__ == "__main__":
     unittest.main()
