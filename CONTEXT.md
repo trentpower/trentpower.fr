@@ -100,3 +100,57 @@ over-grant). The honest counterpart to a backed claim — it states plainly what
 _not_ fixed, and why, rather than contorting code to lift a score.
 _Avoid_: false positive (only some accepted findings are false positives; others
 are real-but-structural), suppression, ignore.
+
+## Build, gate & quality
+
+**Promotion**:
+The one-way path a change travels — `feature/* → preprod → main` — where each merge
+promotes the _same_ bytes (no rebuild, no rebase) and only re-verifies them.
+_Avoid_: deploy, release (deploy is the separate manual publish; release is publishing an edition).
+
+**Coverage surface**:
+A named slice of the codebase whose unit-test coverage is measured and floored on its own —
+`seal`, `ADR`, and `broad`. A _coverage_ surface, unrelated to a _claim surface_.
+_Avoid_: bare "surface" (it collides with claim surface), scope, set.
+
+**Floor**:
+The minimum coverage a surface must hold; deploy-blocking, and only ever raised.
+_Avoid_: threshold, target, minimum (a target is aspirational; a floor is enforced).
+
+**Ratchet**:
+A gate that loosens in one direction only — coverage floors rise as coverage climbs and are
+never lowered; the changed-line ratchet holds new code to the bar.
+_Avoid_: gate (a gate is pass/fail at a point; "ratchet" names the never-loosens property).
+
+**Seam**:
+An injected boundary a validator's compute path crosses to reach the outside world — `Repo`
+(filesystem), `Proc` (subprocess), `Env` (interpreter) — so logic runs over fakes with no real
+disk, process, or host. See ADR-0002.
+_Avoid_: mock, interface, port.
+
+**Fast tier / slow tier**:
+The unit-test split: the _fast tier_ runs with real subprocess and network blocked, forcing
+tests through the Proc seam; the _slow tier_ is the small allowlist of tests that genuinely
+need a real process.
+_Avoid_: unit / integration (the line is "needs a real process", not "spans multiple units").
+
+**Seal**:
+The point in the build after which no published byte may change before signing; the signature
+covers exactly the sealed bytes.
+_Avoid_: snapshot, freeze, lock.
+
+**Ceremony**:
+The terminal presentation layer (`tools/build/term.sh`) that makes a run legible — wordmark,
+stages, panels, tables. Presentation only: it never affects the build, gate, signing, or
+verification.
+_Avoid_: UI, logging, output.
+
+**Preflight**:
+The single local command (`make preflight`) that runs the same checks CI runs, in the same
+order, so "green locally" means "green in CI".
+_Avoid_: pre-commit, CI (CI is the remote authority; preflight is its local mirror).
+
+**Doctor mode**:
+The readiness class `make doctor` assigns a checkout — `full`, `partial`, `archive`, or
+`blocked` — naming which checks it can actually run.
+_Avoid_: status, state.
