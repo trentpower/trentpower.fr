@@ -76,43 +76,12 @@ PUB_PCT="$(python3 -m coverage report \
   --include="tools/quality/*.py,tools/lib/*.py,tools/verify/*.py" \
   --omit="tools/quality/tests/*,tools/quality/gate.py,tools/quality/lint.py" \
   --format=total)"
-# Source-derive the suite size + the floors in the same run, so the documented
-# inventory and the advertised floor numbers (README.md + docs/*, gated by
-# tools/badges/sync_coverage.py) cannot drift. The file set comes from `git
-# ls-files` (TRACKED files), not a working-tree glob, so an uncommitted scratch
-# test file never inflates the published count.
-python3 - "$PUB_PCT" "$SEAL_MIN" "$ADR_MIN" "$BROAD_MIN" <<'PY'
-import json, re, subprocess, sys
-from pathlib import Path
-
-pct = float(sys.argv[1])
-seal, adr, broad = (int(sys.argv[i]) for i in (2, 3, 4))
-
-tracked = subprocess.run(
-    ["git", "ls-files", "tools/quality/tests/"],
-    capture_output=True, text=True,
-).stdout.splitlines()
-files = sorted(
-    Path(p) for p in tracked if p and Path(p).name.startswith("test_") and p.endswith(".py")
-)
-fn_re = re.compile(r"^\s*def test_", re.MULTILINE)
-funcs = sum(len(fn_re.findall(f.read_text(encoding="utf-8"))) for f in files)
-
-Path(".build/coverage/coverage-summary.json").write_text(
-    json.dumps(
-        {
-            "test_coverage_pct": round(pct),
-            "surface": "unit-testable-logic",
-            "raw": round(pct, 2),
-            "test_files": len(files),
-            "test_functions": funcs,
-            "floors": {"seal": seal, "adr": adr, "broad": broad},
-        }
-    )
-    + "\n",
-    encoding="utf-8",
-)
-PY
+# Source-derive the suite size + assemble the summary (the inventory + advertised
+# floors that sync_coverage.py keeps in lock-step). The derivation is a deep,
+# unit-tested module (tools/quality/coverage_summary.py) rather than a heredoc —
+# the count over `git ls-files` (TRACKED files) + the JSON contract gain a test
+# surface. coverage.sh just hands it the measured pct + the floors.
+python3 "$HERE/coverage_summary.py" --pct "$PUB_PCT" --seal "$SEAL_MIN" --adr "$ADR_MIN" --broad "$BROAD_MIN"
 echo
 echo "json: .build/coverage/coverage.json · html: .build/coverage/html/index.html"
 echo "summary: .build/coverage/coverage-summary.json · TEST COVERAGE ${PUB_PCT}% (unit-testable-logic)"

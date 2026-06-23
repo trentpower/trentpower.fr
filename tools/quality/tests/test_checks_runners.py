@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Tests for the check runners in tools/lib/checks.py.
 
-`run_check` (streaming) and the `_script`/`advisory` helpers are central to how
-gate.py / lint.py execute the registry; here they run over synthetic Check
-objects so every branch (function / command / neither) is asserted without a
-real validator. The command branch patches `subprocess.run` (a stand-in, never a
-real process), so these stay fast-tier-clean under the seam guard.
+`run_registry` is the single captured loop gate.py + lint.py share; here it runs
+over synthetic Check objects so its contract (runs all in order, returns the
+CheckResults, fires on_result, honours stop_on_fail) is asserted without a real
+validator and with no stdout to scrape. `progress_line` + `_script`/`advisory`
+helpers are covered alongside.
 
 Run:
     python3 -m unittest discover -s tools/quality/tests
@@ -14,7 +14,6 @@ Run:
 from __future__ import annotations
 
 import unittest
-from unittest import mock
 
 import _fixture
 
@@ -24,30 +23,44 @@ import checks  # noqa: E402
 from checks import Category, Check, Tier  # noqa: E402
 
 
-def _mk(*, function=None, command=None):
-    return Check(
-        "demo", "demo", Tier.ADVISORY, Category.QUALITY, "demo", function=function, command=command
-    )
+def _mk(rc=0, cid="demo"):
+    return Check(cid, cid, Tier.BLOCKING, Category.CORRECTNESS, "demo", function=lambda: rc)
 
 
-class RunCheck(unittest.TestCase):
-    def test_function_branch_returns_its_code(self):
-        self.assertEqual(checks.run_check(_mk(function=lambda: 0)), 0)
-        self.assertEqual(checks.run_check(_mk(function=lambda: 3)), 3)
+class RunRegistry(unittest.TestCase):
+    def test_runs_all_in_order_and_returns_results(self):
+        checks_in = [_mk(0, "a"), _mk(1, "b"), _mk(0, "c")]
+        results = checks.run_registry(checks_in)
+        self.assertEqual([r.id for r in results], ["a", "b", "c"])
+        self.assertEqual([r.status for r in results], ["passed", "failed", "passed"])
 
-    def test_command_branch_uses_subprocess(self):
-        with mock.patch("subprocess.run", return_value=mock.Mock(returncode=0)) as m:
-            rc = checks.run_check(_mk(command=["echo", "hi"]))
-        self.assertEqual(rc, 0)
-        self.assertEqual(m.call_args.args[0], ["echo", "hi"])
+    def test_on_result_fires_per_check_with_progress(self):
+        seen = []
+        checks.run_registry(
+            [_mk(0, "a"), _mk(0, "b")], on_result=lambda d, t, r: seen.append((d, t, r.id))
+        )
+        self.assertEqual(seen, [(1, 2, "a"), (2, 2, "b")])
 
-    def test_neither_function_nor_command_fails(self):
-        self.assertEqual(checks.run_check(_mk()), 1)
+    def test_stop_on_fail_breaks_after_first_failure(self):
+        results = checks.run_registry([_mk(0, "a"), _mk(1, "b"), _mk(0, "c")], stop_on_fail=True)
+        self.assertEqual([r.id for r in results], ["a", "b"])  # stopped at the failure
+
+    def test_default_runs_past_failures(self):
+        results = checks.run_registry([_mk(1, "a"), _mk(0, "b")])
+        self.assertEqual(len(results), 2)
+
+
+class ProgressLine(unittest.TestCase):
+    def test_pass_and_fail_marks(self):
+        results = checks.run_registry([_mk(0, "ok_one"), _mk(1, "bad_one")])
+        self.assertEqual(checks.progress_line(1, 3, results[0]), "[1/3] OK COR ok_one")
+        self.assertEqual(checks.progress_line(2, 3, results[1]), "[2/3] X COR bad_one")
 
 
 class RunCheckCapturedNeither(unittest.TestCase):
     def test_neither_branch_captures_error(self):
-        r = checks.run_check_captured(_mk())
+        neither = Check("demo", "demo", Tier.ADVISORY, Category.QUALITY, "demo")
+        r = checks.run_check_captured(neither)
         self.assertEqual(r.status, "failed")
         self.assertIn("neither function nor command", r.stderr)
 

@@ -34,33 +34,11 @@ sys.path.insert(
     ),
 )
 import check_report  # noqa: E402
-from checks import advisory, run_check, run_check_captured  # noqa: E402
+from checks import advisory, progress_line, run_registry  # noqa: E402
 
 
-def _run_json_file(out_path: str, strict: bool) -> int:
-    """Run advisory checks captured and write the standardized report to PATH.
-
-    Distinct from --format json (a stdout summary kept for back-compat): this
-    writes the same envelope shape as gate.py to reports/checks/. Advisory
-    failures land in summary.warnings, so top-level status stays "passed";
-    exit code is 0 unless --strict and something failed.
-    """
-    checks = advisory()
-    total = len(checks)
-    results = []
-    for i, c in enumerate(checks, 1):
-        print(f"[{i}/{total}] {c.category.value} {c.label}", flush=True)
-        results.append(run_check_captured(c))
-
-    report = check_report.build_check_report("lint", [r.to_dict() for r in results])
-    check_report.atomic_write_json(report, out_path)
-    failed = report["summary"]["warnings"]
-    print(f"\nreport: {out_path}")
-    if failed:
-        print(f"advisory: {failed}/{total} check(s) failed (non-blocking)")
-    else:
-        print(f"advisory: all {total} quality check(s) passed")
-    return 1 if (strict and failed) else 0
+def _render_lint(done: int, total: int, result) -> None:
+    print(progress_line(done, total, result), flush=True)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -86,19 +64,22 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = ap.parse_args(argv)
 
+    # one captured loop. progress streams live for the text run + the --json PATH
+    # run (back-compat); the json/markdown stdout formats emit only their block.
+    show_progress = bool(args.json) or args.format == "text"
+    results = run_registry(advisory(), on_result=_render_lint if show_progress else None)
+    total = len(results)
+    failed = [r for r in results if r.status != "passed"]
+
     if args.json:
-        return _run_json_file(args.json, args.strict)
-
-    checks = advisory()
-    total = len(checks)
-    results = []
-    for i, c in enumerate(checks, 1):
-        if args.format == "text":
-            print(f"[{i}/{total}] {c.category.value} {c.label}", flush=True)
-        rc = run_check(c)
-        results.append((c, rc))
-
-    failed = [(c, rc) for c, rc in results if rc != 0]
+        report = check_report.build_check_report("lint", [r.to_dict() for r in results])
+        check_report.atomic_write_json(report, args.json)
+        print(f"\nreport: {args.json}")
+        if failed:
+            print(f"advisory: {len(failed)}/{total} check(s) failed (non-blocking)")
+        else:
+            print(f"advisory: all {total} quality check(s) passed")
+        return 1 if (args.strict and failed) else 0
 
     if args.format == "json":
         print(
@@ -108,13 +89,13 @@ def main(argv: list[str] | None = None) -> int:
                     "advisory_failed": len(failed),
                     "results": [
                         {
-                            "id": c.id,
-                            "label": c.label,
-                            "category": c.category.value,
-                            "passed": rc == 0,
-                            "rationale": c.rationale,
+                            "id": r.id,
+                            "label": r.label,
+                            "category": r.category,
+                            "passed": r.status == "passed",
+                            "rationale": r.rationale,
                         }
-                        for c, rc in results
+                        for r in results
                     ],
                 },
                 indent=2,
@@ -124,19 +105,17 @@ def main(argv: list[str] | None = None) -> int:
         print(f"\n### Advisory lint -- {total - len(failed)}/{total} passed\n")
         print("| status | check | category |")
         print("|---|---|---|")
-        for c, rc in results:
-            print(f"| {'pass' if rc == 0 else '**FAIL**'} | {c.id} | {c.category.value} |")
+        for r in results:
+            print(f"| {'pass' if r.status == 'passed' else '**FAIL**'} | {r.id} | {r.category} |")
     else:
         print()
         if failed:
-            ids = ", ".join(c.id for c, _ in failed)
+            ids = ", ".join(r.id for r in failed)
             print(f"advisory: {len(failed)}/{total} check(s) failed (non-blocking): {ids}")
         else:
             print(f"advisory: all {total} quality check(s) passed")
 
-    if args.strict and failed:
-        return 1
-    return 0
+    return 1 if (args.strict and failed) else 0
 
 
 if __name__ == "__main__":
