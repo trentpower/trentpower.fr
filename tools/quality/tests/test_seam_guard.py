@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tests for the fast-tier seam guard (_fixture.block_real_processes + run_fast).
+"""Tests for the fast-tier seam guard (_fixture.block_real_processes + run_suite).
 
 Context-independent: works whether or not a guard is already installed (it runs
 in BOTH the guarded fast tier and the unguarded coverage pass), by asserting that
@@ -20,7 +20,7 @@ import _fixture
 
 _fixture.bootstrap()
 
-import run_fast  # noqa: E402
+import run_suite  # noqa: E402
 
 
 class BlockRealProcesses(unittest.TestCase):
@@ -56,7 +56,7 @@ class BlockRealProcesses(unittest.TestCase):
 class Allowlist(unittest.TestCase):
     def test_allowlist_is_exactly_the_integration_tier(self):
         self.assertEqual(
-            run_fast.SLOW_ALLOWLIST,
+            run_suite.SLOW_ALLOWLIST,
             frozenset(
                 {
                     "test_proc.py",
@@ -69,21 +69,36 @@ class Allowlist(unittest.TestCase):
             ),
         )
 
-    def test_fast_suite_excludes_allowlisted_files(self):
-        # the loaded fast suite must contain no test from an allowlisted module.
-        def ids(suite):
-            for t in suite:
-                if isinstance(t, unittest.TestSuite):
-                    yield from ids(t)
-                else:
-                    yield t.id()
+    def test_fast_selection_excludes_allowlisted_files(self):
+        names = {f.name for f in run_suite.selected_files(fast=True)}
+        self.assertTrue(names)  # sanity: it selected something
+        self.assertTrue(names.isdisjoint(run_suite.SLOW_ALLOWLIST))
 
-        loaded = list(ids(run_fast.load_fast_suite()))
-        self.assertTrue(loaded)  # sanity: it loaded something
-        for tid in loaded:
-            self.assertNotIn("test_proc.", tid)
-            self.assertNotIn("test_doctor_render.", tid)
-            self.assertNotIn("test_check_report.", tid)
+    def test_full_selection_includes_allowlisted_files(self):
+        names = {f.name for f in run_suite.selected_files(fast=False)}
+        self.assertTrue(run_suite.SLOW_ALLOWLIST.issubset(names))
+
+
+class FailureSurfacing(unittest.TestCase):
+    """run() must carry each failing test's id + traceback in the report — this
+    is what makes a red fast tier debuggable from the CI log, and it guards the
+    runner code, which lives under tests/ and so is outside the coverage surface."""
+
+    def test_collect_failures_carries_id_and_traceback(self):
+        class _Boom(unittest.TestCase):
+            def test_boom(self):
+                self.assertEqual(1, 2)
+
+        result = unittest.TestResult()
+        unittest.TestLoader().loadTestsFromTestCase(_Boom).run(result)
+        collected = run_suite._collect_failures(result, "test_demo.py")
+        self.assertEqual(len(collected), 1)
+        self.assertEqual(collected[0]["file"], "test_demo.py")
+        self.assertIn("test_boom", collected[0]["test_id"])
+        self.assertIn("AssertionError", collected[0]["traceback"])
+
+    def test_collect_failures_empty_on_clean_result(self):
+        self.assertEqual(run_suite._collect_failures(unittest.TestResult(), "test_x.py"), [])
 
 
 if __name__ == "__main__":

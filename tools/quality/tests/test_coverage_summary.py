@@ -60,13 +60,13 @@ class Compute(unittest.TestCase):
     def test_filters_non_test_files(self):
         self._write("tools/quality/tests/test_a.py", "def test_x():\n    pass\n")
         self._write("tools/quality/tests/_fixture.py", "def test_helper():\n    pass\n")
-        self._write("tools/quality/tests/run_fast.py", "def test_runner():\n    pass\n")
+        self._write("tools/quality/tests/run_suite.py", "def test_runner():\n    pass\n")
         # ls-files lists all three, but only the test_*.py file counts.
         proc = _proc(
             [
                 "tools/quality/tests/test_a.py",
                 "tools/quality/tests/_fixture.py",
-                "tools/quality/tests/run_fast.py",
+                "tools/quality/tests/run_suite.py",
             ]
         )
         d = cs.compute(90.0, _FLOORS, proc=proc, repo=Repo(self.root))

@@ -242,7 +242,7 @@ preflight)
   base="${PREFLIGHT_BASE:-origin/main}"
   steps=(
     "format + lint|QUALITY_ENFORCE=1 bash tools/quality/quality.sh --check"
-    "fast tier (seam guard)|$PY tools/quality/tests/run_fast.py"
+    "fast tier (seam guard)|$PY tools/quality/tests/run_suite.py --fast"
     "coverage ratchet|bash tools/quality/coverage.sh"
     "diff coverage|$PY tools/quality/diff_coverage.py --base $base"
     "badge + docs lock-step|$PY tools/badges/sync_coverage.py --check"
