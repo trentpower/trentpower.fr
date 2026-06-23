@@ -130,7 +130,7 @@ jobs:
       - name: Fast tier — seam guard (unit tests must use the Proc seam, not real subprocess)
         # cheap, fast-failing: blocks real subprocess/network for the unit tier so
         # a test that bypasses the injected seam fails here before the slower run.
-        run: python3 tools/quality/tests/run_fast.py
+        run: python3 tools/quality/tests/run_suite.py --fast
       - name: Unit + property tests + coverage ratchet (single pass — floors enforced by coverage.sh)
         # coverage.sh runs the whole suite UNDER coverage (set -euo pipefail → a
         # test failure aborts before the floor reports), so this one pass is both

@@ -121,7 +121,7 @@ def block_real_processes():
     """Replace real subprocess + socket constructors with raisers, returning a
     `restore()` that puts the originals back.
 
-    The fast unit tier (tools/quality/tests/run_fast.py) installs this so any
+    The fast unit tier (tools/quality/tests/run_suite.py --fast) installs this so any
     test that bypasses the injected Proc seam — shelling out to real git/gpg or
     opening a socket — fails LOUD instead of silently depending on the host.
     The two tests that legitimately use real subprocess (the Proc seam's own

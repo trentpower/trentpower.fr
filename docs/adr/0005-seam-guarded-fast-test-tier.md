@@ -1,6 +1,6 @@
 # The fast unit tier blocks real subprocess and network; an allowlist holds the integration tests
 
-`tools/quality/tests/run_fast.py` (and `run_suite.py --fast`) install a guard
+`tools/quality/tests/run_suite.py --fast` installs a guard
 (`_fixture.block_real_processes`) that replaces `subprocess.run`/`Popen` and `socket.socket`
 with raisers, then runs the unit suite. A test that shells out to real git/gpg or opens a socket
 — bypassing the injected Proc seam (ADR-0002) — fails loudly instead of silently depending on
