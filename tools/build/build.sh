@@ -291,12 +291,16 @@ stage02_render() {
     # publication-check / release build jobs).
     t_say warn "$(t_mark warn) Coverage ratchet — SKIPPED (coverage.py not installed; enforced on the build host + the source-quality CI job)"
   else
+    # floors derived from the single source of truth — never hardcoded here.
+    # shellcheck source=tools/quality/coverage-floors.sh
+    . "$TOOLS_DIR/quality/coverage-floors.sh"
+    floors="${SEAL_MIN}/${ADR_MIN}/${BROAD_MIN}"
     cov_log="$(mktemp)"
-    t_spin_start "Coverage ratchet · floors 95/95/95"
+    t_spin_start "Coverage ratchet · floors ${floors}"
     if bash "$TOOLS_DIR/quality/coverage.sh" >"$cov_log" 2>&1; then
-      t_spin_stop pass "Coverage ratchet · floors 95/95/95"
+      t_spin_stop pass "Coverage ratchet · floors ${floors}"
     else
-      t_spin_stop fail "Coverage ratchet · floors 95/95/95"
+      t_spin_stop fail "Coverage ratchet · floors ${floors}"
       sed 's/^/   /' "$cov_log" | tail -20
       rm -f "$cov_log"
       _fail "Coverage ratchet"
@@ -304,7 +308,7 @@ stage02_render() {
     cov_tests="$(grep -oE 'Ran [0-9]+ tests' "$cov_log" | grep -oE '[0-9]+' | head -1)"
     rm -f "$cov_log"
     cov_pct="$(python3 -c "import json;print(json.load(open('.build/coverage/coverage-summary.json'))['test_coverage_pct'])" 2>/dev/null || echo '?')"
-    t_say ink "$(t_mark pass) ${cov_tests:-?} unit tests passed · TEST COVERAGE ${cov_pct}% · floors 95/95/95 all green"
+    t_say ink "$(t_mark pass) ${cov_tests:-?} unit tests passed · TEST COVERAGE ${cov_pct}% · floors ${floors} all green"
     # operator gate — continue or cancel based on the numbers (auto-continues off-TTY)
     t_menu "1=Continue the build" "2=Cancel the build"
     case "$T_REPLY" in

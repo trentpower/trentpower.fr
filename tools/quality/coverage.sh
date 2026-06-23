@@ -17,16 +17,20 @@
 #   bash tools/quality/coverage.sh
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" # tools/quality
+ROOT="$(cd "$HERE/../.." && pwd)"                    # repo root
 cd "$ROOT"
 mkdir -p .build/coverage
 
-# per-surface floors (the ratchet). raise these as coverage climbs; never lower.
-# uniform 95% floor across all three surfaces (measured 97.7 / 97.3 / 96.0, so
-# each keeps margin above its floor). raise as coverage climbs; never lower.
-SEAL_MIN=95  # convergence + seal — signing-critical (currently ~98%)
-ADR_MIN=95   # ADR-0002 validators (currently ~97%)
-BROAD_MIN=95 # broad quality-policy (currently ~96%)
+# per-surface floors — single source of truth (sourced, not duplicated here).
+# shellcheck source=tools/quality/coverage-floors.sh
+. "$HERE/coverage-floors.sh"
+
+# the count below measures the WORKING TREE; surface a dirty tree so the published
+# counts are never silently off from what CI (a clean checkout) would measure.
+DIRTY="$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')"
+[ "${DIRTY:-0}" -gt 0 ] &&
+  echo "note: measuring a dirty tree — ${DIRTY} uncommitted change(s); counts reflect the working tree, not HEAD"
 
 python3 -m coverage erase
 python3 -m coverage run --branch -m unittest discover -s tools/quality/tests
@@ -72,16 +76,25 @@ PUB_PCT="$(python3 -m coverage report \
   --include="tools/quality/*.py,tools/lib/*.py,tools/verify/*.py" \
   --omit="tools/quality/tests/*,tools/quality/gate.py,tools/quality/lint.py" \
   --format=total)"
-# Source-derive the suite size in the same run, so the documented inventory
-# (README.md + docs/COVERAGE.md, gated by tools/badges/sync_coverage.py) cannot
-# drift from what is actually in tools/quality/tests/.
-python3 - "$PUB_PCT" <<'PY'
-import json, re, sys
+# Source-derive the suite size + the floors in the same run, so the documented
+# inventory and the advertised floor numbers (README.md + docs/*, gated by
+# tools/badges/sync_coverage.py) cannot drift. The file set comes from `git
+# ls-files` (TRACKED files), not a working-tree glob, so an uncommitted scratch
+# test file never inflates the published count.
+python3 - "$PUB_PCT" "$SEAL_MIN" "$ADR_MIN" "$BROAD_MIN" <<'PY'
+import json, re, subprocess, sys
 from pathlib import Path
 
 pct = float(sys.argv[1])
-tests = Path("tools/quality/tests")
-files = sorted(tests.glob("test_*.py"))
+seal, adr, broad = (int(sys.argv[i]) for i in (2, 3, 4))
+
+tracked = subprocess.run(
+    ["git", "ls-files", "tools/quality/tests/"],
+    capture_output=True, text=True,
+).stdout.splitlines()
+files = sorted(
+    Path(p) for p in tracked if p and Path(p).name.startswith("test_") and p.endswith(".py")
+)
 fn_re = re.compile(r"^\s*def test_", re.MULTILINE)
 funcs = sum(len(fn_re.findall(f.read_text(encoding="utf-8"))) for f in files)
 
@@ -93,6 +106,7 @@ Path(".build/coverage/coverage-summary.json").write_text(
             "raw": round(pct, 2),
             "test_files": len(files),
             "test_functions": funcs,
+            "floors": {"seal": seal, "adr": adr, "broad": broad},
         }
     )
     + "\n",
