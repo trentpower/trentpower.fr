@@ -29,18 +29,9 @@ cd "$REPO_ROOT" || exit 1
 PY="python3"
 
 # ── render mode + presentation library (mirrors build.sh / doctor.sh) ────────
-if [ -n "$RENDER_FORCE" ]; then
-  T_RENDER="plain"
-elif [ -t 1 ] && [ -z "${NO_COLOR:-}" ] && [ "${TERM:-dumb}" != "dumb" ]; then
-  T_RENDER="rich"
-else
-  T_RENDER="plain"
-fi
-T_ASCII="$ASCII"
-T_VERBOSE=0
-export T_RENDER T_ASCII T_VERBOSE
 # shellcheck source=tools/build/term.sh
 . "$TOOLS_DIR/build/term.sh"
+t_init "$RENDER_FORCE" "$ASCII" 0
 
 ms() { # pretty-print milliseconds
   local n="$1"
