@@ -172,15 +172,8 @@ count_archives() {
     \( -name '*.zip' -o -name '*.tar.gz' \) 2>/dev/null | wc -l | tr -d ' '
 }
 
-# the trentpower.fr wordmark, kept literal via a quoted heredoc.
-IFS= read -r -d '' BANNER_ART <<'BANNER' || true
-  _                 _                                      __
- | |_ _ __ ___ _ __ | |_ _ __   _____      _____ _ __     / _|_ __
- | __| '__/ _ \ '_ \| __| '_ \ / _ \ \ /\ / / _ \ '__|   | |_| '__|
- | |_| | |  __/ | | | |_| |_) | (_) \ V  V /  __/ |    _ |  _| |
-  \__|_|  \___|_| |_|\__| .__/ \___/ \_/\_/ \___|_|   (_)|_| |_|
-                        |_|
-BANNER
+# the trentpower.fr wordmark now lives in tools/build/term.sh (t_logo) so the
+# build masthead and the `make` ceremony share one source of the art.
 
 # ── current edition + the operator's chosen note ────────────────────────────
 EDITION="$(json_get "$IDENTITY" edition)"
@@ -193,27 +186,7 @@ splash() {
     printf 'TRENTPOWER · trentpower.fr — edition %s\n' "$EDITION"
     return 0
   fi
-  if case "${COLORTERM:-}" in truecolor | 24bit) true ;; *) false ;; esac then
-    local i=0 c line
-    while IFS= read -r line; do
-      case "$i" in
-      0) c='214;150;90' ;;
-      1) c='205;120;70' ;;
-      2) c='196;100;56' ;;
-      3) c='181;74;40' ;;
-      4) c='168;70;44' ;;
-      *) c='150;64;40' ;;
-      esac
-      printf '\033[38;2;%sm%s\033[0m\n' "$c" "$line"
-      i=$((i + 1))
-    done <<<"$BANNER_ART"
-  else
-    printf '%s%s%s\n' "$(t_c ox)" "$BANNER_ART" "$(t_z)"
-  fi
-  printf '\n'
-  t_say ink_faint "PARIS · PUBLICATION PRESS"
-  printf '%s%strentpower.fr%s\n' "$(t_c ox)" "$(t_b)" "$(t_z)"
-  t_say ink_dim "Static · Signed · Source-verifiable"
+  t_logo
 }
 
 # ── 01 · Publication Intent (interactive; skipped off a TTY or with a mode flag) ─
