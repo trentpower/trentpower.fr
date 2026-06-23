@@ -3,79 +3,61 @@
 # thin wrappers over the existing pipeline entry points. no logic lives
 # here: each target is the same command CI runs, so "green locally" means
 # the same thing as "green in Actions". see docs/RELEASE.md.
+#
+# every runner is wrapped in the terminal ceremony (tools/quality/make-ui.sh):
+# the trentpower.fr wordmark on top, then a summary panel — or a full per-file
+# table with DETAIL=full (e.g. `make test DETAIL=full`, `make gate DETAIL=full`).
 
 PY := python3
+DETAIL ?= summary
+
+# base ref the changed-line ratchet diffs against in `make preflight`/`diff-coverage`;
+# override for a preprod-targeted branch: `make preflight PREFLIGHT_BASE=origin/preprod`.
+PREFLIGHT_BASE ?= origin/main
+
+UI = DETAIL="$(DETAIL)" PREFLIGHT_BASE="$(PREFLIGHT_BASE)" bash tools/quality/make-ui.sh
 
 .PHONY: help doctor preflight test test-fast coverage diff-coverage gate lint verify release-check integrity sbom privacy-check provenance-check claims policy
 
-# base ref the changed-line ratchet diffs against in `make preflight`; override
-# for a preprod-targeted branch: `make preflight PREFLIGHT_BASE=origin/preprod`.
-PREFLIGHT_BASE ?= origin/main
-
-help: ## list the available targets
+help: ## list the available targets (DETAIL=full → per-file table on test/gate/lint/coverage)
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | sort | \
 		awk -F':.*## ' '{printf "  make %-14s %s\n", $$1, $$2}'
 
 doctor: ## check the local environment (full / partial / archive / blocked)
-	bash tools/quality/doctor.sh
+	@$(UI) doctor
 
-test: ## run the unit + property (hypothesis) test suite (fast, no coverage)
-	$(PY) -m unittest discover -s tools/quality/tests -p 'test_*.py' -v
+test: ## run the unit + property suite (DETAIL=full for a per-file table)
+	@$(UI) test
 
-test-fast: ## run the fast unit tier with the seam guard (blocks real subprocess/network)
-	$(PY) tools/quality/tests/run_fast.py
+test-fast: ## run the fast unit tier with the seam guard (DETAIL=full for a table)
+	@$(UI) test-fast
 
-coverage: ## run the suite under coverage + enforce the surface floors (single pass)
-	bash tools/quality/coverage.sh
+coverage: ## run the suite under coverage + enforce the floors (DETAIL=full for per-file)
+	@$(UI) coverage
 
-diff-coverage: ## gate coverage of changed lines vs origin/main (needs a prior `make coverage`)
-	$(PY) tools/quality/diff_coverage.py --base origin/main
+diff-coverage: ## gate coverage of changed lines vs PREFLIGHT_BASE (needs a prior `make coverage`)
+	@$(UI) diff-coverage
 
 preflight: ## run every locally-runnable CI check in order (green here ⇒ green in CI)
-	@echo "▸ format + lint  · quality.sh (ruff/shfmt/shellcheck/prettier/eslint/stylelint)"
-	@QUALITY_ENFORCE=1 bash tools/quality/quality.sh --check
-	@echo "▸ fast tier      · seam guard"
-	@$(PY) tools/quality/tests/run_fast.py
-	@echo "▸ coverage       · floors + counts (single pass)"
-	@bash tools/quality/coverage.sh
-	@echo "▸ diff coverage  · changed lines vs $(PREFLIGHT_BASE)"
-	@$(PY) tools/quality/diff_coverage.py --base $(PREFLIGHT_BASE)
-	@echo "▸ badge + docs    · lock-step with the measurement"
-	@$(PY) tools/badges/sync_coverage.py --check
-	@echo "▸ docs freshness + links"
-	@$(PY) tools/quality/validate_docs_freshness.py
-	@$(PY) tools/quality/validate_docs_links.py
-	@echo "▸ secret scan + repo hygiene"
-	@$(PY) tools/verify/scan_git_history.py --strict
-	@$(PY) tools/quality/validate_repository_hygiene.py
-	@echo "▸ advisory lint   (non-blocking)"
-	-@$(PY) tools/quality/lint.py
-	@echo "▸ blocking gate   · gate.py"
-	@$(PY) tools/quality/gate.py
-	@echo ""
-	@echo "✓ preflight green — every locally-runnable CI check passed"
-	@echo "  CI-only, NOT run here: sca (osv-scanner + network), reuse (pip tool), release-gate (full build + fonts)"
+	@$(UI) preflight
 
-gate: ## run the deploy-blocking gate (security + correctness checks)
-	$(PY) tools/quality/gate.py
+gate: ## run the deploy-blocking gate (DETAIL=full for the full check table)
+	@$(UI) gate
 
-lint: ## run the advisory quality/editorial checks (never blocks deploy)
-	$(PY) tools/quality/lint.py
+lint: ## run the advisory quality/editorial checks (DETAIL=full for the full table)
+	@$(UI) lint
 
 verify: ## run the full release gate + signature verification
-	$(PY) tools/verify/validate_release.py
+	@$(UI) verify
 
 privacy-check: ## run the privacy gates (storage keys, runtime contamination, trusted types)
-	$(PY) tools/quality/validate_storage_keys.py
-	$(PY) tools/quality/validate_no_runtime_contamination.py
-	$(PY) tools/quality/validate_trusted_types.py
+	@$(UI) privacy-check
 
 provenance-check: ## confirm every public supply-chain claim maps to a passing control
-	$(PY) tools/verify/validate_claims_parity.py
+	@$(UI) provenance-check
 
 claims: ## regenerate docs/CLAIMS.md from claims-map.yml, then run the parity gate
-	$(PY) tools/build/generate_claims_md.py
-	$(PY) tools/verify/validate_claims_parity.py
+	@$(UI) claims
 
 policy: ## run every public-promise gate (privacy + provenance + claims ledger)
 	$(MAKE) privacy-check
@@ -83,10 +65,10 @@ policy: ## run every public-promise gate (privacy + provenance + claims ledger)
 	$(MAKE) claims
 
 release-check: ## re-render from source and assert no drift (reproducibility)
-	bash tools/build/build.sh --check
+	@$(UI) release-check
 
 integrity: ## regenerate the public integrity manifest
-	$(PY) tools/build/generate_integrity.py
+	@$(UI) integrity
 
 sbom: ## generate a CycloneDX SBOM of the build toolchain
 	$(PY) -m cyclonedx_py requirements .github/requirements/build-check.txt \
