@@ -35,19 +35,10 @@ if ! command -v python3 >/dev/null 2>&1; then
   exit 3
 fi
 
-# ── render mode + presentation library (mirrors build.sh:110-123) ────────────
-if [ -n "$RENDER_FORCE" ]; then
-  T_RENDER="plain"
-elif [ -t 1 ] && [ -z "${NO_COLOR:-}" ] && [ "${TERM:-dumb}" != "dumb" ]; then
-  T_RENDER="rich"
-else
-  T_RENDER="plain"
-fi
-T_ASCII="$ASCII"
-T_VERBOSE="$VERBOSE"
-export T_RENDER T_ASCII T_VERBOSE
+# ── render mode + presentation library ──────────────────────────────────────
 # shellcheck source=tools/build/term.sh
 source "$TOOLS_DIR/build/term.sh"
+t_init "$RENDER_FORCE" "$ASCII" "$VERBOSE"
 
 # ── run the diagnosis (capture stdout; stderr stays visible for real crashes) ─
 JSON="$(python3 "$DOCTOR_PY" --json || true)"

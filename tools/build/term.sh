@@ -8,7 +8,7 @@
 # the graphical reference, while degrading to a clean, colourless, box-free
 # transcript when piped / NO_COLOR / not a TTY.
 #
-# Render mode is decided ONCE by build.sh and exported before sourcing:
+# Render mode is decided ONCE by t_init() (below), called right after sourcing:
 #   T_RENDER   rich | plain      (plain == no colour, no box-drawing, no spinner)
 #   T_ASCII    0 | 1             (markers use [ ] [*] [ok] [!] [x] - instead of glyphs)
 #   T_VERBOSE  0 | 1             (echo each underlying command, dimmed, prefixed `$ `)
@@ -25,6 +25,25 @@
 
 T_BW=52    # panel inner content width
 T_REPLY="" # last prompt result (menu key / typed text / yes|no)
+
+# t_init [FORCE] [ASCII] [VERBOSE] — decide the render mode ONCE and export it.
+# FORCE non-empty (only ever "plain") pins plain; otherwise rich on a capable
+# TTY, plain when piped / NO_COLOR / TERM=dumb. Each ceremony script parses its
+# own flags then calls this immediately after sourcing term.sh, instead of
+# inlining the decision. Presentation only — never affects build/sign/publish.
+t_init() {
+  local force="${1:-}"
+  T_ASCII="${2:-0}"
+  T_VERBOSE="${3:-0}"
+  if [ -n "$force" ]; then
+    T_RENDER="$force"
+  elif [ -t 1 ] && [ -z "${NO_COLOR:-}" ] && [ "${TERM:-dumb}" != "dumb" ]; then
+    T_RENDER="rich"
+  else
+    T_RENDER="plain"
+  fi
+  export T_RENDER T_ASCII T_VERBOSE
+}
 
 t_is_tty() { [ -t 1 ]; }
 

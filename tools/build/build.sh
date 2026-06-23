@@ -108,19 +108,12 @@ PUBLIC_DIR="$REPO_ROOT/public"
 IDENTITY="$REPO_ROOT/tools/config/identity_canonical.json"
 
 # ── render mode + presentation library ──────────────────────────────────────
-# Decide ONCE: rich on a capable TTY, plain otherwise (or when forced). term.sh
-# is pure presentation — it never affects the build, signing or publication.
-if [ -n "$RENDER_FORCE" ]; then
-  T_RENDER="plain"
-elif [ -t 1 ] && [ -z "${NO_COLOR:-}" ] && [ "${TERM:-dumb}" != "dumb" ]; then
-  T_RENDER="rich"
-else
-  T_RENDER="plain"
-fi
-T_ASCII="$ASCII"
-T_VERBOSE="$VERBOSE"
+# term.sh is pure presentation — it never affects the build, signing or
+# publication. t_init decides the mode ONCE: rich on a capable TTY, plain
+# otherwise (or when forced).
 # shellcheck source=tools/build/term.sh
 source "$TOOLS_DIR/build/term.sh"
+t_init "$RENDER_FORCE" "$ASCII" "$VERBOSE"
 
 # ── small build helpers ─────────────────────────────────────────────────────
 # step LABEL CMD…   — spinner around a required step; any failure halts.
