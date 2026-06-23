@@ -36,7 +36,7 @@ _fixture.bootstrap()
 # purpose, not because it bypasses the seam by accident:
 #   test_proc.py                  the production Proc() adapter itself
 #   test_doctor_render.py         shells out to the real doctor.sh ceremony
-#   test_check_report.py          run_check() runs real commands (true/false/…)
+#   test_check_report.py          run_check_captured runs real commands (true/false/…)
 #   test_public_readiness.py      ExternalInterface — real main() over real git
 #   test_validate_docs_freshness.py  ExternalInterface — main() over the real repo
 #   test_validate_docs_links.py      ExternalInterface — main() over the real repo
