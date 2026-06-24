@@ -14,12 +14,12 @@ canonical store for the heavy historical edition **archive binaries**.
 
 Measured on `origin/main` (`2d401c5`):
 
-| Thing | Size |
-|---|---|
-| `.git` (full history pack) | ~3.1 GiB |
-| Working tree | ~3.6 GiB |
-| Tracked archive binaries in current tree | **54 files, ~289 MB** |
-| `public/integrity/releases/` total | ~292 MB (≈3 MB after removal) |
+| Thing                                    | Size                          |
+| ---------------------------------------- | ----------------------------- |
+| `.git` (full history pack)               | ~3.1 GiB                      |
+| Working tree                             | ~3.6 GiB                      |
+| Tracked archive binaries in current tree | **54 files, ~289 MB**         |
+| `public/integrity/releases/` total       | ~292 MB (≈3 MB after removal) |
 
 The 54 binaries are `trentpower-fr-<edition>.zip` and `.tar.gz` under
 `public/integrity/releases/<edition>/`. Git history additionally carries every
@@ -63,7 +63,7 @@ referenced the binaries:
    dropped the two binary lines from the `byte_stable` list (kept the `.sha256`
    lines) and pruned the 14 binary keys from `archive-baseline.json`. The
    committed checksum is now the editorial seal; the bytes are verified remotely.
-2. **`validate_release.py` Step R2** (`tools/verify/`) *opened* the canonical
+2. **`validate_release.py` Step R2** (`tools/verify/`) _opened_ the canonical
    `.zip` and checked its contents. Fixed: when no local archive is present it
    confirms the committed `.sha256` seal exists and reports archive↔manifest byte
    verification as an explicit **remote** step instead of failing.

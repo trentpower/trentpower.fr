@@ -44,9 +44,7 @@ from paths import REPO_ROOT  # noqa: E402
 
 # archive-binary extensions forbidden under the release tree. the .sha256 / .sig
 # sidecars end in those suffixes (not these), so they are never matched.
-FORBIDDEN_RE = re.compile(
-    r"^public/integrity/releases/.+\.(?:zip|tar\.gz|tgz|tar|7z|br)$"
-)
+FORBIDDEN_RE = re.compile(r"^public/integrity/releases/.+\.(?:zip|tar\.gz|tgz|tar|7z|br)$")
 
 
 @dataclass
