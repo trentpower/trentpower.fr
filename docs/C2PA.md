@@ -21,16 +21,16 @@ C2PA (Coalition for Content Provenance and Authenticity) is an open standard for
 attaching a signed **manifest** to a media file. The manifest records assertions
 — who published it, a canonical URL, the tool that made it — and is bound to the
 file's bytes by a cryptographic signature. Compatible tools (for example the
-Content Authenticity *Verify* page) can read it back and show the provenance.
+Content Authenticity _Verify_ page) can read it back and show the provenance.
 
 ## How it relates to the existing trust model
 
-| Layer | Scope | Proof |
-| --- | --- | --- |
-| PGP-signed `integrity.json` | the whole publication tree | site-level, canonical |
-| SHA-256 in `integrity.json` | every public file | site-level |
-| Release archives, attestations, SBOM | each edition | site-level |
-| **C2PA Content Credentials** | **selected individual files** | **portable, asset-level** |
+| Layer                                | Scope                         | Proof                     |
+| ------------------------------------ | ----------------------------- | ------------------------- |
+| PGP-signed `integrity.json`          | the whole publication tree    | site-level, canonical     |
+| SHA-256 in `integrity.json`          | every public file             | site-level                |
+| Release archives, attestations, SBOM | each edition                  | site-level                |
+| **C2PA Content Credentials**         | **selected individual files** | **portable, asset-level** |
 
 C2PA is the only layer that survives a file being downloaded and re-shared. It is
 **weaker** than the signed manifest in one sense — any platform can strip it —
@@ -64,7 +64,7 @@ repo-specific `no-ai-in-release-path`.
 
 `no-ai-in-release-path` means: AI may assist drafting or development, but **no AI
 system participates in the build, signing, verification, or deployment** of the
-asset. It is a claim about the *release path*, not a claim that no AI was ever
+asset. It is a claim about the _release path_, not a claim that no AI was ever
 involved in the underlying work.
 
 ## What C2PA here proves
@@ -82,14 +82,14 @@ involved in the underlying work.
 - It does **not**, on its own, prove a **third-party-verified identity**. The
   signing certificate is self-asserted unless and until it is issued under a
   trust-listed certificate authority. Public verifiers will show the signer as
-  *untrusted* in that case. The site's **PGP key remains the identity anchor**;
+  _untrusted_ in that case. The site's **PGP key remains the identity anchor**;
   the C2PA certificate fingerprint is published alongside it so the two
   cross-reference.
 
 ## How to verify a C2PA asset
 
 1. Download the asset.
-2. Open a C2PA inspector (e.g. the Content Authenticity *Verify* page) and load
+2. Open a C2PA inspector (e.g. the Content Authenticity _Verify_ page) and load
    the file, **or** run `c2patool <file>` locally.
 3. Read the manifest: publisher, canonical URL, AI-involvement.
 4. Confirm the same file is listed, by hash, in the site's `integrity.json`.

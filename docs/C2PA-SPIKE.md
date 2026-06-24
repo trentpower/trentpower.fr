@@ -16,13 +16,13 @@ the evidence, and what it means for the plan.
 
 ## Environment
 
-| Item | Value |
-| --- | --- |
-| Host | Raspberry Pi 5 (BCM2712), `aarch64` Linux — the publication build host |
-| Tool | `c2pa-python` 0.36.0 (PyPI wheel), native `c2pa-rs` SDK 0.89.0 |
-| `c2patool` CLI | **No `aarch64-linux` prebuilt binary is published** (see below) |
-| Test certs | Locally generated ES256 (P-256) and Ed25519 chains, self-signed root |
-| Signing | Local, no timestamp authority (`ta_url = NULL`) |
+| Item           | Value                                                                  |
+| -------------- | ---------------------------------------------------------------------- |
+| Host           | Raspberry Pi 5 (BCM2712), `aarch64` Linux — the publication build host |
+| Tool           | `c2pa-python` 0.36.0 (PyPI wheel), native `c2pa-rs` SDK 0.89.0         |
+| `c2patool` CLI | **No `aarch64-linux` prebuilt binary is published** (see below)        |
+| Test certs     | Locally generated ES256 (P-256) and Ed25519 chains, self-signed root   |
+| Signing        | Local, no timestamp authority (`ta_url = NULL`)                        |
 
 The spike ran in a throwaway venv at `/tmp/c2pa-spike`. No signing material,
 no tooling, and no signed asset from the spike were committed.
@@ -36,7 +36,7 @@ The GitHub releases for `contentauth/c2pa-rs` ship `c2patool` prebuilt only for:
 - `x86_64-unknown-linux-gnu`
 
 There is **no `aarch64-unknown-linux-gnu` `c2patool`**. The `aarch64` Linux asset
-in those releases is the `c2pa` *library*, not the CLI.
+in those releases is the `c2pa` _library_, not the CLI.
 
 Consequences for the plan, which assumes `c2patool` everywhere:
 
@@ -58,7 +58,7 @@ PDF  es256 : WRITE-FAIL: Error signing file: Builder does not support applicatio
 ```
 
 Note the asymmetry: `application/pdf` **is** in
-`Reader.get_supported_mime_types()` (63 types) — c2pa-rs can *read* a C2PA
+`Reader.get_supported_mime_types()` (63 types) — c2pa-rs can _read_ a C2PA
 manifest from a PDF, but the Builder **cannot write/embed one**. So with this
 toolchain:
 
@@ -66,7 +66,7 @@ toolchain:
 - A **sidecar / external manifest** for the PDF: **also not viable** with this
   toolchain (re-tested with c2pa-python 0.36.0 / c2pa-rs 0.89.0 when promoting the
   Content Credentials to production). `application/pdf` is absent from the
-  Builder's 57 *writable* mime types entirely, so `set_no_embed()` fails the same
+  Builder's 57 _writable_ mime types entirely, so `set_no_embed()` fails the same
   way (`_C2paNotSupported`), and a format-agnostic attempt
   (`application/octet-stream`) is rejected too. There is no PDF write path —
   embedded or detached — until a c2pa-rs release adds a PDF handler.
@@ -87,13 +87,13 @@ derived honestly from the asset's AI posture). After the fix the SVGs validate
 `Valid`, with the only remaining status `signingCredential.untrusted` — the
 expected self-signed caveat.
 
-### What *can* be embedded
+### What _can_ be embedded
 
-| Format | Embed result | Size (orig → signed) |
-| --- | --- | --- |
-| PNG (`home-og.png`) | OK | 34,989 → 93,472 (+58 KB) |
-| SVG (`architecture.en.svg`) | OK | 6,522 → 24,276 (+18 KB) |
-| PDF (`README.pdf`) | **WRITE-FAIL** | — |
+| Format                      | Embed result   | Size (orig → signed)     |
+| --------------------------- | -------------- | ------------------------ |
+| PNG (`home-og.png`)         | OK             | 34,989 → 93,472 (+58 KB) |
+| SVG (`architecture.en.svg`) | OK             | 6,522 → 24,276 (+18 KB)  |
+| PDF (`README.pdf`)          | **WRITE-FAIL** | —                        |
 
 Two implications:
 
@@ -223,7 +223,7 @@ Gotchas hit during the spike, recorded so they are not rediscovered:
 - `C2paSignerInfo.ta_url` is a `c_char_p`; the Python wrapper rejects `None`, so
   construct with a placeholder then set `si.ta_url = None` to sign **without** a
   timestamp authority. Passing `b""` fails at sign time with `Signature: empty
-  string`.
+string`.
 - The signing key must be **PKCS#8** (the `BEGIN PRIVATE KEY` PEM label).
   OpenSSL's default EC output is SEC1 (the `BEGIN EC PRIVATE KEY` label) and is
   rejected; convert with `openssl pkcs8 -topk8 -nocrypt`.
