@@ -8,7 +8,7 @@
 # the graphical reference, while degrading to a clean, colourless, box-free
 # transcript when piped / NO_COLOR / not a TTY.
 #
-# Render mode is decided ONCE by build.sh and exported before sourcing:
+# Render mode is decided ONCE by t_init() (below), called right after sourcing:
 #   T_RENDER   rich | plain      (plain == no colour, no box-drawing, no spinner)
 #   T_ASCII    0 | 1             (markers use [ ] [*] [ok] [!] [x] - instead of glyphs)
 #   T_VERBOSE  0 | 1             (echo each underlying command, dimmed, prefixed `$ `)
@@ -25,6 +25,25 @@
 
 T_BW=52    # panel inner content width
 T_REPLY="" # last prompt result (menu key / typed text / yes|no)
+
+# t_init [FORCE] [ASCII] [VERBOSE] — decide the render mode ONCE and export it.
+# FORCE non-empty (only ever "plain") pins plain; otherwise rich on a capable
+# TTY, plain when piped / NO_COLOR / TERM=dumb. Each ceremony script parses its
+# own flags then calls this immediately after sourcing term.sh, instead of
+# inlining the decision. Presentation only — never affects build/sign/publish.
+t_init() {
+  local force="${1:-}"
+  T_ASCII="${2:-0}"
+  T_VERBOSE="${3:-0}"
+  if [ -n "$force" ]; then
+    T_RENDER="$force"
+  elif [ -t 1 ] && [ -z "${NO_COLOR:-}" ] && [ "${TERM:-dumb}" != "dumb" ]; then
+    T_RENDER="rich"
+  else
+    T_RENDER="plain"
+  fi
+  export T_RENDER T_ASCII T_VERBOSE
+}
 
 t_is_tty() { [ -t 1 ]; }
 
@@ -265,6 +284,104 @@ t_banner() {
   done
   printf '%s└%s┘%s\n' "$fc" "$(t_rule '─' "$W")" "$(t_z)"
   return 0
+}
+
+# ── trentpower.fr wordmark (shared masthead; reused by build.sh + make-ui.sh) ─
+IFS= read -r -d '' _T_LOGO_ART <<'ART' || true
+  _                 _                                      __
+ | |_ _ __ ___ _ __ | |_ _ __   _____      _____ _ __     / _|_ __
+ | __| '__/ _ \ '_ \| __| '_ \ / _ \ \ /\ / / _ \ '__|   | |_| '__|
+ | |_| | |  __/ | | | |_| |_) | (_) \ V  V /  __/ |    _ |  _| |
+  \__|_|  \___|_| |_|\__| .__/ \___/ \_/\_/ \___|_|   (_)|_| |_|
+                        |_|
+ART
+
+# t_logo -> the wordmark + masthead. Rich: gradient (truecolor) or oxblood art
+# then the press line; plain: a single calm line. Pure presentation.
+t_logo() {
+  if [ "$T_RENDER" != rich ]; then
+    t_say ink "trentpower.fr · static · signed · source-verifiable"
+    return 0
+  fi
+  if case "${COLORTERM:-}" in truecolor | 24bit) true ;; *) false ;; esac then
+    local i=0 c line
+    while IFS= read -r line; do
+      case "$i" in
+      0) c='214;150;90' ;;
+      1) c='205;120;70' ;;
+      2) c='196;100;56' ;;
+      3) c='181;74;40' ;;
+      4) c='168;70;44' ;;
+      *) c='150;64;40' ;;
+      esac
+      printf '\033[38;2;%sm%s\033[0m\n' "$c" "$line"
+      i=$((i + 1))
+    done <<<"$_T_LOGO_ART"
+  else
+    printf '%s%s%s\n' "$(t_c ox)" "$_T_LOGO_ART" "$(t_z)"
+  fi
+  printf '\n'
+  t_say ink_faint "PARIS · PUBLICATION PRESS"
+  printf '%s%strentpower.fr%s\n' "$(t_c ox)" "$(t_b)" "$(t_z)"
+  t_say ink_dim "Static · Signed · Source-verifiable"
+}
+
+# ── multi-column table (buffered; auto-width columns, status-toned cells) ─────
+# t_table_open H1 H2 …   |  t_table_row C1 C2 …   |  t_table_close
+# Cells are plain text (tab is the internal separator); a cell whose value reads
+# like a status (pass/failed/warn/…) is coloured. Header + a rule, no box, so it
+# degrades to clean aligned columns in plain mode.
+_T_THEAD=()
+_T_TROWS=()
+t_table_open() {
+  _T_THEAD=("$@")
+  _T_TROWS=()
+}
+t_table_row() {
+  local IFS=$'\t'
+  _T_TROWS+=("$*")
+}
+_t_celltone() {
+  case "$1" in
+  pass | passed | ok | OK | green) printf 'ok' ;;
+  fail | failed | FAIL | red) printf 'fail' ;;
+  warn | warning | "!") printf 'warn' ;;
+  *) printf 'ink' ;;
+  esac
+}
+t_table_close() {
+  local ncol=${#_T_THEAD[@]} j row pad line rule
+  local -a w cells
+  for ((j = 0; j < ncol; j++)); do w[j]=${#_T_THEAD[j]}; done
+  for row in "${_T_TROWS[@]}"; do
+    IFS=$'\t' read -ra cells <<<"$row"
+    for ((j = 0; j < ncol; j++)); do
+      [ "${#cells[j]}" -gt "${w[j]}" ] && w[j]=${#cells[j]}
+    done
+  done
+  line=''
+  for ((j = 0; j < ncol; j++)); do
+    printf -v pad '%-*s' "${w[j]}" "${_T_THEAD[j]}"
+    line="$line$(t_seg ink_dim "$pad")"
+    [ "$j" -lt $((ncol - 1)) ] && line="$line  "
+  done
+  printf '   %s\n' "$line"
+  rule=''
+  for ((j = 0; j < ncol; j++)); do
+    rule="$rule$(t_rule '─' "${w[j]}")"
+    [ "$j" -lt $((ncol - 1)) ] && rule="$rule  "
+  done
+  printf '   %s\n' "$(t_seg ink_faint "$rule")"
+  for row in "${_T_TROWS[@]}"; do
+    IFS=$'\t' read -ra cells <<<"$row"
+    line=''
+    for ((j = 0; j < ncol; j++)); do
+      printf -v pad '%-*s' "${w[j]}" "${cells[j]:-}"
+      line="$line$(t_seg "$(_t_celltone "${cells[j]:-}")" "$pad")"
+      [ "$j" -lt $((ncol - 1)) ] && line="$line  "
+    done
+    printf '   %s\n' "$line"
+  done
 }
 
 # ── interactive prompts (never block off a TTY) ─────────────────────────────

@@ -197,6 +197,7 @@ DirectoryIndex index.html
 
   # integrity releases (signed archives + checksums)
   RewriteRule ^integrity/releases/archive\.css$ - [L]
+  RewriteRule ^integrity/releases/index\.json$ - [L]
   RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/?$ - [L]
   RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/index\.html$ - [L]
   RewriteRule ^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/SHA256SUMS(\.sig)?$ - [L]

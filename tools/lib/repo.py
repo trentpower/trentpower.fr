@@ -33,6 +33,12 @@ class Repo:
     def is_file(self, rel: str) -> bool:
         return (self.root / rel).is_file()
 
+    def is_dir(self, rel: str) -> bool:
+        """True iff a repo-relative path is a directory. The counterpart to
+        is_file() for the few callers that probe a directory's presence
+        (e.g. a `.git`/`node_modules` checkout marker) rather than a file's."""
+        return (self.root / rel).is_dir()
+
     def size(self, rel: str) -> int:
         """on-disk byte size of a repo-relative file. callers guard with
         is_file() first; on a missing file this raises, like stat()."""

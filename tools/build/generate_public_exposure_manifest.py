@@ -205,6 +205,7 @@ PUBLIC_TESTS_GLOBS = [
 PUBLIC_INTEGRITY_GLOBS = [
     "/integrity/index.html",
     "/integrity/releases/index.html",
+    "/integrity/releases/index.json",
     "/integrity/releases/archive.css",
     "/integrity/verify-locally/index.html",
     # per-edition directory route — the trailing-slash URL form, so a
@@ -368,6 +369,11 @@ DEPLOY_EXCLUDED_GLOBS = [
     # workflow; sftp deploy excludes *.md so they never land on the
     # server. .htaccess additionally denies the .md extension.
     "/editorial/*.md",
+    # human-facing pointer at the archive-store root explaining that
+    # historical archive binaries are server-canonical. .md is denied by
+    # extension and *.md is already in the deploy lftp exclude list, so it
+    # never reaches the live host — it exists only as a GitHub-browse pointer.
+    "/integrity/releases/README.md",
     # operator-local rollback backups of .htaccess (e.g.
     # .htaccess.predeny.YYYY-MM-DD.bak). belt-and-braces: these are
     # moved to repo root by the deploy workflow; this rule keeps the

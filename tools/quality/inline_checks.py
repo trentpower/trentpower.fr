@@ -140,10 +140,13 @@ def _hash_archive_tree() -> dict:
             # manifests only. byte-stable; .sig / SHA256SUMS /
             # builds.json excluded for the reasons in the docstring.
             canonical_basename = f"trentpower-fr-{child.name}"
+            # The .zip / .tar.gz binaries themselves are server-canonical and
+            # are NOT committed to git (see public/integrity/releases/README.md).
+            # Their immutability is sealed by the committed .sha256 sidecars
+            # below — the checksum is the editorial seal; the bytes are verified
+            # remotely against it. So only the sidecars + manifests are locked.
             byte_stable = [
-                f"{canonical_basename}.zip",
                 f"{canonical_basename}.zip.sha256",
-                f"{canonical_basename}.tar.gz",
                 f"{canonical_basename}.tar.gz.sha256",
                 "integrity-redistributable.json",
                 "EXCLUDED_FILES.json",

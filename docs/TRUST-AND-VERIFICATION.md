@@ -113,6 +113,24 @@ edition. Each edition lives under `/integrity/releases/<YYYY-MM-DD>/` and
 carries its own checksums and signatures, independent of the live
 site-wide manifest.
 
+### Where the archives live (server-canonical)
+
+The heavy archive **binaries** — `trentpower-fr-<edition>.zip` and
+`.tar.gz` — are **not committed to this Git repository**. The canonical
+store is the live host: <https://trentpower.fr/integrity/releases/>. Git
+keeps only the lightweight **verification record** for every edition: the
+`.zip.sha256` / `.tar.gz.sha256` checksums, the `.sig` signatures,
+`SHA256SUMS`, `integrity-redistributable.json` and the other manifests.
+
+This keeps the GitHub source download light without weakening verification:
+because the checksum and signature of each archive are committed and signed
+here, an archive downloaded from the server can be verified against a hash
+this repository vouches for — you do not have to trust the server. Archive
+byte-content verification against the redistributable manifest is therefore
+an explicit **remote** step (fetch from the live host, then check against the
+committed `.sha256`). A local build never needs the historical binaries. See
+[ARCHIVE-STORAGE-AUDIT.md](ARCHIVE-STORAGE-AUDIT.md).
+
 ### Immutability baseline
 
 Releases are permanent. Once a release directory is signed it must never

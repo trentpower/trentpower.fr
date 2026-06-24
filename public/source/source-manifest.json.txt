@@ -1,6 +1,6 @@
 {
   "schema": "https://trentpower.fr/source/source-manifest.json",
-  "generated_at": "2026-06-21T00:00:00Z",
+  "generated_at": "2026-06-24T00:00:00Z",
   "principle": "This site is designed first for human readers. The /source/ tree mirrors public files as plain text so the bytes the live site serves can be inspected without any tooling.",
   "files": [
     {
@@ -941,7 +941,7 @@
       "size_human": "78 B",
       "mirror_bytes": 78,
       "mirror_size_human": "78 B",
-      "modified": "2026-06-21",
+      "modified": "2026-06-24",
       "sha256": "meQ/h/pAYzSr4XaJvrnQei/zJayWH+UMb46AtwoNP3A=",
       "sha256_short": "meQ/h/pAYzSr",
       "description": "Source mirror of the SHA-256 checksum for sitemap.xml."
@@ -971,7 +971,7 @@
       "size_human": "2.1 KB",
       "mirror_bytes": 2177,
       "mirror_size_human": "2.1 KB",
-      "modified": "2026-06-21",
+      "modified": "2026-06-24",
       "sha256": "U/wj4RvuUHobsFb+HOKDlcS2akeg0LLQqQCsouPYBzg=",
       "sha256_short": "U/wj4RvuUHob",
       "description": "Site-level metadata. Edition, build, asset version."
@@ -1121,9 +1121,9 @@
       "size_human": "1.1 KB",
       "mirror_bytes": 1170,
       "mirror_size_human": "1.1 KB",
-      "modified": "2026-06-21",
-      "sha256": "oDK2SZ4T03HSXlNOZ3E6T2S/gqj+d5Xp+vt/HQ6iIvE=",
-      "sha256_short": "oDK2SZ4T03HS",
+      "modified": "2026-06-24",
+      "sha256": "7wXgckuri6szY/whyDhYlDqZYZ/NSyFVI1MOOpUX/F4=",
+      "sha256_short": "7wXgckuri6sz",
       "description": "Build record. Reproducibility data for the current edition."
     },
     {
@@ -1132,13 +1132,13 @@
       "name": "htaccess.txt",
       "display_name": ".htaccess",
       "kind": "apache",
-      "size": 25295,
-      "size_human": "24.7 KB",
-      "mirror_bytes": 25514,
-      "mirror_size_human": "24.9 KB",
-      "modified": "2026-06-21",
-      "sha256": "9xSoUmaec/7U5/lnJfJPg9NaVQPtUrKY8vaJfHWs0yo=",
-      "sha256_short": "9xSoUmaec/7U",
+      "size": 25348,
+      "size_human": "24.8 KB",
+      "mirror_bytes": 25567,
+      "mirror_size_human": "25.0 KB",
+      "modified": "2026-06-24",
+      "sha256": "/muuZNbwS+r6bdVtvvpe8FfJxL+qfUBwAYt5qjyHAnA=",
+      "sha256_short": "/muuZNbwS+r6",
       "description": "Apache configuration. Public-safety scanned before mirroring."
     },
     {

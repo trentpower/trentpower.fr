@@ -1,7 +1,7 @@
 {
   "schema": "trentpower.public-exposure.v1",
   "edition": "2026-06-21",
-  "generated_at": "2026-06-21T21:30:14Z",
+  "generated_at": "2026-06-24T09:19:25Z",
   "principle": "this manifest is the source of truth for what the public web may serve; anything not matched here must not be deployed.",
   "language_roots": [
     "/en-au/",
@@ -145,6 +145,7 @@
   "public_integrity_globs": [
     "/integrity/index.html",
     "/integrity/releases/index.html",
+    "/integrity/releases/index.json",
     "/integrity/releases/archive.css",
     "/integrity/verify-locally/index.html",
     "/integrity/releases/*/",
@@ -272,6 +273,7 @@
   ],
   "deploy_excluded_globs": [
     "/editorial/*.md",
+    "/integrity/releases/README.md",
     "/.htaccess.*.bak"
   ]
 }

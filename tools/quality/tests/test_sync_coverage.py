@@ -65,6 +65,8 @@ class SyncCoverage(unittest.TestCase):
         sc.README = root / "README.md"
         sc.COVERAGE_DOC = root / "docs" / "COVERAGE.md"
 
+        sc.BUILD_DEPLOY_DOC = root / "docs" / "BUILD-AND-DEPLOYMENT.md"
+
     def tearDown(self):
         self._tmp.cleanup()
 
@@ -114,6 +116,68 @@ class SyncCoverage(unittest.TestCase):
     def test_write_is_idempotent(self):
         _seed(Path(self._tmp.name), 94)
         self.assertEqual(sc.write(94), [])  # nothing to change
+
+
+def _add_floors(root: Path, *, summary, doc, composite) -> None:
+    """Layer the floor fixtures onto a coherent _seed: the measured floors in the
+    summary, the COVERAGE.md surface table, and the BUILD-AND-DEPLOYMENT composite."""
+    s = json.loads(sc.SUMMARY_PATH.read_text(encoding="utf-8"))
+    s["floors"] = {"seal": summary[0], "adr": summary[1], "broad": summary[2]}
+    sc.SUMMARY_PATH.write_text(json.dumps(s), encoding="utf-8")
+    ds, da, db = doc
+    sc.COVERAGE_DOC.write_text(
+        sc.COVERAGE_DOC.read_text(encoding="utf-8")
+        + f"| convergence + seal (signing-critical) | {ds}% | ~98% |\n"
+        + f"| ADR-0002 validators | {da}% | ~97% |\n"
+        + f"| broad quality-policy (validators + libs + verify) | {db}% | ~96% |\n",
+        encoding="utf-8",
+    )
+    cs, ca, cb = composite
+    sc.BUILD_DEPLOY_DOC.write_text(
+        f"coverage ratchet (floors {cs}/{ca}/{cb}, fail-fast).\n", encoding="utf-8"
+    )
+
+
+class FloorLockStep(SyncCoverage):
+    """The advertised coverage-surface floors are kept in lock-step too."""
+
+    def _floor_drift(self):
+        return [d for d in sc.check(94) if "floor" in d]
+
+    def test_matching_floors_have_no_drift(self):
+        _seed(Path(self._tmp.name), 94)
+        _add_floors(
+            Path(self._tmp.name), summary=(95, 95, 95), doc=(95, 95, 95), composite=(95, 95, 95)
+        )
+        self.assertEqual(self._floor_drift(), [])
+
+    def test_stale_table_floor_detected(self):
+        _seed(Path(self._tmp.name), 94)
+        _add_floors(
+            Path(self._tmp.name), summary=(95, 95, 95), doc=(90, 95, 95), composite=(95, 95, 95)
+        )
+        self.assertTrue(self._floor_drift())  # seal cell says 90, measured 95
+
+    def test_stale_composite_floor_detected(self):
+        _seed(Path(self._tmp.name), 94)
+        _add_floors(
+            Path(self._tmp.name), summary=(95, 95, 95), doc=(95, 95, 95), composite=(90, 90, 90)
+        )
+        self.assertTrue(self._floor_drift())
+
+    def test_write_repairs_floor_drift(self):
+        _seed(Path(self._tmp.name), 94)
+        _add_floors(
+            Path(self._tmp.name), summary=(95, 95, 95), doc=(90, 90, 90), composite=(90, 90, 90)
+        )
+        sc.write(94)
+        self.assertEqual(self._floor_drift(), [])
+        self.assertIn("floors 95/95/95", sc.BUILD_DEPLOY_DOC.read_text(encoding="utf-8"))
+
+    def test_absent_floors_skip_gracefully(self):
+        # an older summary without a "floors" block must not crash or drift.
+        _seed(Path(self._tmp.name), 94)
+        self.assertEqual(self._floor_drift(), [])
 
 
 if __name__ == "__main__":

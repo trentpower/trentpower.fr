@@ -108,19 +108,12 @@ PUBLIC_DIR="$REPO_ROOT/public"
 IDENTITY="$REPO_ROOT/tools/config/identity_canonical.json"
 
 # ── render mode + presentation library ──────────────────────────────────────
-# Decide ONCE: rich on a capable TTY, plain otherwise (or when forced). term.sh
-# is pure presentation — it never affects the build, signing or publication.
-if [ -n "$RENDER_FORCE" ]; then
-  T_RENDER="plain"
-elif [ -t 1 ] && [ -z "${NO_COLOR:-}" ] && [ "${TERM:-dumb}" != "dumb" ]; then
-  T_RENDER="rich"
-else
-  T_RENDER="plain"
-fi
-T_ASCII="$ASCII"
-T_VERBOSE="$VERBOSE"
+# term.sh is pure presentation — it never affects the build, signing or
+# publication. t_init decides the mode ONCE: rich on a capable TTY, plain
+# otherwise (or when forced).
 # shellcheck source=tools/build/term.sh
 source "$TOOLS_DIR/build/term.sh"
+t_init "$RENDER_FORCE" "$ASCII" "$VERBOSE"
 
 # ── small build helpers ─────────────────────────────────────────────────────
 # step LABEL CMD…   — spinner around a required step; any failure halts.
@@ -172,15 +165,8 @@ count_archives() {
     \( -name '*.zip' -o -name '*.tar.gz' \) 2>/dev/null | wc -l | tr -d ' '
 }
 
-# the trentpower.fr wordmark, kept literal via a quoted heredoc.
-IFS= read -r -d '' BANNER_ART <<'BANNER' || true
-  _                 _                                      __
- | |_ _ __ ___ _ __ | |_ _ __   _____      _____ _ __     / _|_ __
- | __| '__/ _ \ '_ \| __| '_ \ / _ \ \ /\ / / _ \ '__|   | |_| '__|
- | |_| | |  __/ | | | |_| |_) | (_) \ V  V /  __/ |    _ |  _| |
-  \__|_|  \___|_| |_|\__| .__/ \___/ \_/\_/ \___|_|   (_)|_| |_|
-                        |_|
-BANNER
+# the trentpower.fr wordmark now lives in tools/build/term.sh (t_logo) so the
+# build masthead and the `make` ceremony share one source of the art.
 
 # ── current edition + the operator's chosen note ────────────────────────────
 EDITION="$(json_get "$IDENTITY" edition)"
@@ -193,27 +179,7 @@ splash() {
     printf 'TRENTPOWER · trentpower.fr — edition %s\n' "$EDITION"
     return 0
   fi
-  if case "${COLORTERM:-}" in truecolor | 24bit) true ;; *) false ;; esac then
-    local i=0 c line
-    while IFS= read -r line; do
-      case "$i" in
-      0) c='214;150;90' ;;
-      1) c='205;120;70' ;;
-      2) c='196;100;56' ;;
-      3) c='181;74;40' ;;
-      4) c='168;70;44' ;;
-      *) c='150;64;40' ;;
-      esac
-      printf '\033[38;2;%sm%s\033[0m\n' "$c" "$line"
-      i=$((i + 1))
-    done <<<"$BANNER_ART"
-  else
-    printf '%s%s%s\n' "$(t_c ox)" "$BANNER_ART" "$(t_z)"
-  fi
-  printf '\n'
-  t_say ink_faint "PARIS · PUBLICATION PRESS"
-  printf '%s%strentpower.fr%s\n' "$(t_c ox)" "$(t_b)" "$(t_z)"
-  t_say ink_dim "Static · Signed · Source-verifiable"
+  t_logo
 }
 
 # ── 01 · Publication Intent (interactive; skipped off a TTY or with a mode flag) ─
@@ -291,12 +257,16 @@ stage02_render() {
     # publication-check / release build jobs).
     t_say warn "$(t_mark warn) Coverage ratchet — SKIPPED (coverage.py not installed; enforced on the build host + the source-quality CI job)"
   else
+    # floors derived from the single source of truth — never hardcoded here.
+    # shellcheck source=tools/quality/coverage-floors.sh
+    . "$TOOLS_DIR/quality/coverage-floors.sh"
+    floors="${SEAL_MIN}/${ADR_MIN}/${BROAD_MIN}"
     cov_log="$(mktemp)"
-    t_spin_start "Coverage ratchet · floors 90/90/85"
+    t_spin_start "Coverage ratchet · floors ${floors}"
     if bash "$TOOLS_DIR/quality/coverage.sh" >"$cov_log" 2>&1; then
-      t_spin_stop pass "Coverage ratchet · floors 90/90/85"
+      t_spin_stop pass "Coverage ratchet · floors ${floors}"
     else
-      t_spin_stop fail "Coverage ratchet · floors 90/90/85"
+      t_spin_stop fail "Coverage ratchet · floors ${floors}"
       sed 's/^/   /' "$cov_log" | tail -20
       rm -f "$cov_log"
       _fail "Coverage ratchet"
@@ -304,7 +274,7 @@ stage02_render() {
     cov_tests="$(grep -oE 'Ran [0-9]+ tests' "$cov_log" | grep -oE '[0-9]+' | head -1)"
     rm -f "$cov_log"
     cov_pct="$(python3 -c "import json;print(json.load(open('.build/coverage/coverage-summary.json'))['test_coverage_pct'])" 2>/dev/null || echo '?')"
-    t_say ink "$(t_mark pass) ${cov_tests:-?} unit tests passed · TEST COVERAGE ${cov_pct}% · floors 90/90/85 all green"
+    t_say ink "$(t_mark pass) ${cov_tests:-?} unit tests passed · TEST COVERAGE ${cov_pct}% · floors ${floors} all green"
     # operator gate — continue or cancel based on the numbers (auto-continues off-TTY)
     t_menu "1=Continue the build" "2=Cancel the build"
     case "$T_REPLY" in

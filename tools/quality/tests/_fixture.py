@@ -86,3 +86,65 @@ class FakeProc:
         argv = list(argv)
         self.calls.append((argv, cwd, env))
         return self._handler(argv, cwd, env)
+
+
+class FakeEnv:
+    """Test double for tools.lib.env.Env — the interpreter-environment seam.
+
+    Mirrors FakeProc's shape: construct from plain data so "node missing" /
+    "hypothesis absent" / "old python" are deterministic with no real PATH,
+    importlib or platform involved.
+
+        env = FakeEnv(
+            which={"git": "/usr/bin/git", "gpg": None},  # absent name -> None
+            modules={"jsonschema", "yaml"},               # importable set
+            py="3.11.7",
+        )
+    """
+
+    def __init__(self, which=None, modules=None, py="3.11.0"):
+        self._which = dict(which or {})
+        self._modules = set(modules or ())
+        self._py = py
+
+    def which(self, name):
+        return self._which.get(name)
+
+    def has_module(self, name):
+        return name in self._modules
+
+    def python_version(self):
+        return self._py
+
+
+def block_real_processes():
+    """Replace real subprocess + socket constructors with raisers, returning a
+    `restore()` that puts the originals back.
+
+    The fast unit tier (tools/quality/tests/run_suite.py --fast) installs this so any
+    test that bypasses the injected Proc seam — shelling out to real git/gpg or
+    opening a socket — fails LOUD instead of silently depending on the host.
+    The two tests that legitimately use real subprocess (the Proc seam's own
+    test and the doctor.sh ceremony test) run only in the slow tier, where this
+    is not installed. Mirrors the FakeProc rationale: a validator's compute path
+    crosses the seam, never the real binary.
+    """
+    import socket
+    import subprocess
+
+    saved = (subprocess.run, subprocess.Popen, socket.socket)
+
+    def _blocked(*_a, **_k):
+        raise AssertionError(
+            "unit tier: use the Proc seam (tools/lib/proc.py), not real "
+            "subprocess/network — move this test to the slow tier if it needs them"
+        )
+
+    subprocess.run = _blocked
+    subprocess.Popen = _blocked
+    socket.socket = _blocked
+
+    def restore():
+        subprocess.run, subprocess.Popen, socket.socket = saved
+
+    return restore

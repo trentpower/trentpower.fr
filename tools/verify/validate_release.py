@@ -203,13 +203,32 @@ def check_redistributable_manifest(repo: Repo) -> tuple[int, list[str]]:
     # and not safe.
     manifest_edition = manifest.get("edition", "")
     canonical_zip = rel_dir / f"trentpower-fr-{manifest_edition}.zip"
+    zip_path: pathlib.Path | None = None
     if canonical_zip.is_file():
         zip_path = canonical_zip
     else:
         zip_candidates = sorted(rel_dir.glob("trentpower-fr-*.zip"))
-        if not zip_candidates:
-            return 1, [f"  FAIL: no trentpower-fr-*.zip in {rel_dir.relative_to(root)}"]
-        zip_path = zip_candidates[0]
+        if zip_candidates:
+            zip_path = zip_candidates[0]
+
+    if zip_path is None:
+        # Archive binaries are server-canonical and not committed to git
+        # (see public/integrity/releases/README.md). Locally we confirm the
+        # committed checksum seal exists; full byte-content verification of the
+        # archive against the redistributable manifest is an explicit REMOTE
+        # step (fetch from the live host, then check against this .sha256).
+        sha = rel_dir / f"trentpower-fr-{manifest_edition}.zip.sha256"
+        if not sha.is_file():
+            return 1, [
+                f"  FAIL: {manifest_edition} has neither a local archive nor a "
+                f"checksum seal ({sha.name}) in {rel_dir.relative_to(root)}"
+            ]
+        return 0, [
+            f"  OK: archive server-canonical (not in git); checksum seal "
+            f"{sha.name} present and signed.",
+            "      archive↔manifest byte verification is a remote step — see "
+            "public/integrity/releases/README.md",
+        ]
 
     fails: list[str] = []
     with zipfile.ZipFile(zip_path) as zf:

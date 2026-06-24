@@ -99,6 +99,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          # full history so diff_coverage.py can find the merge-base with the PR
+          # base and judge coverage of the changed lines.
+          fetch-depth: 0
       - name: Install native tools (ruff, shellcheck, shfmt)
         run: |
           set -eu
@@ -123,12 +127,23 @@ jobs:
         # font allow-rules match files on disk; fonts are gitignored (fetched, not
         # committed), so without this the tests see a "dead rule".
         run: python3 tools/build/fetch_licensed_fonts.py
-      - name: Unit + property-based tests (hypothesis fuzz)
-        run: python3 -m unittest discover -s tools/quality/tests -p 'test_*.py' -v
-      - name: Coverage ratchet (enforced — convergence/seal 90, ADR-0002 90, broad 85)
+      - name: Fast tier — seam guard (unit tests must use the Proc seam, not real subprocess)
+        # cheap, fast-failing: blocks real subprocess/network for the unit tier so
+        # a test that bypasses the injected seam fails here before the slower run.
+        run: python3 tools/quality/tests/run_suite.py --fast
+      - name: Unit + property tests + coverage ratchet (single pass — floors enforced by coverage.sh)
+        # coverage.sh runs the whole suite UNDER coverage (set -euo pipefail → a
+        # test failure aborts before the floor reports), so this one pass is both
+        # the test gate and the coverage gate — no separate bare unittest run.
         run: |
           python3 -m pip install --break-system-packages --quiet --require-hashes -r .github/requirements/coverage.txt
           bash tools/quality/coverage.sh
+      - name: Diff coverage (changed lines must be >= 90%)
+        # uses the per-file map coverage.sh just wrote; gates only the lines this
+        # PR touches, so a weak new module cannot hide in the broad average.
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python3 tools/quality/diff_coverage.py --base "$BASE_SHA"
       - name: Coverage badge + docs in sync with the measured figure
         run: python3 tools/badges/sync_coverage.py --check
       - name: Documentation freshness (build-blocking — paths, claims, links)

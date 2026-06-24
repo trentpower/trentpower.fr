@@ -43,6 +43,7 @@ BADGES_JSON = REPO_ROOT / "metadata" / "badges" / "badges.json"
 COVERAGE_SVG = REPO_ROOT / "metadata" / "badges" / "coverage.svg"
 README = REPO_ROOT / "README.md"
 COVERAGE_DOC = REPO_ROOT / "docs" / "COVERAGE.md"
+BUILD_DEPLOY_DOC = REPO_ROOT / "docs" / "BUILD-AND-DEPLOYMENT.md"
 
 README_RE = re.compile(r"Test Coverage: \d+%")
 DOC_RE = re.compile(r"Current figure: \d+%")
@@ -50,6 +51,32 @@ DOC_RE = re.compile(r"Current figure: \d+%")
 README_INV_RE = re.compile(r"\*\*[\d,]+\*\* unit-test functions across \*\*[\d,]+\*\* files")
 FILES_RE = re.compile(r"\*\*[\d,]+\*\* unit-test files")
 FUNCS_RE = re.compile(r"\*\*[\d,]+\*\* test functions")
+
+
+def _floor_entries(floors: dict) -> list[tuple[Path, re.Pattern, str]]:
+    """(path, regex, replacement) for every place the coverage-surface FLOOR
+    numbers are advertised. The floors live once in tools/quality/coverage-floors.sh
+    and are written into the summary JSON; this keeps the docs that quote them in
+    lock-step (same idea as the coverage figure above). The COVERAGE.md cell
+    regexes capture the table padding so a same-width number swap stays aligned;
+    drift is detected by "would a write change the file?", so no fragile parsing."""
+    seal, adr, broad = floors["seal"], floors["adr"], floors["broad"]
+    return [
+        # docs/BUILD-AND-DEPLOYMENT.md prose: "floors 95/95/95" (every occurrence)
+        (BUILD_DEPLOY_DOC, re.compile(r"floors \d+/\d+/\d+"), f"floors {seal}/{adr}/{broad}"),
+        # docs/COVERAGE.md surface table — the floor cell of each row
+        (
+            COVERAGE_DOC,
+            re.compile(r"(convergence \+ seal[^\n|]*\|\s*)\d+(%)"),
+            rf"\g<1>{seal}\g<2>",
+        ),
+        (COVERAGE_DOC, re.compile(r"(ADR-0002 validators[^\n|]*\|\s*)\d+(%)"), rf"\g<1>{adr}\g<2>"),
+        (
+            COVERAGE_DOC,
+            re.compile(r"(broad quality-policy[^\n|]*\|\s*)\d+(%)"),
+            rf"\g<1>{broad}\g<2>",
+        ),
+    ]
 
 
 def measured() -> dict:
@@ -106,6 +133,17 @@ def write(pct: int) -> list[str]:
             path.write_text(new, encoding="utf-8")
             if label not in changed:
                 changed.append(label)
+
+    # advertised coverage-surface floors, propagated from the single source.
+    floors = m.get("floors")
+    if floors:
+        for path, rx, repl in _floor_entries(floors):
+            text = path.read_text(encoding="utf-8")
+            new = rx.sub(repl, text)
+            if new != text:
+                path.write_text(new, encoding="utf-8")
+                if path.name not in changed:
+                    changed.append(path.name)
     return changed
 
 
@@ -141,6 +179,18 @@ def check(pct: int) -> list[str]:
         drift.append(f"docs/COVERAGE.md inventory is not '**{files:,}** unit-test files'")
     if f"**{funcs:,}** test functions" not in doc:
         drift.append(f"docs/COVERAGE.md inventory is not '**{funcs:,}** test functions'")
+
+    # advertised coverage-surface floors — stale iff a --write would change them.
+    floors = m.get("floors")
+    if floors:
+        fl = f"{floors['seal']}/{floors['adr']}/{floors['broad']}"
+        for path, rx, repl in _floor_entries(floors):
+            text = path.read_text(encoding="utf-8")
+            if rx.sub(repl, text) != text:
+                drift.append(
+                    f"{path.name} advertises a stale coverage floor "
+                    f"(expected {fl}; raise it in tools/quality/coverage-floors.sh)"
+                )
     return drift
 
 

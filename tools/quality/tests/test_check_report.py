@@ -102,6 +102,18 @@ class AtomicWriteJson(unittest.TestCase):
             # and no leftover temp file in the directory.
             self.assertEqual(list(pathlib.Path(d).iterdir()), [])
 
+    def test_cleanup_tolerates_already_missing_temp(self):
+        # serialization fails, then the temp file is already gone when cleanup
+        # unlinks it — the FileNotFoundError is swallowed, original error wins.
+        from unittest import mock
+
+        with tempfile.TemporaryDirectory() as d:
+            p = pathlib.Path(d) / "out.json"
+            with mock.patch("os.unlink", side_effect=FileNotFoundError):
+                with self.assertRaises(TypeError):
+                    check_report.atomic_write_json({"bad": {1, 2, 3}}, p)
+            self.assertFalse(p.exists())
+
 
 class RunCheckCaptured(unittest.TestCase):
     def test_command_check_passing(self):

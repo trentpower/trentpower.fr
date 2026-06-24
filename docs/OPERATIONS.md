@@ -208,6 +208,22 @@ Test: `curl -I https://trentpower.fr/`. External scanners:
 
 Run for every deploy. No exceptions.
 
+### Before you push: `make preflight`
+
+```bash
+make preflight   # runs every locally-runnable CI check, in CI order
+```
+
+`make preflight` mirrors the CI `source-quality` + `secret-scan` jobs in one command —
+formatting (prettier/ruff/shfmt/shellcheck), the seam-guarded fast tier, the coverage
+ratchet, the changed-line ratchet, badge/doc lock-step, the docs gates, and `gate.py`. Green
+here means green in CI. It prints (and does not fake) the few CI-only checks it cannot run
+locally — `sca` (osv-scanner + network), `reuse`, and `release-gate` (needs a full build).
+For a branch that targets `preprod`, pass `make preflight PREFLIGHT_BASE=origin/preprod`.
+
+When working on something parallel to an in-flight change, use a separate `git worktree` so
+unrelated edits never pollute the coverage counts or get swept into a commit.
+
 ### Standard deploy (content or config changes)
 
 ```bash

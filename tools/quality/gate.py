@@ -30,7 +30,7 @@ sys.path.insert(
     ),
 )
 import check_report  # noqa: E402
-from checks import blocking, run_check, run_check_captured, signature_check_ids  # noqa: E402
+from checks import blocking, progress_line, run_registry, signature_check_ids  # noqa: E402
 
 # the signature-dependent checks (gpg verify + sig freshness) are flagged in the
 # registry (Check.requires_signature) and surfaced via signature_check_ids(), so
@@ -49,34 +49,11 @@ def _blocking_checks(skip_signature: bool) -> list:
     return checks
 
 
-def _run_json(out_path: str, skip_signature: bool = False) -> int:
-    """Run every blocking check captured and write a machine-readable report.
-
-    --json implies --all: a report should list every blocking failure, not
-    stop at the first. Returns the same exit code (0 ok / 1 blocked).
-    """
-    checks = _blocking_checks(skip_signature)
-    total = len(checks)
-    results = []
-    for i, c in enumerate(checks, 1):
-        print(f"[{i}/{total}] {c.category.value} {c.label}", flush=True)
-        r = run_check_captured(c)
-        results.append(r)
-        if r.status != "passed":
-            print(f"  X BLOCKING FAILURE [{c.category.value}] {c.id} -- {c.rationale}")
-
-    report = check_report.build_check_report("gate", [r.to_dict() for r in results])
-    check_report.atomic_write_json(report, out_path)
-    print(f"\nreport: {out_path}")
-
-    if report["status"] == "failed":
-        ids = ", ".join(r.id for r in results if r.status != "passed")
-        print(
-            f"FAIL: deploy blocked -- {report['summary']['failed']} blocking check(s) failed: {ids}"
-        )
-        return 1
-    print("OK: ready to deploy (cp-not-mv; keep one cycle of old assets)")
-    return 0
+def _render_gate(done: int, total: int, result) -> None:
+    """Live per-check line for the human-facing run; blocking failures called out."""
+    print(progress_line(done, total, result), flush=True)
+    if result.status != "passed":
+        print(f"  X BLOCKING FAILURE [{result.category}] {result.id} -- {result.rationale}")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -109,26 +86,21 @@ def main(argv: list[str] | None = None) -> int:
         # release-archive checks; the post-signature gate (and CI) still enforce them.
         os.environ["GATE_SKIP_SIGNATURE"] = "1"
 
-    if args.json:
-        return _run_json(args.json, args.skip_signature)
-
+    # one captured loop for every mode: fail-fast unless --all/--json wants the
+    # full set. --json additionally writes the machine-readable report.
     checks = _blocking_checks(args.skip_signature)
-    total = len(checks)
-    failures = []
-    for i, c in enumerate(checks, 1):
-        print(f"[{i}/{total}] {c.category.value} {c.label}", flush=True)
-        rc = run_check(c)
-        if rc != 0:
-            failures.append(c)
-            print(f"  X BLOCKING FAILURE [{c.category.value}] {c.id} -- {c.rationale}")
-            if not args.all:
-                print("\nFAIL: deploy blocked.")
-                return 1
+    results = run_registry(checks, on_result=_render_gate, stop_on_fail=not (args.all or args.json))
+    report = check_report.build_check_report("gate", [r.to_dict() for r in results])
+    if args.json:
+        check_report.atomic_write_json(report, args.json)
+        print(f"\nreport: {args.json}")
 
     print()
-    if failures:
-        ids = ", ".join(c.id for c in failures)
-        print(f"FAIL: deploy blocked -- {len(failures)} blocking check(s) failed: {ids}")
+    if report["status"] == "failed":
+        ids = ", ".join(r.id for r in results if r.status != "passed")
+        print(
+            f"FAIL: deploy blocked -- {report['summary']['failed']} blocking check(s) failed: {ids}"
+        )
         return 1
     print("OK: ready to deploy (cp-not-mv; keep one cycle of old assets)")
     return 0

@@ -471,6 +471,16 @@ def step_html_links(
                     and disk_rel.startswith(current_edition_prefix)
                 ):
                     continue
+                # server-canonical archive binaries (.zip/.tar.gz) are
+                # intentionally not committed to git — the live host is their
+                # canonical store (https://trentpower.fr/integrity/releases/)
+                # and they are allow-listed above. their committed .sha256
+                # sidecar is the local seal, so a missing binary whose
+                # checksum sidecar is present on disk is the expected state.
+                if disk_rel.endswith((".zip", ".tar.gz")) and _public_is_file(
+                    repo, disk_rel + ".sha256"
+                ):
+                    continue
                 tag = "MISSING-ARTEFACT" if is_release_artefact else "BROKEN-LINK"
                 fails.append(f"{tag}: /{rel} → {u} (no file at {disk_rel})")
     return fails, page_count, link_count

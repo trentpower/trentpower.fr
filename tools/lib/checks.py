@@ -85,20 +85,6 @@ def _script(name: str, *args: str) -> list[str]:
     return [sys.executable, str(SCRIPTS / name), *args]
 
 
-def run_check(c: Check) -> int:
-    """Execute one check. Returns its exit code (0 = pass).
-
-    Streams the check's output straight to the terminal -- this is what
-    gate.py / lint.py use for the interactive, human-facing run.
-    """
-    if c.function is not None:
-        return c.function()
-    if c.command is not None:
-        return subprocess.run(list(c.command), cwd=pdc.ROOT).returncode
-    print(f"  FAIL: check {c.id} has neither function nor command")
-    return 1
-
-
 @dataclass(frozen=True)
 class CheckResult:
     """One captured check outcome, ready to serialize into a report.
@@ -137,11 +123,11 @@ class CheckResult:
 def run_check_captured(c: Check) -> CheckResult:
     """Execute one check, capturing its output and wall-clock duration.
 
-    Same logic as run_check, but nothing is streamed to the terminal -- the
-    output is captured into the CheckResult so gate.py / lint.py can fold it
-    into a machine-readable report. ``command`` checks capture subprocess
-    stdout/stderr; ``function`` checks (the inline pdc.* ones that print)
-    capture stdout via redirect_stdout.
+    Nothing is streamed to the terminal -- the output is captured into the
+    CheckResult so a caller can render it or fold it into a machine-readable
+    report. ``command`` checks capture subprocess stdout/stderr; ``function``
+    checks (the inline pdc.* ones that print) capture stdout via redirect_stdout.
+    This is the only per-check executor; run_registry drives it in a loop.
     """
     start = time.monotonic()
     stdout = ""
@@ -171,6 +157,38 @@ def run_check_captured(c: Check) -> CheckResult:
         stdout=stdout,
         stderr=stderr,
     )
+
+
+def run_registry(
+    checks: list[Check],
+    *,
+    on_result: Callable[[int, int, CheckResult], None] | None = None,
+    stop_on_fail: bool = False,
+) -> list[CheckResult]:
+    """Run a list of checks captured, in order, returning their CheckResults.
+
+    The single loop gate.py and lint.py both share. Each check runs through
+    run_check_captured (captured, never streamed); on_result(done, total, result)
+    fires after each so a caller can render a live line/mark; stop_on_fail breaks
+    after the first failure (gate's fail-fast default). Pure of presentation — it
+    prints nothing and writes nothing, so it is unit-tested with synthetic Checks.
+    """
+    total = len(checks)
+    results: list[CheckResult] = []
+    for i, c in enumerate(checks, 1):
+        r = run_check_captured(c)
+        results.append(r)
+        if on_result is not None:
+            on_result(i, total, r)
+        if stop_on_fail and r.status != "passed":
+            break
+    return results
+
+
+def progress_line(done: int, total: int, result: CheckResult) -> str:
+    """The one-line per-check render gate + lint print as a run streams."""
+    mark = "OK" if result.status == "passed" else "X"
+    return f"[{done}/{total}] {mark} {result.category} {result.label}"
 
 
 # shorthands.
@@ -326,6 +344,14 @@ REGISTRY: list[Check] = [
         _SEC,
         "sealed release archives are byte-identical to their baseline",
         function=pdc.check_frozen_archives_immutable,
+    ),
+    Check(
+        "archive_storage_policy",
+        "archive storage policy (server-canonical)",
+        _B,
+        _SEC,
+        "no archive binaries committed to git — historical archives live on the server",
+        command=_script("validate_archive_storage_policy.py"),
     ),
     Check(
         "images",
