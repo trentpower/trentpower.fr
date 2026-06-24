@@ -471,6 +471,13 @@ ALLOW_RULE_FAMILIES: list[tuple[str, list[str]]] = [
         ],
     ),
     (
+        "provenance (C2PA-signed distribution copies + machine index)",
+        [
+            r"^provenance/[a-z0-9.-]+\.svg$",
+            r"^provenance/index\.json$",
+        ],
+    ),
+    (
         "tests (language-neutral results page)",
         [
             r"^tests/?$",

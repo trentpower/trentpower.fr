@@ -97,7 +97,7 @@
             <div class="integrity-rg">
               <dt class="integrity-rg-label">PDF</dt>
               <dd class="integrity-rg-value"><a class="integrity-rg-link" href="/documentation/README.pdf">README.pdf</a></dd>
-              <dd class="integrity-rg-desc">A4 portrait · 6510 kB</dd>
+              <dd class="integrity-rg-desc">A4 portrait · 6705 kB</dd>
             </div>
             <div class="integrity-rg">
               <dt class="integrity-rg-label">Plain text</dt>
@@ -119,7 +119,7 @@
           <dl class="integrity-record-dl">
             <div class="integrity-rg integrity-rg--ruled">
               <dt class="integrity-rg-label">SHA-256</dt>
-              <dd class="integrity-rg-value">sha256-ROKOTAc10YI21A51T5nqspYNUggUH9VMFf2pmz5nz7A=</dd>
+              <dd class="integrity-rg-value">sha256-rbdaodp5y5KbsrPkqoy0udwdWTtBlmaDZ7rscPR+rw8=</dd>
             </div>
             <div class="integrity-rg">
               <dt class="integrity-rg-label">Manifest</dt>

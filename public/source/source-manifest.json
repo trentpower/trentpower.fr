@@ -282,9 +282,9 @@
       "size_human": "13.3 KB",
       "mirror_bytes": 13597,
       "mirror_size_human": "13.3 KB",
-      "modified": "2026-06-21",
-      "sha256": "X2ih0iugK48Be8dKIRvH3ZT+xiF3+V1owXy96KJxPEk=",
-      "sha256_short": "X2ih0iugK48B",
+      "modified": "2026-06-24",
+      "sha256": "ytxS/95U3UEnH8jS8dr7tOW1cN7NrW2XXeYjjuAhWYg=",
+      "sha256_short": "ytxS/95U3UEn",
       "description": "Documentation. The signed README.pdf and plain-text README, with the PDF's hash for verification."
     },
     {
@@ -1122,8 +1122,8 @@
       "mirror_bytes": 1170,
       "mirror_size_human": "1.1 KB",
       "modified": "2026-06-24",
-      "sha256": "7wXgckuri6szY/whyDhYlDqZYZ/NSyFVI1MOOpUX/F4=",
-      "sha256_short": "7wXgckuri6sz",
+      "sha256": "C3dVYLhyJN78GIb5sf6RTPJ/n3lUxOZ03M0X67QE1Eg=",
+      "sha256_short": "C3dVYLhyJN78",
       "description": "Build record. Reproducibility data for the current edition."
     },
     {
@@ -1132,13 +1132,13 @@
       "name": "htaccess.txt",
       "display_name": ".htaccess",
       "kind": "apache",
-      "size": 25348,
-      "size_human": "24.8 KB",
-      "mirror_bytes": 25567,
-      "mirror_size_human": "25.0 KB",
+      "size": 25509,
+      "size_human": "24.9 KB",
+      "mirror_bytes": 25728,
+      "mirror_size_human": "25.1 KB",
       "modified": "2026-06-24",
-      "sha256": "/muuZNbwS+r6bdVtvvpe8FfJxL+qfUBwAYt5qjyHAnA=",
-      "sha256_short": "/muuZNbwS+r6",
+      "sha256": "6QzYoKuy8Mw//q1dP552OKZ/JQj8mS2qjazo2Dlfv84=",
+      "sha256_short": "6QzYoKuy8Mw/",
       "description": "Apache configuration. Public-safety scanned before mirroring."
     },
     {

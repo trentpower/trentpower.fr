@@ -40,6 +40,7 @@ Every claim below is something you can check yourself, not a badge to take on fa
 | Signed releases        | signed `edition/*` tags + GitHub Releases         | [Releases](https://github.com/trentpower/trentpower.fr/releases); [docs](docs/PROVENANCE.md)                            |
 | SBOM                   | CycloneDX, build toolchain, per release           | Release assets; [docs](docs/REPRODUCIBILITY.md)                                                                         |
 | Reproducible build     | byte-deterministic archives                       | [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md)                                                                      |
+| Content Credentials    | C2PA on shared media (architecture diagrams); self-signed, cross-referenced with the PGP key | signed [`/provenance/architecture.en.svg`](https://trentpower.fr/provenance/architecture.en.svg); [docs/C2PA.md](docs/C2PA.md) |
 | Licensing              | REUSE 3.3; MIT (code) + CC-BY-SA-4.0 (content)    | [`REUSE.toml`](REUSE.toml), [`LICENSES/`](LICENSES/), [NOTICE.md](NOTICE.md)                                            |
 | Best practices         | OpenSSF Baseline (Silver)                         | [bestpractices.dev/projects/13182](https://www.bestpractices.dev/projects/13182)                                        |
 | Supply-chain posture   | OpenSSF Scorecard (a dashboard, not a medal)      | [scorecard.dev](https://scorecard.dev/viewer/?uri=github.com/trentpower/trentpower.fr)                                  |

@@ -216,6 +216,10 @@ DirectoryIndex index.html
   RewriteRule ^integrity/releases/2026-02/integrity\.json(\.sig)?$ - [L]
   RewriteRule ^integrity/releases/2026-02/assets/[A-Za-z0-9._/-]+\.(css|js|svg|woff2|png|jpe?g|webp|ico)$ - [L]
 
+  # provenance (C2PA-signed distribution copies + machine index)
+  RewriteRule ^provenance/[a-z0-9.-]+\.svg$ - [L]
+  RewriteRule ^provenance/index\.json$ - [L]
+
   # tests (language-neutral results page)
   RewriteRule ^tests/?$ - [L]
   RewriteRule ^tests/index\.html$ - [L]

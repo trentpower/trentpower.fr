@@ -9,6 +9,7 @@
     "SHA256SUMS.sig",
     "integrity/releases/README.md",
     "integrity/releases/index.json",
+    "provenance/index.json",
     "file-metadata.json",
     "verify/verification-data.js",
     "en-au/source/index.html",
@@ -34,7 +35,8 @@
     "verify/verification-data.????-??-??.*.js",
     "fonts/subsets/*.woff2",
     "app-enhance.????-??-??.*.js",
-    "fonts-full.????-??-??.*.css"
+    "fonts-full.????-??-??.*.css",
+    "provenance/*.svg"
   ],
   "exclusion_reasons": {
     ".well-known/attribution.sig": "binary PGP detached signature for /.well-known/attribution.txt; a base64 mirror would not improve verifiability (recipients use the live .sig directly with gpg --verify against the published key)",
@@ -42,6 +44,8 @@
     "integrity.json.sig": "binary PGP detached signature for /integrity.json; same reasoning as the live signed manifest itself — verified directly with gpg, mirror adds no inspection value",
     "integrity/releases/README.md": "human-facing pointer explaining that historical edition archive binaries are server-canonical (https://trentpower.fr/integrity/releases/) and not committed to git. A .md pointer at the archive-store root, not an editorial page; deploy-excluded by extension. A /source/ text mirror would duplicate the same prose byte-for-byte.",
     "integrity/releases/index.json": "machine-readable archive-storage policy pointer (server-canonical) served at the archive-store root. Read directly; a /source/ mirror would duplicate the bytes without adding inspection value.",
+    "provenance/*.svg": "C2PA-signed distribution copies of the generated architecture SVGs. The embedded credential carries a per-signing random identifier, so the bytes are non-reproducible and verified by hash in integrity.json, not byte-reproduced; a /source/ text mirror would fold the signed bytes back into the build it describes. The unsigned original is mirrored under /source/ already.",
+    "provenance/index.json": "Machine index of the C2PA-signed assets. Describes what is on disk under /provenance/; hashed by integrity.json so the GPG signature transitively signs it. A /source/ mirror would duplicate the bytes without value.",
     "file-metadata.json": "date+size+sha256 sidecar manifest; hashed by integrity.json so the GPG signature transitively signs every value here. A /source/ mirror would close a hashing loop (mirror bytes → integrity.json → next-build file-metadata.json bytes → mirror bytes …). Verified directly by reading the live file.",
     "verify/verification-data.js": "embeds per-route SHA-256 records read from integrity.json; mirroring would close a hashing loop (mirror bytes → integrity.json → next-build verification-data.js bytes → mirror bytes …). The live /verify/verification-data.js is itself the public source. The unversioned alias is kept so external bookmarks resolve.",
     "en-au/source/index.html": "the /en-au/source/ catalogue page receives a generator-spliced exhaustive registry from generate_source_view.py after render; mirroring it would fold the registry's own file hashes back into the catalogue it lists, a convergence cycle. Like the root /source/ catalogue it is not itself mirrored.",

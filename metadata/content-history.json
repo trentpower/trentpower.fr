@@ -366,7 +366,7 @@
       "first_seen": "2026-05-15"
     },
     "source/source-manifest.json": {
-      "sha256": "sha256-YEyXU9OgOf6YJSWpuj6VhYTc9ue6iHjauycM/e0pnKk=",
+      "sha256": "sha256-6mGzcDvfAkMZm0gzFJJ301VpeRuTUUOZUBwoJuNvJns=",
       "first_seen": "2026-06-24"
     },
     "source/apple-touch-icon.png.base64.txt": {
@@ -418,7 +418,7 @@
       "first_seen": "2026-06-21"
     },
     "source/source-manifest.json.txt": {
-      "sha256": "sha256-YEyXU9OgOf6YJSWpuj6VhYTc9ue6iHjauycM/e0pnKk=",
+      "sha256": "sha256-6mGzcDvfAkMZm0gzFJJ301VpeRuTUUOZUBwoJuNvJns=",
       "first_seen": "2026-06-24"
     },
     "source/sitemap.xml.txt": {
@@ -430,8 +430,8 @@
       "first_seen": "2026-05-15"
     },
     "source/htaccess.txt": {
-      "sha256": "sha256-9xSoUmaec/7U5/lnJfJPg9NaVQPtUrKY8vaJfHWs0yo=",
-      "first_seen": "2026-06-07"
+      "sha256": "sha256-6QzYoKuy8Mw//q1dP552OKZ/JQj8mS2qjazo2Dlfv84=",
+      "first_seen": "2026-06-24"
     },
     "source/manifest.webmanifest.txt": {
       "sha256": "sha256-gONBLvUDcl5GhstGAvusB03d67dc4dhr1SHTznO2brQ=",
@@ -470,7 +470,7 @@
       "first_seen": "2026-06-10"
     },
     "source/.well-known/build.json.txt": {
-      "sha256": "sha256-oDK2SZ4T03HSXlNOZ3E6T2S/gqj+d5Xp+vt/HQ6iIvE=",
+      "sha256": "sha256-CnKzCVezNxQuOAwclvlP0Vf11Y4e/fcSu5YE6m5Y2Vc=",
       "first_seen": "2026-06-24"
     },
     "source/.well-known/security.txt.txt": {
@@ -742,8 +742,8 @@
       "first_seen": "2026-05-19"
     },
     "source/view/source-view-manifest.js": {
-      "sha256": "sha256-OvAIIdq7peIDkt9oxsFEPfb6VMJLZk0D9SlzVmOmMLs=",
-      "first_seen": "2026-06-21"
+      "sha256": "sha256-5gEieOftvNjLQEaIczN1vb5WG9XEoT6yA/mmQWePZ0E=",
+      "first_seen": "2026-06-24"
     },
     "source/view/source-view.js": {
       "sha256": "sha256-BuDyW0PFs4eSpPZm1WAIlNQuA46amne8GgOL1dgHFUs=",
@@ -810,8 +810,8 @@
       "first_seen": "2026-06-21"
     },
     "fr/source/voir/index.html": {
-      "sha256": "sha256-ogoZqzIDwucTcZRTkDFer1dGzMEwS4v8HSOzkXZ94Ds=",
-      "first_seen": "2026-06-21"
+      "sha256": "sha256-rm/RR1xfZJnJ02G9tmKWdE0zoTTYwte0RV2O996GMR8=",
+      "first_seen": "2026-06-24"
     },
     "source/fr/index.html.txt": {
       "sha256": "sha256-fzQkZ/yJSWzh7yP7vOAtP/PC/rdtVCwt7OwUcrWv4oA=",
@@ -946,8 +946,8 @@
       "first_seen": "2026-06-21"
     },
     "en-au/source/view/index.html": {
-      "sha256": "sha256-hfBbfjXR6/ayPsps/jfKNFayiSl+jrvpZd6puWZz7UY=",
-      "first_seen": "2026-06-21"
+      "sha256": "sha256-NJSw/TzUnug+Kk6jyeoF3Dq71J+/6A8yWr7Zb+265VY=",
+      "first_seen": "2026-06-24"
     },
     "en-au/privacy/index.html": {
       "sha256": "sha256-evgO6++0y7UynxrYQdYA8J/nQhsN+uJLCNRxjJ+gCTI=",
@@ -1110,16 +1110,16 @@
       "first_seen": "2026-06-21"
     },
     "documentation/index.html": {
-      "sha256": "sha256-X2ih0iugK48Be8dKIRvH3ZT+xiF3+V1owXy96KJxPEk=",
-      "first_seen": "2026-06-21"
+      "sha256": "sha256-ytxS/95U3UEnH8jS8dr7tOW1cN7NrW2XXeYjjuAhWYg=",
+      "first_seen": "2026-06-24"
     },
     "documentation/README.pdf": {
-      "sha256": "sha256-ROKOTAc10YI21A51T5nqspYNUggUH9VMFf2pmz5nz7A=",
-      "first_seen": "2026-06-21"
+      "sha256": "sha256-rbdaodp5y5KbsrPkqoy0udwdWTtBlmaDZ7rscPR+rw8=",
+      "first_seen": "2026-06-24"
     },
     "documentation/README.txt": {
-      "sha256": "sha256-ebkdKQaibBNENQjinpDbdd/NXexr4YCb9Qe0T8csOd4=",
-      "first_seen": "2026-06-21"
+      "sha256": "sha256-pOrqapww+g92+5mHQdFngkATxLNMVUkp27F2iTYwbIE=",
+      "first_seen": "2026-06-24"
     },
     "source/documentation/index.html.txt": {
       "sha256": "sha256-X2ih0iugK48Be8dKIRvH3ZT+xiF3+V1owXy96KJxPEk=",
@@ -1179,6 +1179,18 @@
     },
     "integrity/releases/README.md": {
       "sha256": "sha256-BV/qy3m8lxjlkYXwSazYhuL1g9quGUHWcH9jcnK8vn0=",
+      "first_seen": "2026-06-24"
+    },
+    "provenance/index.json": {
+      "sha256": "sha256-HvKcoD4dUl+v/ZcExiU/VbIOpOiJGqC1vbMEF5QTrE8=",
+      "first_seen": "2026-06-24"
+    },
+    "provenance/architecture.fr.svg": {
+      "sha256": "sha256-HedGgc6KQtsMKhE95bP8kxTY7qTipFajj8hXNtOGf20=",
+      "first_seen": "2026-06-24"
+    },
+    "provenance/architecture.en.svg": {
+      "sha256": "sha256-wDqWiu/9IvXCcAi/au1KT4zJOUnQukUG/RjndkUst34=",
       "first_seen": "2026-06-24"
     }
   }

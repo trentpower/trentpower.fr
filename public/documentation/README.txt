@@ -5,7 +5,7 @@
 [![SLSA: Build L3](metadata/badges/slsa-build-l3.svg)](docs/PROVENANCE.md)
 [![OpenSSF: Best Practices · Silver](metadata/badges/openssf-best-practices.svg)](https://www.bestpractices.dev/en/projects/13182/gold)
 [![OpenSSF Baseline: v2026.02.19 · L2](metadata/badges/openssf-baseline.svg)](https://www.bestpractices.dev/en/projects/13182/baseline-3)
-[![Test Coverage: 94%](metadata/badges/coverage.svg)](docs/COVERAGE.md)
+[![Test Coverage: 95%](metadata/badges/coverage.svg)](docs/COVERAGE.md)
 [![REUSE: Compliant](metadata/badges/reuse-compliant.svg)](https://api.reuse.software/info/github.com/trentpower/trentpower.fr)
 
 `trentpower.fr` is a static, bilingual, source-verifiable personal publication.
@@ -40,6 +40,7 @@ Every claim below is something you can check yourself, not a badge to take on fa
 | Signed releases        | signed `edition/*` tags + GitHub Releases         | [Releases](https://github.com/trentpower/trentpower.fr/releases); [docs](docs/PROVENANCE.md)                            |
 | SBOM                   | CycloneDX, build toolchain, per release           | Release assets; [docs](docs/REPRODUCIBILITY.md)                                                                         |
 | Reproducible build     | byte-deterministic archives                       | [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md)                                                                      |
+| Content Credentials    | C2PA on shared media (architecture diagrams); self-signed, cross-referenced with the PGP key | signed [`/provenance/architecture.en.svg`](https://trentpower.fr/provenance/architecture.en.svg); [docs/C2PA.md](docs/C2PA.md) |
 | Licensing              | REUSE 3.3; MIT (code) + CC-BY-SA-4.0 (content)    | [`REUSE.toml`](REUSE.toml), [`LICENSES/`](LICENSES/), [NOTICE.md](NOTICE.md)                                            |
 | Best practices         | OpenSSF Baseline (Silver)                         | [bestpractices.dev/projects/13182](https://www.bestpractices.dev/projects/13182)                                        |
 | Supply-chain posture   | OpenSSF Scorecard (a dashboard, not a medal)      | [scorecard.dev](https://scorecard.dev/viewer/?uri=github.com/trentpower/trentpower.fr)                                  |
@@ -91,6 +92,13 @@ Content is authored in YAML and rendered through templates into static files;
 trust surfaces (integrity manifest, source mirrors, release archives, verify /
 integrity / source pages) are regenerated on every build. There is no runtime
 CMS, no database, and no analytics.
+
+Historical edition archive binaries are served from the canonical live archive
+store at <https://trentpower.fr/integrity/releases/>. They are not committed to
+Git, so GitHub source downloads stay light enough to unzip and build locally;
+the repository keeps the verification logic, signed manifests and per-edition
+checksum/signature records. See
+[docs/ARCHIVE-STORAGE-AUDIT.md](docs/ARCHIVE-STORAGE-AUDIT.md).
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
@@ -153,7 +161,7 @@ checks (a failure blocks deploy); `lint.py` runs **advisory** quality checks.
 Both draw from the registry in `tools/lib/checks.py`, which combines the
 `validate_*` scripts with the inline checks in `tools/quality/inline_checks.py`.
 
-The suite is **1,064** unit-test functions across **67** files — both counts are
+The suite is **1,191** unit-test functions across **79** files — both counts are
 source-derived by `coverage.sh` and held in lock-step here by
 `sync_coverage.py --check` (a PR that changes the suite size but leaves these
 numbers stale fails CI). See [docs/COVERAGE.md](docs/COVERAGE.md).
