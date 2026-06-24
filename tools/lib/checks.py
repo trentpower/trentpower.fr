@@ -532,6 +532,16 @@ REGISTRY: list[Check] = [
         command=_script("validate_lowercase_comments.py"),
     ),
     Check(
+        "c2pa_assets",
+        "validate_c2pa_assets.py (Content Credentials policy)",
+        _A,
+        _QUAL,
+        "C2PA asset policy is coherent: declared assets exist, required ones are "
+        "listed in integrity.json and carry an embedded credential, AI involvement "
+        "is declared. NOTE: promote to blocking once the signing workflow is stable",
+        command=_script("validate_c2pa_assets.py"),
+    ),
+    Check(
         "lang_gate",
         "validate_lang_gate.py",
         _B,

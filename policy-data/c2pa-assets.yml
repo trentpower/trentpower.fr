@@ -1,0 +1,95 @@
+# policy-data/c2pa-assets.yml — which media assets carry C2PA Content Credentials.
+#
+# Policy as data. This file declares the assets, their status, and the AI
+# posture of each. The COHERENCE LOGIC stays in Python
+# (tools/quality/validate_c2pa_assets.py); this file only says what is in or out
+# of scope and why. Validated against schemas/c2pa-assets.schema.json at load.
+#
+# Positioning (see docs/C2PA.md): the site already proves the publication tree
+# through a PGP-signed integrity manifest. C2PA is a SECOND, PORTABLE layer that
+# lets individual files carry their own provenance once they leave the site. It
+# does not replace the signed manifest and it does not prove truth, human
+# authorship, or that AI was never used.
+#
+# Current state: NOTHING is signed yet. The spike (docs/C2PA-SPIKE.md) proved
+# that PNG/SVG embed cleanly but PDF cannot be embedded with c2pa-rs 0.89, and
+# that a signing identity (a real certificate) is still an open decision. So the
+# one defensible first candidate — an authored SVG diagram — sits at `future`
+# until that identity exists. When it is signed, flip it to `required`.
+
+version: 1
+
+publisher:
+  name: trentpower.fr
+  # Must equal `url` in tools/config/identity_canonical.json (coherence-checked).
+  url: https://trentpower.fr
+
+# Controlled vocabulary for declaring AI involvement at asset level. Every in-scope
+# asset must pick exactly one of these (validator enforces membership).
+ai_vocabulary:
+  - none
+  - drafting-assisted
+  - editing-assisted
+  - image-generated
+  - image-edited
+  - unknown
+  - not-applicable
+  # repo-specific: AI may assist drafting or development, but no AI system
+  # participates in build, signing, verification or deployment.
+  - no-ai-in-release-path
+
+credential_modes:
+  - embedded
+  - sidecar
+
+assets:
+  # ── first intended signed asset ─────────────────────────────────────────────
+  # Authored architecture diagram. SVG embedding was proven in the spike. Held at
+  # `future` until a signing certificate is chosen (Phase 2). When signed and
+  # listed in integrity.json, promote to `required`.
+  - path: public/images/architecture/architecture.en.svg
+    status: future
+    type: diagram
+    role: authored-diagram
+    canonical_url: https://trentpower.fr/images/architecture/architecture.en.svg
+    author: Trent Power
+    publisher: trentpower.fr
+    ai_involvement: no-ai-in-release-path
+    credential_mode: embedded
+    reason: >-
+      Authored architecture diagram, downloaded and shared on its own. SVG embed
+      proven in the spike; awaiting a signing identity before it is signed.
+
+  - path: public/images/architecture/architecture.fr.svg
+    status: future
+    type: diagram
+    role: authored-diagram
+    canonical_url: https://trentpower.fr/images/architecture/architecture.fr.svg
+    author: Trent Power
+    publisher: trentpower.fr
+    ai_involvement: no-ai-in-release-path
+    credential_mode: embedded
+    reason: >-
+      French edition of the authored architecture diagram. Same posture as the
+      English one.
+
+  # ── deliberately out of scope ───────────────────────────────────────────────
+  - path: public/documentation/README.pdf
+    status: excluded
+    reason: >-
+      c2pa-rs 0.89 cannot EMBED a manifest into application/pdf (Builder rejects
+      it; see docs/C2PA-SPIKE.md). The publication tree already proves this PDF
+      through integrity.json. Revisit only if a sidecar-manifest path is proven.
+
+  - pattern: public/images/og/*.png
+    status: excluded
+    reason: >-
+      Social/open-graph preview images are stripped of C2PA by every major
+      platform on upload, and the manifest overhead is large relative to these
+      small files. Portable provenance has near-zero value here.
+
+notes:
+  - "Signing is a deliberate, occasional, committed act — not a per-build stage."
+  - "C2PA-signed assets are verified by hash (integrity.json), not byte-reproduced;
+     a fresh random manifest UUID per signing makes byte-reproduction impossible.
+     See the carve-out in docs/REPRODUCIBILITY.md."

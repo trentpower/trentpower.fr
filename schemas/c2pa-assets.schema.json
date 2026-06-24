@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trentpower.fr/schemas/c2pa-assets.schema.json",
+  "title": "trentpower.fr C2PA asset policy",
+  "description": "Declares which media assets carry (or deliberately do not carry) C2PA Content Credentials. Policy as data; the coherence logic lives in tools/quality/validate_c2pa_assets.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "publisher", "ai_vocabulary", "assets"],
+  "properties": {
+    "version": { "const": 1 },
+    "publisher": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "url"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "pattern": "^https://" }
+      }
+    },
+    "ai_vocabulary": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "credential_modes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["embedded", "sidecar"] }
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "assets": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/asset" }
+    }
+  },
+  "$defs": {
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "repo-relative file path, under public/. mutually exclusive with pattern.",
+          "pattern": "^public/"
+        },
+        "pattern": {
+          "type": "string",
+          "description": "glob for an excluded class of assets (e.g. public/images/og/*.png)."
+        },
+        "status": { "enum": ["required", "optional", "future", "excluded"] },
+        "type": { "enum": ["pdf", "image", "diagram", "document"] },
+        "role": {
+          "enum": [
+            "publication-document",
+            "authored-image",
+            "authored-diagram",
+            "social-preview",
+            "downloadable-record"
+          ]
+        },
+        "canonical_url": { "type": "string", "pattern": "^https://" },
+        "author": { "type": "string" },
+        "publisher": { "type": "string" },
+        "ai_involvement": { "type": "string", "minLength": 1 },
+        "credential_mode": { "enum": ["embedded", "sidecar"] },
+        "reason": { "type": "string", "minLength": 1 }
+      },
+      "oneOf": [
+        { "required": ["path"], "not": { "required": ["pattern"] } },
+        { "required": ["pattern"], "not": { "required": ["path"] } }
+      ],
+      "allOf": [
+        {
+          "$comment": "everything that is meant to carry credentials must declare where the asset lives, what it claims, and its AI posture.",
+          "if": {
+            "properties": { "status": { "enum": ["required", "optional", "future"] } }
+          },
+          "then": {
+            "required": ["path", "canonical_url", "ai_involvement", "credential_mode"]
+          }
+        }
+      ]
+    }
+  }
+}
