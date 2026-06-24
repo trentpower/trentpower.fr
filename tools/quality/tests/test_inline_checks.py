@@ -70,14 +70,20 @@ class HashArchiveTree(InlineChecksBase):
 
     def test_full_date_locks_canonical_only(self):
         base = "integrity/releases/2026-05-09"
-        self._rel(f"{base}/trentpower-fr-2026-05-09.zip")
+        # the .zip binary itself is server-canonical and NOT committed to git,
+        # so it is not locked; its committed .sha256 sidecar is the seal.
+        self._rel(f"{base}/trentpower-fr-2026-05-09.zip")  # excluded (server-canonical)
+        self._rel(f"{base}/trentpower-fr-2026-05-09.zip.sha256")  # locked (the seal)
         self._rel(f"{base}/release.json")
         self._rel(f"{base}/trentpower-fr-2026-05-09.zip.sig")  # excluded (.sig)
         self._rel(f"{base}/builds.json")  # excluded
         out = ic._hash_archive_tree()
         self.assertEqual(
             set(out),
-            {f"{base}/trentpower-fr-2026-05-09.zip", f"{base}/release.json"},
+            {
+                f"{base}/trentpower-fr-2026-05-09.zip.sha256",
+                f"{base}/release.json",
+            },
         )
 
 
