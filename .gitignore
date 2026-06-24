@@ -133,3 +133,11 @@ docs/pdf/review/
 # never committed. See tools/release/render_deploy_lftp.py.
 tools/release/deploy.sftp.lftp
 *.lftp.local
+
+# C2PA signing material lives in $TRENTPOWER_C2PA_DIR, never the repo; and
+# scratch signed outputs from tools/c2pa/sign_asset.py must not be committed.
+signer.key
+chain.pem
+*.signed.svg
+*.signed.png
+*.signed.jpg
