@@ -55,7 +55,7 @@ def _signer(chain: bytes, key: bytes):
         raise SystemExit(
             "error: c2pa-python not importable. Run this with the signing venv, e.g.\n"
             "  ~/.local/share/trentpower/c2pa-venv/bin/python tools/c2pa/sign_asset.py ..."
-        )
+        ) from None
     info = C2paSignerInfo(SIGNING_ALG, chain, key, b"placeholder")
     info.ta_url = None  # no timestamp authority; keeps one less non-deterministic input
     return Signer.from_info(info)

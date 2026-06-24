@@ -33,7 +33,7 @@ def read_manifest(path: Path) -> dict | None:
         raise SystemExit(
             "error: c2pa-python not importable. Run with the signing venv, e.g.\n"
             "  ~/.local/share/trentpower/c2pa-venv/bin/python tools/c2pa/inspect_asset.py ..."
-        )
+        ) from None
     mime = _MIME.get(path.suffix.lower())
     if mime is None:
         raise SystemExit(f"error: no known mime for {path.suffix}")

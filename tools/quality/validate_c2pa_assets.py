@@ -28,7 +28,6 @@ prints; `main` is the only side-effecting adapter.
 
 from __future__ import annotations
 
-import fnmatch
 import json
 import sys
 from collections.abc import Callable
