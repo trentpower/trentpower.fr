@@ -26,7 +26,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
 
-  <link rel="stylesheet" href="/styles.css?v=2026-06-21.fc5b8e9b" integrity="sha384-tIDETJBSrDw2H7Q+qRLmRIQm0LOK5PATjolhpolMw8AJEwY5vtXon6h8JIahxl6h">
+  <link rel="stylesheet" href="/styles.css?v=2026-06-24.3aabdf6d" integrity="sha384-tIDETJBSrDw2H7Q+qRLmRIQm0LOK5PATjolhpolMw8AJEwY5vtXon6h8JIahxl6h">
 
   <!-- head · structured data -->
   <script type="application/ld+json">
@@ -53,7 +53,7 @@
         "en-AU",
         "fr"
       ],
-      "dateModified": "2026-06-21T00:00:00+00:00"
+      "dateModified": "2026-06-24T00:00:00+00:00"
     },
     {
       "@type": "WebPage",
@@ -85,7 +85,7 @@
   "sourcePath": "content/shared/gate.yml",
   "templatePath": "templates/pages/language-gate.html",
   "sourceUrl": "https://github.com/trentpower/trentpower.fr/blob/main/content/shared/gate.yml",
-  "edition": "2026-06-21",
+  "edition": "2026-06-24",
   "generated": true
 }
   </script>
@@ -188,15 +188,15 @@ et dans la durée.</span></p>
 </div>
 
 <!-- scripts · local only -->
-<script src="/js/fonts.js?v=2026-06-21.fc5b8e9b" integrity="sha384-tRx+BQo5W/lcy75l/8xTsfmMEMKdriWuNc/CQdx/gAASrTGBMDQjDag3i25AuabQ" defer></script>
+<script src="/js/fonts.js?v=2026-06-24.3aabdf6d" integrity="sha384-4pcY3rFyd8lVx+HzjNoG8PnJpO6DUdNk6E6WvNghYVNDAmELTYB7T9BUDvGvx80v" defer></script>
 <script src="/js/language-gate.js" integrity="sha384-b1ZRdv7s/UhPETee2WQnQKMROfc6m24KockTt3n6gE/VxH5eeXgY7apRloQoLROs" defer></script>
 
 <!-- scripts · gate v2 post-swap parity -->
-<script src="/js/theme.js?v=2026-06-21.fc5b8e9b" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
-<script src="/js/copy.js?v=2026-06-21.fc5b8e9b" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
-<script src="/js/edition.js?v=2026-06-21.fc5b8e9b" integrity="sha384-iO0w8zmiIy+PKCcn52n+bxnD8GxJcyMXMMddSHMJAjxRpRxaYbPG3dD7jRtM7oKC" defer></script>
+<script src="/js/theme.js?v=2026-06-24.3aabdf6d" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/js/copy.js?v=2026-06-24.3aabdf6d" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/edition.js?v=2026-06-24.3aabdf6d" integrity="sha384-iO0w8zmiIy+PKCcn52n+bxnD8GxJcyMXMMddSHMJAjxRpRxaYbPG3dD7jRtM7oKC" defer></script>
 <script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
-<script src="/sw-register.js?v=2026-06-21.fc5b8e9b" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+<script src="/sw-register.js?v=2026-06-24.3aabdf6d" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
 
 <!-- body · construction rail -->
 <div class="construction-rail" data-construction-rail aria-hidden="true">

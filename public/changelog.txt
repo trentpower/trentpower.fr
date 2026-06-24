@@ -3,6 +3,24 @@
 # Canonical source: https://trentpower.fr/changelog.txt
 
 
+2026-06-24 — Content Credentials on the architecture diagrams (Edition 2026-06-24)
+---------------------------------------------------------------------------------
+A provenance edition. The site already proves its whole publication tree with a
+PGP-signed integrity manifest; this edition adds a second, portable layer for the
+few assets that travel on their own.
+
+  • The authored architecture diagrams now ship a signed copy under
+    /provenance/ carrying an embedded C2PA Content Credential — who published
+    it, its canonical URL, its AI posture, and a pointer back to the integrity
+    manifest. The credential is self-signed: it binds a consistent claimed
+    identity, not a trust-listed one, so public verifiers show the signer as
+    untrusted. The PGP key stays the identity anchor.
+  • README.pdf cannot carry an embedded or detached credential (the C2PA
+    toolchain has no PDF writer), so it stays proven at the site level only.
+  • A "Content Credentials" row in the README publication record and a new
+    section in the printed README explain the scope, honestly.
+
+
 2026-06-21 — A dropped style declaration restored on the verify slip (Edition 2026-06-21)
 ----------------------------------------------------------------------------------------
 A small correctness edition. One CSS custom property was written just

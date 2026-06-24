@@ -1,0 +1,462 @@
+trent power — public source archive · excluded files
+edition 2026-06-24
+
+this file lists every path the build deliberately dropped from
+this archive, with a category and a one-line reason. the same
+data, machine-readable, is in exclusions/EXCLUDED_FILES.json. a
+verifier finding any of these files missing should treat the
+omission as intentional, not as tampering.
+
+Categories:
+  proprietary_asset   licensed binary the licence prohibits redistributing
+  build_input         source file used to generate the public tree, not part of the published site
+  internal_artefact   private operational file (credentials, infra, ssh keys, internal records)
+  release_companion   file shipped alongside the archive at the release directory, not inside it
+  transient           operating-system / editor / vcs scratch (caches, lockfiles, .DS_Store, etc.)
+
+Exclusions:
+
+  release_companion   SHA256SUMS
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   SHA256SUMS.sig
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  build_input         documentation/README.txt
+                      reason: repo readme; archive ships its own README.txt with edition-specific contents
+
+  proprietary_asset   fonts/signifier-light-italic.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   fonts/signifier-light.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   fonts/signifier-regular-italic.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   fonts/signifier-regular.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   fonts/soehne-buch.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   fonts/soehne-kraftig.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   fonts/soehne-mono-buch.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   fonts/soehne-mono-kraftig.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   fonts/subsets/signifier-light-hero.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   fonts/subsets/soehne-kraftig-nav.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   fonts/subsets/soehne-mono-buch-labels.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   integrity/releases/2026-02/assets/fonts/ibm-plex-mono-300.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   integrity/releases/2026-02/assets/fonts/ibm-plex-mono-400.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   integrity/releases/2026-02/assets/fonts/ibm-plex-mono-500.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   integrity/releases/2026-02/assets/fonts/ibm-plex-mono-600.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   integrity/releases/2026-02/assets/fonts/newsreader-300.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   integrity/releases/2026-02/assets/fonts/newsreader-400.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   integrity/releases/2026-02/assets/fonts/newsreader-400i.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  proprietary_asset   integrity/releases/2026-02/assets/fonts/newsreader-500.woff2
+                      reason: klim type foundry licence prohibits redistribution; the live site serves these under a separate commercial agreement
+
+  release_companion   integrity/releases/2026-05-09/SHA256SUMS
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-05-09/SHA256SUMS.sig
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-05-09/trentpower-fr-2026-05-09.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-09/trentpower-fr-2026-05-09.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-09/trentpower-fr-2026-05-09.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-17/SHA256SUMS
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-05-17/SHA256SUMS.sig
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-17.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-17.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-17.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-17.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-18.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-18.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-18.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-18.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-19.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-19.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-19.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-19.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-20.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-20.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-20.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-17/trentpower-fr-2026-05-20.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-19/SHA256SUMS
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-05-19/SHA256SUMS.sig
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-19.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-19.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-19.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-19.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-20.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-20.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-20.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-20.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-21.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-21.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-21.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-21.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-22.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-22.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-22.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-22.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-23.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-23.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-23.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-19/trentpower-fr-2026-05-23.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/SHA256SUMS
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-05-23/SHA256SUMS.sig
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-23.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-23.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-23.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-23.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-24.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-24.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-24.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-24.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-28.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-28.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-28.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-28.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-29.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-29.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-29.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-29.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-30.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-30.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-30.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-30.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-31.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-31.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-31.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-05-31.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-01.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-01.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-01.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-01.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-02.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-02.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-02.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-02.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-07.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-07.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-07.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-07.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-08.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-08.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-08.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-08.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-09.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-09.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-09.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-09.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-10.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-10.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-10.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-05-23/trentpower-fr-2026-06-10.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-06-10/SHA256SUMS
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-06-10/SHA256SUMS.sig
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-06-10/trentpower-fr-2026-06-10.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-06-10/trentpower-fr-2026-06-10.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-06-10/trentpower-fr-2026-06-10.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-06-10/trentpower-fr-2026-06-10.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-06-10/trentpower-fr-2026-06-11.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-06-10/trentpower-fr-2026-06-11.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-06-10/trentpower-fr-2026-06-11.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-06-10/trentpower-fr-2026-06-11.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-06-10/trentpower-fr-2026-06-12.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-06-10/trentpower-fr-2026-06-12.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-06-10/trentpower-fr-2026-06-12.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-06-10/trentpower-fr-2026-06-12.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-06-14/SHA256SUMS
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-06-14/SHA256SUMS.sig
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-06-14/trentpower-fr-2026-06-14.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-06-14/trentpower-fr-2026-06-14.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-06-14/trentpower-fr-2026-06-14.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-06-14/trentpower-fr-2026-06-14.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-06-21/SHA256SUMS
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-06-21/SHA256SUMS.sig
+                      reason: aggregated checksum or its detached signature; shipped at the release directory, not inside the archive body
+
+  release_companion   integrity/releases/2026-06-21/trentpower-fr-2026-06-21.tar.gz
+                      reason: prior or in-flight release archive; never bundled inside another archive
+
+  release_companion   integrity/releases/2026-06-21/trentpower-fr-2026-06-21.tar.gz.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-06-21/trentpower-fr-2026-06-21.tar.gz.sig
+                      reason: detached signature for a release archive
+
+  release_companion   integrity/releases/2026-06-21/trentpower-fr-2026-06-21.zip
+                      reason: prior or in-flight release archive; never bundled inside another archive
+
+  release_companion   integrity/releases/2026-06-21/trentpower-fr-2026-06-21.zip.sha256
+                      reason: per-archive sha256 sidecar
+
+  release_companion   integrity/releases/2026-06-21/trentpower-fr-2026-06-21.zip.sig
+                      reason: detached signature for a release archive
+
+  release_companion   sitemap.xml.sha256
+                      reason: per-archive sha256 sidecar
+
+  build_input         source/README.txt
+                      reason: repo readme; archive ships its own README.txt with edition-specific contents
+

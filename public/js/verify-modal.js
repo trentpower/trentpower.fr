@@ -1,7 +1,7 @@
 /*! trentpower.fr · /js/verify-modal.js · generated · signed via /integrity.json */
 (function () {
 'use strict';
-var EDITION = '2026-06-21';
+var EDITION = '2026-06-24';
 var LABELS = {
 en: {
 'verify_modal.title': 'Verify, cite or read the source.',
