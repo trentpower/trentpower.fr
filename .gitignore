@@ -74,6 +74,23 @@ public/**/package-lock.json
 public/**/yarn.lock
 public/**/pnpm-lock.yaml
 
+# Historical edition archive binaries are server-canonical, not stored in Git.
+# The build still writes them under public/integrity/releases/<edition>/ at
+# release time (the SFTP mirror uploads them to the live host from disk), but
+# they must never be committed — only their .sha256/.sig/manifest sidecars are.
+# See public/integrity/releases/README.md + docs/TRUST-AND-VERIFICATION.md.
+public/integrity/releases/**/*.zip
+public/integrity/releases/**/*.tar.gz
+public/integrity/releases/**/*.tgz
+public/integrity/releases/**/*.tar
+public/integrity/releases/**/*.7z
+public/integrity/releases/**/*.br
+# keep the verification record + lightweight pointers
+!public/integrity/releases/**/*.zip.sha256
+!public/integrity/releases/**/*.tar.gz.sha256
+!public/integrity/releases/README.md
+!public/integrity/releases/index.json
+
 # slip reference (extracted from ~/Downloads/Trent Power Design System ZIP, not shipped)
 redesigns/
 

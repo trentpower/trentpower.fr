@@ -110,8 +110,8 @@
       "first_seen": "2026-06-09"
     },
     "verify/verification-data.js": {
-      "sha256": "sha256-gbiglQDOU1bLprnfjO8bXPGnj7CVZYOlBbT9VXXjmj8=",
-      "first_seen": "2026-06-21"
+      "sha256": "sha256-X7S+FnBcLmTX6BHIkIAGcWS/29DuO1hiC/SU2I82jlA=",
+      "first_seen": "2026-06-24"
     },
     ".well-known/pgp-key.asc": {
       "sha256": "sha256-rvgu/o1MmjSAvnF3b6Fws3ik3fao6Ioz33hKhNW+Deg=",
@@ -126,8 +126,8 @@
       "first_seen": "2026-05-15"
     },
     ".well-known/build.json": {
-      "sha256": "sha256-eh6bWpWdi65/asxVTptjVNP7ZHJ9CNVoos8ib/lQ6o4=",
-      "first_seen": "2026-06-21"
+      "sha256": "sha256-sE96rKwYwte3JYs1bmz2fkhZ5wNB0hZ25ppI66Q4GeU=",
+      "first_seen": "2026-06-24"
     },
     ".well-known/security.txt": {
       "sha256": "sha256-OeE0g7hequv/sN9tRxdrCETU670FKNmHJyf5x6Zy2lI=",
@@ -366,8 +366,8 @@
       "first_seen": "2026-05-15"
     },
     "source/source-manifest.json": {
-      "sha256": "sha256-y8gYzbl/C1W0IumsOBF2LDlXYjNd3UYLobR5n3joGPA=",
-      "first_seen": "2026-06-21"
+      "sha256": "sha256-YEyXU9OgOf6YJSWpuj6VhYTc9ue6iHjauycM/e0pnKk=",
+      "first_seen": "2026-06-24"
     },
     "source/apple-touch-icon.png.base64.txt": {
       "sha256": "sha256-cGOhlpNzCYeWfj6jY+1vTno8d/SjsKd6V/gMsuNVFsk=",
@@ -418,8 +418,8 @@
       "first_seen": "2026-06-21"
     },
     "source/source-manifest.json.txt": {
-      "sha256": "sha256-y8gYzbl/C1W0IumsOBF2LDlXYjNd3UYLobR5n3joGPA=",
-      "first_seen": "2026-06-21"
+      "sha256": "sha256-YEyXU9OgOf6YJSWpuj6VhYTc9ue6iHjauycM/e0pnKk=",
+      "first_seen": "2026-06-24"
     },
     "source/sitemap.xml.txt": {
       "sha256": "sha256-ncnDfddAttB7lQrqvtfzoBmygWD2pvq9Uv5aPuCLK7w=",
@@ -470,8 +470,8 @@
       "first_seen": "2026-06-10"
     },
     "source/.well-known/build.json.txt": {
-      "sha256": "sha256-ilOThd8iebrCrwkUANq/QUQOc13i3tns/v4qPgj0ynQ=",
-      "first_seen": "2026-06-21"
+      "sha256": "sha256-oDK2SZ4T03HSXlNOZ3E6T2S/gqj+d5Xp+vt/HQ6iIvE=",
+      "first_seen": "2026-06-24"
     },
     "source/.well-known/security.txt.txt": {
       "sha256": "sha256-OeE0g7hequv/sN9tRxdrCETU670FKNmHJyf5x6Zy2lI=",
@@ -1172,6 +1172,14 @@
     "source/integrity/releases/2026-06-21/index.html.txt": {
       "sha256": "sha256-Fiy9ECg7FUo5GRfe8Ah1j1EPerqSJK1F3q0LjcX1iCE=",
       "first_seen": "2026-06-21"
+    },
+    "integrity/releases/index.json": {
+      "sha256": "sha256-9TFR+T7KfZ5zbNDInDC3VIJME01h0nkw3a/VEb/qmq4=",
+      "first_seen": "2026-06-24"
+    },
+    "integrity/releases/README.md": {
+      "sha256": "sha256-BV/qy3m8lxjlkYXwSazYhuL1g9quGUHWcH9jcnK8vn0=",
+      "first_seen": "2026-06-24"
     }
   }
 }

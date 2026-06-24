@@ -452,6 +452,8 @@ ALLOW_RULE_FAMILIES: list[tuple[str, list[str]]] = [
         "integrity releases (signed archives + checksums)",
         [
             r"^integrity/releases/archive\.css$",
+            # machine-readable archive-storage policy pointer (server-canonical)
+            r"^integrity/releases/index\.json$",
             r"^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/?$",
             r"^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/index\.html$",
             r"^integrity/releases/[0-9]{4}-[0-9]{2}(-[0-9]{2})?/SHA256SUMS(\.sig)?$",

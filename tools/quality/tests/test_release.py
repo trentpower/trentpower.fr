@@ -304,8 +304,10 @@ class RedistributableManifest(unittest.TestCase):
             self.assertEqual(rc, 1)
             self.assertIn("missing 'files' map", "\n".join(lines))
 
-    def test_no_zip_present_fails(self):
-        # manifest with a non-matching edition and no zip at all -> no candidates.
+    def test_no_zip_and_no_checksum_seal_fails(self):
+        # no local archive AND no committed .sha256 seal -> hard fail.
+        # (server-canonical archives keep their checksum sidecar in git; an
+        # edition with neither the binary nor its seal is genuinely broken.)
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp)
             rel = f"public/integrity/releases/{EDITION}"
@@ -316,7 +318,24 @@ class RedistributableManifest(unittest.TestCase):
             )
             rc, lines = vr.check_redistributable_manifest(Repo(root))
             self.assertEqual(rc, 1)
-            self.assertIn("no trentpower-fr-*.zip", "\n".join(lines))
+            self.assertIn("neither a local archive nor a checksum seal", "\n".join(lines))
+
+    def test_no_zip_but_checksum_seal_passes_server_canonical(self):
+        # server-canonical state: the heavy .zip lives only on the live host,
+        # but its committed .sha256 seal is present in git -> OK, with archive
+        # byte-content verification deferred to an explicit remote step.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            rel = f"public/integrity/releases/{EDITION}"
+            _write(
+                root,
+                f"{rel}/integrity-redistributable.json",
+                _json({"edition": "9999-99-99", "files": {"a": "sha256-x"}}),
+            )
+            _write(root, f"{rel}/trentpower-fr-9999-99-99.zip.sha256", "sha256-x  archive\n")
+            rc, lines = vr.check_redistributable_manifest(Repo(root))
+            self.assertEqual(rc, 0)
+            self.assertIn("server-canonical", "\n".join(lines))
 
     def test_declared_path_not_in_zip_fails(self):
         with tempfile.TemporaryDirectory() as tmp:

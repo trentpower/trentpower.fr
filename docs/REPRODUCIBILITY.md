@@ -34,7 +34,16 @@ The release archives are byte-deterministic by construction
 - zip `date_time` and `external_attr` are pinned.
 
 Building twice from the same source tree produces identical `.zip` and `.tar.gz`
-bytes; the SHA-256 values in `SHA256SUMS` pin the sequence. The CycloneDX SBOM is
+bytes; the SHA-256 values in `SHA256SUMS` pin the sequence.
+
+> The archive **binaries** are server-canonical and are not committed to Git —
+> the live host (<https://trentpower.fr/integrity/releases/>) is their store. The
+> determinism above is what lets that be safe: their committed `.sha256`
+> checksums and signatures are the verification anchor, and a clean rebuild
+> reproduces the exact bytes the server holds. See
+> [ARCHIVE-STORAGE-AUDIT.md](ARCHIVE-STORAGE-AUDIT.md).
+
+The CycloneDX SBOM is
 generated with `--output-reproducible` (no timestamp, no random serial), so it too is
 byte-stable. `release.json` records the reproducibility metadata
 (`deterministic: true`, `build_command`) for each edition.

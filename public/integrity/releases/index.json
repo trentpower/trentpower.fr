@@ -1,0 +1,16 @@
+{
+  "archive_store": "https://trentpower.fr/integrity/releases/",
+  "policy": "server-canonical",
+  "repository_policy": "git stores per-edition checksums, signatures and manifests; the archive binaries (.zip/.tar.gz) live only on the canonical server",
+  "verification_record_in_git": [
+    "trentpower-fr-<edition>.zip.sha256",
+    "trentpower-fr-<edition>.tar.gz.sha256",
+    "*.sig",
+    "SHA256SUMS",
+    "integrity-redistributable.json"
+  ],
+  "verification_docs": [
+    "docs/REPRODUCIBILITY.md",
+    "docs/TRUST-AND-VERIFICATION.md"
+  ]
+}

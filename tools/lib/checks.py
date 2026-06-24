@@ -346,6 +346,14 @@ REGISTRY: list[Check] = [
         function=pdc.check_frozen_archives_immutable,
     ),
     Check(
+        "archive_storage_policy",
+        "archive storage policy (server-canonical)",
+        _B,
+        _SEC,
+        "no archive binaries committed to git — historical archives live on the server",
+        command=_script("validate_archive_storage_policy.py"),
+    ),
+    Check(
         "images",
         "validate_images.py",
         _B,
