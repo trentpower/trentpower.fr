@@ -158,6 +158,7 @@ class AllowRules:
         self.versioned_globs = compile_globs(manifest.get("public_versioned_globs", []))
         self.source_globs = compile_globs(manifest.get("public_source_globs", []))
         self.integrity_globs = compile_globs(manifest.get("public_integrity_globs", []))
+        self.provenance_globs = compile_globs(manifest.get("public_provenance_globs", []))
 
     def url_directory(self, url: str) -> str | None:
         """Return the directory form of a URL ending in index.html, else None."""
@@ -194,6 +195,8 @@ class AllowRules:
         if any_match(url, self.source_globs):
             return True
         if any_match(url, self.integrity_globs):
+            return True
+        if any_match(url, self.provenance_globs):
             return True
         return False
 

@@ -24,7 +24,7 @@
 
   <div class="cover__foot">
     <div class="cover__meta">
-      Edition · <b>2026‑06‑14</b><br>
+      Edition · <b>2026‑06‑24</b><br>
       Format · <b>A4 portrait · 210 × 297 mm</b><br>
       Composed in <b>Paris</b>
     </div>
@@ -161,7 +161,7 @@
           <div class="stat"><div class="stat__n accent">0</div><div class="stat__l">Trackers</div><div class="stat__s">no analytics, no pixels</div></div>
           <div class="stat"><div class="stat__n accent">0</div><div class="stat__l">Third‑party requests</div><div class="stat__s">all assets same‑origin</div></div>
         </div>
-        <p class="cap mt2">Measured at the network layer on page load. Source · the site’s own CSP and privacy posture, as of edition 2026‑06‑14.</p>
+        <p class="cap mt2">Measured at the network layer on page load. Source · the site’s own CSP and privacy posture, as of edition 2026‑06‑24.</p>
         <div class="callout callout--why mt3">
           <p class="callout__tag">Why this matters</p>
           <p>A directory of static files has almost nothing to attack and almost nothing to maintain: no server code runs, no database can be queried, and every file a visitor receives is listed in the signed integrity.json manifest.</p>
@@ -270,16 +270,16 @@
         <p class="body mt2">Build and deploy are deliberately asymmetric: the <strong>local build signs</strong>; CI does not and never holds the PGP key. The runner only re‑verifies the committed signature and uploads bytes. Deploy is a <strong>non‑deleting</strong> two‑pass SFTP mirror, so an accidental <code class="inline">git rm</code> cannot wipe live files. The CI deploy fires on manual dispatch only, with an explicit <code class="inline">confirm=DEPLOY</code>, so a fork’s pull request can never trigger it. A post‑deploy smoke test probes the expected‑200 routes, the expected‑403/404 denials, and re‑verifies the live signature.</p>
 
         <p class="label mt3"><span class="num">·</span>What the public folder is made of</p>
-        <p class="body mt1">Of <span class="tnum">645</span> published files, most are not “pages” at all. They are the verification scaffolding that makes the site checkable.</p>
+        <p class="body mt1">Of <span class="tnum">636</span> published files, most are not “pages” at all. They are the verification scaffolding that makes the site checkable.</p>
         <div class="bars mt2">
-          <div class="bar"><span class="bar__l">source mirrors .txt</span><span class="bar__track"><span class="bar__fill" style="--v:165;--m:165;"></span></span><span class="bar__v">165</span></div>
-          <div class="bar"><span class="bar__l">signatures .sig</span><span class="bar__track"><span class="bar__fill" style="--v:146;--m:165;"></span></span><span class="bar__v">146</span></div>
-          <div class="bar"><span class="bar__l">data .json</span><span class="bar__track"><span class="bar__fill" style="--v:91;--m:165;"></span></span><span class="bar__v">91</span></div>
-          <div class="bar"><span class="bar__l">checksums .sha256</span><span class="bar__track"><span class="bar__fill" style="--v:53;--m:165;"></span></span><span class="bar__v">53</span></div>
-          <div class="bar"><span class="bar__l">archives .zip / .gz</span><span class="bar__track"><span class="bar__fill" style="--v:52;--m:165;"></span></span><span class="bar__v">52</span></div>
-          <div class="bar"><span class="bar__l">pages .html</span><span class="bar__track"><span class="bar__fill accent" style="--v:46;--m:165;"></span></span><span class="bar__v">46</span></div>
+          <div class="bar"><span class="bar__l">source mirrors .txt</span><span class="bar__track"><span class="bar__fill" style="--v:171;--m:171;"></span></span><span class="bar__v">171</span></div>
+          <div class="bar"><span class="bar__l">signatures .sig</span><span class="bar__track"><span class="bar__fill" style="--v:162;--m:171;"></span></span><span class="bar__v">162</span></div>
+          <div class="bar"><span class="bar__l">data .json</span><span class="bar__track"><span class="bar__fill" style="--v:101;--m:171;"></span></span><span class="bar__v">101</span></div>
+          <div class="bar"><span class="bar__l">checksums .sha256</span><span class="bar__track"><span class="bar__fill" style="--v:57;--m:171;"></span></span><span class="bar__v">57</span></div>
+          <div class="bar"><span class="bar__l">archives .zip / .gz</span><span class="bar__track"><span class="bar__fill" style="--v:0;--m:171;"></span></span><span class="bar__v">0</span></div>
+          <div class="bar"><span class="bar__l">pages .html</span><span class="bar__track"><span class="bar__fill accent" style="--v:48;--m:171;"></span></span><span class="bar__v">48</span></div>
         </div>
-        <p class="cap mt2">Tracked files under <code class="path">public/</code>. <span class="tnum">379</span> of them belong to frozen release archives. Source · <code class="inline">git ls-files public/</code>, edition 2026‑06‑14.</p>
+        <p class="cap mt2">Tracked files under <code class="path">public/</code>. <span class="tnum">363</span> of them belong to frozen release archives. Source · <code class="inline">git ls-files public/</code>, edition 2026‑06‑24.</p>
         <div class="callout callout--why mt3">
           <p class="callout__tag">Why this matters</p>
           <p>The fixed stage order is what lets two runs of the same source produce the same hashes. Hash before the HTML is rewritten and the manifest describes bytes the browser never receives.</p>
@@ -323,16 +323,16 @@
       <div>
         <p class="body">A single registry drives both runners. Every check carries a tier, a category, and a one‑line rationale, in gate order.</p>
         <div class="statband mt2">
-          <div class="stat"><div class="stat__n">56</div><div class="stat__l">Checks total</div><div class="stat__s">one registry, two runners</div></div>
-          <div class="stat"><div class="stat__n accent">44</div><div class="stat__l">Blocking</div><div class="stat__s">fail = deploy stops</div></div>
-          <div class="stat"><div class="stat__n">12</div><div class="stat__l">Advisory</div><div class="stat__s">warns, never blocks</div></div>
+          <div class="stat"><div class="stat__n">58</div><div class="stat__l">Checks total</div><div class="stat__s">one registry, two runners</div></div>
+          <div class="stat"><div class="stat__n accent">45</div><div class="stat__l">Blocking</div><div class="stat__s">fail = deploy stops</div></div>
+          <div class="stat"><div class="stat__n">13</div><div class="stat__l">Advisory</div><div class="stat__s">warns, never blocks</div></div>
         </div>
         <div class="bars mt3">
-          <div class="bar"><span class="bar__l">Security (SEC)</span><span class="bar__track"><span class="bar__fill accent" style="--v:22;--m:22;"></span></span><span class="bar__v">22</span></div>
-          <div class="bar"><span class="bar__l">Correctness (COR)</span><span class="bar__track"><span class="bar__fill" style="--v:22;--m:22;"></span></span><span class="bar__v">22</span></div>
-          <div class="bar"><span class="bar__l">Quality (QUAL)</span><span class="bar__track"><span class="bar__fill" style="--v:12;--m:22;"></span></span><span class="bar__v">12</span></div>
+          <div class="bar"><span class="bar__l">Security (SEC)</span><span class="bar__track"><span class="bar__fill accent" style="--v:23;--m:23;"></span></span><span class="bar__v">23</span></div>
+          <div class="bar"><span class="bar__l">Correctness (COR)</span><span class="bar__track"><span class="bar__fill" style="--v:22;--m:23;"></span></span><span class="bar__v">22</span></div>
+          <div class="bar"><span class="bar__l">Quality (QUAL)</span><span class="bar__track"><span class="bar__fill" style="--v:13;--m:23;"></span></span><span class="bar__v">13</span></div>
         </div>
-        <p class="cap mt2">By category. Source · <code class="path">tools/lib/checks.py</code> registry, edition 2026‑06‑14.</p>
+        <p class="cap mt2">By category. Source · <code class="path">tools/lib/checks.py</code> registry, edition 2026‑06‑24.</p>
 
         <table class="spectable mt3">
           <thead><tr><th>Check</th><th>Cat</th><th>Tier</th><th>Proves</th></tr></thead>
@@ -671,6 +671,13 @@ gpg --verify integrity.json.sig integrity.json
         </div>
       </div>
     </div>
+
+    <div class="spec spec--long">
+      <div class="spec__rail"><span class="spec__num">K.4</span><span class="spec__label">Content Credentials</span><span class="hint">provenance that travels with the file</span></div>
+      <div>
+        <p class="body">The proofs above secure the <em>publication</em>. <strong>C2PA Content Credentials</strong> add a portable, file‑level layer for the few assets that travel on their own: the authored architecture diagrams. Each is published as a signed copy under <code class="path">/provenance/</code> carrying an embedded credential: who published it, its canonical URL, its AI posture, and a pointer back to the signed integrity manifest. The credential is <strong>self‑signed</strong>, so it binds a consistent claimed identity, not a trust‑listed one, and a public verifier shows the signer as “untrusted.” The PGP key stays the identity anchor, with the signing certificate’s fingerprint published beside it; the signed bytes are verified by hash through <code class="inline">integrity.json</code>, not byte‑reproduced. <code class="path">README.pdf</code> itself cannot carry an embedded credential, because the C2PA toolchain has no PDF writer, so the document is proven at the site level only. The policy and scope are in <code class="path">docs/C2PA.md</code>.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -749,7 +756,7 @@ gpg --verify integrity.json.sig integrity.json
         <p class="body mt1">Composed in a single authored HTML document (<code class="path">docs/pdf/readme.html</code>) using the project’s print style system, paginated to A4 with <strong>paged.js</strong>, and exported through headless Chromium. The HTML is the source of truth; this PDF is its export. When the system changes, the HTML is updated and the PDF re‑exported, never hand‑patched. After every export the rendered pages are checked for clipped text, overlapping blocks, missing assets and chart proportions before the document ships.</p>
         <div class="callout mt3">
           <p class="callout__tag">Provenance</p>
-          <p>Edition 2026‑06‑14 · A4 portrait · composed in Paris. Charts and figures are generated from repository data (<code class="inline">tools/lib/checks.py</code>, <code class="inline">git ls-files public/</code>) and validated against it at export time, not asserted. The operator‑console capture is a tracked documentation asset, taken from the live build ceremony and set in the publication's own mono face.</p>
+          <p>Edition 2026‑06‑24 · A4 portrait · composed in Paris. Charts and figures are generated from repository data (<code class="inline">tools/lib/checks.py</code>, <code class="inline">git ls-files public/</code>) and validated against it at export time, not asserted. The operator‑console capture is a tracked documentation asset, taken from the live build ceremony and set in the publication's own mono face.</p>
         </div>
         <p class="cap mt3 accent">trentpower.fr · Private · Static · Signed</p>
       </div>

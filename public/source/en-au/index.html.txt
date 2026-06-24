@@ -40,7 +40,7 @@
   <title>Client Strategy &amp; Growth Systems · Trent Power</title>
   <meta name="description"
         content="Client strategy, growth systems and cultural adoption at global scale">
-  <meta name="document-edition" content="2026-06-21">
+  <meta name="document-edition" content="2026-06-24">
   <link rel="canonical" href="https://trentpower.fr/en-au/">
   <link rel="alternate" hreflang="en-AU" href="https://trentpower.fr/en-au/">
   <link rel="alternate" hreflang="fr" href="https://trentpower.fr/fr/">
@@ -97,8 +97,8 @@
   <link rel="preload" href="/fonts/signifier-light-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/subsets/soehne-kraftig-nav.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/subsets/soehne-mono-buch-labels.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/styles.css?v=2026-06-21.fc5b8e9b" integrity="sha384-tIDETJBSrDw2H7Q+qRLmRIQm0LOK5PATjolhpolMw8AJEwY5vtXon6h8JIahxl6h">
-  <link rel="stylesheet" href="/print.css?v=2026-06-21.fc5b8e9b" media="print">
+  <link rel="stylesheet" href="/styles.css?v=2026-06-24.3aabdf6d" integrity="sha384-tIDETJBSrDw2H7Q+qRLmRIQm0LOK5PATjolhpolMw8AJEwY5vtXon6h8JIahxl6h">
+  <link rel="stylesheet" href="/print.css?v=2026-06-24.3aabdf6d" media="print">
 
   <!-- head · structured data -->
   <script type="application/ld+json">
@@ -230,7 +230,7 @@
         "fr"
       ],
       "datePublished": "2026-02-22",
-      "dateModified": "2026-06-21T00:00:00+00:00"
+      "dateModified": "2026-06-24T00:00:00+00:00"
     },
     {
       "@type": "ProfilePage",
@@ -238,7 +238,7 @@
       "url": "https://trentpower.fr/en-au/",
       "name": "Trent Power — Profile",
       "datePublished": "2026-02-22",
-      "dateModified": "2026-06-21T00:00:00+00:00",
+      "dateModified": "2026-06-24T00:00:00+00:00",
       "mainEntity": {
         "@id": "https://trentpower.fr/#trent-power"
       },
@@ -304,13 +304,13 @@
   "sourcePath": "content/en/pages/home.yml",
   "templatePath": "templates/pages/home.html",
   "sourceUrl": "https://github.com/trentpower/trentpower.fr/blob/main/content/en/pages/home.yml",
-  "edition": "2026-06-21",
+  "edition": "2026-06-24",
   "generated": true
 }
   </script>
 </head>
 
-<body data-page="home" data-layout="masthead" data-surface="editorial" data-edition="2026-06-21" data-source-sha256-short="--------">
+<body data-page="home" data-layout="masthead" data-surface="editorial" data-edition="2026-06-24" data-source-sha256-short="--------">
 
 <a href="#main" class="skip-link">Skip to content</a>
 
@@ -580,7 +580,7 @@
 
       <ul class="site-footer__colophon" id="footerImprint" aria-label="Publication verification">
         <li class="site-footer__colophon-row">
-          <a class="site-footer__colophon-link" href="/en-au/verify/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Edition</span> <time datetime="2026-06-21">2026-06-21</time></a>
+          <a class="site-footer__colophon-link" href="/en-au/verify/" aria-describedby="desc-integrity"><span class="site-footer__colophon-key">Edition</span> <time datetime="2026-06-24">2026-06-24</time></a>
           <span class="site-footer__colophon-sep" aria-hidden="true">·</span>
           <span class="site-footer__colophon-note" data-edition-age>Published today</span>
           <span class="visually-hidden" id="desc-integrity">Open the verification record for this edition — citation, source mirror, fingerprint, signed release</span>
@@ -677,7 +677,7 @@
     <div class="print-profile-footer-text">
       <p class="print-proof">Private · Static · Signed · No tracking</p>
       <p class="print-evidence">Public record · HTML · Edition 17 May 2026</p>
-      <p class="print-edition">Edition <time datetime="2026-06-21">2026-06-21</time> · https://trentpower.fr/</p>
+      <p class="print-edition">Edition <time datetime="2026-06-24">2026-06-24</time> · https://trentpower.fr/</p>
       <p class="print-citation">Trent Power. Personal Site. Paris, France.</p>
     </div>
     <div class="print-qr-block" aria-hidden="true">
@@ -697,24 +697,24 @@
 <!-- scripts · progressive enhancement · no telemetry, cookies, or third-party code -->
 
 <!-- scripts · page record -->
-<script src="/verify/verification-data.js?v=2026-06-21.fc5b8e9b" defer></script>
+<script src="/verify/verification-data.js?v=2026-06-24.3aabdf6d" defer></script>
 
 <!-- scripts · appearance -->
-<script src="/js/theme.js?v=2026-06-21.fc5b8e9b" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
-<script src="/js/reveal.js?v=2026-06-21.fc5b8e9b" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
-<script src="/js/fonts.js?v=2026-06-21.fc5b8e9b" integrity="sha384-tRx+BQo5W/lcy75l/8xTsfmMEMKdriWuNc/CQdx/gAASrTGBMDQjDag3i25AuabQ" defer></script>
+<script src="/js/theme.js?v=2026-06-24.3aabdf6d" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/js/reveal.js?v=2026-06-24.3aabdf6d" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+<script src="/js/fonts.js?v=2026-06-24.3aabdf6d" integrity="sha384-4pcY3rFyd8lVx+HzjNoG8PnJpO6DUdNk6E6WvNghYVNDAmELTYB7T9BUDvGvx80v" defer></script>
 
 <!-- scripts · publication metadata -->
-<script src="/js/edition.js?v=2026-06-21.fc5b8e9b" integrity="sha384-iO0w8zmiIy+PKCcn52n+bxnD8GxJcyMXMMddSHMJAjxRpRxaYbPG3dD7jRtM7oKC" defer></script>
+<script src="/js/edition.js?v=2026-06-24.3aabdf6d" integrity="sha384-iO0w8zmiIy+PKCcn52n+bxnD8GxJcyMXMMddSHMJAjxRpRxaYbPG3dD7jRtM7oKC" defer></script>
 <script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
 
 <!-- scripts · interaction -->
-<script src="/js/overlay.js?v=2026-06-21.fc5b8e9b" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
-<script src="/js/copy.js?v=2026-06-21.fc5b8e9b" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
-<script src="/js/verify-modal.js?v=2026-06-21.fc5b8e9b" integrity="sha384-ZhueGCOBZ6BX3B77Al0JDdlAHSpq1BR6+ASwX0YBz75xxwLnQdRkXCbl+vDN6y8x" defer></script>
+<script src="/js/overlay.js?v=2026-06-24.3aabdf6d" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+<script src="/js/copy.js?v=2026-06-24.3aabdf6d" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/verify-modal.js?v=2026-06-24.3aabdf6d" integrity="sha384-+xGZbHDSfCxa2PF4r1ws8IRwQhTpYd66Y6StTY/vk5Be8lJEfAX2zVHcrfWJujwF" defer></script>
 
 <!-- scripts · resilience -->
-<script src="/sw-register.js?v=2026-06-21.fc5b8e9b" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+<script src="/sw-register.js?v=2026-06-24.3aabdf6d" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
 
 
 <!-- body · construction rail -->

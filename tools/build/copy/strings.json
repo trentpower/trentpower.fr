@@ -208,7 +208,7 @@
         "kicker": "Privacy & Trust",
         "title": "Privacy-first by design",
         "lede": "This site is intentionally simple and privacy-respectful. It uses no tracking, analytics, cookies, profiling, or embedded third-party requests while you browse.",
-        "meta": "Edition 2026-06-21 · trentpower.fr/privacy/",
+        "meta": "Edition 2026-06-24 · trentpower.fr/privacy/",
         "card": {
           "01": {
             "label": "01 No tracking",
@@ -243,7 +243,7 @@
         },
         "footer": {
           "proof": "Private · Static · Signed · No tracking",
-          "edition": "Edition 2026-06-21 · trentpower.fr/privacy/"
+          "edition": "Edition 2026-06-24 · trentpower.fr/privacy/"
         },
         "qr": {
           "label": "trentpower.fr/privacy/"
@@ -267,7 +267,7 @@
         "kicker": "Integrity",
         "title": "Signed public verification",
         "lede": "Published files are listed in a public manifest and signed with a detached <abbr title=\"Pretty Good Privacy\">PGP</abbr> signature so updates can be verified independently.",
-        "meta": "Edition 2026-06-21 · trentpower.fr/integrity/",
+        "meta": "Edition 2026-06-24 · trentpower.fr/integrity/",
         "card": {
           "01": {
             "label": "01 Manifest",
@@ -302,7 +302,7 @@
         },
         "footer": {
           "proof": "Private · Static · Signed · No tracking",
-          "edition": "Edition 2026-06-21 · trentpower.fr/integrity/"
+          "edition": "Edition 2026-06-24 · trentpower.fr/integrity/"
         },
         "qr": {
           "label": "trentpower.fr/integrity/"
@@ -351,13 +351,13 @@
       "archive_heading": "Edition archive",
       "archive_current_kicker": "Current edition",
       "archive_earlier_summary": "Earlier editions",
-      "edition_jun14_date": "21 June 2026",
+      "edition_jun14_date": "24 June 2026",
       "edition_jun14_desc": "<cite>Repository housekeeping</cite>",
       "edition_jun14_meta": "Signed snapshot · Current edition",
-      "edition_jun10_date": "21 June 2026",
+      "edition_jun10_date": "24 June 2026",
       "edition_jun10_desc": "<cite>Public opening</cite>",
       "edition_jun10_meta": "Signed snapshot · Previous edition",
-      "edition_may23_date": "21 June 2026",
+      "edition_may23_date": "24 June 2026",
       "edition_may23_desc": "<cite>Composed publication sprint</cite>",
       "edition_may23_meta": "Signed snapshot · Previous edition",
       "group": {
@@ -405,7 +405,7 @@
         "kicker": "Releases",
         "title": "Frozen public editions",
         "lede": "Public release snapshots preserve selected editions of the site with local assets so their design and integrity can be inspected over time.",
-        "meta": "Edition 2026-06-21 · trentpower.fr/integrity/releases/",
+        "meta": "Edition 2026-06-24 · trentpower.fr/integrity/releases/",
         "doc_title": "Trent Power - Release Archive Sheet",
         "card": {
           "01": {
@@ -441,7 +441,7 @@
         },
         "footer": {
           "proof": "Private · Static · Signed · No tracking",
-          "edition": "Edition 2026-06-21 · trentpower.fr/integrity/releases/"
+          "edition": "Edition 2026-06-24 · trentpower.fr/integrity/releases/"
         },
         "qr": {
           "label": "trentpower.fr/integrity/releases/"
@@ -451,10 +451,10 @@
       "edition_may09_date": "9 May 2026",
       "edition_may09_desc": "<cite>Final May edition</cite>",
       "edition_may09_meta": "Signed snapshot · Earlier release",
-      "edition_may17_date": "21 June 2026",
+      "edition_may17_date": "24 June 2026",
       "edition_may17_desc": "<cite>Editorial cohesion</cite>",
       "edition_may17_meta": "Signed snapshot · Previous release",
-      "edition_may19_date": "21 June 2026",
+      "edition_may19_date": "24 June 2026",
       "edition_may19_desc": "<cite>Bilingual editions</cite>",
       "edition_may19_meta": "Signed snapshot · Previous edition",
       "download_zip": "Download ZIP",
@@ -545,7 +545,7 @@
         "kicker": "Security & Threat Model",
         "title": "Static, self-managed, verification-led",
         "lede": "The public site is static HTML, CSS and vanilla JavaScript, with strict headers, no runtime server logic, no public database and no third-party scripts.",
-        "meta": "Edition 2026-06-21 · trentpower.fr/security/",
+        "meta": "Edition 2026-06-24 · trentpower.fr/security/",
         "card": {
           "01": {
             "label": "01 Architecture",
@@ -580,7 +580,7 @@
         },
         "footer": {
           "proof": "Private · Static · Signed · No tracking",
-          "edition": "Edition 2026-06-21 · trentpower.fr/security/"
+          "edition": "Edition 2026-06-24 · trentpower.fr/security/"
         },
         "qr": {
           "label": "trentpower.fr/security/"
@@ -621,7 +621,7 @@
         "kicker": "Security acknowledgments",
         "title": "Responsible disclosure record",
         "lede": "Acknowledgements for individuals and researchers who contributed responsibly to the security posture of this site.",
-        "meta": "Edition 2026-06-21 · trentpower.fr/security/acknowledgments/",
+        "meta": "Edition 2026-06-24 · trentpower.fr/security/acknowledgments/",
         "doc_title": "Trent Power - Security Acknowledgments",
         "card": {
           "01": {
@@ -657,7 +657,7 @@
         },
         "footer": {
           "proof": "Private · Static · Signed · No tracking",
-          "edition": "Edition 2026-06-21 · trentpower.fr/security/acknowledgments/"
+          "edition": "Edition 2026-06-24 · trentpower.fr/security/acknowledgments/"
         },
         "qr": {
           "label": "trentpower.fr/security/acknowledgments/"
@@ -674,7 +674,7 @@
         "kicker": "Maintenance status",
         "title": "Temporary maintenance mode",
         "lede": "This site is temporarily unavailable while a new signed edition or infrastructure update is being deployed.",
-        "meta": "Edition 2026-06-21 · trentpower.fr/maintenance.html",
+        "meta": "Edition 2026-06-24 · trentpower.fr/maintenance.html",
         "doc_title": "Trent Power - Maintenance",
         "card": {
           "01": {
@@ -710,7 +710,7 @@
         },
         "footer": {
           "proof": "Private · Static · Signed · No tracking",
-          "edition": "Edition 2026-06-21 · trentpower.fr/maintenance.html"
+          "edition": "Edition 2026-06-24 · trentpower.fr/maintenance.html"
         },
         "qr": {
           "label": "trentpower.fr/maintenance.html"
@@ -792,9 +792,9 @@
       },
       "footer": {
         "proof": "Private · Static · Signed · No tracking",
-        "edition": "Edition <time datetime=\"2026-06-21\">2026-06-21</time> · https://trentpower.fr/",
+        "edition": "Edition <time datetime=\"2026-06-24\">2026-06-24</time> · https://trentpower.fr/",
         "citation": "Trent Power. Personal Site. Paris, France.",
-        "evidence": "Public record · HTML · Edition 21 June 2026"
+        "evidence": "Public record · HTML · Edition 24 June 2026"
       },
       "place": "Personal Site · Paris, France",
       "doc_title": "Trent Power - Client Strategy Executive Profile",
@@ -814,7 +814,7 @@
           "kicker": "403",
           "title": "Access not available",
           "lede": "This path is not publicly accessible. The public site exposes only intentional files and pages.",
-          "meta": "Edition 2026-06-21 · trentpower.fr",
+          "meta": "Edition 2026-06-24 · trentpower.fr",
           "doc_title": "Trent Power - Access Boundary Sheet",
           "card": {
             "01": {
@@ -850,7 +850,7 @@
           },
           "footer": {
             "proof": "Private · Static · Signed · No tracking",
-            "edition": "Edition 2026-06-21 · trentpower.fr"
+            "edition": "Edition 2026-06-24 · trentpower.fr"
           },
           "qr": {
             "label": "trentpower.fr"
@@ -862,7 +862,7 @@
           "kicker": "404",
           "title": "Page not found",
           "lede": "The address may have changed, or the page may no longer be part of the public site.",
-          "meta": "Edition 2026-06-21 · trentpower.fr",
+          "meta": "Edition 2026-06-24 · trentpower.fr",
           "doc_title": "Trent Power - Page Not Found Sheet",
           "card": {
             "01": {
@@ -898,7 +898,7 @@
           },
           "footer": {
             "proof": "Private · Static · Signed · No tracking",
-            "edition": "Edition 2026-06-21 · trentpower.fr"
+            "edition": "Edition 2026-06-24 · trentpower.fr"
           },
           "qr": {
             "label": "trentpower.fr"
@@ -910,7 +910,7 @@
           "kicker": "500",
           "title": "Temporary server error",
           "lede": "Something unexpected happened while serving this page. The public site is static, so this is likely a hosting or routing issue rather than an application failure.",
-          "meta": "Edition 2026-06-21 · trentpower.fr",
+          "meta": "Edition 2026-06-24 · trentpower.fr",
           "doc_title": "Trent Power - Temporary Server Error Sheet",
           "card": {
             "01": {
@@ -946,7 +946,7 @@
           },
           "footer": {
             "proof": "Private · Static · Signed · No tracking",
-            "edition": "Edition 2026-06-21 · trentpower.fr"
+            "edition": "Edition 2026-06-24 · trentpower.fr"
           },
           "qr": {
             "label": "trentpower.fr"
@@ -959,7 +959,7 @@
         "kicker": "Source",
         "title": "Public source view",
         "lede": "Selected public files are mirrored as plain text so the site can be inspected from any reader, including mobile.",
-        "meta": "Edition 2026-06-21 · trentpower.fr/source/",
+        "meta": "Edition 2026-06-24 · trentpower.fr/source/",
         "doc_title": "Trent Power - Public Source Sheet",
         "card": {
           "01": {
@@ -995,7 +995,7 @@
         },
         "footer": {
           "proof": "Private · Static · Signed · No tracking",
-          "edition": "Edition 2026-06-21 · trentpower.fr/source/"
+          "edition": "Edition 2026-06-24 · trentpower.fr/source/"
         },
         "qr": {
           "label": "trentpower.fr/source/"
@@ -1219,7 +1219,7 @@
       "title": "Verify this page",
       "lede": "A public route for checking source, hash, signature and canonical identity.",
       "noscript_fallback": "JavaScript is required to select and display a page record here. Source mirrors, the signed manifest and release archives remain available through <a href=\"/source/\">Source</a> and <a href=\"/integrity/\">Integrity</a>.",
-      "meta": "Edition 2026-06-21 · trentpower.fr/verify/",
+      "meta": "Edition 2026-06-24 · trentpower.fr/verify/",
       "doc_title": "Trent Power - Verification Sheet",
       "action": {
         "copy_canonical": "Copy URL",
@@ -1392,7 +1392,7 @@
         "kicker": "Offline recovery",
         "title": "Service worker reset",
         "lede": "Recovery utility for clearing cached offline state and refreshing the current signed public release.",
-        "meta": "Edition 2026-06-21 · trentpower.fr/sw-reset/",
+        "meta": "Edition 2026-06-24 · trentpower.fr/sw-reset/",
         "doc_title": "Trent Power - Service Worker Reset",
         "card": {
           "01": {
@@ -1428,7 +1428,7 @@
         },
         "footer": {
           "proof": "Private · Static · Signed · No tracking",
-          "edition": "Edition 2026-06-21 · trentpower.fr/sw-reset/"
+          "edition": "Edition 2026-06-24 · trentpower.fr/sw-reset/"
         },
         "qr": {
           "label": "trentpower.fr/sw-reset/"
@@ -1455,7 +1455,7 @@
         "kicker": "Integrity verification",
         "title": "Verify locally",
         "lede": "Detached verification notes for independently checking the signed integrity manifest using the published public key.",
-        "meta": "Edition 2026-06-21 · trentpower.fr/integrity/verify-locally/",
+        "meta": "Edition 2026-06-24 · trentpower.fr/integrity/verify-locally/",
         "doc_title": "Trent Power - Verify Locally",
         "card": {
           "01": {
@@ -1491,7 +1491,7 @@
         },
         "footer": {
           "proof": "Private · Static · Signed · No tracking",
-          "edition": "Edition 2026-06-21 · trentpower.fr/integrity/verify-locally/"
+          "edition": "Edition 2026-06-24 · trentpower.fr/integrity/verify-locally/"
         },
         "qr": {
           "label": "trentpower.fr/integrity/verify-locally/"
@@ -1906,7 +1906,7 @@
         "kicker": "Confidentialité & confiance",
         "title": "La confidentialité, par conception",
         "lede": "Ce site est volontairement simple et respectueux de la vie privée. Il n’utilise ni suivi, ni analytique, ni cookies, ni profilage, ni requêtes tierces intégrées pendant la navigation.",
-        "meta": "Édition 2026-06-21 · trentpower.fr/privacy/",
+        "meta": "Édition 2026-06-24 · trentpower.fr/privacy/",
         "card": {
           "01": {
             "label": "01 Aucun suivi",
@@ -1941,7 +1941,7 @@
         },
         "footer": {
           "proof": "Privé · Statique · Signé · Sans suivi",
-          "edition": "Édition 2026-06-21 · trentpower.fr/privacy/"
+          "edition": "Édition 2026-06-24 · trentpower.fr/privacy/"
         },
         "qr": {
           "label": "trentpower.fr/privacy/"
@@ -1965,7 +1965,7 @@
         "kicker": "Intégrité",
         "title": "Vérification publique signée",
         "lede": "Les fichiers publiés sont listés dans un manifeste public et signés par une signature <abbr title=\"Pretty Good Privacy\">PGP</abbr> détachée afin que toute mise à jour puisse être vérifiée de manière indépendante.",
-        "meta": "Édition 2026-06-21 · trentpower.fr/integrity/",
+        "meta": "Édition 2026-06-24 · trentpower.fr/integrity/",
         "card": {
           "01": {
             "label": "01 Manifeste",
@@ -2000,7 +2000,7 @@
         },
         "footer": {
           "proof": "Privé · Statique · Signé · Sans suivi",
-          "edition": "Édition 2026-06-21 · trentpower.fr/integrity/"
+          "edition": "Édition 2026-06-24 · trentpower.fr/integrity/"
         },
         "qr": {
           "label": "trentpower.fr/integrity/"
@@ -2091,7 +2091,7 @@
         "kicker": "Versions",
         "title": "Éditions publiques figées",
         "lede": "Les instantanés de versions publiques préservent des éditions choisies du site avec des ressources locales afin que leur conception et leur intégrité puissent être inspectées dans le temps.",
-        "meta": "Édition 2026-06-21 · trentpower.fr/integrity/releases/",
+        "meta": "Édition 2026-06-24 · trentpower.fr/integrity/releases/",
         "doc_title": "Trent Power - Archive des versions",
         "card": {
           "01": {
@@ -2127,7 +2127,7 @@
         },
         "footer": {
           "proof": "Privé · Statique · Signé · Sans suivi",
-          "edition": "Édition 2026-06-21 · trentpower.fr/integrity/releases/"
+          "edition": "Édition 2026-06-24 · trentpower.fr/integrity/releases/"
         },
         "qr": {
           "label": "trentpower.fr/integrity/releases/"
@@ -2137,7 +2137,7 @@
       "edition_may09_date": "17 mai 2026",
       "edition_may09_desc": "<cite>Édition finale de mai</cite>",
       "edition_may09_meta": "Instantané signé · Édition précédente",
-      "edition_may17_date": "21 juin 2026",
+      "edition_may17_date": "24 juin 2026",
       "edition_may17_desc": "<cite>Cohérence éditoriale</cite>",
       "edition_may17_meta": "Instantané signé · Édition actuelle",
       "download_zip": "Télécharger ZIP",
@@ -2183,7 +2183,7 @@
         "kicker": "Sécurité & modèle de menace",
         "title": "Statique, auto-géré, axé sur la vérification",
         "lede": "Le site public est composé de HTML, CSS et JavaScript natif, avec des en-têtes stricts, aucune logique serveur à l’exécution, aucune base de données publique et aucun script tiers.",
-        "meta": "Édition 2026-06-21 · trentpower.fr/security/",
+        "meta": "Édition 2026-06-24 · trentpower.fr/security/",
         "card": {
           "01": {
             "label": "01 Architecture",
@@ -2218,7 +2218,7 @@
         },
         "footer": {
           "proof": "Privé · Statique · Signé · Sans suivi",
-          "edition": "Édition 2026-06-21 · trentpower.fr/security/"
+          "edition": "Édition 2026-06-24 · trentpower.fr/security/"
         },
         "qr": {
           "label": "trentpower.fr/security/"
@@ -2256,7 +2256,7 @@
         "kicker": "Reconnaissances de sécurité",
         "title": "Registre des divulgations responsables",
         "lede": "Reconnaissances pour les personnes et les chercheurs ayant contribué de manière responsable à la posture de sécurité de ce site.",
-        "meta": "Édition 2026-06-21 · trentpower.fr/security/acknowledgments/",
+        "meta": "Édition 2026-06-24 · trentpower.fr/security/acknowledgments/",
         "doc_title": "Trent Power - Reconnaissances de sécurité",
         "card": {
           "01": {
@@ -2292,7 +2292,7 @@
         },
         "footer": {
           "proof": "Privé · Statique · Signé · Sans suivi",
-          "edition": "Édition 2026-06-21 · trentpower.fr/security/acknowledgments/"
+          "edition": "Édition 2026-06-24 · trentpower.fr/security/acknowledgments/"
         },
         "qr": {
           "label": "trentpower.fr/security/acknowledgments/"
@@ -2309,7 +2309,7 @@
         "kicker": "État de maintenance",
         "title": "Mode maintenance temporaire",
         "lede": "Ce site est temporairement indisponible pendant le déploiement d’une nouvelle édition signée ou d’une mise à jour d’infrastructure.",
-        "meta": "Édition 2026-06-21 · trentpower.fr/maintenance.html",
+        "meta": "Édition 2026-06-24 · trentpower.fr/maintenance.html",
         "doc_title": "Trent Power - Maintenance",
         "card": {
           "01": {
@@ -2345,7 +2345,7 @@
         },
         "footer": {
           "proof": "Privé · Statique · Signé · Sans suivi",
-          "edition": "Édition 2026-06-21 · trentpower.fr/maintenance.html"
+          "edition": "Édition 2026-06-24 · trentpower.fr/maintenance.html"
         },
         "qr": {
           "label": "trentpower.fr/maintenance.html"
@@ -2427,9 +2427,9 @@
       },
       "footer": {
         "proof": "Privé · Statique · Signé · Sans suivi",
-        "edition": "Édition <time datetime=\"2026-06-21\">2026-06-21</time> · https://trentpower.fr/",
+        "edition": "Édition <time datetime=\"2026-06-24\">2026-06-24</time> · https://trentpower.fr/",
         "citation": "Trent Power. Site personnel. Paris, France.",
-        "evidence": "Document public · HTML · Édition du 21 juin 2026"
+        "evidence": "Document public · HTML · Édition du 24 juin 2026"
       },
       "place": "Site personnel · Paris, France",
       "doc_title": "Trent Power - Profil exécutif stratégie client",
@@ -2449,7 +2449,7 @@
           "kicker": "403",
           "title": "Accès indisponible",
           "lede": "Ce chemin n’est pas accessible publiquement. Le site public n’expose que des fichiers et pages intentionnels.",
-          "meta": "Édition 2026-06-21 · trentpower.fr",
+          "meta": "Édition 2026-06-24 · trentpower.fr",
           "doc_title": "Trent Power - Limite d’accès",
           "card": {
             "01": {
@@ -2485,7 +2485,7 @@
           },
           "footer": {
             "proof": "Privé · Statique · Signé · Sans suivi",
-            "edition": "Édition 2026-06-21 · trentpower.fr"
+            "edition": "Édition 2026-06-24 · trentpower.fr"
           },
           "qr": {
             "label": "trentpower.fr"
@@ -2497,7 +2497,7 @@
           "kicker": "404",
           "title": "Page introuvable",
           "lede": "L’adresse a peut-être changé, ou la page ne fait plus partie du site public.",
-          "meta": "Édition 2026-06-21 · trentpower.fr",
+          "meta": "Édition 2026-06-24 · trentpower.fr",
           "doc_title": "Trent Power - Page introuvable",
           "card": {
             "01": {
@@ -2533,7 +2533,7 @@
           },
           "footer": {
             "proof": "Privé · Statique · Signé · Sans suivi",
-            "edition": "Édition 2026-06-21 · trentpower.fr"
+            "edition": "Édition 2026-06-24 · trentpower.fr"
           },
           "qr": {
             "label": "trentpower.fr"
@@ -2545,7 +2545,7 @@
           "kicker": "500",
           "title": "Erreur serveur temporaire",
           "lede": "Un événement inattendu est survenu lors du chargement de cette page. Le site public étant statique, il s’agit probablement d’un incident d’hébergement ou de routage plutôt que d’une défaillance applicative.",
-          "meta": "Édition 2026-06-21 · trentpower.fr",
+          "meta": "Édition 2026-06-24 · trentpower.fr",
           "doc_title": "Trent Power - Erreur serveur temporaire",
           "card": {
             "01": {
@@ -2581,7 +2581,7 @@
           },
           "footer": {
             "proof": "Privé · Statique · Signé · Sans suivi",
-            "edition": "Édition 2026-06-21 · trentpower.fr"
+            "edition": "Édition 2026-06-24 · trentpower.fr"
           },
           "qr": {
             "label": "trentpower.fr"
@@ -2594,7 +2594,7 @@
         "kicker": "Source",
         "title": "Vue source publique",
         "lede": "Des fichiers publics sélectionnés sont copiés en texte brut afin que le site puisse être inspecté depuis n’importe quel lecteur, y compris mobile.",
-        "meta": "Édition 2026-06-21 · trentpower.fr/source/",
+        "meta": "Édition 2026-06-24 · trentpower.fr/source/",
         "doc_title": "Trent Power - Vue source publique",
         "card": {
           "01": {
@@ -2630,7 +2630,7 @@
         },
         "footer": {
           "proof": "Privé · Statique · Signé · Sans suivi",
-          "edition": "Édition 2026-06-21 · trentpower.fr/source/"
+          "edition": "Édition 2026-06-24 · trentpower.fr/source/"
         },
         "qr": {
           "label": "trentpower.fr/source/"
@@ -2853,7 +2853,7 @@
       "title": "Vérifier cette page",
       "lede": "Une voie publique pour contrôler la source, l’empreinte, la signature et l’identité canonique.",
       "noscript_fallback": "JavaScript est nécessaire pour sélectionner et afficher une fiche de page ici. Les miroirs source, le manifeste signé et les archives d’édition restent accessibles via <a href=\"/source/\">Source</a> et <a href=\"/integrity/\">Intégrité</a>.",
-      "meta": "Édition 2026-06-21 · trentpower.fr/verify/",
+      "meta": "Édition 2026-06-24 · trentpower.fr/verify/",
       "doc_title": "Trent Power - Fiche de vérification",
       "action": {
         "copy_canonical": "Copier l’URL",
@@ -3050,7 +3050,7 @@
         "kicker": "Récupération hors-ligne",
         "title": "Réinitialisation du Service Worker",
         "lede": "Utilitaire de récupération pour effacer l’état hors-ligne en cache et actualiser la version publique signée courante.",
-        "meta": "Édition 2026-06-21 · trentpower.fr/sw-reset/",
+        "meta": "Édition 2026-06-24 · trentpower.fr/sw-reset/",
         "doc_title": "Trent Power - Réinitialisation du Service Worker",
         "card": {
           "01": {
@@ -3086,7 +3086,7 @@
         },
         "footer": {
           "proof": "Privé · Statique · Signé · Sans suivi",
-          "edition": "Édition 2026-06-21 · trentpower.fr/sw-reset/"
+          "edition": "Édition 2026-06-24 · trentpower.fr/sw-reset/"
         },
         "qr": {
           "label": "trentpower.fr/sw-reset/"
@@ -3113,7 +3113,7 @@
         "kicker": "Vérification d’intégrité",
         "title": "Vérifier localement",
         "lede": "Notes de vérification détachée pour contrôler indépendamment le manifeste d’intégrité signé avec la clé publique publiée.",
-        "meta": "Édition 2026-06-21 · trentpower.fr/integrity/verify-locally/",
+        "meta": "Édition 2026-06-24 · trentpower.fr/integrity/verify-locally/",
         "doc_title": "Trent Power - Vérifier localement",
         "card": {
           "01": {
@@ -3149,7 +3149,7 @@
         },
         "footer": {
           "proof": "Privé · Statique · Signé · Sans suivi",
-          "edition": "Édition 2026-06-21 · trentpower.fr/integrity/verify-locally/"
+          "edition": "Édition 2026-06-24 · trentpower.fr/integrity/verify-locally/"
         },
         "qr": {
           "label": "trentpower.fr/integrity/verify-locally/"

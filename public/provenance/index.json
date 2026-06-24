@@ -1,0 +1,30 @@
+{
+  "schema": "trentpower.content-credentials.v1",
+  "about": "C2PA Content Credentials for selected trentpower.fr media. A portable, asset-level provenance layer that complements the canonical PGP-signed integrity manifest. See https://trentpower.fr/ and docs/C2PA.md.",
+  "signer": {
+    "identity": "trentpower.fr (Trent Power)",
+    "model": "self-signed",
+    "note": "Self-signed: binds a consistent claimed identity, not a trust-listed one. Public verifiers show the signer as untrusted. The PGP key is the identity anchor.",
+    "certificate_sha256_fingerprint": "22:AA:D7:73:75:7E:F7:66:65:BA:89:A0:8D:BF:BF:D2:17:3B:02:6E:F5:2F:CB:4C:E7:0F:48:49:AC:9D:6B:76"
+  },
+  "verify": {
+    "tool": "c2patool <file>, or the Content Authenticity Verify page",
+    "also": "Every listed file is recorded by hash in /integrity.json (the canonical proof)."
+  },
+  "assets": [
+    {
+      "path": "/provenance/architecture.en.svg",
+      "type": "diagram",
+      "role": "authored-diagram",
+      "source": "/images/architecture/architecture.en.svg",
+      "ai_involvement": "no-ai-in-release-path"
+    },
+    {
+      "path": "/provenance/architecture.fr.svg",
+      "type": "diagram",
+      "role": "authored-diagram",
+      "source": "/images/architecture/architecture.fr.svg",
+      "ai_involvement": "no-ai-in-release-path"
+    }
+  ]
+}

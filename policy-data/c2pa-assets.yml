@@ -1,0 +1,110 @@
+# policy-data/c2pa-assets.yml — which media assets carry C2PA Content Credentials.
+#
+# Policy as data. This file declares the assets, their status, and the AI
+# posture of each. The COHERENCE LOGIC stays in Python
+# (tools/quality/validate_c2pa_assets.py); this file only says what is in or out
+# of scope and why. Validated against schemas/c2pa-assets.schema.json at load.
+#
+# Positioning (see docs/C2PA.md): the site already proves the publication tree
+# through a PGP-signed integrity manifest. C2PA is a SECOND, PORTABLE layer that
+# lets individual files carry their own provenance once they leave the site. It
+# does not replace the signed manifest and it does not prove truth, human
+# authorship, or that AI was never used.
+#
+# Current state: the two authored architecture diagrams are SIGNED. A signed
+# distribution copy of each ships under /provenance/ carrying an embedded C2PA
+# Content Credential (status `required`); the bytes are hash-verified through
+# integrity.json. The credential is SELF-SIGNED — it binds a consistent claimed
+# identity, not a trust-listed one, so public verifiers show the signer as
+# "untrusted"; the PGP key remains the identity anchor (a trust-listed certificate
+# is the open Phase-2 decision). PDF cannot be embedded with c2pa-rs 0.89 and has
+# no working sidecar path either (re-confirmed; see docs/C2PA-SPIKE.md), so
+# README.pdf stays excluded and is proven at the site level by integrity.json.
+
+version: 1
+
+publisher:
+  name: trentpower.fr
+  # Must equal `url` in tools/config/identity_canonical.json (coherence-checked).
+  url: https://trentpower.fr
+
+# Controlled vocabulary for declaring AI involvement at asset level. Every in-scope
+# asset must pick exactly one of these (validator enforces membership).
+ai_vocabulary:
+  - none
+  - drafting-assisted
+  - editing-assisted
+  - image-generated
+  - image-edited
+  - unknown
+  - not-applicable
+  # repo-specific: AI may assist drafting or development, but no AI system
+  # participates in build, signing, verification or deployment.
+  - no-ai-in-release-path
+
+credential_modes:
+  - embedded
+  - sidecar
+
+assets:
+  # ── signed distribution copies (the C2PA assets) ────────────────────────────
+  # The canonical architecture SVGs are GENERATED every build (reproducible, under
+  # the byte fixpoint). We do not sign them in place — that would fight the
+  # generator. Instead a signed copy of each is published under /provenance/,
+  # carrying the Content Credential. `source` is the generated original whose
+  # bytes are signed; `path` is the signed distribution copy that ships.
+  - path: public/provenance/architecture.en.svg
+    source: public/images/architecture/architecture.en.svg
+    status: required
+    type: diagram
+    role: authored-diagram
+    canonical_url: https://trentpower.fr/provenance/architecture.en.svg
+    author: Trent Power
+    publisher: trentpower.fr
+    ai_involvement: no-ai-in-release-path
+    credential_mode: embedded
+    reason: >-
+      Authored architecture diagram, downloaded and shared on its own. Signed
+      copy of the generated original; hash-verified via integrity.json.
+
+  - path: public/provenance/architecture.fr.svg
+    source: public/images/architecture/architecture.fr.svg
+    status: required
+    type: diagram
+    role: authored-diagram
+    canonical_url: https://trentpower.fr/provenance/architecture.fr.svg
+    author: Trent Power
+    publisher: trentpower.fr
+    ai_involvement: no-ai-in-release-path
+    credential_mode: embedded
+    reason: >-
+      French edition of the signed architecture diagram. Same posture as the
+      English one.
+
+  # ── deliberately out of scope ───────────────────────────────────────────────
+  - pattern: public/images/architecture/architecture*.svg
+    status: excluded
+    reason: >-
+      The canonical architecture SVGs are generated each build and reproducible
+      under the byte fixpoint. Their portable provenance ships as the signed
+      /provenance/ copies above, not by signing the generated originals in place.
+
+  - path: public/documentation/README.pdf
+    status: excluded
+    reason: >-
+      c2pa-rs 0.89 cannot EMBED a manifest into application/pdf (Builder rejects
+      it; see docs/C2PA-SPIKE.md). The publication tree already proves this PDF
+      through integrity.json. Revisit only if a sidecar-manifest path is proven.
+
+  - pattern: public/images/og/*.png
+    status: excluded
+    reason: >-
+      Social/open-graph preview images are stripped of C2PA by every major
+      platform on upload, and the manifest overhead is large relative to these
+      small files. Portable provenance has near-zero value here.
+
+notes:
+  - "Signing is a deliberate, occasional, committed act — not a per-build stage."
+  - "C2PA-signed assets are verified by hash (integrity.json), not byte-reproduced;
+     a fresh random manifest UUID per signing makes byte-reproduction impossible.
+     See the carve-out in docs/REPRODUCIBILITY.md."

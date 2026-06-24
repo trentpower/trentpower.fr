@@ -1,7 +1,7 @@
 {
   "$schema": "https://trentpower.fr/.well-known/build.json",
   "site": "https://trentpower.fr",
-  "edition": "2026-06-21",
+  "edition": "2026-06-24",
   "generated_at": "2026-06-24",
   "static": true,
   "framework": null,
@@ -17,11 +17,11 @@
   "integrity_signature": "https://trentpower.fr/integrity.json.sig",
   "public_key": "https://trentpower.fr/.well-known/pgp-key.asc",
   "key_fingerprint": "A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263",
-  "git_commit": "2d401c570627f4133e6a35de3b4decccff308e8a",
+  "git_commit": "a33ef62a7eb23b8ae65542bc3efaa277f5e5436c",
   "python_version": "3.13.5",
   "builder_platform": "Linux aarch64",
-  "public_file_count": 138,
-  "public_tree_sha256": "8ace1facbb8b00231c1a16ff04cd66a63e8837bf901022a9d63bd5cbc22357c4",
+  "public_file_count": 141,
+  "public_tree_sha256": "bae2cd1941b921a80841c26ed0bcb6666e9906f5fbadd7ae7c773fec642546a2",
   "gpg_fingerprint": "A729591B450D3F59369498BD82991F2504AE0263",
   "build_phases": [
     "generate",
