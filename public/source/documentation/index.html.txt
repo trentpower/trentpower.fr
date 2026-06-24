@@ -119,7 +119,7 @@
           <dl class="integrity-record-dl">
             <div class="integrity-rg integrity-rg--ruled">
               <dt class="integrity-rg-label">SHA-256</dt>
-              <dd class="integrity-rg-value">sha256-rbdaodp5y5KbsrPkqoy0udwdWTtBlmaDZ7rscPR+rw8=</dd>
+              <dd class="integrity-rg-value">sha256-xVHXYyc6WikrTD55DmECN1VGSxgOzdLprYr74sBQU3w=</dd>
             </div>
             <div class="integrity-rg">
               <dt class="integrity-rg-label">Manifest</dt>

@@ -283,8 +283,8 @@
       "mirror_bytes": 13597,
       "mirror_size_human": "13.3 KB",
       "modified": "2026-06-24",
-      "sha256": "De9SlhaF17m1kI+wZTmyyxwzByTKaWNk8n0snX+hdlk=",
-      "sha256_short": "De9SlhaF17m1",
+      "sha256": "7aJFLBCIIHmrhRd5fEzcGYfrdK4jgam4Zwe53r3o6eU=",
+      "sha256_short": "7aJFLBCIIHmr",
       "description": "Documentation. The signed README.pdf and plain-text README, with the PDF's hash for verification."
     },
     {
@@ -1136,8 +1136,8 @@
       "mirror_bytes": 1170,
       "mirror_size_human": "1.1 KB",
       "modified": "2026-06-24",
-      "sha256": "b/lz/hX3yRK14IfBMUlUOv7/cAX4iAJxE2hSmFSjzS8=",
-      "sha256_short": "b/lz/hX3yRK1",
+      "sha256": "YiYO90Qrc2Eb1CDv5H7V0I1MxKtupfXlf0EzFUK5aNo=",
+      "sha256_short": "YiYO90Qrc2Eb",
       "description": "Build record. Reproducibility data for the current edition."
     },
     {

@@ -1,7 +1,7 @@
 {
   "schema": "trentpower.public-exposure.v1",
-  "edition": "2026-06-21",
-  "generated_at": "2026-06-24T11:30:46Z",
+  "edition": "2026-06-24",
+  "generated_at": "2026-06-24T12:13:20Z",
   "principle": "this manifest is the source of truth for what the public web may serve; anything not matched here must not be deployed.",
   "language_roots": [
     "/en-au/",

@@ -26,6 +26,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "profile",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-9ME/IsmxyxMOMVubV64A7wSDJMkD3CQqQZV0OEhi90E=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-aGOHnEBMCq7SGS41ExU/RrlMNXswooOwhtgWU7Bbuuc="
@@ -74,6 +80,12 @@ window.TP_VERIFICATION_MAP = {
     "release": "/integrity/releases/2026-06-24/",
     "print_type": "profile",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-TD1bJyuZswWncxtvqrrmcoKpw7jhitcqY/CjQRHmOlc=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -129,6 +141,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "trust-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-yPHnN9BVcH0XOH+ZubgOODGHg+x4Azlwa40EeeSSVPk=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-4U/xcPRWVJdjoGwBpAcDm2zLrNUUi4jRzbGPJkxnFKk="
@@ -177,6 +195,12 @@ window.TP_VERIFICATION_MAP = {
     "release": "/integrity/releases/2026-06-24/",
     "print_type": "trust-sheet",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-h1iPMri4nD/8GjChvVc3fLX/oOEwFbNozbkCNVk1Puw=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -232,6 +256,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "trust-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-EcFZGZ9+vRETNBBk49KDe2XT0m8oJnOVk+xWBXyJ9kY=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-RkFRGCB0czv9LeCH9fJu8pM+nHh8HbZ4sS1FK0o4fPA="
@@ -280,6 +310,12 @@ window.TP_VERIFICATION_MAP = {
     "release": "/integrity/releases/2026-06-24/",
     "print_type": "trust-sheet",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-jcfUsdmUaMerHv2agWbJKjdtkDTj8jnHiUZmPgQU/00=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -334,6 +370,12 @@ window.TP_VERIFICATION_MAP = {
     "release": "/integrity/releases/2026-06-24/",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-wOOZ8QnUkZo0+LAOMCrUjhmhtUrWKlQcHmz7d664Hno=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-Pe7RAWs56bZ2uQlW3XtBj//H8uRFoDzyN7THXzz5NGM="
@@ -381,6 +423,12 @@ window.TP_VERIFICATION_MAP = {
     "citation": "Trent Power. Remerciements de sécurité · Trent Power. Personal Site. Edition 2026-06-24. trentpower.fr/fr/securite/remerciements/",
     "release": "/integrity/releases/2026-06-24/",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-QSI4jEHUXtLZfG0YAxQ6LULZUL3/x7p2u3UrohmEZHQ=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -436,6 +484,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "trust-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-nVVLKOfmnlQVQLyJUQ4LTC23uD8dWG505NACApyYKUo=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-Ct2snL3Y0QY1ZAOdX3ZI6Pvn7WVJCBc2f0EFJGs03Ac="
@@ -484,6 +538,12 @@ window.TP_VERIFICATION_MAP = {
     "release": "/integrity/releases/2026-06-24/",
     "print_type": "trust-sheet",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-vnmLday2gsaVa56KeHY/RzHE3dDKQVHkuGC4AUTOUaE=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -539,6 +599,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-XzjSOiO/KDJ2jmY9GGwTvSxGoK4ytIiNN31YMmkB9SA=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-dblLyrSSEOASIANF9Jx6w1lWJegTNb8V4a8jctvEQMs="
@@ -587,6 +653,12 @@ window.TP_VERIFICATION_MAP = {
     "release": "/integrity/releases/2026-06-24/",
     "print_type": "utility-sheet",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-c9dBd8x1bNym0g1scuEDqe2Sczc2FtZdXHbQkmNWeek=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -642,6 +714,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-brnq912ex1SgN/iYibg8t1KAqqboZCQ6ar0y4FLX1M4=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-OXnLw7uMQXW/FfYpoV78l1wYtecXallnlr8PGRXx5kw="
@@ -690,6 +768,12 @@ window.TP_VERIFICATION_MAP = {
     "release": "/integrity/releases/2026-06-24/",
     "print_type": "utility-sheet",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-gGob8C1kO/76kSf7u14EbPTyey8BUQxCcMc535jkh1s=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -745,6 +829,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-+vAuJ/hD7qqHHENwIasoVQKTJ3vimtQ58otbeD1fBOw=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-v7z8E0taC8YC4wrXgcwUdMhR0G2fyytfacMX4F445Vs="
@@ -793,6 +883,12 @@ window.TP_VERIFICATION_MAP = {
     "release": "/integrity/releases/2026-06-24/",
     "print_type": "utility-sheet",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-JPLXuURsvJVQH9wNP9ZbwbcX5GGoG0hIRH0DI+rQytA=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -848,6 +944,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-uISEkgtebK0j6ww3GjHhMmSlAS5+Y2Lz8wzfqJVTJ6s=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-mIlDkqinLXhiU5gtFHWP2TS+S0+0uAoWU5OgUBdBaZA="
@@ -897,6 +999,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-rIZIq0DsVYCetpnI0jTIoyBE72Q5QatmfYxPIdQ4usg=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-4FU5Yljs2LtVOmOxQOxYZua4VD1KE/6FpipzfrwO0vQ="
@@ -935,7 +1043,7 @@ window.TP_VERIFICATION_MAP = {
     "reader": "/en-au/source/view/?path=%2Fen-au%2Fsource%2Fview%2F",
     "source_manifest": "/source/source-manifest.json",
     "source_sha256": null,
-    "sha256": "sha256-5SfIGPq1CzBhcsObwAAYbscGut4F7+A+93BL2AmVCuI=",
+    "sha256": "sha256-D7epTWpV0UgpZa2Tfbg56tS8BfG6HE8Zq0iFxLJzUPE=",
     "size_bytes": 12030,
     "size_label": "11.7 KB",
     "manifest": "/integrity.json",
@@ -950,6 +1058,12 @@ window.TP_VERIFICATION_MAP = {
     "release": "/integrity/releases/2026-06-24/",
     "print_type": "utility-sheet",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-5SfIGPq1CzBhcsObwAAYbscGut4F7+A+93BL2AmVCuI=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -984,7 +1098,7 @@ window.TP_VERIFICATION_MAP = {
     "reader": "/fr/source/voir/?path=%2Ffr%2Fsource%2Fvoir%2F",
     "source_manifest": "/source/source-manifest.json",
     "source_sha256": null,
-    "sha256": "sha256-H8VB1jcGYMRFnoeV4M/8LttnEXJQsHnQ/W+ncDNcWqc=",
+    "sha256": "sha256-ajCxz8ag2p4auKtDnHkMJfYe6q4YTVOcxR3Ums7bfBU=",
     "size_bytes": 12320,
     "size_label": "12.0 KB",
     "manifest": "/integrity.json",
@@ -999,6 +1113,12 @@ window.TP_VERIFICATION_MAP = {
     "release": "/integrity/releases/2026-06-24/",
     "print_type": "utility-sheet",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-H8VB1jcGYMRFnoeV4M/8LttnEXJQsHnQ/W+ncDNcWqc=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -1053,6 +1173,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-lkCJ0Sq2LVCGA//cjqxCT+jmyABfH0+NRz6Hvtvhimk=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-LEmFr9hBeV0RHhsFZ5GMGAmP5Xy4pltMNOaYZ5sDL70="
@@ -1100,6 +1226,12 @@ window.TP_VERIFICATION_MAP = {
     "citation": "Trent Power. Page not found · Trent Power. Personal Site. Edition 2026-06-24. trentpower.fr/en-au/404.html",
     "print_type": "utility-sheet",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-ObczVNCtOGKH66F/8WtP/OUY+nXRgEpiLH0S0C5p2Fs=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -1149,6 +1281,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-CHfdyXAubh3nHlr8GJUh+Vsb8abo0MExMh2zVQoRgaw=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-tkUCiTAjzdjn2voKiVtzgsq/jJfWLkoO2Q67E8PTKFo="
@@ -1197,6 +1335,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-sGOVpso3IcgkDmP+4fQR0RGwh/mZH6AFhrkftnYHvUQ=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-z+9txKoxTDG+hvTi3WUgivh5d0LxTFKBanBb5SpQsHc="
@@ -1244,6 +1388,12 @@ window.TP_VERIFICATION_MAP = {
     "citation": "Trent Power. Accès refusé · Trent Power. Personal Site. Edition 2026-06-24. trentpower.fr/fr/403.html",
     "print_type": "utility-sheet",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-nhAMMPDwYTSntoOCxRtalJp4k3KvTmWi6/Jbr2/oNOc=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -1298,6 +1448,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-aUHrCfUI9IeegLAoWHpOmn1KkSOTip8pSAucoNic5ik=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-ZmJcYGW7k/Y/PYlxB1/mHz6istnK+zzfm5tyC2a5hA4="
@@ -1350,6 +1506,12 @@ window.TP_VERIFICATION_MAP = {
     "citation": "Trent Power. Une erreur est survenue · Trent Power. Personal Site. Edition 2026-06-24. trentpower.fr/fr/500.html",
     "print_type": "utility-sheet",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-Z3DXZCv7foF8wZT298qDk4/Eq9w3NahLhuOGxQh2NMw=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -1404,6 +1566,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-ObPZUQq2PynwDu/Z1gUlLbTdBH9P8WzrTWqW3CW1fpw=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-uyllYeiDu88ZOC1vS/s+3KLM9cy3tcKNNQCc27lW4UA="
@@ -1456,6 +1624,12 @@ window.TP_VERIFICATION_MAP = {
     "citation": "Trent Power. Forbidden · Trent Power. Personal Site. Edition 2026-06-24. trentpower.fr/403.html",
     "print_type": "utility-sheet",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-kr94vgOQv/vb359NY4dqkBxELfdOMnigiBZtWzO+VZM=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -1520,6 +1694,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-FMqCVlK5l6N91ozhdnWBp40I8Fr25dai49GuhJiJbm4=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-T308b9OH79VDMMvyvaVdpTiEHHzQwdSKHKehrMkKvpg="
@@ -1582,6 +1762,12 @@ window.TP_VERIFICATION_MAP = {
     "citation": "Trent Power. Something went wrong · Trent Power. Personal Site. Edition 2026-06-24. trentpower.fr/500.html",
     "print_type": "utility-sheet",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-VxPVl9ubp/DWyGCrKe0EI+3mpdE40TOZ3Du97YWCcLg=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
@@ -1646,6 +1832,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-n1BIHU3dO1ydqpLrHvnm58Qh+65aR2bVSyoqLGZgfuc=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-K+Jh2fvRHDOKzZwov/npVYmoE911ApzH+xSxh/W+XgM="
@@ -1709,6 +1901,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-SY5aBHGrePqHXRWKh0YVtlp5ZxC9hur7BmmNwXbZu0Q=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-mj89DrBJN7wmIbtoOZkkdkN+i2cSApnbQlIK6bj/6V0="
@@ -1753,6 +1951,12 @@ window.TP_VERIFICATION_MAP = {
     "print_type": "utility-sheet",
     "history": [
       {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-4GWATsVjMxYmRGiU9BkgqAMpB73lrCZ4Mu59PjxxRFU=",
+        "current": true
+      },
+      {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
         "sha256": "sha256-f9yMq8VT1EIpcnqgN7085f2scwXz1eWAyauCi6oP54Y="
@@ -1796,6 +2000,12 @@ window.TP_VERIFICATION_MAP = {
     "release": "/integrity/releases/2026-06-24/",
     "print_type": "profile",
     "history": [
+      {
+        "edition_date": "2026-06-24",
+        "release_path": "/integrity/releases/2026-06-24/",
+        "sha256": "sha256-WrpEazBQN7OGn/fFpj9Cc+5EIDmzEfhsK0IaBQrvlyA=",
+        "current": true
+      },
       {
         "edition_date": "2026-06-21",
         "release_path": "/integrity/releases/2026-06-21/",
