@@ -136,5 +136,34 @@ class FrozenArchivesImmutable(InlineChecksBase):
         self.assertIn("integrity/releases/2026-02/c.txt", baseline)
 
 
+class CheckGpgGuards(unittest.TestCase):
+    """check_gpg's pre-gpg guard arms (missing manifest/sig, missing published
+    key) read ic.ROOT directly. The full gpg verification path needs a real key
+    + signature and stays in the integration tier."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self._tmp.name)
+        self.addCleanup(self._tmp.cleanup)
+        self._saved = ic.ROOT
+        ic.ROOT = self.root
+        self.addCleanup(self._restore)
+
+    def _restore(self):
+        ic.ROOT = self._saved
+
+    def test_missing_manifest_and_sig(self):
+        rc, out = _quiet(ic.check_gpg)
+        self.assertEqual(rc, 1)
+        self.assertIn("missing", out)
+
+    def test_missing_published_key(self):
+        (self.root / "integrity.json").write_text("{}", encoding="utf-8")
+        (self.root / "integrity.json.sig").write_text("sig", encoding="utf-8")
+        rc, out = _quiet(ic.check_gpg)
+        self.assertEqual(rc, 1)
+        self.assertIn("published key", out)
+
+
 if __name__ == "__main__":
     unittest.main()
