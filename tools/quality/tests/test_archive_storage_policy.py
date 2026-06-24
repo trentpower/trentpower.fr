@@ -9,6 +9,8 @@ Run:
     python3 -m unittest discover -s tools/quality/tests
 """
 
+import contextlib
+import io
 import pathlib
 import unittest
 
@@ -20,6 +22,14 @@ _fixture.bootstrap()
 import validate_archive_storage_policy as ap  # noqa: E402
 
 _REL = "public/integrity/releases"
+
+
+def _run_main(tracked):
+    """Drive main() through its injected seam, capturing (rc, stdout)."""
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = ap.main(tracked=tracked)
+    return rc, buf.getvalue()
 
 
 class Evaluate(unittest.TestCase):
@@ -72,6 +82,27 @@ class Evaluate(unittest.TestCase):
             ]
         )
         self.assertEqual(len(r.fails), 2)
+
+
+class Main(unittest.TestCase):
+    def test_clean_tree_returns_zero(self):
+        rc, out = _run_main(
+            [f"{_REL}/README.md", f"{_REL}/2026-06-21/trentpower-fr-2026-06-21.zip.sha256"]
+        )
+        self.assertEqual(rc, 0)
+        self.assertIn("server-canonical", out)
+
+    def test_committed_binary_returns_one(self):
+        rc, out = _run_main([f"{_REL}/2026-06-21/trentpower-fr-2026-06-21.zip"])
+        self.assertEqual(rc, 1)
+        self.assertIn("must not enter git", out)
+        self.assertIn("trentpower-fr-2026-06-21.zip", out)
+
+    def test_many_binaries_are_truncated_in_output(self):
+        many = [f"{_REL}/2026-06-21/trentpower-fr-{i:02d}.zip" for i in range(25)]
+        rc, out = _run_main(many)
+        self.assertEqual(rc, 1)
+        self.assertIn("and 5 more", out)
 
 
 if __name__ == "__main__":  # pragma: no cover

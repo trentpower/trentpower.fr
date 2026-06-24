@@ -76,8 +76,12 @@ def _git_tracked(repo_root: Path) -> list[str]:
     return [ln for ln in out.stdout.splitlines() if ln]
 
 
-def main(repo_root: Path = REPO_ROOT) -> int:
-    r = evaluate(_git_tracked(repo_root))
+def main(repo_root: Path = REPO_ROOT, *, tracked: list[str] | None = None) -> int:
+    # `tracked` is an injected seam: tests pass a plain list so main()'s
+    # reporting/exit paths are exercised without a real git subprocess (the
+    # fast tier blocks subprocess). Production passes nothing -> reads git.
+    paths = _git_tracked(repo_root) if tracked is None else tracked
+    r = evaluate(paths)
     if r.fails:
         print(f"  FAIL: {len(r.fails)} archive binary(ies) committed to git:")
         for f in r.fails[:20]:
