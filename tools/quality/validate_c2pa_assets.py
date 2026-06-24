@@ -37,13 +37,13 @@ from pathlib import Path
 
 try:
     import yaml
-except ImportError:
+except ImportError:  # pragma: no cover (dependency-missing fallback)
     print("error: PyYAML required. Install with: pip install pyyaml", file=sys.stderr)
     sys.exit(2)
 
 try:
     from jsonschema import Draft202012Validator
-except ImportError:
+except ImportError:  # pragma: no cover (dependency-missing fallback)
     print("error: jsonschema>=4.18 required. Install with: pip install jsonschema", file=sys.stderr)
     sys.exit(2)
 
@@ -96,7 +96,13 @@ def default_inspector(repo: Repo, asset_rel: str) -> InspectResult:
         import c2pa  # noqa: PLC0415
     except ImportError:
         return None, "c2pa tooling unavailable on this host"
-    abs = repo.root / asset_rel
+    return _read_embedded_manifest(c2pa, repo.root / asset_rel)  # pragma: no cover
+
+
+def _read_embedded_manifest(c2pa, abs):  # pragma: no cover
+    # Production C2PA adapter: needs the c2pa library + a real (signed) asset on
+    # disk. The unit tests inject a fake inspector into evaluate() instead, so
+    # this path is exercised by the live validate run, not the unit suite.
     if not abs.is_file():
         return None, "asset file absent"
     mime = _MIME.get(abs.suffix.lower())
@@ -264,7 +270,7 @@ def evaluate(repo: Repo, data: dict, inspect: Inspector = default_inspector) -> 
 # main — the side-effecting adapter. loads, evaluates, renders, returns exit
 # code. the only place stdout and exit codes live.
 # ---------------------------------------------------------------------------
-def main(repo_root: Path = REPO_ROOT) -> int:
+def main(repo_root: Path = REPO_ROOT) -> int:  # pragma: no cover (side-effecting adapter)
     repo = Repo(repo_root)
     data, errors = load_policy(repo)
     if errors:

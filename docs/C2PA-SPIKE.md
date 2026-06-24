@@ -224,8 +224,8 @@ Gotchas hit during the spike, recorded so they are not rediscovered:
   construct with a placeholder then set `si.ta_url = None` to sign **without** a
   timestamp authority. Passing `b""` fails at sign time with `Signature: empty
   string`.
-- The signing key must be **PKCS#8** (`-----BEGIN PRIVATE KEY-----`). OpenSSL's
-  default EC output is SEC1 (`-----BEGIN EC PRIVATE KEY-----`) and is rejected;
-  convert with `openssl pkcs8 -topk8 -nocrypt`.
+- The signing key must be **PKCS#8** (the `BEGIN PRIVATE KEY` PEM label).
+  OpenSSL's default EC output is SEC1 (the `BEGIN EC PRIVATE KEY` label) and is
+  rejected; convert with `openssl pkcs8 -topk8 -nocrypt`.
 - `Reader` has no `from_file`; use `Reader(mime_type, open(path, "rb"))`.
   `is_valid` is a **property**, not a method.

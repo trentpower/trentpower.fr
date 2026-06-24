@@ -94,6 +94,11 @@ HISTORY_ALLOW = {
     "test_repository_hygiene.py": {"inline credential assignment"},
     "validate_local_path_leakage.py": {"absolute /home/ path"},
     "test_local_path_leakage.py": {"absolute /home/ path"},
+    # the C2PA spike write-up names the PKCS#8 vs SEC1 PEM *labels* when
+    # explaining which key format the signer accepts — documentation of a
+    # format, never a key. (The current revision drops the ----- delimiters; the
+    # delimited form survives in the original commit's history.)
+    "C2PA-SPIKE.md": {"private key block"},
     "inline_checks.py": {"absolute /home/ path"},
     "test_page_provenance.py": {"absolute /home/ path"},
     # the deploy lftp recipe (since scrubbed to a template + env renderer) once held
