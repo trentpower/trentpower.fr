@@ -231,9 +231,7 @@ def evaluate(repo: Repo, data: dict, inspect: Inspector = default_inspector) -> 
         # in-scope: required / optional / future.
         ai = a.get("ai_involvement", "")
         if ai not in vocab:
-            result.meta_fails.append(
-                f"{label}: ai_involvement {ai!r} is not in ai_vocabulary"
-            )
+            result.meta_fails.append(f"{label}: ai_involvement {ai!r} is not in ai_vocabulary")
         cu = a.get("canonical_url", "")
         if pub_url and not cu.startswith(pub_url):
             result.meta_fails.append(
@@ -295,7 +293,9 @@ def main(repo_root: Path = REPO_ROOT) -> int:  # pragma: no cover (side-effectin
         return 1
 
     summary = ", ".join(f"{n} {s}" for s, n in sorted(result.by_status.items()))
-    print(f"  OK: C2PA policy coherent — {result.declared} asset(s) declared ({summary or 'none'}).")
+    print(
+        f"  OK: C2PA policy coherent — {result.declared} asset(s) declared ({summary or 'none'})."
+    )
     return 0
 
 

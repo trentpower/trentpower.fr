@@ -40,7 +40,9 @@ SKIP = lambda repo, p: (None, "c2pa tooling unavailable")  # noqa: E731
 
 def _make_fixture_repo(root: pathlib.Path, *, integrity_has_svg: bool = True) -> None:
     _write(root, SVG_REL, "<svg xmlns='http://www.w3.org/2000/svg'></svg>\n")
-    _write(root, "tools/config/identity_canonical.json", json.dumps({"url": "https://trentpower.fr"}))
+    _write(
+        root, "tools/config/identity_canonical.json", json.dumps({"url": "https://trentpower.fr"})
+    )
     files = {SVG_KEY: "sha256-x"} if integrity_has_svg else {}
     _write(root, "public/integrity.json", json.dumps({"files": files}))
 
@@ -63,7 +65,11 @@ def _asset(**over):
 
 
 def _excluded(**over):
-    base = {"path": "public/documentation/README.pdf", "status": "excluded", "reason": "no pdf embed"}
+    base = {
+        "path": "public/documentation/README.pdf",
+        "status": "excluded",
+        "reason": "no pdf embed",
+    }
     base.update(over)
     return base
 
@@ -103,7 +109,9 @@ class Evaluate(unittest.TestCase):
     def test_required_without_credential_fails(self):
         r = vca.evaluate(self.repo, _base_data(), inspect=ABSENT)
         self.assertFalse(r.ok)
-        self.assertTrue(any("no embedded C2PA credential" in f for f in r.asset_fails), r.asset_fails)
+        self.assertTrue(
+            any("no embedded C2PA credential" in f for f in r.asset_fails), r.asset_fails
+        )
 
     def test_required_credential_skip_is_note_not_fail(self):
         # tooling unavailable (None) must NOT fail the advisory gate — it notes.
@@ -138,7 +146,11 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(any("not under publisher url" in f for f in r.meta_fails), r.meta_fails)
 
     def test_publisher_disagrees_with_identity_fails(self):
-        _write(self.root, "tools/config/identity_canonical.json", json.dumps({"url": "https://other.fr"}))
+        _write(
+            self.root,
+            "tools/config/identity_canonical.json",
+            json.dumps({"url": "https://other.fr"}),
+        )
         r = vca.evaluate(self.repo, _base_data(), inspect=PRESENT)
         self.assertFalse(r.ok)
         self.assertTrue(any("disagrees with identity" in f for f in r.meta_fails), r.meta_fails)
@@ -150,7 +162,9 @@ class Evaluate(unittest.TestCase):
         self.assertTrue(any("duplicate asset entry" in f for f in r.meta_fails), r.meta_fails)
 
     def test_stale_excluded_pattern_is_note(self):
-        data = _base_data([_asset(), {"pattern": "public/nope/*.png", "status": "excluded", "reason": "x"}])
+        data = _base_data(
+            [_asset(), {"pattern": "public/nope/*.png", "status": "excluded", "reason": "x"}]
+        )
         r = vca.evaluate(self.repo, data, inspect=PRESENT)
         self.assertTrue(r.ok, msg=f"meta={r.meta_fails} asset={r.asset_fails}")
         self.assertTrue(any("matches no files" in n for n in r.notes), r.notes)

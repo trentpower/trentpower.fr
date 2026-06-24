@@ -106,9 +106,7 @@ def build_manifest(asset: dict, policy: dict, identity: dict) -> dict:
         creative_work["author"][0]["identifier"] = f"https://orcid.org/{orcid}"
 
     return {
-        "claim_generator_info": [
-            {"name": "trentpower.fr", "version": edition or "unversioned"}
-        ],
+        "claim_generator_info": [{"name": "trentpower.fr", "version": edition or "unversioned"}],
         "title": Path(asset["path"]).name,
         "assertions": [
             {
@@ -126,7 +124,10 @@ def build_manifest(asset: dict, policy: dict, identity: dict) -> dict:
             {"label": "stds.schema-org.CreativeWork", "data": creative_work, "kind": "Json"},
             {
                 "label": "com.trentpower.ai-involvement",
-                "data": {"value": ai, "meaning": AI_MEANINGS.get(ai, "see policy-data/c2pa-assets.yml")},
+                "data": {
+                    "value": ai,
+                    "meaning": AI_MEANINGS.get(ai, "see policy-data/c2pa-assets.yml"),
+                },
                 "kind": "Json",
             },
             {
@@ -148,13 +149,17 @@ def manifest_for_path(asset_path: str) -> dict:
     if asset is None:
         raise SystemExit(f"error: {asset_path} is not declared in policy-data/c2pa-assets.yml")
     if "canonical_url" not in asset:
-        raise SystemExit(f"error: {asset_path} has no canonical_url (status {asset.get('status')!r})")
+        raise SystemExit(
+            f"error: {asset_path} has no canonical_url (status {asset.get('status')!r})"
+        )
     return build_manifest(asset, policy, load_identity())
 
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Build the C2PA manifest JSON for a declared asset.")
-    ap.add_argument("asset_path", help="repo-relative path, e.g. public/images/architecture/architecture.en.svg")
+    ap.add_argument(
+        "asset_path", help="repo-relative path, e.g. public/images/architecture/architecture.en.svg"
+    )
     args = ap.parse_args(argv)
     print(json.dumps(manifest_for_path(args.asset_path), indent=2))
     return 0

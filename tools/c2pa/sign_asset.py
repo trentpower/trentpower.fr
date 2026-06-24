@@ -78,7 +78,9 @@ def sign(declared_path: str, source_path: str, out_path: str) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Sign one declared asset with the Pi-local C2PA credential.")
+    ap = argparse.ArgumentParser(
+        description="Sign one declared asset with the Pi-local C2PA credential."
+    )
     ap.add_argument("asset_path", help="repo-relative DECLARED path of the asset (policy key)")
     ap.add_argument("--out", help="output path (default: the declared path itself)")
     args = ap.parse_args(argv)
