@@ -162,6 +162,7 @@
           <li><a href="#security-disclosure-heading">7. Divulgation</a></li>
           <li><a href="#security-design-heading">8. Principes de conception</a></li>
           <li><a href="#security-testing-heading">9. Vérification &amp; tests</a></li>
+          <li><a href="#security-accessibility-heading">10. Accessibilité</a></li>
         </ol>
       </nav>
 
@@ -315,7 +316,7 @@
         <h2 class="security-section-heading" id="security-testing-heading">9. Vérification &amp; tests</h2>
         <section class="security-subsection" aria-labelledby="security-testing-per-edition">
           <h3 class="security-subheading" id="security-testing-per-edition">Contrôles par édition</h3>
-          <p>Chaque édition publiée est contrôlée par rapport à un ensemble fixe de cibles publiques. Les contrôles couvrent la disponibilité, la confidentialité, les en-têtes de sécurité, l’accessibilité, le référencement et le balisage, et le résultat est consigné sous forme d’instantané signé avec l’édition.</p>
+          <p>La vérification s’effectue à deux niveaux. Avant la publication d’une édition, sa source passe une barrière bloquante de contrôles de sécurité et d’exactitude, et l’arbre publié doit se reconstruire à l’octet près à partir de cette source. L’édition est ensuite contrôlée par rapport à un ensemble fixe de cibles publiques — disponibilité, confidentialité, en-têtes de sécurité, accessibilité, référencement et balisage — et le résultat est consigné sous forme d’instantané signé avec l’édition.</p>
           <p><a href="/tests/" aria-label="Voir les derniers résultats de tests signés">Voir les derniers résultats de tests</a> sur <code>/tests/</code>.</p>
         </section>
       </section>

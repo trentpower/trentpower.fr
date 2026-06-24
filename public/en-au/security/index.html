@@ -126,7 +126,7 @@
 }
   </script>
 </head>
-<body data-page="security" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-24" data-source-sha256-short="8435685f">
+<body data-page="security" data-layout="masthead" data-surface="record" data-masthead="brand-only" data-edition="2026-06-24" data-source-sha256-short="8aa330f2">
 
 <a href="#main" class="skip-link">Skip to content</a>
 
@@ -162,6 +162,7 @@
           <li><a href="#security-disclosure-heading">7. Disclosure</a></li>
           <li><a href="#security-design-heading">8. Design principles</a></li>
           <li><a href="#security-testing-heading">9. Verification &amp; Testing</a></li>
+          <li><a href="#security-accessibility-heading">10. Accessibility</a></li>
         </ol>
       </nav>
 
@@ -313,7 +314,7 @@
         <h2 class="security-section-heading" id="security-testing-heading">9. Verification &amp; Testing</h2>
         <section class="security-subsection" aria-labelledby="security-testing-per-edition">
           <h3 class="security-subheading" id="security-testing-per-edition">Per-edition checks</h3>
-          <p>Every published edition is checked against a fixed set of public targets. The checks cover availability, privacy, security headers, accessibility, SEO and markup, and the result is recorded as a signed snapshot alongside the edition.</p>
+          <p>Verification runs at two layers. Before an edition is published, its source passes a blocking gate of security and correctness checks, and the published tree must rebuild byte-for-byte from that source. The edition is then checked against a fixed set of public targets — availability, privacy, security headers, accessibility, SEO and markup — and the result is recorded as a signed snapshot alongside the edition.</p>
           <p><a href="/tests/" aria-label="View the latest signed test results">View the latest test results</a> at <code>/tests/</code>.</p>
         </section>
       </section>

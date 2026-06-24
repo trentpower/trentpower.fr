@@ -17,11 +17,11 @@
   "integrity_signature": "https://trentpower.fr/integrity.json.sig",
   "public_key": "https://trentpower.fr/.well-known/pgp-key.asc",
   "key_fingerprint": "A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263",
-  "git_commit": "a33ef62a7eb23b8ae65542bc3efaa277f5e5436c",
+  "git_commit": "1bcbdcc6f8fd22980ce1964aebd4999df0ae74d5",
   "python_version": "3.13.5",
   "builder_platform": "Linux aarch64",
   "public_file_count": 141,
-  "public_tree_sha256": "bae2cd1941b921a80841c26ed0bcb6666e9906f5fbadd7ae7c773fec642546a2",
+  "public_tree_sha256": "b6cd8530bb74cd0f990021d55b0377a11f6c4fd54c6e039b6032afef43ccb829",
   "gpg_fingerprint": "A729591B450D3F59369498BD82991F2504AE0263",
   "build_phases": [
     "generate",

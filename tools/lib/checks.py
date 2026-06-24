@@ -525,6 +525,15 @@ REGISTRY: list[Check] = [
         command=_script("validate_home_anchors.py"),
     ),
     Check(
+        "security_nav_parity",
+        "validate_security_nav_parity.py",
+        _B,
+        _COR,
+        "the Security page contents nav matches its body sections (no missing or "
+        "dead entries) in both languages",
+        command=_script("validate_security_nav_parity.py"),
+    ),
+    Check(
         "bilingual_html",
         "validate_bilingual_html.py",
         _B,

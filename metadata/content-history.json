@@ -6,7 +6,7 @@
       "first_seen": "2026-06-24"
     },
     "index.html": {
-      "sha256": "sha256-FLg+K9gJdlOSRfvR6bPWjhVQkcJrmxOnvLNWlqbj5nA=",
+      "sha256": "sha256-WrpEazBQN7OGn/fFpj9Cc+5EIDmzEfhsK0IaBQrvlyA=",
       "first_seen": "2026-06-24"
     },
     "robots.txt": {
@@ -34,23 +34,23 @@
       "first_seen": "2026-05-16"
     },
     "500.html": {
-      "sha256": "sha256-Q4VEJGmakSJ6NPaLYq89H54gSd5FMHOPKZ3QCgG25c8=",
+      "sha256": "sha256-VxPVl9ubp/DWyGCrKe0EI+3mpdE40TOZ3Du97YWCcLg=",
       "first_seen": "2026-06-24"
     },
     "maintenance.html": {
-      "sha256": "sha256-JyJQdqvIxssJKbHhNYKZqIb9vCQcvUmbT/D6ue5iBRU=",
+      "sha256": "sha256-n1BIHU3dO1ydqpLrHvnm58Qh+65aR2bVSyoqLGZgfuc=",
       "first_seen": "2026-06-24"
     },
     "sw-cache-manifest.json": {
-      "sha256": "sha256-NiY68ZyGbO1q01QsX1viK02NV7BhJsXmxkVCS2sSFto=",
+      "sha256": "sha256-8MpbyMquNDzfnSi9iD9TSCnuHhmvzsmUhoKuN8q7/lM=",
       "first_seen": "2026-06-24"
     },
     "sitemap.xml": {
-      "sha256": "sha256-b46kZUxxzh4rAyb1xaNSWBuVivpDXnlBDLmh7a+ZEus=",
+      "sha256": "sha256-KPeg5oU2ivDtRBwf014SkGccGRhtBpwEvjaBY61OlHg=",
       "first_seen": "2026-06-24"
     },
     "403.html": {
-      "sha256": "sha256-asPvcd+Akhlc7kzoDiUdgyZLj8zau/wYuUXEo5uQSx8=",
+      "sha256": "sha256-kr94vgOQv/vb359NY4dqkBxELfdOMnigiBZtWzO+VZM=",
       "first_seen": "2026-06-24"
     },
     "pgp.txt": {
@@ -78,7 +78,7 @@
       "first_seen": "2026-05-15"
     },
     "404.html": {
-      "sha256": "sha256-7DwEmaUUDEboqMOqRkx4Ipt7cxyV9MuaQtD2bivvs/4=",
+      "sha256": "sha256-FMqCVlK5l6N91ozhdnWBp40I8Fr25dai49GuhJiJbm4=",
       "first_seen": "2026-06-24"
     },
     "favicon.ico": {
@@ -94,7 +94,7 @@
       "first_seen": "2026-05-16"
     },
     "sw.js": {
-      "sha256": "sha256-XjytHY7FDYxg+jbuxG43VcWMdqcZkT/7utAwe9/kpWc=",
+      "sha256": "sha256-EWUFwwZ1efgEmUZFKmNcfRBbSknKYTRLTfuNJHTmbuA=",
       "first_seen": "2026-06-24"
     },
     "changelog.txt": {
@@ -110,7 +110,7 @@
       "first_seen": "2026-06-09"
     },
     "verify/verification-data.js": {
-      "sha256": "sha256-XAZdsLQ29oQpzSxI3si2wCK5IyFMMZaWs1Qv5jO+u8c=",
+      "sha256": "sha256-4faRAELj4y0eFfYyd4/PnPy9kSIM+KXF7jteEQe0x4I=",
       "first_seen": "2026-06-24"
     },
     ".well-known/pgp-key.asc": {
@@ -126,7 +126,7 @@
       "first_seen": "2026-05-15"
     },
     ".well-known/build.json": {
-      "sha256": "sha256-RIHuQI1zWbojfmuafjcLBhnptVrofvSx1/hN/J/bcis=",
+      "sha256": "sha256-TiXUk/QioGnWK9qFcDDdS/xe80Q7j4fAB6Giy6XWdzw=",
       "first_seen": "2026-06-24"
     },
     ".well-known/security.txt": {
@@ -326,7 +326,7 @@
       "first_seen": "2026-06-21"
     },
     "source/sw-cache-manifest.json.txt": {
-      "sha256": "sha256-NiY68ZyGbO1q01QsX1viK02NV7BhJsXmxkVCS2sSFto=",
+      "sha256": "sha256-8MpbyMquNDzfnSi9iD9TSCnuHhmvzsmUhoKuN8q7/lM=",
       "first_seen": "2026-06-24"
     },
     "source/index.html.txt": {
@@ -366,7 +366,7 @@
       "first_seen": "2026-05-15"
     },
     "source/source-manifest.json": {
-      "sha256": "sha256-93G3yn05Q/ItxNuwb7HN+/vx3gb4dv85bjdMuuTgaB8=",
+      "sha256": "sha256-wpTlDlmehf4B0KXKOC+n+sijYcTlO2Gbn+OV8PaE/l4=",
       "first_seen": "2026-06-24"
     },
     "source/apple-touch-icon.png.base64.txt": {
@@ -394,7 +394,7 @@
       "first_seen": "2026-05-16"
     },
     "source/sw.js.txt": {
-      "sha256": "sha256-XjytHY7FDYxg+jbuxG43VcWMdqcZkT/7utAwe9/kpWc=",
+      "sha256": "sha256-EWUFwwZ1efgEmUZFKmNcfRBbSknKYTRLTfuNJHTmbuA=",
       "first_seen": "2026-06-24"
     },
     "source/maintenance.html.txt": {
@@ -418,7 +418,7 @@
       "first_seen": "2026-06-24"
     },
     "source/source-manifest.json.txt": {
-      "sha256": "sha256-93G3yn05Q/ItxNuwb7HN+/vx3gb4dv85bjdMuuTgaB8=",
+      "sha256": "sha256-wpTlDlmehf4B0KXKOC+n+sijYcTlO2Gbn+OV8PaE/l4=",
       "first_seen": "2026-06-24"
     },
     "source/sitemap.xml.txt": {
@@ -470,7 +470,7 @@
       "first_seen": "2026-06-10"
     },
     "source/.well-known/build.json.txt": {
-      "sha256": "sha256-b/lz/hX3yRK14IfBMUlUOv7/cAX4iAJxE2hSmFSjzS8=",
+      "sha256": "sha256-TiXUk/QioGnWK9qFcDDdS/xe80Q7j4fAB6Giy6XWdzw=",
       "first_seen": "2026-06-24"
     },
     "source/.well-known/security.txt.txt": {
@@ -742,7 +742,7 @@
       "first_seen": "2026-05-19"
     },
     "source/view/source-view-manifest.js": {
-      "sha256": "sha256-uN/2tZKpZe6uF/kdaIGUyHdY55gssFlwxqOuZWMmN1Y=",
+      "sha256": "sha256-vxnGFICe+bc1SG76G0kOykZ0GnYJarzrnHkrxqdQ8/g=",
       "first_seen": "2026-06-24"
     },
     "source/view/source-view.js": {
@@ -758,59 +758,59 @@
       "first_seen": "2026-05-19"
     },
     "fr/index.html": {
-      "sha256": "sha256-fU97qu3k2oEqOgnYcXddIZ11tGn2tlorj0oNhOHla7g=",
+      "sha256": "sha256-TD1bJyuZswWncxtvqrrmcoKpw7jhitcqY/CjQRHmOlc=",
       "first_seen": "2026-06-24"
     },
     "fr/500.html": {
-      "sha256": "sha256-uW4Qo08AYMF/+m+WG8GEkX3o6jNCoJy9qBAj98vnJ1I=",
+      "sha256": "sha256-Z3DXZCv7foF8wZT298qDk4/Eq9w3NahLhuOGxQh2NMw=",
       "first_seen": "2026-06-24"
     },
     "fr/maintenance.html": {
-      "sha256": "sha256-XfpqSPOzoCxh7WpC1T9MDADA9mQBht0ObvKYKd8FrhM=",
+      "sha256": "sha256-ObPZUQq2PynwDu/Z1gUlLbTdBH9P8WzrTWqW3CW1fpw=",
       "first_seen": "2026-06-24"
     },
     "fr/403.html": {
-      "sha256": "sha256-BDCxOeOVIIkw1jDyLagsXx8xjOgVsfHpcGMhc/cWrBQ=",
+      "sha256": "sha256-nhAMMPDwYTSntoOCxRtalJp4k3KvTmWi6/Jbr2/oNOc=",
       "first_seen": "2026-06-24"
     },
     "fr/404.html": {
-      "sha256": "sha256-/msd9MDXzTRlt2FjZYXc/SH9Uxi9x42PqKFwGQ8LbvU=",
+      "sha256": "sha256-aUHrCfUI9IeegLAoWHpOmn1KkSOTip8pSAucoNic5ik=",
       "first_seen": "2026-06-24"
     },
     "fr/verifier/index.html": {
-      "sha256": "sha256-yM9uzP0FlUhNO1jcyzFzXFcshk39sU5TkzOpCAZntbo=",
+      "sha256": "sha256-JPLXuURsvJVQH9wNP9ZbwbcX5GGoG0hIRH0DI+rQytA=",
       "first_seen": "2026-06-24"
     },
     "fr/integrite/index.html": {
-      "sha256": "sha256-SlWIm6cRkYLUVTX5scwMoM6k6qsqJLwuq5sA28L1bMQ=",
+      "sha256": "sha256-vnmLday2gsaVa56KeHY/RzHE3dDKQVHkuGC4AUTOUaE=",
       "first_seen": "2026-06-24"
     },
     "fr/integrite/verifier-localement/index.html": {
-      "sha256": "sha256-gQMYbwGJrF+Las1ihDE5gOvUMFKyU4+PrBbEc+91FQA=",
+      "sha256": "sha256-gGob8C1kO/76kSf7u14EbPTyey8BUQxCcMc535jkh1s=",
       "first_seen": "2026-06-24"
     },
     "fr/integrite/archives/index.html": {
-      "sha256": "sha256-ypR5+K3B+i2gKHXUfxhrKJ5qNEwnvHmtUImjD0dJ5Uo=",
+      "sha256": "sha256-c9dBd8x1bNym0g1scuEDqe2Sczc2FtZdXHbQkmNWeek=",
       "first_seen": "2026-06-24"
     },
     "fr/securite/index.html": {
-      "sha256": "sha256-iuXfbqKhTCBzSxTgequLY2hbwSeej/o/YK+rKFWrDZk=",
+      "sha256": "sha256-8zyquawCzjm8ONUFzs3fopYLpE7tmaz8yhh+69rF8h0=",
       "first_seen": "2026-06-24"
     },
     "fr/securite/remerciements/index.html": {
-      "sha256": "sha256-wAyK4nZc5sRvMGCbWvfXVkHeh+PKuxLoHGq7VQX1gmU=",
+      "sha256": "sha256-QSI4jEHUXtLZfG0YAxQ6LULZUL3/x7p2u3UrohmEZHQ=",
       "first_seen": "2026-06-24"
     },
     "fr/confidentialite/index.html": {
-      "sha256": "sha256-FnkkpZAeDnjYZIYUNmjWnqirPrEypSaHuhV9vlni/Tc=",
+      "sha256": "sha256-h1iPMri4nD/8GjChvVc3fLX/oOEwFbNozbkCNVk1Puw=",
       "first_seen": "2026-06-24"
     },
     "fr/source/index.html": {
-      "sha256": "sha256-wcRz08sKD+9s3j41M6VbkRHdslqjWQhG2EFw/ADdISc=",
+      "sha256": "sha256-TF3M23i5zxrYH9Mu9j2xfoIJBaTNnTooQwJbdYqBfC8=",
       "first_seen": "2026-06-24"
     },
     "fr/source/voir/index.html": {
-      "sha256": "sha256-mMHpbejkss9JHSlMRWF7GJMjbYFIHpy6RSwVmnUfhXM=",
+      "sha256": "sha256-3WnrEjGtn/w5Lbg2ernkfGfG7qJWhyOTsKkpUkmKJGk=",
       "first_seen": "2026-06-24"
     },
     "source/fr/index.html.txt": {
@@ -850,7 +850,7 @@
       "first_seen": "2026-06-24"
     },
     "source/fr/securite/index.html.txt": {
-      "sha256": "sha256-5GuOAFtnuXbrTzRBkN4qOoxFjKXLkOOh/5bMYvcyU/4=",
+      "sha256": "sha256-07tYDSGZ6PGG/F/sBqn35pEa5kQAxhGWGmwGL08p+B0=",
       "first_seen": "2026-06-24"
     },
     "source/fr/securite/remerciements/index.html.txt": {
@@ -926,43 +926,43 @@
       "first_seen": "2026-06-09"
     },
     "en-au/index.html": {
-      "sha256": "sha256-KKln9ScM4ASmDrzbv6mbQ3ZZK02v6HOk7A2P0kPrDFk=",
+      "sha256": "sha256-9ME/IsmxyxMOMVubV64A7wSDJMkD3CQqQZV0OEhi90E=",
       "first_seen": "2026-06-24"
     },
     "en-au/verify/index.html": {
-      "sha256": "sha256-1W5MCBJ/1XhqjLAwaHuh8is4t0f0TkVP2iMeMStyFeM=",
+      "sha256": "sha256-+vAuJ/hD7qqHHENwIasoVQKTJ3vimtQ58otbeD1fBOw=",
       "first_seen": "2026-06-24"
     },
     "en-au/security/index.html": {
-      "sha256": "sha256-kAPBGWI3Q3jYxPCt8ayIHzH2yLelWMiWOEdsGxnv0Es=",
+      "sha256": "sha256-huW22N+QtGUyccx9ucc4ovnITo2kfnolltqWGFAQ7eU=",
       "first_seen": "2026-06-24"
     },
     "en-au/security/acknowledgments/index.html": {
-      "sha256": "sha256-rHMyvP5QsqtzabN0HxrenLvZrK5U/FIBr9iBdQQUaaY=",
+      "sha256": "sha256-wOOZ8QnUkZo0+LAOMCrUjhmhtUrWKlQcHmz7d664Hno=",
       "first_seen": "2026-06-24"
     },
     "en-au/source/index.html": {
-      "sha256": "sha256-py21pJdH/7Xu70zJnke7/oFiHvhSgqqSekOEu8cXR+U=",
+      "sha256": "sha256-ltFRArb99sXpIarXDvDu/ndEx1w/SbG1ZP/CMxNmmxY=",
       "first_seen": "2026-06-24"
     },
     "en-au/source/view/index.html": {
-      "sha256": "sha256-wOqsFLeUvFS896xlJhs2mTuwsu/d49JjR2wASiV2Y8c=",
+      "sha256": "sha256-CxvYyRu6zhjD5LTXMucfhYszbgcVCVy1yaCCgSiEsew=",
       "first_seen": "2026-06-24"
     },
     "en-au/privacy/index.html": {
-      "sha256": "sha256-RUpjZESFsCWyQ/hQv42U+v2IMp7foLAFi79jlXJv6KY=",
+      "sha256": "sha256-yPHnN9BVcH0XOH+ZubgOODGHg+x4Azlwa40EeeSSVPk=",
       "first_seen": "2026-06-24"
     },
     "en-au/integrity/index.html": {
-      "sha256": "sha256-o0ZErx1+GX4Y3VLghQpKFzertKYw/fiH+cgelOrtsmo=",
+      "sha256": "sha256-nVVLKOfmnlQVQLyJUQ4LTC23uD8dWG505NACApyYKUo=",
       "first_seen": "2026-06-24"
     },
     "en-au/integrity/verify-locally/index.html": {
-      "sha256": "sha256-Nj/sLkdhqcSWKlSS5EUPmuelvNrKS5P3616rbpFB8pI=",
+      "sha256": "sha256-brnq912ex1SgN/iYibg8t1KAqqboZCQ6ar0y4FLX1M4=",
       "first_seen": "2026-06-24"
     },
     "en-au/integrity/releases/index.html": {
-      "sha256": "sha256-+kxohA+wjl/1SHkY/V5LqMGNRlKruwnEDOO6es5gIZM=",
+      "sha256": "sha256-XzjSOiO/KDJ2jmY9GGwTvSxGoK4ytIiNN31YMmkB9SA=",
       "first_seen": "2026-06-24"
     },
     "source/en-au/index.html.txt": {
@@ -974,7 +974,7 @@
       "first_seen": "2026-06-24"
     },
     "source/en-au/security/index.html.txt": {
-      "sha256": "sha256-hDVoX3cysJ4LAm9xqkJNKL456GOPXcMab4r+BNPHdms=",
+      "sha256": "sha256-iqMw8sw84CJ+hQE6C0rBkCGWyiFku8GETcN3zytylrw=",
       "first_seen": "2026-06-24"
     },
     "source/en-au/security/acknowledgments/index.html.txt": {
@@ -998,19 +998,19 @@
       "first_seen": "2026-06-24"
     },
     "en-au/500.html": {
-      "sha256": "sha256-ch9F6G1S+ApaIQUB8AVRX6nGPliuHDhuXN9XAHTkEGM=",
+      "sha256": "sha256-CHfdyXAubh3nHlr8GJUh+Vsb8abo0MExMh2zVQoRgaw=",
       "first_seen": "2026-06-24"
     },
     "en-au/maintenance.html": {
-      "sha256": "sha256-JXf+YPm+InJ5dswPPVzmijSchn2gz2tJlm6Y8SCb6ms=",
+      "sha256": "sha256-sGOVpso3IcgkDmP+4fQR0RGwh/mZH6AFhrkftnYHvUQ=",
       "first_seen": "2026-06-24"
     },
     "en-au/403.html": {
-      "sha256": "sha256-5zfvIq8SShOYWUkxQoqk/LsZxbV59L81NGYKr7xyqpU=",
+      "sha256": "sha256-lkCJ0Sq2LVCGA//cjqxCT+jmyABfH0+NRz6Hvtvhimk=",
       "first_seen": "2026-06-24"
     },
     "en-au/404.html": {
-      "sha256": "sha256-sRWZayPP5uvJHwQxptzAYTszs8GRLFTmYoGeItyUh4I=",
+      "sha256": "sha256-ObczVNCtOGKH66F/8WtP/OUY+nXRgEpiLH0S0C5p2Fs=",
       "first_seen": "2026-06-24"
     },
     "source/en-au/500.html.txt": {
@@ -1078,7 +1078,7 @@
       "first_seen": "2026-05-24"
     },
     "local/index.html": {
-      "sha256": "sha256-KpaLK8ZEIAhofCjebBYYVnt+EDor/n1ZE1sGf2v/+Hw=",
+      "sha256": "sha256-SY5aBHGrePqHXRWKh0YVtlp5ZxC9hur7BmmNwXbZu0Q=",
       "first_seen": "2026-06-24"
     },
     "js/local.js": {
@@ -1122,7 +1122,7 @@
       "first_seen": "2026-06-24"
     },
     "source/documentation/index.html.txt": {
-      "sha256": "sha256-De9SlhaF17m1kI+wZTmyyxwzByTKaWNk8n0snX+hdlk=",
+      "sha256": "sha256-7aJFLBCIIHmrhRd5fEzcGYfrdK4jgam4Zwe53r3o6eU=",
       "first_seen": "2026-06-24"
     },
     "integrity/releases/2026-06-10/index.html": {
@@ -1207,6 +1207,14 @@
     },
     "source/integrity/releases/2026-06-24/index.html.txt": {
       "sha256": "sha256-at7hV32Z/094d5Q0v8421Pm4q2jQe6xFOkYlSFMSFm8=",
+      "first_seen": "2026-06-24"
+    },
+    "source/index.html": {
+      "sha256": "sha256-FoENIb5rS7K0GsVzL691UnTpMBuuRas5DKRKNTqCwR4=",
+      "first_seen": "2026-06-24"
+    },
+    "source/view/index.html": {
+      "sha256": "sha256-ZaBC77QAKRd+jQdfQVSE7UKKU/y7jtOndiOBzpChwgQ=",
       "first_seen": "2026-06-24"
     }
   }
