@@ -18,7 +18,9 @@ import _fixture
 
 _fixture.bootstrap()
 
+import contextlib  # noqa: E402
 import datetime as dt  # noqa: E402
+import io  # noqa: E402
 import pathlib  # noqa: E402
 import tempfile  # noqa: E402
 import zipfile  # noqa: E402
@@ -672,6 +674,53 @@ class ExclusionLiveCross(unittest.TestCase):
             rc, lines = vr.check_exclusion_live_sha256_cross(Repo(root))
             self.assertEqual(rc, 0)
             self.assertIn("match live integrity.json", "\n".join(lines))
+
+
+class MainRender(unittest.TestCase):
+    """main() owns stdout + exit codes; drive each render arm by canning the
+    Result that evaluate() returns — no real gate.py / gpg / host keyring."""
+
+    def setUp(self):
+        self._saved = vr.evaluate
+        self.addCleanup(self._restore)
+
+    def _restore(self):
+        vr.evaluate = self._saved
+
+    def _run(self, result):
+        vr.evaluate = lambda repo, proc: result
+        with tempfile.TemporaryDirectory() as tmp:
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = vr.main(pathlib.Path(tmp))
+        return rc, buf.getvalue()
+
+    def test_gate_missing_returns_gate_rc(self):
+        r = vr.Result(gate_rc=2, gate_missing_line="FAIL: gate.py not found")
+        rc, out = self._run(r)
+        self.assertEqual(rc, 2)
+        self.assertIn("gate.py not found", out)
+
+    def test_gate_failure_short_circuits(self):
+        r = vr.Result(gate_rc=1, gate_stdout="gate ran\n")
+        rc, out = self._run(r)
+        self.assertEqual(rc, 1)
+        self.assertIn("Running gate.py", out)
+
+    def test_release_step_failure_returns_1(self):
+        r = vr.Result(
+            gate_rc=0,
+            steps=[(1, "step one", ["line a"], 0), (2, "step two", ["bad"], 1)],
+        )
+        rc, out = self._run(r)
+        self.assertEqual(rc, 1)
+        self.assertIn("step two", out)
+
+    def test_all_green_returns_0(self):
+        r = vr.Result(gate_rc=0, steps=[(1, "step one", ["ok"], 0)])
+        rc, out = self._run(r)
+        self.assertEqual(rc, 0)
+        self.assertIn("validate_release green", out)
 
 
 if __name__ == "__main__":
