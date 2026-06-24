@@ -122,7 +122,7 @@ def evaluate(repo: Repo) -> Result:
 
     if len(counts) == 2 and len(set(counts.values())) != 1:
         result.errors.append(
-            f"bilingual section-count mismatch: "
+            "bilingual section-count mismatch: "
             + ", ".join(f"{lang}={n}" for lang, n in counts.items())
         )
     return result

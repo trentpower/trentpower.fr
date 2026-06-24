@@ -32,7 +32,9 @@ def _page(nav_ids, body_ids):
         f'<h2 class="security-section-heading" id="{i}">label</h2></section>'
         for i in body_ids
     )
-    return f'<nav class="security-contents"><ol class="security-contents-list">{nav}</ol></nav>{body}'
+    return (
+        f'<nav class="security-contents"><ol class="security-contents-list">{nav}</ol></nav>{body}'
+    )
 
 
 class Evaluate(unittest.TestCase):
@@ -101,9 +103,7 @@ class Evaluate(unittest.TestCase):
 class PureHelpers(unittest.TestCase):
     def test_nav_targets_extracts_fragments(self):
         html = _page(["security-x-heading", "security-y-heading"], [])
-        self.assertEqual(
-            vs.nav_targets(html), ["security-x-heading", "security-y-heading"]
-        )
+        self.assertEqual(vs.nav_targets(html), ["security-x-heading", "security-y-heading"])
 
     def test_nav_targets_none_when_absent(self):
         self.assertIsNone(vs.nav_targets("<p>nothing</p>"))
