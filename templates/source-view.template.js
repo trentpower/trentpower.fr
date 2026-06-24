@@ -1527,13 +1527,25 @@
     }
   }
 
-  // Anchor the floating toolbar just above the first selected line,
-  // inside the source frame. The toolbar is position: absolute within
-  // #source-view-root, so it scrolls with the code — no scroll handler.
-  // Mobile (<=720px) uses a CSS fixed bottom bar, so the calc is skipped.
+  // Touch-primary handhelds (iPhone + iPad, incl. landscape) use the CSS
+  // fixed bottom bar; only the pointer-precise desktop float needs JS
+  // anchoring. Kept in lockstep with the matching CSS media query so the
+  // two never disagree about which placement model is live. A touchscreen
+  // laptop with a mouse reports hover:hover / pointer:fine and stays on
+  // the floating pill.
+  function usesBottomBar() {
+    if (!window.matchMedia) return false;
+    return window.matchMedia('(max-width: 720px)').matches ||
+           window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  }
+
+  // Anchor the floating toolbar near the first selected line, inside the
+  // source frame. The toolbar is position: absolute within #source-view-
+  // root, so it scrolls with the code — no scroll handler. Touch-primary
+  // devices use a CSS fixed bottom bar, so the calc is skipped there.
   function positionSelectionToolbar() {
     if (!_toolbarEl || !_selection || _selection.size === 0) return;
-    if (window.matchMedia && window.matchMedia('(max-width: 720px)').matches) return;
+    if (usesBottomBar()) { _toolbarEl.classList.remove('source-toolbar--pinned'); return; }
     var frame = document.getElementById('source-view-root');
     var first = document.getElementById('L' + _selectionMin());
     if (!frame || !first) return;
@@ -1541,7 +1553,15 @@
     var lRect = first.getBoundingClientRect();
     var th = _toolbarEl.offsetHeight;
     var tw = _toolbarEl.offsetWidth;
-    var top = (lRect.top - fRect.top) - th - 8;
+    // collision-flip · the pill normally sits 8px above the first selected
+    // line, but when that line is tucked under the fixed nav band the pill
+    // would render behind it (nav z-index 100 > toolbar 80). measure the
+    // live nav rect (robust to the 54/58px responsive height) and, when the
+    // above-placement would intersect it, flip the pill below the line.
+    var nav = document.querySelector('.nav');
+    var navBottom = nav ? nav.getBoundingClientRect().bottom : 0;
+    var topVp = (lRect.top - th - 8 < navBottom) ? (lRect.bottom + 8) : (lRect.top - th - 8);
+    var top = topVp - fRect.top;
     if (top < 0) top = 0;
     var maxTop = frame.scrollHeight - th;
     if (top > maxTop) top = maxTop;
@@ -1560,13 +1580,26 @@
       var el = document.getElementById('sv-dyn');
       return el ? el.sheet : null;
     })());
+    var wrote = false;
     if (sheet) {
       var rule = '#source-toolbar{--st-top:' + top + 'px;--st-left:' + left + 'px}';
       try {
         if (sheet.cssRules.length > 0) sheet.deleteRule(0);
         sheet.insertRule(rule, 0);
+        wrote = true;
       } catch (_) { /* readonly sheet · skip */ }
     }
+    // verify the write actually took. if the cssom rule never applied (null
+    // sheet, throw, or a strict-csp context that blocks the mutation) the
+    // pill would otherwise strand at the frame's top-left (--st defaults 0).
+    // fall back to the static .source-toolbar--pinned class, which reuses
+    // the fixed bottom-bar treatment so the actions stay reachable.
+    var ok = wrote;
+    if (ok) {
+      var resolved = getComputedStyle(_toolbarEl).getPropertyValue('--st-top').trim();
+      ok = (resolved === (top + 'px'));
+    }
+    _toolbarEl.classList.toggle('source-toolbar--pinned', !ok);
   }
 
   function attachLineRangeSelection() {

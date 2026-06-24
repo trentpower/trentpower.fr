@@ -27,8 +27,6 @@ Constraints:
     gpg --detach-sign --armor -o integrity.json.sig integrity.json
 """
 
-import base64
-import hashlib
 import json
 import os
 import pathlib
@@ -48,6 +46,7 @@ sys.path.insert(
     ),
 )
 import routes as _routes
+from hashing import sha256_b64  # noqa: E402
 from paths import (
     CONTENT_DIR as _CONTENT_DIR,
 )
@@ -592,10 +591,6 @@ def _source_copy(lang: str | None) -> dict:
             data = {}
     _SOURCE_COPY_CACHE[lang] = data
     return data
-
-
-def sha256_b64(data: bytes) -> str:
-    return base64.b64encode(hashlib.sha256(data).digest()).decode("ascii")
 
 
 def kind_from_name(name: str) -> str:

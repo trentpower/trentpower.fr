@@ -19,8 +19,6 @@ Run standalone:
 from __future__ import annotations
 
 import argparse
-import base64
-import hashlib
 import json
 import os
 import sys
@@ -31,13 +29,10 @@ from pathlib import Path
 _TOOLS = next(_a for _a in Path(__file__).resolve().parents if _a.name == "tools")
 sys.path.insert(0, str(_TOOLS / "lib"))
 
+from hashing import sri_sha256  # noqa: E402
 from paths import REPO_ROOT  # noqa: E402
 
 MANIFEST = REPO_ROOT / "metadata" / "repo-exclusions.json"
-
-
-def sri_sha256(data: bytes) -> str:
-    return "sha256-" + base64.b64encode(hashlib.sha256(data).digest()).decode()
 
 
 def main() -> int:

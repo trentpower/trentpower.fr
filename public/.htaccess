@@ -215,6 +215,10 @@ DirectoryIndex index.html
   RewriteRule ^tests/?$ - [L]
   RewriteRule ^tests/index\.html$ - [L]
 
+  # content credentials (C2PA-signed media + machine index)
+  RewriteRule ^provenance/[a-z0-9.-]+\.svg$ - [L]
+  RewriteRule ^provenance/index\.json$ - [L]
+
   # phase 5 — fallback: anything unmatched returns 403
   RewriteRule . - [F,L]
   # END PUBLIC EXPOSURE

@@ -22,7 +22,6 @@ Constraints:
 """
 
 import base64
-import hashlib
 import json
 import os
 import pathlib
@@ -40,6 +39,7 @@ sys.path.insert(
         / "lib"
     ),
 )
+from hashing import sri_sha384  # noqa: E402
 from paths import (
     IDENTITY_CANONICAL as CANONICAL,
 )
@@ -65,12 +65,8 @@ TEMPLATE_JS = TEMPLATES / "source-view.template.js"
 SKIP_KINDS = {"binary"}
 
 
-def sha384_b64(data: bytes) -> str:
-    return "sha384-" + base64.b64encode(hashlib.sha384(data).digest()).decode()
-
-
 def compute_sri(path: pathlib.Path) -> str:
-    return sha384_b64(path.read_bytes())
+    return sri_sha384(path.read_bytes())
 
 
 def load_canonical() -> dict:

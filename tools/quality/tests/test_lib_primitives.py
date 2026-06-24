@@ -11,13 +11,21 @@ import _fixture  # noqa: E402
 _fixture.bootstrap("release")
 
 from dates import LOCALE_MONTHS, human_date  # noqa: E402
-from hashing import sha256_b64, sha256_file_hex, sha256_hex, sri_sha256  # noqa: E402
+from hashing import (  # noqa: E402
+    sha256_b64,
+    sha256_file_hex,
+    sha256_hex,
+    sri_sha256,
+    sri_sha384,
+)
 from sizes import humanise_bytes  # noqa: E402
 from slugs import i18n_slug  # noqa: E402
 
 # sha-256 of b"abc" — the classic FIPS 180 test vector.
 ABC_HEX = "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
 ABC_B64 = "ungWv48Bz+pBQUDeXa4iI7ADYaOWF3qctBD/YfIAFa0="
+# sha-384 of b"abc" — FIPS 180, base64 of the raw digest (SRI shape).
+ABC_SHA384_B64 = "ywB1P0WjXou1oD1pmsZQBycsMqsO3tFjGotgWkP/W+2AhgcroefMI1i67KE0yCWn"
 
 
 class Hashing(unittest.TestCase):
@@ -29,6 +37,9 @@ class Hashing(unittest.TestCase):
 
     def test_sri_shape(self):
         self.assertEqual(sri_sha256(b"abc"), "sha256-" + ABC_B64)
+
+    def test_sri_sha384_shape(self):
+        self.assertEqual(sri_sha384(b"abc"), "sha384-" + ABC_SHA384_B64)
 
     def test_file_hex_matches_bytes_hex(self):
         with tempfile.NamedTemporaryFile(delete=False) as fh:

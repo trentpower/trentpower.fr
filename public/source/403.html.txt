@@ -73,8 +73,8 @@
   <link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
 
   <!-- head · 09 · rendering and assets -->
-  <link rel="stylesheet" href="/styles.css?v=2026-06-14.8eb5797d" integrity="sha384-PKmLVxbd/YfbUiIpYTcgq9EPzTLIMmT684A7Y93xg7UV5Iuoli1U99dfwTxs7nDE">
-  <link rel="stylesheet" href="/print.css?v=2026-06-14.8eb5797d" media="print">
+  <link rel="stylesheet" href="/styles.css?v=2026-06-14.d4382c37" integrity="sha384-sbWcKyoSf10G3B1jwfY1wZAaIiuRbC1ACLWzFYIELWvmdJKeHEsU/bsCW1Qx4Wom">
+  <link rel="stylesheet" href="/print.css?v=2026-06-14.d4382c37" media="print">
 
   <!-- head · 10 · structured data -->
   <script type="application/ld+json">
@@ -98,7 +98,7 @@
   "publisher": {
     "@id": "https://trentpower.fr/#trent-power"
   },
-  "dateModified": "2026-06-14T00:00:00+00:00"
+  "dateModified": "2026-06-24T00:00:00+00:00"
 }
   </script>
 
@@ -251,16 +251,16 @@
 </div>
 
 <!-- scripts · progressive enhancement, no telemetry -->
-<script src="/verify/verification-data.js?v=2026-06-14.8eb5797d" defer></script>
-<script src="/js/theme.js?v=2026-06-14.8eb5797d" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
-<script src="/sw-register.js?v=2026-06-14.8eb5797d" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
-<script src="/js/reveal.js?v=2026-06-14.8eb5797d" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
-<script src="/js/overlay.js?v=2026-06-14.8eb5797d" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
-<script src="/js/copy.js?v=2026-06-14.8eb5797d" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
-<script src="/js/edition.js?v=2026-06-14.8eb5797d" integrity="sha384-iO0w8zmiIy+PKCcn52n+bxnD8GxJcyMXMMddSHMJAjxRpRxaYbPG3dD7jRtM7oKC" defer></script>
+<script src="/verify/verification-data.js?v=2026-06-14.d4382c37" defer></script>
+<script src="/js/theme.js?v=2026-06-14.d4382c37" integrity="sha384-BoulfjXBzTzKZepcXtJ55HOBvZ6Z1vlJ2F1/oKeG0duSBmbq+8iuuNRBq9cOEtuS" defer></script>
+<script src="/sw-register.js?v=2026-06-14.d4382c37" integrity="sha384-S02ZUys8FBSl9T/d6ZOUzwUsIRGM7XqEu00nouu0bOBOL8fySyU4QCzOXoKwMqFU" defer></script>
+<script src="/js/reveal.js?v=2026-06-14.d4382c37" integrity="sha384-evAfeRi0JtOyJV2Lekp1iIVgpVKolniSa1uW/y4LF6GdpyXEh9u2EYCj3+NyFWhH" defer></script>
+<script src="/js/overlay.js?v=2026-06-14.d4382c37" integrity="sha384-n3avwjT6Y3Gt81ewRZ3xNoOJh7GWJff5pcBR40w0ysJ+pi1alr0JhK0YGD2aRu9h" defer></script>
+<script src="/js/copy.js?v=2026-06-14.d4382c37" integrity="sha384-QMLMM2Hp2mANKcmISyVIIES7LBGAWLJvHturH651G/B2Xkj+zZXBE0DZ0ufyXTU4" defer></script>
+<script src="/js/edition.js?v=2026-06-14.d4382c37" integrity="sha384-iO0w8zmiIy+PKCcn52n+bxnD8GxJcyMXMMddSHMJAjxRpRxaYbPG3dD7jRtM7oKC" defer></script>
 <script src="/js/micro-interactions.js" integrity="sha384-SipxtV8ZVVFXb63JYEJvP90oeBOz53eCea8kvIC5PqEB0E072RI8dDL+foIMuVGT" defer></script>
-<script src="/js/verify-modal.js?v=2026-06-14.8eb5797d" integrity="sha384-cZZ9jdw4bkLl3MiF5cbm4+RTIcTRwOOwy++dCTz6LLIjpny4MF9Xac3mDa441Avy" defer></script>
-<script src="/js/fonts.js?v=2026-06-14.8eb5797d" integrity="sha384-0spuMQXrqwVs8UwbF5T1hlwoR2bc0i6siuoVnFCs+UBg2mhvpDzRoEsLItXwS5Cd" defer></script>
+<script src="/js/verify-modal.js?v=2026-06-14.d4382c37" integrity="sha384-cZZ9jdw4bkLl3MiF5cbm4+RTIcTRwOOwy++dCTz6LLIjpny4MF9Xac3mDa441Avy" defer></script>
+<script src="/js/fonts.js?v=2026-06-14.d4382c37" integrity="sha384-+9N+FQJY7NznhkhoId6Qj1GKMdDgu8hIGsAZBq16YF0StuV93sUnWMZgwkVqDl21" defer></script>
 
 
 <!-- body · construction rail -->

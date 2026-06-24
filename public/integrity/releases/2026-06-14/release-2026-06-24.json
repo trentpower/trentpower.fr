@@ -1,0 +1,42 @@
+{
+  "schema": "trentpower.release.v1",
+  "edition": "2026-06-14",
+  "generated_at": "2026-06-14T00:00:00Z",
+  "site": "https://trentpower.fr",
+  "live_release_dir": "https://trentpower.fr/integrity/releases/2026-06-14/",
+  "signing_key": {
+    "fingerprint": "A729 591B 450D 3F59 3694 98BD 8299 1F25 04AE 0263",
+    "inline_path": ".well-known/pgp-key.asc",
+    "live_url": "https://trentpower.fr/.well-known/pgp-key.asc"
+  },
+  "manifests": {
+    "exclusions": {
+      "inline_path": "exclusions/EXCLUDED_FILES.json",
+      "live_url": "https://trentpower.fr/integrity/releases/2026-06-14/EXCLUDED_FILES.json",
+      "sha256": "sha256-oiAl6+BXZxJGjeYhitBDVKmq9hfzH+7euGoGpJ5CJJU="
+    },
+    "integrity_redistributable": {
+      "live_url": "https://trentpower.fr/integrity/releases/2026-06-14/integrity-redistributable.json",
+      "note": "not included inline; its sig has random gpg salt and would force the archive bytes to drift on every sign. fetch from live_url for offline use."
+    },
+    "archive_checksums": {
+      "live_url": "https://trentpower.fr/integrity/releases/2026-06-14/SHA256SUMS",
+      "note": "lists trentpower-fr-<edition>.{zip,tar.gz} sha256s"
+    }
+  },
+  "reproducibility": {
+    "deterministic": true,
+    "build_command": "bash tools/build.sh",
+    "source_repo": "https://github.com/trentpower/trentpower.fr",
+    "notes_path": "REPRODUCIBILITY.txt"
+  },
+  "audiences": {
+    "general": "README.txt — what this archive is and how to read it",
+    "verifier": "QUICK_VERIFY.txt + VERIFY.txt — confirm authenticity",
+    "archivist": "RELEASE.txt + REPRODUCIBILITY.txt — long-term preservation"
+  },
+  "verification_script": {
+    "path": "verify.sh",
+    "purpose": "bash script that walks the extracted archive, compares each file against this manifest's exclusions, and prints a verification summary. no python, no jq dependency."
+  }
+}

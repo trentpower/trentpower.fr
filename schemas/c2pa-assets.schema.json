@@ -48,6 +48,11 @@
           "description": "repo-relative file path, under public/. mutually exclusive with pattern.",
           "pattern": "^public/"
         },
+        "source": {
+          "type": "string",
+          "description": "repo-relative file whose bytes are signed into `path` (e.g. a generated original signed into a /provenance/ distribution copy). Defaults to `path`.",
+          "pattern": "^public/"
+        },
         "pattern": {
           "type": "string",
           "description": "glob for an excluded class of assets (e.g. public/images/og/*.png)."

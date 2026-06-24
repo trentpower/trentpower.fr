@@ -61,31 +61,41 @@ def _signer(chain: bytes, key: bytes):
     return Signer.from_info(info)
 
 
-def sign(asset_path: str, out_path: str) -> str:
+def sign(declared_path: str, source_path: str, out_path: str) -> str:
     import json  # noqa: PLC0415
 
     from c2pa import Builder  # noqa: PLC0415
 
-    manifest = bm.manifest_for_path(asset_path)
+    # the manifest (title, canonical URL, assertions) is built from the DECLARED
+    # asset; the bytes signed come from SOURCE (a generated original may be signed
+    # into a /provenance/ distribution copy). They are the same file unless the
+    # policy entry sets `source`.
+    manifest = bm.manifest_for_path(declared_path)
     chain, key = _load_material(signing_dir())
     signer = _signer(chain, key)
-    Builder(json.dumps(manifest)).sign_file(asset_path, out_path, signer)
+    Builder(json.dumps(manifest)).sign_file(source_path, out_path, signer)
     return out_path
 
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Sign one declared asset with the Pi-local C2PA credential.")
-    ap.add_argument("asset_path", help="repo-relative path of the source asset")
-    ap.add_argument("--out", help="output path (default: <name>.signed<ext> beside the source)")
+    ap.add_argument("asset_path", help="repo-relative DECLARED path of the asset (policy key)")
+    ap.add_argument("--out", help="output path (default: the declared path itself)")
     args = ap.parse_args(argv)
 
-    src = Path(args.asset_path)
+    policy = bm.load_policy()
+    entry = bm.find_asset(policy, args.asset_path)
+    if entry is None:
+        raise SystemExit(f"error: {args.asset_path} is not declared in policy-data/c2pa-assets.yml")
+    source = entry.get("source", args.asset_path)
+    src = Path(source)
     if not src.is_file():
-        raise SystemExit(f"error: asset not found: {src}")
-    out = args.out or str(src.with_suffix(f".signed{src.suffix}"))
-    sign(args.asset_path, out)
-    print(f"  OK: signed {args.asset_path} -> {out}")
-    print("  (verify with: tools/c2pa/inspect_asset.py " + out + ")")
+        raise SystemExit(f"error: source bytes not found: {src}")
+    out = args.out or args.asset_path
+    Path(out).parent.mkdir(parents=True, exist_ok=True)
+    sign(args.asset_path, source, out)
+    print(f"  OK: signed {source} -> {out}  (canonical {entry.get('canonical_url')})")
+    print(f"  (verify with: tools/c2pa/inspect_asset.py {out})")
     return 0
 
 

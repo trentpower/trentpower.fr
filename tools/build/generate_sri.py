@@ -33,8 +33,6 @@ If a referenced local file is missing, this script aborts with a clear
 error rather than silently writing a stale or incorrect hash.
 """
 
-import base64
-import hashlib
 import os
 import pathlib
 import re
@@ -51,6 +49,7 @@ sys.path.insert(
         / "lib"
     ),
 )
+from hashing import sri_sha384  # noqa: E402
 from paths import PUBLIC_DIR as ROOT
 
 os.chdir(ROOT)
@@ -87,8 +86,7 @@ ALL_HTML = ACTIVE_HTML + ARCHIVE_HTML
 
 def sri_hash(local_path: pathlib.Path) -> str:
     """SHA-384 SRI digest, prefixed."""
-    digest = hashlib.sha384(local_path.read_bytes()).digest()
-    return "sha384-" + base64.b64encode(digest).decode("ascii")
+    return sri_sha384(local_path.read_bytes())
 
 
 def resolve_local(href: str, html_path: pathlib.Path) -> pathlib.Path | None:

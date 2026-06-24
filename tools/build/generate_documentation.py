@@ -21,8 +21,6 @@ Runs after generate_site.py (needs site-metadata.json for asset_version) and
 before the integrity / SRI / source-mirror stages.
 """
 
-import base64
-import hashlib
 import json
 import shutil
 import sys
@@ -40,6 +38,7 @@ sys.path.insert(
     ),
 )
 from dates import human_date  # noqa: E402
+from hashing import sri_sha256  # noqa: E402
 from paths import IDENTITY_CANONICAL, PUBLIC_DIR  # noqa: E402
 from paths import REPO_ROOT as ROOT
 
@@ -51,8 +50,7 @@ def _esc(s: str) -> str:
 
 
 def _sha256_sri(path: Path) -> str:
-    digest = hashlib.sha256(path.read_bytes()).digest()
-    return "sha256-" + base64.b64encode(digest).decode("ascii")
+    return sri_sha256(path.read_bytes())
 
 
 def _render(ed: str, asset_version: str, human: str, pdf_sri: str, pdf_bytes: int) -> str:

@@ -6,5 +6,11 @@
     "zip_sha256": "sha256-3I/OPgxRDVCYadSk5oTcPn1Dxz7bc/WkXCs4IHeksyI=",
     "tar_gz_sha256": "sha256-Y12Y5zfnxpwVaZF9dsbIStjeqSm6VGmDlktSwndhy8c="
   },
-  "rebuilds": []
+  "rebuilds": [
+    {
+      "build_date": "2026-06-24",
+      "zip_sha256": "sha256-NBt+mbQvE+wc7QUR3izJGRuGvZ2clNVJpEGDoxf5gVI=",
+      "tar_gz_sha256": "sha256-V1XY2ZZHk8PLipaRgEowTFB64KuwusgMiJFq7uga7bs="
+    }
+  ]
 }

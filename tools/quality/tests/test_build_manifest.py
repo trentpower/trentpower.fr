@@ -92,9 +92,15 @@ class ManifestForPath(unittest.TestCase):
     """Cross the real committed policy + identity files (read-only)."""
 
     def test_real_declared_svg(self):
-        m = bm.manifest_for_path("public/images/architecture/architecture.en.svg")
+        # the declared signed asset is the /provenance/ distribution copy; the
+        # title is still the basename (signed bytes come from the generated source).
+        m = bm.manifest_for_path("public/provenance/architecture.en.svg")
         self.assertEqual(m["title"], "architecture.en.svg")
         self.assertEqual(m["assertions"][0]["data"]["author"][0]["name"], "Trent Power")
+        self.assertEqual(
+            m["assertions"][0]["data"]["url"],
+            "https://trentpower.fr/provenance/architecture.en.svg",
+        )
 
     def test_undeclared_path_raises(self):
         with self.assertRaises(SystemExit):

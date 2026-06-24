@@ -33,7 +33,6 @@ Sign with the existing GPG key. Caller is responsible for ssh-agent /
 key passphrase availability — same convention as integrity.json.sig.
 """
 
-import base64
 import gzip
 import hashlib
 import io
@@ -58,6 +57,7 @@ sys.path.insert(
         / "lib"
     ),
 )
+from hashing import sri_sha256  # noqa: E402
 from paths import (
     IDENTITY_CANONICAL as _IDENTITY_CANONICAL,
 )
@@ -670,8 +670,7 @@ def build_release_json_str(inline_files, file_list):
     verifier can follow one signed file to all others)."""
     inline_sha = {}
     for name, data in inline_files.items():
-        digest = hashlib.sha256(data).digest()
-        inline_sha[name] = "sha256-" + base64.b64encode(digest).decode("ascii")
+        inline_sha[name] = sri_sha256(data)
     payload = {
         "schema": "trentpower.release.v1",
         "edition": EDITION,
@@ -1082,11 +1081,9 @@ def write_redistributable_manifest(
     """
     files = {}
     for name, data in inline_files.items():
-        digest = hashlib.sha256(data).digest()
-        files[name] = "sha256-" + base64.b64encode(digest).decode("ascii")
+        files[name] = sri_sha256(data)
     for rel, abs_p in file_list:
-        digest = hashlib.sha256(abs_p.read_bytes()).digest()
-        files[rel] = "sha256-" + base64.b64encode(digest).decode("ascii")
+        files[rel] = sri_sha256(abs_p.read_bytes())
 
     # v2: add an `exclusions` block referencing the in-archive
     # exclusion manifest by sha256. lets a verifier traverse: signed
@@ -1339,9 +1336,7 @@ def _write_builds_json(zip_target, tar_target, zip_decision, tar_decision):
     def _sha(path):
         if not path.exists():
             return ""
-        return "sha256-" + base64.b64encode(hashlib.sha256(path.read_bytes()).digest()).decode(
-            "ascii"
-        )
+        return sri_sha256(path.read_bytes())
 
     # load existing builds.json if present, else start fresh.
     if builds_path.is_file():

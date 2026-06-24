@@ -6721,11 +6721,15 @@ a.source-link:focus-visible {
   outline-offset: 2px;
   border-radius: 1px;
 }
-/* mobile — a centred bottom action bar. position: fixed overrides the
-   desktop absolute placement; top: auto drops the --st-top anchor.
-   the desktop rule is also opaque post surface-unification, so the
-   only difference here is layout, not appearance. */
-@media (max-width: 720px) {
+/* touch-primary — a centred bottom action bar. position: fixed overrides
+   the desktop absolute placement; top: auto drops the --st-top anchor.
+   the desktop rule is also opaque post surface-unification, so the only
+   difference here is layout, not appearance. the (hover:none) and
+   (pointer:coarse) arm catches ipad (768-1024px) which is too wide for
+   the 720px breakpoint but is still a finger device; it stays in lockstep
+   with usesBottomBar() in source-view.js. */
+@media (max-width: 720px),
+       (hover: none) and (pointer: coarse) {
   .source-toolbar {
     position: fixed;
     /* the construction rail is now position:static at end of document
@@ -6734,9 +6738,27 @@ a.source-link:focus-visible {
     inset-block: auto calc(env(safe-area-inset-bottom, 0px) + 1rem);
     inset-inline: 1rem;
     inline-size: auto;
-    max-inline-size: none;
+    /* cap + centre on wide touch screens (ipad landscape) so the bar stays
+       a compact pill rather than spanning the viewport; 92vw still
+       dominates on a phone, so it reads comfortably there. */
+    max-inline-size: min(92vw, 32rem);
+    margin-inline: auto;
     justify-content: center;
   }
+}
+/* cssom/csp fallback — source-view.js adds this class when it can't write
+   the per-frame --st-top/--st-left positioning rule (null sheet, throw, or
+   a strict-csp context). it reuses the fixed bottom-bar treatment so the
+   actions are never stranded at the top-left of the frame. a static
+   external-stylesheet class, so no csp inline-style hash is involved. */
+.source-toolbar.source-toolbar--pinned {
+  position: fixed;
+  inset-block: auto calc(env(safe-area-inset-bottom, 0px) + 1rem);
+  inset-inline: 1rem;
+  inline-size: auto;
+  max-inline-size: min(92vw, 32rem);
+  margin-inline: auto;
+  justify-content: center;
 }
 /* coarse pointers — comfortable tap targets via padding alone, so the
    actions stay text-like and never reacquire button chrome. */

@@ -28,7 +28,6 @@ Validates:
 No build pipeline. No dependencies. Run before upload.
 """
 
-import base64
 import hashlib
 import json
 import os
@@ -50,6 +49,7 @@ _sys.path.insert(
 )
 import routes as _routes
 from dates import LOCALE_MONTHS, human_date  # noqa: E402
+from hashing import sri_sha256  # noqa: E402
 from minify import minify_css, minify_js  # noqa: E402
 from paths import (
     I18N_STRINGS as _PATHS_I18N_STRINGS,
@@ -161,8 +161,7 @@ def _locale_human_date_re(lang):
 
 def csp_hash(content):
     """Compute SHA-256 CSP hash for an inline script block."""
-    digest = hashlib.sha256(content.encode("utf-8")).digest()
-    return "sha256-" + base64.b64encode(digest).decode()
+    return sri_sha256(content.encode("utf-8"))
 
 
 _LANG_NAMES = {"en": "English", "fr": "French"}

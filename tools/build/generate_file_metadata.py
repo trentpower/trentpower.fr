@@ -26,8 +26,6 @@ os.chdir side-effect that script has at import time.
 from __future__ import annotations
 
 import argparse
-import base64
-import hashlib
 import json
 import os
 import re
@@ -47,6 +45,7 @@ sys.path.insert(
     ),
 )
 import public_tree  # noqa: E402 — shared public-surface walker + exclusion policy
+from hashing import sri_sha256  # noqa: E402
 from paths import (  # noqa: E402
     CONTENT_HISTORY,
     IDENTITY_CANONICAL,
@@ -116,8 +115,7 @@ def build_manifest() -> dict:
     files: dict[str, dict] = {}
     for rel, full in _iter_public_files(PUBLIC_DIR):
         data = full.read_bytes()
-        sha = base64.b64encode(hashlib.sha256(data).digest()).decode("utf-8")
-        sha256_full = f"sha256-{sha}"
+        sha256_full = sri_sha256(data)
         mtime = int(full.stat().st_mtime)
 
         record = history_files.get(rel)
@@ -258,7 +256,7 @@ def finalise_manifest() -> int:
     files: dict[str, dict] = {}
     for rel, full in _iter_public_files(PUBLIC_DIR):
         data = full.read_bytes()
-        sha = base64.b64encode(hashlib.sha256(data).digest()).decode("utf-8")
+        sha256_full = sri_sha256(data)
         mtime = int(full.stat().st_mtime)
         prior = prev_files.get(rel)
         # preserve modified_iso if we had one (the preliminary pass set
@@ -270,7 +268,7 @@ def finalise_manifest() -> int:
             "bytes": len(data),
             "size_human_en": humanise_bytes(len(data), lang="en"),
             "size_human_fr": humanise_bytes(len(data), lang="fr"),
-            "sha256": f"sha256-{sha}",
+            "sha256": sha256_full,
             "modified_iso": modified_iso,
             "modified_mtime": mtime,
         }

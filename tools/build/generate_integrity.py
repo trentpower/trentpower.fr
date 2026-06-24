@@ -33,8 +33,6 @@ Excluded (source-only, private, or duplicate-rollback):
 - the stale inner htdocs/htdocs directory
 """
 
-import base64
-import hashlib
 import json
 import os
 
@@ -57,6 +55,7 @@ _sys.path.insert(
     ),
 )
 import public_tree  # shared public-surface walker + exclusion policy
+from hashing import sri_sha256
 from paths import PUBLIC_DIR as _PATHS_PUBLIC_DIR
 
 os.chdir(_PATHS_PUBLIC_DIR)
@@ -112,9 +111,7 @@ files = {}
 for relpath, path in public_tree.iter_public_files(ROOT):
     with open(path, "rb") as f:
         content = f.read()
-        digest = hashlib.sha256(content).digest()
-        b64 = base64.b64encode(digest).decode("utf-8")
-        files[relpath] = f"sha256-{b64}"
+        files[relpath] = sri_sha256(content)
 
 _identity_path = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "config", "identity_canonical.json"

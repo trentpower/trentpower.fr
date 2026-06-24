@@ -475,6 +475,13 @@ ALLOW_RULE_FAMILIES: list[tuple[str, list[str]]] = [
             r"^tests/index\.html$",
         ],
     ),
+    (
+        "content credentials (C2PA-signed media + machine index)",
+        [
+            r"^provenance/[a-z0-9.-]+\.svg$",
+            r"^provenance/index\.json$",
+        ],
+    ),
 ]
 
 

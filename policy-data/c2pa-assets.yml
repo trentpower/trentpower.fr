@@ -43,37 +43,48 @@ credential_modes:
   - sidecar
 
 assets:
-  # ── first intended signed asset ─────────────────────────────────────────────
-  # Authored architecture diagram. SVG embedding was proven in the spike. Held at
-  # `future` until a signing certificate is chosen (Phase 2). When signed and
-  # listed in integrity.json, promote to `required`.
-  - path: public/images/architecture/architecture.en.svg
-    status: future
+  # ── signed distribution copies (the C2PA assets) ────────────────────────────
+  # The canonical architecture SVGs are GENERATED every build (reproducible, under
+  # the byte fixpoint). We do not sign them in place — that would fight the
+  # generator. Instead a signed copy of each is published under /provenance/,
+  # carrying the Content Credential. `source` is the generated original whose
+  # bytes are signed; `path` is the signed distribution copy that ships.
+  - path: public/provenance/architecture.en.svg
+    source: public/images/architecture/architecture.en.svg
+    status: required
     type: diagram
     role: authored-diagram
-    canonical_url: https://trentpower.fr/images/architecture/architecture.en.svg
+    canonical_url: https://trentpower.fr/provenance/architecture.en.svg
     author: Trent Power
     publisher: trentpower.fr
     ai_involvement: no-ai-in-release-path
     credential_mode: embedded
     reason: >-
-      Authored architecture diagram, downloaded and shared on its own. SVG embed
-      proven in the spike; awaiting a signing identity before it is signed.
+      Authored architecture diagram, downloaded and shared on its own. Signed
+      copy of the generated original; hash-verified via integrity.json.
 
-  - path: public/images/architecture/architecture.fr.svg
-    status: future
+  - path: public/provenance/architecture.fr.svg
+    source: public/images/architecture/architecture.fr.svg
+    status: required
     type: diagram
     role: authored-diagram
-    canonical_url: https://trentpower.fr/images/architecture/architecture.fr.svg
+    canonical_url: https://trentpower.fr/provenance/architecture.fr.svg
     author: Trent Power
     publisher: trentpower.fr
     ai_involvement: no-ai-in-release-path
     credential_mode: embedded
     reason: >-
-      French edition of the authored architecture diagram. Same posture as the
+      French edition of the signed architecture diagram. Same posture as the
       English one.
 
   # ── deliberately out of scope ───────────────────────────────────────────────
+  - pattern: public/images/architecture/architecture*.svg
+    status: excluded
+    reason: >-
+      The canonical architecture SVGs are generated each build and reproducible
+      under the byte fixpoint. Their portable provenance ships as the signed
+      /provenance/ copies above, not by signing the generated originals in place.
+
   - path: public/documentation/README.pdf
     status: excluded
     reason: >-

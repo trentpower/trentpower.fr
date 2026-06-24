@@ -202,6 +202,16 @@ PUBLIC_TESTS_GLOBS = [
     "/tests/index.html",
 ]
 
+# C2PA Content-Credentials surface: signed distribution copies of authored media
+# plus a machine index. Named /provenance/ (not /content-credentials/) because
+# the secret-name deny filter blocks any path segment containing "credential".
+# Signed once, hash-verified via integrity.json, excluded from the rebuild
+# fixpoint (see docs/C2PA.md, docs/REPRODUCIBILITY.md).
+PUBLIC_PROVENANCE_GLOBS = [
+    "/provenance/*.svg",
+    "/provenance/index.json",
+]
+
 PUBLIC_INTEGRITY_GLOBS = [
     "/integrity/index.html",
     "/integrity/releases/index.html",
@@ -424,6 +434,7 @@ def _all_globs() -> list[str]:
         + PUBLIC_SOURCE_GLOBS
         + PUBLIC_INTEGRITY_GLOBS
         + PUBLIC_TESTS_GLOBS
+        + PUBLIC_PROVENANCE_GLOBS
     )
 
 
@@ -505,6 +516,7 @@ def _build_manifest(edition: str, generated_at: str) -> "OrderedDict[str, object
     m["public_source_globs"] = PUBLIC_SOURCE_GLOBS
     m["public_integrity_globs"] = PUBLIC_INTEGRITY_GLOBS
     m["public_tests_globs"] = PUBLIC_TESTS_GLOBS
+    m["public_provenance_globs"] = PUBLIC_PROVENANCE_GLOBS
     m["deny_extension_patterns"] = DENY_EXTENSION_PATTERNS
     m["deny_path_patterns"] = DENY_PATH_PATTERNS
     m["deny_basename_patterns"] = DENY_BASENAME_PATTERNS
@@ -566,13 +578,14 @@ def main() -> int:
     n_source = len(PUBLIC_SOURCE_GLOBS)
     n_integrity = len(PUBLIC_INTEGRITY_GLOBS)
     n_tests = len(PUBLIC_TESTS_GLOBS)
+    n_provenance = len(PUBLIC_PROVENANCE_GLOBS)
     print(
         f"OK: public-exposure.json written "
         f"({n_routes} routes, {n_root} root files, {n_wk} well-known, "
         f"{n_assets} asset globs, {n_versioned} versioned globs, "
         f"{n_verify} verify files, {n_editorial} editorial files, "
         f"{n_source} source globs, {n_integrity} integrity globs, "
-        f"{n_tests} tests globs)"
+        f"{n_tests} tests globs, {n_provenance} provenance globs)"
     )
     return 0
 
