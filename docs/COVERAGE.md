@@ -4,7 +4,7 @@ The `TEST COVERAGE` badge reports unit-test coverage of the project's own
 **unit-testable logic** — not a global all-scripts figure. The number is
 **measured by the build, not hand-set**, and is reproducible from source.
 
-> **Current figure: 95%** — auto-derived by the pipeline from the
+> **Current figure: 96%** — auto-derived by the pipeline from the
 > unit-testable-logic surface (defined below). The build writes this figure into
 > the badge and this page; CI fails a PR that leaves it stale.
 
