@@ -42,7 +42,7 @@
       "first_seen": "2026-06-24"
     },
     "sw-cache-manifest.json": {
-      "sha256": "sha256-NiY68ZyGbO1q01QsX1viK02NV7BhJsXmxkVCS2sSFto=",
+      "sha256": "sha256-8MpbyMquNDzfnSi9iD9TSCnuHhmvzsmUhoKuN8q7/lM=",
       "first_seen": "2026-06-24"
     },
     "sitemap.xml": {
@@ -94,7 +94,7 @@
       "first_seen": "2026-05-16"
     },
     "sw.js": {
-      "sha256": "sha256-XjytHY7FDYxg+jbuxG43VcWMdqcZkT/7utAwe9/kpWc=",
+      "sha256": "sha256-EWUFwwZ1efgEmUZFKmNcfRBbSknKYTRLTfuNJHTmbuA=",
       "first_seen": "2026-06-24"
     },
     "changelog.txt": {
@@ -110,7 +110,7 @@
       "first_seen": "2026-06-09"
     },
     "verify/verification-data.js": {
-      "sha256": "sha256-XAZdsLQ29oQpzSxI3si2wCK5IyFMMZaWs1Qv5jO+u8c=",
+      "sha256": "sha256-/JMGmbIzpffMN/k4BdezQL35byXlqBufuYbl7rI16ZU=",
       "first_seen": "2026-06-24"
     },
     ".well-known/pgp-key.asc": {
@@ -366,7 +366,7 @@
       "first_seen": "2026-05-15"
     },
     "source/source-manifest.json": {
-      "sha256": "sha256-93G3yn05Q/ItxNuwb7HN+/vx3gb4dv85bjdMuuTgaB8=",
+      "sha256": "sha256-RPCYitZ8Hws/fJLUc/hI7BQJ1qWC7O7U4R+7eYeg6/0=",
       "first_seen": "2026-06-24"
     },
     "source/apple-touch-icon.png.base64.txt": {
@@ -418,7 +418,7 @@
       "first_seen": "2026-06-24"
     },
     "source/source-manifest.json.txt": {
-      "sha256": "sha256-93G3yn05Q/ItxNuwb7HN+/vx3gb4dv85bjdMuuTgaB8=",
+      "sha256": "sha256-RPCYitZ8Hws/fJLUc/hI7BQJ1qWC7O7U4R+7eYeg6/0=",
       "first_seen": "2026-06-24"
     },
     "source/sitemap.xml.txt": {
@@ -470,7 +470,7 @@
       "first_seen": "2026-06-10"
     },
     "source/.well-known/build.json.txt": {
-      "sha256": "sha256-b/lz/hX3yRK14IfBMUlUOv7/cAX4iAJxE2hSmFSjzS8=",
+      "sha256": "sha256-YiYO90Qrc2Eb1CDv5H7V0I1MxKtupfXlf0EzFUK5aNo=",
       "first_seen": "2026-06-24"
     },
     "source/.well-known/security.txt.txt": {
@@ -742,7 +742,7 @@
       "first_seen": "2026-05-19"
     },
     "source/view/source-view-manifest.js": {
-      "sha256": "sha256-uN/2tZKpZe6uF/kdaIGUyHdY55gssFlwxqOuZWMmN1Y=",
+      "sha256": "sha256-JpFkJcvAqEaxdFVAkjFyPAdacZMiVOSgfnv+cpAsXUg=",
       "first_seen": "2026-06-24"
     },
     "source/view/source-view.js": {
@@ -794,7 +794,7 @@
       "first_seen": "2026-06-24"
     },
     "fr/securite/index.html": {
-      "sha256": "sha256-iuXfbqKhTCBzSxTgequLY2hbwSeej/o/YK+rKFWrDZk=",
+      "sha256": "sha256-PFWeVj1Y1os3pJHiVFza6MB+JSSTKTNVdElTXXpNnY8=",
       "first_seen": "2026-06-24"
     },
     "fr/securite/remerciements/index.html": {
@@ -810,7 +810,7 @@
       "first_seen": "2026-06-24"
     },
     "fr/source/voir/index.html": {
-      "sha256": "sha256-mMHpbejkss9JHSlMRWF7GJMjbYFIHpy6RSwVmnUfhXM=",
+      "sha256": "sha256-ejf4rQLNfC/2eOZxym75pmvgloOVe4mreb9ExPG39Ts=",
       "first_seen": "2026-06-24"
     },
     "source/fr/index.html.txt": {
@@ -934,7 +934,7 @@
       "first_seen": "2026-06-24"
     },
     "en-au/security/index.html": {
-      "sha256": "sha256-kAPBGWI3Q3jYxPCt8ayIHzH2yLelWMiWOEdsGxnv0Es=",
+      "sha256": "sha256-huVO/Rmof0B5npavutDDEpd8c74bFQLDQpMGe4Vtdm8=",
       "first_seen": "2026-06-24"
     },
     "en-au/security/acknowledgments/index.html": {
@@ -946,7 +946,7 @@
       "first_seen": "2026-06-24"
     },
     "en-au/source/view/index.html": {
-      "sha256": "sha256-wOqsFLeUvFS896xlJhs2mTuwsu/d49JjR2wASiV2Y8c=",
+      "sha256": "sha256-mfelc2f3QYFiKtBzdmqXLzQlJjDyrNBlFjlUtGkxOac=",
       "first_seen": "2026-06-24"
     },
     "en-au/privacy/index.html": {
@@ -1118,11 +1118,11 @@
       "first_seen": "2026-06-24"
     },
     "documentation/README.txt": {
-      "sha256": "sha256-pOrqapww+g92+5mHQdFngkATxLNMVUkp27F2iTYwbIE=",
+      "sha256": "sha256-Y39lSlfYvJRIW4L/rrWCqEod8Xc+yAS5PHIlqJbNsd8=",
       "first_seen": "2026-06-24"
     },
     "source/documentation/index.html.txt": {
-      "sha256": "sha256-De9SlhaF17m1kI+wZTmyyxwzByTKaWNk8n0snX+hdlk=",
+      "sha256": "sha256-7aJFLBCIIHmrhRd5fEzcGYfrdK4jgam4Zwe53r3o6eU=",
       "first_seen": "2026-06-24"
     },
     "integrity/releases/2026-06-10/index.html": {

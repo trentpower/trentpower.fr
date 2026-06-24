@@ -537,7 +537,7 @@
       "s8_list": "Simplicity over complexity\nDeterministic behaviour over dynamic systems\nTransparency over obscurity\nVerifiable integrity over trust assumptions",
       "s9_summary": "9. Verification & Testing",
       "s9_checks_heading": "Per-edition checks",
-      "s9_body": "Every published edition is checked against a fixed set of public targets. The checks cover availability, privacy, security headers, accessibility, SEO and markup, and the result is recorded as a signed snapshot alongside the edition.",
+      "s9_body": "Verification runs at two layers. Before an edition is published, its source passes a blocking gate of security and correctness checks, and the published tree must rebuild byte-for-byte from that source. The edition is then checked against a fixed set of public targets — availability, privacy, security headers, accessibility, SEO and markup — and the result is recorded as a signed snapshot alongside the edition.",
       "s9_link": "<a href=\"/tests/\" aria-label=\"View the latest signed test results\">View the latest test results</a> at <code>/tests/</code>.",
       "s10_summary": "10. Accessibility",
       "s10_body": "The site targets <abbr title=\"Web Content Accessibility Guidelines\">WCAG</abbr> 2.2 AA. Each published edition's signed test snapshot records an automated accessibility check, and keyboard navigation, landmark structure and focus order are verified by hand. Known exceptions are listed here rather than implied; none are currently asserted.",

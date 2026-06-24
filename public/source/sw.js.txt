@@ -1,6 +1,6 @@
 /*! trentpower.fr · /sw.js · generated · signed via /integrity.json */
 
-var CACHE = 'tp-2026-06-24.3aabdf6d-f2a14ba2-edition-2026-05-17-editorial-cohesion-rev1';
+var CACHE = 'tp-2026-06-24.3aabdf6d-f65a7fe6-edition-2026-05-17-editorial-cohesion-rev1';
 
 // Critical precache — pages, core CSS/JS, manifest, favicon. Failure
 // to cache any of these aborts install: an offline visit could not

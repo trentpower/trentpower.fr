@@ -80,13 +80,13 @@
       "name": "en-au/security/index.html.txt",
       "display_name": "en-au/security/index.html",
       "kind": "html",
-      "size": 31275,
-      "size_human": "30.5 KB",
-      "mirror_bytes": 31275,
-      "mirror_size_human": "30.5 KB",
+      "size": 31543,
+      "size_human": "30.8 KB",
+      "mirror_bytes": 31543,
+      "mirror_size_human": "30.8 KB",
       "modified": "2026-06-24",
-      "sha256": "hDVoX3cysJ4LAm9xqkJNKL456GOPXcMab4r+BNPHdms=",
-      "sha256_short": "hDVoX3cysJ4L"
+      "sha256": "iqMw8sw84CJ+hQE6C0rBkCGWyiFku8GETcN3zytylrw=",
+      "sha256_short": "iqMw8sw84CJ+"
     },
     {
       "live_path": "/fr/securite/index.html",
@@ -94,13 +94,13 @@
       "name": "fr/securite/index.html.txt",
       "display_name": "fr/securite/index.html",
       "kind": "html",
-      "size": 33268,
-      "size_human": "32.5 KB",
-      "mirror_bytes": 33268,
-      "mirror_size_human": "32.5 KB",
+      "size": 33571,
+      "size_human": "32.8 KB",
+      "mirror_bytes": 33571,
+      "mirror_size_human": "32.8 KB",
       "modified": "2026-06-24",
-      "sha256": "5GuOAFtnuXbrTzRBkN4qOoxFjKXLkOOh/5bMYvcyU/4=",
-      "sha256_short": "5GuOAFtnuXbr"
+      "sha256": "07tYDSGZ6PGG/F/sBqn35pEa5kQAxhGWGmwGL08p+B0=",
+      "sha256_short": "07tYDSGZ6PGG"
     },
     {
       "live_path": "/en-au/security/acknowledgments/index.html",
@@ -791,8 +791,8 @@
       "mirror_bytes": 9910,
       "mirror_size_human": "9.7 KB",
       "modified": "2026-06-24",
-      "sha256": "XjytHY7FDYxg+jbuxG43VcWMdqcZkT/7utAwe9/kpWc=",
-      "sha256_short": "XjytHY7FDYxg",
+      "sha256": "EWUFwwZ1efgEmUZFKmNcfRBbSknKYTRLTfuNJHTmbuA=",
+      "sha256_short": "EWUFwwZ1efgE",
       "description": "Service worker. Offline cache for the public site."
     },
     {
@@ -1001,8 +1001,8 @@
       "mirror_bytes": 3152,
       "mirror_size_human": "3.1 KB",
       "modified": "2026-06-24",
-      "sha256": "NiY68ZyGbO1q01QsX1viK02NV7BhJsXmxkVCS2sSFto=",
-      "sha256_short": "NiY68ZyGbO1q",
+      "sha256": "8MpbyMquNDzfnSi9iD9TSCnuHhmvzsmUhoKuN8q7/lM=",
+      "sha256_short": "8MpbyMquNDzf",
       "description": "Service worker cache manifest. Files pinned for offline use."
     },
     {
@@ -1136,8 +1136,8 @@
       "mirror_bytes": 1170,
       "mirror_size_human": "1.1 KB",
       "modified": "2026-06-24",
-      "sha256": "YiYO90Qrc2Eb1CDv5H7V0I1MxKtupfXlf0EzFUK5aNo=",
-      "sha256_short": "YiYO90Qrc2Eb",
+      "sha256": "TiXUk/QioGnWK9qFcDDdS/xe80Q7j4fAB6Giy6XWdzw=",
+      "sha256_short": "TiXUk/QioGnW",
       "description": "Build record. Reproducibility data for the current edition."
     },
     {
