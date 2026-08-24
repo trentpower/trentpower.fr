@@ -176,6 +176,9 @@ DirectoryIndex index.html
   RewriteRule ^images/qr/[a-z0-9.-]+\.svg$ - [L]
   RewriteRule ^images/textures/[a-z0-9.-]+\.svg$ - [L]
 
+  # weather icons (Sunday Briefing email — loaded by Gmail proxy)
+  RewriteRule ^assets/weather/72px/[a-z0-9.-]+\.png$ - [L]
+
   # source mirror (*.txt + manifest + reader scripts)
   RewriteRule ^source/index\.html$ - [L]
   RewriteRule ^source/source-manifest\.json$ - [L]
@@ -221,8 +224,6 @@ DirectoryIndex index.html
   RewriteRule ^tests/index\.html$ - [L]
 
   # phase 5 — fallback: anything unmatched returns 403
-  # weather icons (Sunday Briefing email — loaded by Gmail proxy)
-  RewriteRule ^assets/weather/72px/[a-z0-9.-]+\.png$ - [L]
   RewriteRule . - [F,L]
   # END PUBLIC EXPOSURE
 </IfModule>

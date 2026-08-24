@@ -406,6 +406,12 @@ ALLOW_RULE_FAMILIES: list[tuple[str, list[str]]] = [
         ],
     ),
     (
+        "weather icons (Sunday Briefing email — loaded by Gmail proxy)",
+        [
+            r"^assets/weather/72px/[a-z0-9.-]+\.png$",
+        ],
+    ),
+    (
         "source mirror (*.txt + manifest + reader scripts)",
         [
             r"^source/index\.html$",
