@@ -1,11 +1,88 @@
-# osv-scanner configuration.
+# osv-scanner configuration for trentpower.fr.
 #
-# Suppress a flagged vulnerability ONLY with a matching OpenVEX statement in
-# security/openvex.json that records why it does not affect the published bytes.
-# No silent ignores: every entry below points at a VEX statement.
-#
-# Template (uncomment and fill when a non-affecting finding must be suppressed):
-#
-# [[IgnoredVulns]]
-# id = "CVE-YYYY-NNNNN"
-# reason = "not_affected; build-time tool, absent from the static published site. See security/openvex.json."
+# Every suppression maps to a statement in security/openvex.json.
+# These vulnerabilities affect build-time dev tool dependencies (eslint,
+# stylelint, postcss, and their transitive deps). None of the flagged
+# packages ship in the published static site — they run exclusively inside
+# GitHub Actions CI against developer-authored configuration files.
+# See docs/GATES-CHECKS-AND-QUALITY.md for the full rationale.
+
+[[IgnoredVulns]]
+id = "GHSA-3jxr-9vmj-r5cp"
+reason = "not_affected; build-time dev tool (transitive dep of eslint), absent from the published static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-832h-xg76-4gv6"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-f886-m6hf-6m8v"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-jxxr-4gwj-5jf2"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-mh99-v99m-4gvg"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-4c8g-83qw-93j6"
+reason = "not_affected; build-time dev tool (transitive dep of eslint), absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-7p8r-x3mc-p8w7"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-v2hh-gcrm-f6hx"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-v39h-62p7-jpjc"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-52cp-r559-cp3m"
+reason = "not_affected; build-time dev tool (transitive dep of eslint), absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-5p4m-2wfm-xmqj"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-2pr6-76vf-7546"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-724g-mxrg-4qvm"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-28wg-ghj8-5hjv"
+reason = "not_affected; build-time dev tool (transitive dep of postcss/stylelint), absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-2v37-7h3g-55p8"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-mwcw-c2x4-8c55"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-6g55-p6wh-862q"
+reason = "not_affected; build-time dev tool (transitive dep of stylelint), absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-fxqj-rqcc-2cmp"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-566m-qj78-rww5"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."
+
+[[IgnoredVulns]]
+id = "GHSA-hwj9-h5mp-3pm3"
+reason = "not_affected; build-time dev tool, absent from static site. See security/openvex.json."

@@ -2,9 +2,173 @@
   "@context": "https://openvex.dev/ns/v0.2.0",
   "@id": "https://trentpower.fr/security/openvex.json",
   "author": "Trent Power <trent@trentpower.fr>",
-  "role": "Maintainer",
-  "timestamp": "2026-06-13T00:00:00Z",
+  "timestamp": "2026-08-24T21:30:00Z",
   "version": 1,
-  "tooling": "hand-authored; see security/README.md",
-  "statements": []
+  "statements": [
+    {
+      "vulnerability": {
+        "name": "GHSA-3jxr-9vmj-r5cp"
+      },
+      "products": [{"@id": "pkg:npm/brace-expansion"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "brace-expansion is a transitive dev dependency of eslint and stylelint, invoked only during CI linting. No user-supplied input reaches it. Absent from the published static site."
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-832h-xg76-4gv6"
+      },
+      "products": [{"@id": "pkg:npm/brace-expansion"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-f886-m6hf-6m8v"
+      },
+      "products": [{"@id": "pkg:npm/brace-expansion"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-jxxr-4gwj-5jf2"
+      },
+      "products": [{"@id": "pkg:npm/brace-expansion"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-mh99-v99m-4gvg"
+      },
+      "products": [{"@id": "pkg:npm/brace-expansion"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-4c8g-83qw-93j6"
+      },
+      "products": [{"@id": "pkg:npm/fast-uri"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "fast-uri is a transitive dev dependency of eslint. The parser processes only developer-authored .js config files in CI. No untrusted URLs or user input. Absent from the published static site."
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-7p8r-x3mc-p8w7"
+      },
+      "products": [{"@id": "pkg:npm/fast-uri"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-v2hh-gcrm-f6hx"
+      },
+      "products": [{"@id": "pkg:npm/fast-uri"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-v39h-62p7-jpjc"
+      },
+      "products": [{"@id": "pkg:npm/fast-uri"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-52cp-r559-cp3m"
+      },
+      "products": [{"@id": "pkg:npm/js-yaml"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "js-yaml is a transitive dev dependency of eslint. It parses only trusted .yml configuration files authored by the development team. No attacker-controlled input. Absent from the published static site."
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-5p4m-2wfm-xmqj"
+      },
+      "products": [{"@id": "pkg:npm/js-yaml"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-2pr6-76vf-7546"
+      },
+      "products": [{"@id": "pkg:npm/js-yaml"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-724g-mxrg-4qvm"
+      },
+      "products": [{"@id": "pkg:npm/js-yaml"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-28wg-ghj8-5hjv"
+      },
+      "products": [{"@id": "pkg:npm/nanoid"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "nanoid is a transitive dev dependency of postcss/stylelint. ID generation runs at build time with no attacker-controlled size parameter. Absent from the published static site."
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-2v37-7h3g-55p8"
+      },
+      "products": [{"@id": "pkg:npm/nanoid"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-mwcw-c2x4-8c55"
+      },
+      "products": [{"@id": "pkg:npm/nanoid"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-6g55-p6wh-862q"
+      },
+      "products": [{"@id": "pkg:npm/postcss"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "postcss is a transitive dev dependency of stylelint. CSS processing uses fixed `from` parameters in CI; no attacker-controlled sourceMappingURL reaches it. Absent from the published static site."
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-fxqj-rqcc-2cmp"
+      },
+      "products": [{"@id": "pkg:npm/postcss"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-566m-qj78-rww5"
+      },
+      "products": [{"@id": "pkg:npm/postcss"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-hwj9-h5mp-3pm3"
+      },
+      "products": [{"@id": "pkg:npm/postcss"}],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path"
+    }
+  ]
 }
