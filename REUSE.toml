@@ -58,3 +58,10 @@ path = [
 precedence = "override"
 SPDX-FileCopyrightText = "2026 Trent Power — all rights reserved"
 SPDX-License-Identifier = "LicenseRef-trentpower-personal"
+
+# ── weather icons (cloudbox-mini) → proprietary design assets ───────────────
+[[annotations]]
+path = "public/assets/weather/**"
+precedence = "override"
+SPDX-FileCopyrightText = "2026 Trent Power — all rights reserved"
+SPDX-License-Identifier = "LicenseRef-trentpower-personal"
