@@ -221,6 +221,8 @@ DirectoryIndex index.html
   RewriteRule ^tests/index\.html$ - [L]
 
   # phase 5 — fallback: anything unmatched returns 403
+  # weather icons (Sunday Briefing email — loaded by Gmail proxy)
+  RewriteRule ^assets/weather/72px/[a-z0-9.-]+\.png$ - [L]
   RewriteRule . - [F,L]
   # END PUBLIC EXPOSURE
 </IfModule>
@@ -242,8 +244,10 @@ DirectoryIndex index.html
 
   # /images/og/ exception: social scrapers need cross-origin pull.
   SetEnvIf Request_URI "^/images/og/" IS_OG_IMAGE=1
-  Header always set Cross-Origin-Resource-Policy "same-origin" env=!IS_OG_IMAGE
-  Header always set Cross-Origin-Resource-Policy "cross-origin" env=IS_OG_IMAGE
+  # weather icons exception: Gmail proxies images through googleusercontent.com
+  SetEnvIf Request_URI "^/assets/weather/72px/" IS_WEATHER_ICON=1
+  Header always set Cross-Origin-Resource-Policy "same-origin" "expr=%{ENV:IS_OG_IMAGE} != '1' && %{ENV:IS_WEATHER_ICON} != '1'"
+  Header always set Cross-Origin-Resource-Policy "cross-origin" "expr=%{ENV:IS_OG_IMAGE} == '1' || %{ENV:IS_WEATHER_ICON} == '1'"
 
   # Permissions-Policy: deny every sensitive capability. names limited
   # to the standard permissions registry to avoid chrome parser warns.
@@ -341,6 +345,12 @@ DirectoryIndex index.html
   </FilesMatch>
   <FilesMatch "^(trent-power|trent-power-og)\.jpg$">
     Header set Cache-Control "public, max-age=86400, must-revalidate" env=!IS_ARCHIVE_ASSET
+  </FilesMatch>
+
+  # weather icons — long cache via path flag (FilesMatch sees basenames only).
+  SetEnvIf Request_URI "^/assets/weather/72px/" IS_WEATHER_ICON=1
+  <FilesMatch "\.png$">
+    Header set Cache-Control "public, max-age=86400, must-revalidate" env=IS_WEATHER_ICON
   </FilesMatch>
 
   # identity + metadata files — short cache, declared MIME.
